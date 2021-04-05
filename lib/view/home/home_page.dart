@@ -15,12 +15,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: this.pageController,
+    return Stack(
+      overflow: Overflow.visible,
+      alignment: AlignmentDirectional.topCenter,
       children: [
         SideMenuPage(),
-        ChannelPage(),
         ChannelInfoPage(),
+        Positioned(
+          right: 0,
+          child: ChannelPage(),
+        ),
       ],
     );
   }

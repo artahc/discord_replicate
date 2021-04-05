@@ -33,10 +33,6 @@ class SideMenuPage extends StatelessWidget {
             color: Color(0xff36393f),
             child: Container(
               color: Colors.white70,
-              child: SizedBox(
-                height: 45,
-                width: 45,
-              ),
             ),
           ),
         ],
@@ -133,7 +129,7 @@ class SideMenuPage extends StatelessWidget {
           serverWidget,
           directMessageWidget,
           SizedBox(
-            width: 60,
+            width: 70,
           )
         ],
       ),

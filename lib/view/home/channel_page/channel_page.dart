@@ -2,7 +2,6 @@ import 'package:discord_ui_practice/view/home/channel_page/channel_chat_item.dar
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-
 class ChannelPage extends StatefulWidget {
   @override
   _ChannelPageState createState() => _ChannelPageState();
@@ -36,10 +35,7 @@ class _ChannelPageState extends State<ChannelPage> {
                 Text(
                   "@ hace",
                   style: TextStyle(
-                      color: Color(0xffffffff),
-                      fontSize: 18,
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w700),
+                      color: Color(0xffffffff), fontSize: 18, fontStyle: FontStyle.normal, fontWeight: FontWeight.w700),
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 5),
@@ -147,7 +143,7 @@ class _ChannelPageState extends State<ChannelPage> {
               ),
               child: Row(
                 children: [
-                  Flexible(
+                  Expanded(
                     child: TextField(
                       minLines: 1,
                       maxLines: 5,
@@ -194,12 +190,13 @@ class _ChannelPageState extends State<ChannelPage> {
         clipBehavior: Clip.antiAlias,
         borderRadius: BorderRadius.circular(5),
         child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
           color: Color(0xff363940),
           child: Column(
             children: [
               chatHeaderWidget,
               Expanded(
-
                 child: chatBodyWidget,
               ),
               chatInputWidget,

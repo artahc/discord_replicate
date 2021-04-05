@@ -157,7 +157,7 @@ class ChannelInfoPage extends StatelessWidget {
     return SafeArea(
       child: Row(
         children: [
-          SizedBox(width: 60),
+          SizedBox(width: 70),
           Flexible(
             flex: 1,
             child: ClipRRect(
