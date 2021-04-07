@@ -1,8 +1,13 @@
+import 'package:discord_ui_practice/model/message_data.dart';
 import 'package:discord_ui_practice/view/widgets/circle_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class ChatItem extends StatelessWidget {
+  final MessageData data;
+  ChatItem(this.data);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,14 +28,14 @@ class ChatItem extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
-                        "Someone",
+                        this.data.userName,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
                             color: Color(0xffffffff)),
                       ),
                       Text(
-                        "Today at 5:20 PM",
+                        DateFormat.yMEd().add_jms().format(data.createdAt),
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             fontSize: 10,
@@ -41,7 +46,7 @@ class ChatItem extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(top: 2),
                     child: Text(
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+                      this.data.message,
                       style: TextStyle(
                         color: Color(0xffffffff),
                         fontSize: 12,

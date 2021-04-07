@@ -16,7 +16,7 @@ class NetworkingMethodChannel {
     _methodChannel = MethodChannel(channelName);
   }
 
-  String sendHttpRequest(String method, String path) {
-    _methodChannel.invokeMethod("sendHttpRequest", {"path": path, "method": method});
+  Future<String> sendHttpRequest(String method, String path) async {
+    return _methodChannel.invokeMethod("sendHttpRequest", {"path": path, "method": method});
   }
 }

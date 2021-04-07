@@ -1,6 +1,7 @@
 package com.example.discord_ui_practice
 
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -20,7 +21,7 @@ class ServerApi(private val baseUrl: String) {
 
     init {
         val retrofit: Retrofit = Retrofit.Builder()
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .baseUrl(this.baseUrl)
             .build()
 

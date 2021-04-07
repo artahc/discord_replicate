@@ -1,19 +1,21 @@
 import 'package:discord_ui_practice/bloc/channel_bloc.dart';
-import 'package:discord_ui_practice/view/home/channel_page/channel_chat_item.dart';
-import 'package:discord_ui_practice/view/widgets/circle_button.dart';
+import 'package:discord_ui_practice/bloc/channel_event.dart';
+import 'package:discord_ui_practice/bloc/channel_state.dart';
+import 'package:discord_ui_practice/view/home/channel_message_page/channel_message_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChannelPage extends StatefulWidget {
+
+
+class ChannelMessagePage extends StatefulWidget {
   @override
-  _ChannelPageState createState() => _ChannelPageState();
+  _ChannelMessagePageState createState() => _ChannelMessagePageState();
 }
 
-class _ChannelPageState extends State<ChannelPage> {
+class _ChannelMessagePageState extends State<ChannelMessagePage> {
   @override
   Widget build(BuildContext context) {
-
     final Widget chatHeaderWidget = Container(
       decoration: BoxDecoration(
         color: Color(0xff303136),
@@ -41,7 +43,10 @@ class _ChannelPageState extends State<ChannelPage> {
                   Text(
                     "@ hace",
                     style: TextStyle(
-                        color: Color(0xffffffff), fontSize: 18, fontStyle: FontStyle.normal, fontWeight: FontWeight.w700),
+                        color: Color(0xffffffff),
+                        fontSize: 18,
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w700),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 5),
@@ -85,17 +90,24 @@ class _ChannelPageState extends State<ChannelPage> {
       ),
     );
 
-    final Widget chatBodyWidget = Container(
-      child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        scrollDirection: Axis.vertical,
-        children: [
-          ChatItem(),
-          ChatItem(),
-          ChatItem(),
-          ChatItem(),
-          ChatItem(),
-        ],
+    final Widget chatBodyWidget = Expanded(
+      child: Container(
+        child: BlocBuilder<ChannelBloc, ChannelState>(
+            bloc: context.read<ChannelBloc>(),
+            builder: (_, state) {
+              if (state is ChannelLoadMessageSuccess) {
+                return ListView.builder(
+                  itemCount: state.messages.length,
+                  itemBuilder: (_, index) {
+                    return ChatItem(state.messages[index]);
+                  },
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  scrollDirection: Axis.vertical,
+                );
+              } else {
+                return Container();
+              }
+            }),
       ),
     );
 
@@ -114,7 +126,7 @@ class _ChannelPageState extends State<ChannelPage> {
                 onPressed: () {
                   context.read<ChannelBloc>().add(ChannelLoadMessage());
                 },
-                visualDensity: VisualDensity.compact,
+                visualDensity: VisualDensity.comfortable,
                 child: ClipOval(
                   child: Container(
                     width: 40,
@@ -218,9 +230,7 @@ class _ChannelPageState extends State<ChannelPage> {
           child: Column(
             children: [
               chatHeaderWidget,
-              Expanded(
-                child: chatBodyWidget,
-              ),
+              chatBodyWidget,
               chatInputWidget,
             ],
           ),

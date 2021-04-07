@@ -1,5 +1,4 @@
 import 'package:discord_ui_practice/view/home/channel_info_page/channel_member_all_list.dart';
-import 'package:discord_ui_practice/view/home/channel_info_page/channel_member_per_role_list.dart';
 import 'package:discord_ui_practice/view/widgets/circle_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

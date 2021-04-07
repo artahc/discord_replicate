@@ -28,17 +28,21 @@ class NetworkingMethodChannel(
             "sendHttpRequest" -> {
                 val method = ServerApi.Method.valueOf(argument["method"] as String)
                 val path = argument["path"] as String
+                try {
+                    api.sendHttpRequest(method, path)
+                        .observeOn(AndroidSchedulers.from(Looper.getMainLooper()))
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(
+                            {
+                                result.success(it.string())
+                            }, {
+                                result.error("0", it.message, it.printStackTrace())
+                            }
+                        )
+                } catch (e: Exception) {
+                    Log.d("NetworkingMethodChannel", "${e.printStackTrace()}");
+                }
 
-                api.sendHttpRequest(method, path)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.from(Looper.getMainLooper()))
-                    .subscribe(
-                        {
-                            result.success(it.string())
-                        }, {
-                            result.error("0", it.message, it.printStackTrace())
-                        }
-                    )
             }
         }
     }

@@ -1,7 +1,7 @@
 import 'package:discord_ui_practice/bloc/channel_bloc.dart';
 import 'package:discord_ui_practice/networking_channel.dart';
 import 'package:discord_ui_practice/view/home/channel_info_page/channel_info_page.dart';
-import 'package:discord_ui_practice/view/home/channel_page/channel_page.dart';
+import 'package:discord_ui_practice/view/home/channel_message_page/channel_message_page.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/side_menu_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             SideMenuPage(),
             ChannelInfoPage(),
-            ChannelPage(),
+            ChannelMessagePage(),
           ],
         ),
       ),
