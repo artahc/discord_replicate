@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 class ServerApi(private val baseUrl: String) {
-    final enum class Method { GET, POST, PUT, PATCH, DELETE, HEAD }
+    enum class Method { GET, POST, PUT, PATCH, DELETE, HEAD }
 
     private interface ApiService {
         @GET("{path}")

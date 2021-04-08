@@ -1,3 +1,4 @@
+import 'package:discord_ui_practice/static/config.dart';
 import 'package:flutter/services.dart';
 
 class RequestMethod {
@@ -14,6 +15,7 @@ class NetworkingMethodChannel {
 
   NetworkingMethodChannel(String channelName) {
     _methodChannel = MethodChannel(channelName);
+    _methodChannel.invokeMethod("init", {"base_url": Config.BASE_URL});
   }
 
   Future<String> sendHttpRequest(String method, String path) async {

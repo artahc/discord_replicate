@@ -1,12 +1,12 @@
-import 'package:discord_ui_practice/bloc/channel_bloc.dart';
-import 'package:discord_ui_practice/bloc/channel_event.dart';
-import 'package:discord_ui_practice/bloc/channel_state.dart';
+import 'package:discord_ui_practice/bloc/channel/channel_bloc.dart';
+import 'package:discord_ui_practice/bloc/channel/channel_event.dart';
+import 'package:discord_ui_practice/bloc/channel/channel_state.dart';
+import 'package:discord_ui_practice/repository/channel_repository.dart';
 import 'package:discord_ui_practice/view/home/channel_message_page/channel_message_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-
+import 'package:shimmer/shimmer.dart';
 
 class ChannelMessagePage extends StatefulWidget {
   @override
@@ -15,8 +15,37 @@ class ChannelMessagePage extends StatefulWidget {
 
 class _ChannelMessagePageState extends State<ChannelMessagePage> {
   @override
+  void initState() {
+    context.read<ChannelBloc>().add(ChannelMessageLoadStarted());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final Widget chatHeaderWidget = Container(
+    return SafeArea(
+      child: ClipRRect(
+        clipBehavior: Clip.antiAlias,
+        borderRadius: BorderRadius.circular(5),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+          color: Color(0xff363940),
+          child: Column(
+            children: [
+              ChatHeader(),
+              ChatBody(),
+              ChatInput(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ChatHeader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
       decoration: BoxDecoration(
         color: Color(0xff303136),
       ),
@@ -41,7 +70,7 @@ class _ChannelMessagePageState extends State<ChannelMessagePage> {
               child: Row(
                 children: [
                   Text(
-                    "@ hace",
+                    context.read<ChannelRepository>().getCurrentChannelData()?.channelName ?? "",
                     style: TextStyle(
                         color: Color(0xffffffff),
                         fontSize: 18,
@@ -89,29 +118,13 @@ class _ChannelMessagePageState extends State<ChannelMessagePage> {
         ],
       ),
     );
+  }
+}
 
-    final Widget chatBodyWidget = Expanded(
-      child: Container(
-        child: BlocBuilder<ChannelBloc, ChannelState>(
-            bloc: context.read<ChannelBloc>(),
-            builder: (_, state) {
-              if (state is ChannelLoadMessageSuccess) {
-                return ListView.builder(
-                  itemCount: state.messages.length,
-                  itemBuilder: (_, index) {
-                    return ChatItem(state.messages[index]);
-                  },
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  scrollDirection: Axis.vertical,
-                );
-              } else {
-                return Container();
-              }
-            }),
-      ),
-    );
-
-    final Widget chatInputWidget = Container(
+class ChatInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(),
       child: Row(
@@ -124,7 +137,8 @@ class _ChannelMessagePageState extends State<ChannelMessagePage> {
                 minWidth: 0,
                 shape: CircleBorder(),
                 onPressed: () {
-                  context.read<ChannelBloc>().add(ChannelLoadMessage());
+                  // context.read<ChannelBloc>().add(ChannelMessageLoadStarted());
+                  print("Image Pressed");
                 },
                 visualDensity: VisualDensity.comfortable,
                 child: ClipOval(
@@ -146,7 +160,7 @@ class _ChannelMessagePageState extends State<ChannelMessagePage> {
                 minWidth: 0,
                 shape: CircleBorder(),
                 onPressed: () {
-                  print("Pressed.");
+                  print("Gift Pressed");
                 },
                 visualDensity: VisualDensity.compact,
                 child: ClipOval(
@@ -218,23 +232,48 @@ class _ChannelMessagePageState extends State<ChannelMessagePage> {
         ],
       ),
     );
+  }
+}
 
-    return SafeArea(
-      child: ClipRRect(
-        clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(5),
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
-          color: Color(0xff363940),
-          child: Column(
-            children: [
-              chatHeaderWidget,
-              chatBodyWidget,
-              chatInputWidget,
-            ],
-          ),
-        ),
+class ChatBody extends StatefulWidget {
+  @override
+  _ChatBodyState createState() => _ChatBodyState();
+}
+
+class _ChatBodyState extends State<ChatBody> {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        // padding: EdgeInsets.symmetric(vertical: 5),
+        child: BlocBuilder<ChannelBloc, ChannelState>(
+            bloc: context.read<ChannelBloc>(),
+            builder: (_, state) {
+              if (state is ChannelMessageLoadSuccess) {
+                return ListView.builder(
+                  itemCount: state.messages.length,
+                  itemBuilder: (_, index) {
+                    return ChatItem(state.messages[index]);
+                  },
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                  scrollDirection: Axis.vertical,
+                );
+              }
+              /*else if (state is ChannelMessageLoadInProgress) {
+                return ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (_, index) {
+                    return Shimmer.fromColors(
+                        enabled: true,
+                        child: Container(),
+                        baseColor: Colors.grey,
+                        highlightColor: Colors.grey[200]);
+                  },
+                );
+              }*/
+              else
+                return Container();
+            }),
       ),
     );
   }

@@ -12,10 +12,11 @@ import io.reactivex.schedulers.Schedulers
 class NetworkingMethodChannel(
     context: Context,
     binaryMessenger: BinaryMessenger,
-    channelName: String,
-    private val api: ServerApi
+    channelName: String
 ) :
     MethodChannel.MethodCallHandler {
+
+    private var api: ServerApi? = null
 
     init {
         MethodChannel(binaryMessenger, channelName).setMethodCallHandler(this)
@@ -25,11 +26,16 @@ class NetworkingMethodChannel(
         val argument = call.arguments as Map<String, Any?>
 
         when (call.method) {
+            "init" -> {
+                val baseUrl = argument["base_url"] as String
+                api = ServerApi(baseUrl)
+            }
+
             "sendHttpRequest" -> {
                 val method = ServerApi.Method.valueOf(argument["method"] as String)
                 val path = argument["path"] as String
                 try {
-                    api.sendHttpRequest(method, path)
+                    api!!.sendHttpRequest(method, path)
                         .observeOn(AndroidSchedulers.from(Looper.getMainLooper()))
                         .subscribeOn(Schedulers.io())
                         .subscribe(
@@ -39,12 +45,15 @@ class NetworkingMethodChannel(
                                 result.error("0", it.message, it.printStackTrace())
                             }
                         )
-                } catch (e: Exception) {
-                    Log.d("NetworkingMethodChannel", "${e.printStackTrace()}");
+                } catch (e: NullPointerException) {
+                    result.error(
+                        "Unintialized Property Access",
+                        "Please call init before calling any method.",
+                        e.printStackTrace()
+                    )
                 }
 
             }
         }
     }
-
 }
