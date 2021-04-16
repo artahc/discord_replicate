@@ -1,4 +1,3 @@
-import 'file:///C:/Users/artah/AndroidStudioProjects/_PersonalProject/discord_ui_practice/lib/bloc/message/conversation_event.dart';
 import 'package:discord_ui_practice/model/channel_data.dart';
 import 'package:discord_ui_practice/model/message_data.dart';
 

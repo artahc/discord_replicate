@@ -12,6 +12,7 @@ import 'package:discord_ui_practice/view/home/side_menu_page/side_menu_page.dart
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:discord_ui_practice/static/math.dart';
+import 'package:rxdart/rxdart.dart';
 
 enum PageState { LEFT, CENTER, RIGHT }
 enum SwipeDirection { LEFT, RIGHT }
@@ -30,6 +31,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   PageState _channelPageState;
   Animation<Offset> _offsetAnim;
 
+  PublishSubject _swipeDirectionSubject = PublishSubject<SwipeDirection>();
+  Stream<SwipeDirection> get _swipeDirectionStream => _swipeDirectionSubject.stream;
+
   @override
   void initState() {
     _animationController = AnimationController(duration: Duration(milliseconds: _pageAnimationDuration), vsync: this);
@@ -42,11 +46,19 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   @override
+  void dispose() {
+    _swipeDirectionSubject.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Offset startOffset = Offset.zero;
-    SwipeDirection _swipeDirection = null;
+    SwipeDirection _swipeDirection;
+    Tween<Offset> _tween = Tween<Offset>(
+      begin: Offset(0, 0),
+      end: _swipeDirection == SwipeDirection.RIGHT ? Offset(0.88, 0) : Offset(0.88, 0),
+    );
 
-    Tween<Offset> _tween = Tween<Offset>(begin: Offset(0, 0), end: _swipeDirection == SwipeDirection.RIGHT ? Offset(0.88, 0) : Offset(0.88, 0));
     return Scaffold(
       backgroundColor: Color(0xff202226),
       body: GestureDetector(
@@ -61,6 +73,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           _swipeDirection = dir.dx.isNegative ? SwipeDirection.LEFT : SwipeDirection.RIGHT;
           _tween.begin = Offset.zero;
           _tween.end = _swipeDirection == SwipeDirection.LEFT ? Offset(-0.88, 0) : Offset(0.88, 0);
+          _swipeDirectionSubject.add(_swipeDirection);
         },
         onHorizontalDragUpdate: (d) {
           Offset dir = d.localPosition - startOffset;
@@ -70,18 +83,22 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           _animationController.value = v;
         },
         onHorizontalDragEnd: (d) {
-          if (_animationController.value > _pageOffsetThreshold || d.velocity.pixelsPerSecond.dx > _velocitySensitivity) {
+          if (_animationController.value > _pageOffsetThreshold ||
+              d.velocity.pixelsPerSecond.dx > _velocitySensitivity) {
             _animationController.animateTo(1, curve: Curves.easeInSine);
           } else {
             _animationController.animateTo(0, curve: Curves.easeInSine);
-            print(_swipeDirection);
           }
         },
         child: Container(
           child: Stack(
             children: [
-              SideMenuPage(),
-              ChannelInfoPage(),
+              StreamBuilder(
+                stream: _swipeDirectionStream,
+                builder: (c, AsyncSnapshot<SwipeDirection> s) {
+                  return _swipeDirection == SwipeDirection.RIGHT ? SideMenuPage() : ChannelInfoPage();
+                },
+              ),
               SlideTransition(
                 position: _tween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutSine)),
                 child: ChannelMessagePage(),
