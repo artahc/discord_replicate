@@ -1,3 +1,4 @@
+import 'file:///C:/Users/artah/AndroidStudioProjects/_PersonalProject/discord_ui_practice/lib/bloc/message/conversation_event.dart';
 import 'package:discord_ui_practice/model/channel_data.dart';
 import 'package:discord_ui_practice/model/message_data.dart';
 
@@ -11,13 +12,16 @@ class ChannelMessageLoadSuccess extends ChannelState {
 }
 
 class ChannelMessageLoadInProgress extends ChannelState {}
+
 class ChannelMessageInitial extends ChannelState {}
 
 class ChannelMessageLoadFailure extends ChannelState {}
 //endregion
 
 //region -- Channel Info
-class ChannelInfoLoadInProgress extends ChannelState {}
+class ChannelInfoInitial extends ChannelState {}
+
+class ChannelLoadInfoInProgress extends ChannelState {}
 
 class ChannelInfoLoadSuccess extends ChannelState {
   final ChannelData data;
@@ -25,5 +29,5 @@ class ChannelInfoLoadSuccess extends ChannelState {
   ChannelInfoLoadSuccess(this.data);
 }
 
-class ChannelInfoLoadFailure extends ChannelState {}
+class ChannelLoadInfoFailure extends ChannelState {}
 //endregion

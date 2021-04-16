@@ -2,7 +2,7 @@ import 'package:discord_ui_practice/view/home/channel_info_page/channel_member_p
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ChannelMemberBody extends StatelessWidget {
+class ChannelInfoMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 

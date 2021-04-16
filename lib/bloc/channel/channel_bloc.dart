@@ -6,22 +6,23 @@ import 'package:discord_ui_practice/model/message_data.dart';
 import 'package:discord_ui_practice/repository/channel_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/// Consider deleting this or merge functionality with server bloc
 class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   final NetworkingMethodChannel _networkApi;
   final ChannelRepository _repository;
 
-  ChannelBloc(this._repository, this._networkApi) : super(ChannelInfoLoadInProgress());
+  ChannelBloc(this._repository, this._networkApi) : super(ChannelInfoInitial());
 
   @override
   Stream<ChannelState> mapEventToState(ChannelEvent event) async* {
     // region -- Channel Info
-    if (event is ChannelInfoLoadStarted) {
+    if (event is ChannelLoadInfo) {
       yield* _loadChannelInfo();
     }
     // endregion
 
     // region -- Channel Message
-    else if (event is ChannelMessageLoadStarted) {
+    else if (event is ChannelLoadMessage) {
       yield* _loadChannelMessage();
     }
     // endregion
@@ -48,7 +49,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
       _repository.setCurrentChannelData(channelData);
       emit(ChannelInfoLoadSuccess(channelData));
     } catch (e) {
-      emit(ChannelInfoLoadFailure());
+      emit(ChannelLoadInfoFailure());
     }
   }
 }

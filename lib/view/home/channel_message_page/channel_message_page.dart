@@ -1,6 +1,8 @@
 import 'package:discord_ui_practice/bloc/channel/channel_bloc.dart';
 import 'package:discord_ui_practice/bloc/channel/channel_event.dart';
 import 'package:discord_ui_practice/bloc/channel/channel_state.dart';
+import 'package:discord_ui_practice/bloc/message/conversation_bloc.dart';
+import 'package:discord_ui_practice/bloc/message/conversation_event.dart';
 import 'package:discord_ui_practice/repository/channel_repository.dart';
 import 'package:discord_ui_practice/view/home/channel_message_page/channel_message_item.dart';
 import 'package:flutter/material.dart';
@@ -15,20 +17,24 @@ class ChannelMessagePage extends StatefulWidget {
 
 class _ChannelMessagePageState extends State<ChannelMessagePage> {
   @override
-  void initState() {
-    context.read<ChannelBloc>().add(ChannelMessageLoadStarted());
-  }
+  void initState() {}
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ClipRRect(
         clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(10),
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
-          color: Color(0xff363940),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color(0xff363940),
+            boxShadow: [
+              BoxShadow(color: Colors.black, blurRadius: 15),
+            ],
+          ),
           child: Column(
             children: [
               ChatHeader(),
@@ -50,13 +56,14 @@ class ChatHeader extends StatelessWidget {
         color: Color(0xff303136),
       ),
       padding: EdgeInsets.all(10),
-      height: 50,
+      height: 55,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
+              height: 30,
               padding: EdgeInsets.all(8),
               child: Image(
                 image: AssetImage("assets/menu-button.png"),
@@ -70,12 +77,8 @@ class ChatHeader extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    context.read<ChannelRepository>().getCurrentChannelData()?.channelName ?? "",
-                    style: TextStyle(
-                        color: Color(0xffffffff),
-                        fontSize: 18,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w700),
+                    context.read<ChannelRepository>().getCurrentChannelData()?.channelName ?? "# general",
+                    style: TextStyle(color: Color(0xffffffff), fontSize: 22, fontStyle: FontStyle.normal, fontWeight: FontWeight.w700),
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 5),
@@ -137,7 +140,6 @@ class ChatInput extends StatelessWidget {
                 minWidth: 0,
                 shape: CircleBorder(),
                 onPressed: () {
-                  // context.read<ChannelBloc>().add(ChannelMessageLoadStarted());
                   print("Image Pressed");
                 },
                 visualDensity: VisualDensity.comfortable,
@@ -235,21 +237,16 @@ class ChatInput extends StatelessWidget {
   }
 }
 
-class ChatBody extends StatefulWidget {
-  @override
-  _ChatBodyState createState() => _ChatBodyState();
-}
-
-class _ChatBodyState extends State<ChatBody> {
+class ChatBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         // padding: EdgeInsets.symmetric(vertical: 5),
-        child: BlocBuilder<ChannelBloc, ChannelState>(
-            bloc: context.read<ChannelBloc>(),
+        child: BlocBuilder<ConversationBloc, ConversationState>(
+            bloc: context.read<ConversationBloc>(),
             builder: (_, state) {
-              if (state is ChannelMessageLoadSuccess) {
+              if (state is ConversationLoadSuccess) {
                 return ListView.builder(
                   itemCount: state.messages.length,
                   itemBuilder: (_, index) {
