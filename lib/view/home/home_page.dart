@@ -35,9 +35,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   PublishSubject<SwipeDirection> _swipeDirectionSubject = PublishSubject<SwipeDirection>();
   PublishSubject<PageState> _pageStateSubject = PublishSubject<PageState>();
-
   Stream<SwipeDirection> get _swipeDirectionStream => _swipeDirectionSubject.stream;
-
   Stream<PageState> get _pageStateStream => _pageStateSubject.stream;
 
   Tween<Offset> _tween = Tween<Offset>(begin: Offset.zero, end: Offset.zero);
@@ -129,17 +127,21 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       visible: s.data.item1 == SwipeDirection.RIGHT && s.data.item2 == PageState.CENTER ||
                           s.data.item2 == PageState.RIGHT,
                       maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
                       child: SideMenuPage(),
                     ),
                     Visibility(
                       visible: s.data.item1 == SwipeDirection.LEFT && s.data.item2 == PageState.CENTER ||
                           s.data.item2 == PageState.LEFT,
                       maintainState: true,
+                      maintainAnimation: true,
+                      maintainSize: true,
                       child: ChannelInfoPage(),
                     ),
                     SlideTransition(
                       position:
-                          _tween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutSine)),
+                          _tween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOutCubic)),
                       child: ChannelMessagePage(),
                     ),
                   ],
