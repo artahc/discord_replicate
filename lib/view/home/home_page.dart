@@ -35,7 +35,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   PublishSubject<SwipeDirection> _swipeDirectionSubject = PublishSubject<SwipeDirection>();
   PublishSubject<PageState> _pageStateSubject = PublishSubject<PageState>();
+
   Stream<SwipeDirection> get _swipeDirectionStream => _swipeDirectionSubject.stream;
+
   Stream<PageState> get _pageStateStream => _pageStateSubject.stream;
 
   Tween<Offset> _tween = Tween<Offset>(begin: Offset.zero, end: Offset.zero);
@@ -77,38 +79,38 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     Offset startOffset = Offset.zero;
     return Scaffold(
       backgroundColor: Color(0xff202226),
-      body: GestureDetector(
-        dragStartBehavior: DragStartBehavior.start,
-        onTapDown: (d) {},
-        onHorizontalDragDown: (d) {
-          startOffset = d.localPosition;
-        },
-        onHorizontalDragStart: (d) {
-          var dir = d.localPosition - startOffset;
-          _swipeDirectionSubject.add(dir.dx.isNegative ? SwipeDirection.LEFT : SwipeDirection.RIGHT);
-        },
-        onHorizontalDragUpdate: (d) {
-          Offset dir = d.localPosition - startOffset;
-          double width = MediaQuery.of(context).size.width;
-          double v = dir.dx.remap(0, _swipeDirection == SwipeDirection.LEFT ? -width : width, 0, 1);
+      body: Container(
+        child: GestureDetector(
+          dragStartBehavior: DragStartBehavior.start,
+          onTapDown: (d) {},
+          onHorizontalDragDown: (d) {
+            startOffset = d.localPosition;
+          },
+          onHorizontalDragStart: (d) {
+            var dir = d.localPosition - startOffset;
+            _swipeDirectionSubject.add(dir.dx.isNegative ? SwipeDirection.LEFT : SwipeDirection.RIGHT);
+          },
+          onHorizontalDragUpdate: (d) {
+            Offset dir = d.localPosition - startOffset;
+            double width = MediaQuery.of(context).size.width;
+            double v = dir.dx.remap(0, _swipeDirection == SwipeDirection.LEFT ? -width : width, 0, 1);
 
-          if (!(_swipeDirection == SwipeDirection.RIGHT && _pageState == PageState.RIGHT ||
-              _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.LEFT))
-            _animationController.value = _pageState == PageState.CENTER ? v : 1 - v;
-        },
-        onHorizontalDragEnd: (d) {
-          // todo: handle swipe based on velocity
-          if (_animationController.value > _swipeThreshold) {
-            _animationController.animateTo(1, curve: Curves.easeInSine).whenComplete(() {
-              if (_pageState == PageState.CENTER)
-                _pageStateSubject.add(_swipeDirection == SwipeDirection.RIGHT ? PageState.RIGHT : PageState.LEFT);
-            });
-          } else {
-            _animationController.animateTo(0, curve: Curves.easeInSine);
-            _pageStateSubject.add(PageState.CENTER);
-          }
-        },
-        child: Container(
+            if (!(_swipeDirection == SwipeDirection.RIGHT && _pageState == PageState.RIGHT ||
+                _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.LEFT))
+              _animationController.value = _pageState == PageState.CENTER ? v : 1 - v;
+          },
+          onHorizontalDragEnd: (d) {
+            // todo: handle swipe based on velocity
+            if (_animationController.value > _swipeThreshold) {
+              _animationController.animateTo(1, curve: Curves.easeInSine).whenComplete(() {
+                if (_pageState == PageState.CENTER)
+                  _pageStateSubject.add(_swipeDirection == SwipeDirection.RIGHT ? PageState.RIGHT : PageState.LEFT);
+              });
+            } else {
+              _animationController.animateTo(0, curve: Curves.easeInSine);
+              _pageStateSubject.add(PageState.CENTER);
+            }
+          },
           child: StreamBuilder<Tuple2>(
               stream: _swipeDirectionStream.withLatestFrom(
                   _pageStateStream, (swipeDirection, pageState) => Tuple2(swipeDirection, pageState)),
@@ -142,7 +144,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                     SlideTransition(
                       position:
                           _tween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOutCubic)),
-                      child: ChannelMessagePage(),
+                      child: GestureDetector(
+                        onTap:() {
+                          _animationController.animateTo(0).whenComplete(() {
+                            _pageStateSubject.add(PageState.CENTER);
+                          });
+                        },
+                        child: ChannelMessagePage(),
+                      ),
                     ),
                   ],
                 );
