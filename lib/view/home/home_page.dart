@@ -13,6 +13,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:discord_ui_practice/static/math.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:tuple/tuple.dart';
 
 enum PageState { LEFT, CENTER, RIGHT }
 enum SwipeDirection { LEFT, RIGHT }
@@ -23,21 +24,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  static const int _pageAnimationDuration = 350;
-  static const int _velocitySensitivity = 450;
-  static const double _pageOffsetThreshold = 0.5;
+  static const int _swipeDuration = 350; // animation duration in milli
+  static const int _swipeSensitivity = 250; // velocity
+  static const double _swipeThreshold = 0.5;
 
   AnimationController _animationController;
-  PageState _channelPageState;
-  Animation<Offset> _offsetAnim;
 
-  PublishSubject _swipeDirectionSubject = PublishSubject<SwipeDirection>();
+  PageState _pageState = PageState.CENTER;
+  SwipeDirection _swipeDirection;
+
+  PublishSubject<SwipeDirection> _swipeDirectionSubject = PublishSubject<SwipeDirection>();
+  PublishSubject<PageState> _pageStateSubject = PublishSubject<PageState>();
+
   Stream<SwipeDirection> get _swipeDirectionStream => _swipeDirectionSubject.stream;
+
+  Stream<PageState> get _pageStateStream => _pageStateSubject.stream;
+
+  Tween<Offset> _tween = Tween<Offset>(begin: Offset.zero, end: Offset.zero);
 
   @override
   void initState() {
-    _animationController = AnimationController(duration: Duration(milliseconds: _pageAnimationDuration), vsync: this);
-    _channelPageState = PageState.CENTER;
+    super.initState();
+    _animationController = AnimationController(duration: Duration(milliseconds: _swipeDuration), vsync: this);
+    _pageState = PageState.CENTER;
+
+    _pageStateStream.listen((state) {
+      _pageState = state;
+    });
+
+    _swipeDirectionStream.listen((swipeDirection) {
+      _swipeDirection = swipeDirection;
+
+      if (_pageState == PageState.CENTER) {
+        _tween.begin = Offset.zero;
+        _tween.end = _swipeDirection == SwipeDirection.RIGHT ? Offset(0.88, 0) : Offset(-0.88, 0);
+      }
+    });
 
     // context.read<ServerBloc>().add(ServerLoadAll());
     // context.read<DirectMessageBloc>().add(DirectMessageLoadAll());
@@ -47,18 +69,14 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   void dispose() {
+    super.dispose();
     _swipeDirectionSubject.close();
+    _pageStateSubject.close();
   }
 
   @override
   Widget build(BuildContext context) {
     Offset startOffset = Offset.zero;
-    SwipeDirection _swipeDirection;
-    Tween<Offset> _tween = Tween<Offset>(
-      begin: Offset(0, 0),
-      end: _swipeDirection == SwipeDirection.RIGHT ? Offset(0.88, 0) : Offset(0.88, 0),
-    );
-
     return Scaffold(
       backgroundColor: Color(0xff202226),
       body: GestureDetector(
@@ -69,42 +87,64 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         },
         onHorizontalDragStart: (d) {
           var dir = d.localPosition - startOffset;
-
-          _swipeDirection = dir.dx.isNegative ? SwipeDirection.LEFT : SwipeDirection.RIGHT;
-          _tween.begin = Offset.zero;
-          _tween.end = _swipeDirection == SwipeDirection.LEFT ? Offset(-0.88, 0) : Offset(0.88, 0);
-          _swipeDirectionSubject.add(_swipeDirection);
+          _swipeDirectionSubject.add(dir.dx.isNegative ? SwipeDirection.LEFT : SwipeDirection.RIGHT);
         },
         onHorizontalDragUpdate: (d) {
           Offset dir = d.localPosition - startOffset;
           double width = MediaQuery.of(context).size.width;
           double v = dir.dx.remap(0, _swipeDirection == SwipeDirection.LEFT ? -width : width, 0, 1);
 
-          _animationController.value = v;
+          if (!(_swipeDirection == SwipeDirection.RIGHT && _pageState == PageState.RIGHT ||
+              _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.LEFT))
+            _animationController.value = _pageState == PageState.CENTER ? v : 1 - v;
         },
         onHorizontalDragEnd: (d) {
-          if (_animationController.value > _pageOffsetThreshold ||
-              d.velocity.pixelsPerSecond.dx > _velocitySensitivity) {
-            _animationController.animateTo(1, curve: Curves.easeInSine);
+          // todo: handle swipe based on velocity
+          if (_animationController.value > _swipeThreshold) {
+            _animationController.animateTo(1, curve: Curves.easeInSine).whenComplete(() {
+              if (_pageState == PageState.CENTER)
+                _pageStateSubject.add(_swipeDirection == SwipeDirection.RIGHT ? PageState.RIGHT : PageState.LEFT);
+            });
           } else {
             _animationController.animateTo(0, curve: Curves.easeInSine);
+            _pageStateSubject.add(PageState.CENTER);
           }
         },
         child: Container(
-          child: Stack(
-            children: [
-              StreamBuilder(
-                stream: _swipeDirectionStream,
-                builder: (c, AsyncSnapshot<SwipeDirection> s) {
-                  return _swipeDirection == SwipeDirection.RIGHT ? SideMenuPage() : ChannelInfoPage();
-                },
-              ),
-              SlideTransition(
-                position: _tween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutSine)),
-                child: ChannelMessagePage(),
-              ),
-            ],
-          ),
+          child: StreamBuilder<Tuple2>(
+              stream: _swipeDirectionStream.withLatestFrom(
+                  _pageStateStream, (swipeDirection, pageState) => Tuple2(swipeDirection, pageState)),
+              initialData: Tuple2(SwipeDirection.RIGHT, PageState.CENTER),
+              builder: (c, AsyncSnapshot<Tuple2> s) {
+                return Stack(
+                  children: [
+                    // StreamBuilder(
+                    //   stream: _swipeDirectionStream,
+                    //   builder: (c, AsyncSnapshot<SwipeDirection> s) {
+                    //     return s.data == SwipeDirection.RIGHT ? SideMenuPage() : ChannelInfoPage();
+                    //   },
+                    // ),
+                    //
+                    Visibility(
+                      visible: s.data.item1 == SwipeDirection.RIGHT && s.data.item2 == PageState.CENTER ||
+                          s.data.item2 == PageState.RIGHT,
+                      maintainState: true,
+                      child: SideMenuPage(),
+                    ),
+                    Visibility(
+                      visible: s.data.item1 == SwipeDirection.LEFT && s.data.item2 == PageState.CENTER ||
+                          s.data.item2 == PageState.LEFT,
+                      maintainState: true,
+                      child: ChannelInfoPage(),
+                    ),
+                    SlideTransition(
+                      position:
+                          _tween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutSine)),
+                      child: ChannelMessagePage(),
+                    ),
+                  ],
+                );
+              }),
         ),
       ),
     );

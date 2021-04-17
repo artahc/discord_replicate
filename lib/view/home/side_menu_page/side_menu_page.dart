@@ -15,8 +15,8 @@ class SideMenuPage extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ServerList(),
-          DirectMessageList(),
+          _ServerList(),
+          _DirectMessageList(),
           SizedBox(
             width: 55,
           )
@@ -26,7 +26,7 @@ class SideMenuPage extends StatelessWidget {
   }
 }
 
-class ServerList extends StatelessWidget {
+class _ServerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntrinsicWidth(
@@ -92,7 +92,7 @@ class ServerList extends StatelessWidget {
   }
 }
 
-class DirectMessageList extends StatelessWidget {
+class _DirectMessageList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(

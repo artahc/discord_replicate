@@ -20,8 +20,8 @@ class ChannelInfoPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ChannelInfoHeader(),
-                    ChannelInfoButtons(),
+                    _ChannelInfoHeader(),
+                    _ChannelInfoButtons(),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -29,7 +29,7 @@ class ChannelInfoPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ChannelInfoInviteButton(),
+                            _ChannelInfoInviteButton(),
                             ChannelInfoMember(),
                           ],
                         ),
@@ -46,7 +46,7 @@ class ChannelInfoPage extends StatelessWidget {
   }
 }
 
-class ChannelInfoHeader extends StatelessWidget {
+class _ChannelInfoHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,7 +74,7 @@ class ChannelInfoHeader extends StatelessWidget {
   }
 }
 
-class ChannelInfoButtons extends StatelessWidget {
+class _ChannelInfoButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -179,7 +179,7 @@ class ChannelInfoButtons extends StatelessWidget {
   }
 }
 
-class ChannelInfoInviteButton extends StatelessWidget {
+class _ChannelInfoInviteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(

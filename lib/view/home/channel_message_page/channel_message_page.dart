@@ -37,9 +37,9 @@ class _ChannelMessagePageState extends State<ChannelMessagePage> {
           ),
           child: Column(
             children: [
-              ChatHeader(),
-              ChatBody(),
-              ChatInput(),
+              _ChatHeader(),
+              _ChatBody(),
+              _ChatInput(),
             ],
           ),
         ),
@@ -48,7 +48,7 @@ class _ChannelMessagePageState extends State<ChannelMessagePage> {
   }
 }
 
-class ChatHeader extends StatelessWidget {
+class _ChatHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -124,7 +124,7 @@ class ChatHeader extends StatelessWidget {
   }
 }
 
-class ChatInput extends StatelessWidget {
+class _ChatInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -237,7 +237,7 @@ class ChatInput extends StatelessWidget {
   }
 }
 
-class ChatBody extends StatelessWidget {
+class _ChatBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
