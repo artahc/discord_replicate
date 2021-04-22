@@ -47,7 +47,7 @@ class HomeNavigationBar extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Image.asset(
                   "assets/friends.png",
-                  width: 20,
+                  width: 19,
                   color: Color(0xffb9bbbe),
                 ),
               ),
@@ -107,14 +107,14 @@ class HomeNavigationBar extends StatelessWidget {
               onPressed: () {
                 print("Profile Pressed");
               },
-              child: Container(
-                width: 25,
-                height: 25,
-                alignment: Alignment.center,
-                child: ClipOval(
+              child: ClipOval(
+                child: Container(
+                  width: 25,
+                  height: 25,
                   child: Image.asset(
-                    "assets/friends.png",
+                    "assets/insert-picture-icon.png",
                     color: Color(0xffb9bbbe),
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),

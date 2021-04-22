@@ -8,7 +8,6 @@ import 'package:discord_ui_practice/view/home/channel_message_page/channel_messa
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
 
 class ChannelMessagePage extends StatefulWidget {
   @override
@@ -32,8 +31,6 @@ class _ChannelMessagePageState extends State<ChannelMessagePage> {
         clipBehavior: Clip.antiAlias,
         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
         child: Container(
-          // width: MediaQuery.of(context).size.width,
-          // height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
           color: Color(0xff363940),
           child: Column(
             children: [

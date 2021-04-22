@@ -9,6 +9,7 @@ import 'package:discord_ui_practice/bloc/message/conversation_bloc.dart';
 import 'package:discord_ui_practice/bloc/message/conversation_event.dart';
 import 'package:discord_ui_practice/bloc/server/server_bloc.dart';
 import 'package:discord_ui_practice/bloc/server/server_event.dart';
+import 'package:discord_ui_practice/bloc/user/user_bloc.dart';
 import 'package:discord_ui_practice/view/home/channel_info_page/channel_info_page.dart';
 import 'package:discord_ui_practice/view/home/channel_message_page/channel_message_page.dart';
 import 'package:discord_ui_practice/view/home/home_navigation_bar.dart';
@@ -64,6 +65,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
 
     BlocProvider.of<ConnectivityBloc>(context).add(ConnectivityInitiate());
+    BlocProvider.of<UserBloc>(context).add(UserLoadJoinedServerInitiate());
+
     // context.read<ServerBloc>().add(ServerLoadAll());
     // context.read<DirectMessageBloc>().add(DirectMessageLoadAll());
     // context.read<ChannelBloc>().add(ChannelLoadMessage());

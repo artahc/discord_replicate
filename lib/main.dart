@@ -3,6 +3,7 @@ import 'package:discord_ui_practice/bloc/connectivity/connectivity_bloc.dart';
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_ui_practice/bloc/message/conversation_bloc.dart';
 import 'package:discord_ui_practice/bloc/server/server_bloc.dart';
+import 'package:discord_ui_practice/bloc/user/user_bloc.dart';
 import 'package:discord_ui_practice/method_channel/networking_channel.dart';
 import 'package:discord_ui_practice/repository/channel_repository.dart';
 import 'package:discord_ui_practice/repository/server_repository.dart';
@@ -32,6 +33,7 @@ class Main extends StatelessWidget {
     final _directMessageBloc = DirectMessageBloc(_networkApi);
     final _conversationBloc = ConversationBloc(_networkApi);
     final _connectivityBloc = ConnectivityBloc();
+    final _userBloc = UserBloc();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -56,6 +58,9 @@ class Main extends StatelessWidget {
             ),
             BlocProvider<ConnectivityBloc>(
               create: (context) => _connectivityBloc,
+            ),
+            BlocProvider<UserBloc>(
+              create: (context) => _userBloc,
             ),
           ],
           child: HomePage(),

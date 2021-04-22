@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:discord_ui_practice/model/channel_data.dart';
 
 class ServerData {
@@ -8,6 +10,6 @@ class ServerData {
   ServerData(this.id, this.name, this.channels);
 
   static ServerData createDummy() {
-    return ServerData("serverId", "name", [ChannelData("channelName")]);
+    return ServerData("serverId+${Random().nextInt(999)}", "name", [ChannelData("channelName")]);
   }
 }
