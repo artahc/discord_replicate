@@ -11,17 +11,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SideMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _ServerList(),
-          _DirectMessageList(),
-          SizedBox(
-            width: 55,
-          )
-        ],
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _ServerList(),
+        _DirectMessageList(),
+        SizedBox(
+          width: 55,
+        )
+      ],
     );
   }
 }
@@ -99,7 +97,7 @@ class _DirectMessageList extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
           color: Color(0xff2c2f33),
         ),
         child: Column(
@@ -165,8 +163,7 @@ class _DirectMessageList extends StatelessWidget {
                             },
                             itemCount: 5,
                             itemBuilder: (context, index) {
-                              return DirectMessageItem(
-                                  "randomId", "Random User", UserStatus("emoji", "Working on stuff~2qqqqqqq"));
+                              return DirectMessageItem("randomId", "Random User", UserStatus("emoji", "Working on stuff~2qqqqqqq"));
                             }),
                       );
                     else

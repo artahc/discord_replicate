@@ -6,42 +6,30 @@ import 'package:flutter/widgets.dart';
 class ChannelInfoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Row(
-        children: [
-          SizedBox(width: 55),
-          Expanded(
+    return Row(
+      children: [
+        SizedBox(width: 55),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(right: 6),
             child: ClipRRect(
               clipBehavior: Clip.antiAlias,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.vertical(top:Radius.circular(10)),
               child: Container(
-                // color: Color(0xff303136),
                 color: Color(0xff363940),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _ChannelInfoHeader(),
                     _ChannelInfoButtons(),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        color: Color(0xff363940),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _ChannelInfoInviteButton(),
-                            ChannelInfoMember(),
-                          ],
-                        ),
-                      ),
-                    ),
+                    _ChannelInfoMember(),
                   ],
                 ),
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -179,6 +167,25 @@ class _ChannelInfoButtons extends StatelessWidget {
   }
 }
 
+class _ChannelInfoMember extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _ChannelInfoInviteButton(),
+            // TODO: add member widget here
+            // ChannelInfoMember(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _ChannelInfoInviteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -210,6 +217,5 @@ class _ChannelInfoInviteButton extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }

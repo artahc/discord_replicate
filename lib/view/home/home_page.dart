@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:discord_ui_practice/bloc/channel/channel_bloc.dart';
 import 'package:discord_ui_practice/bloc/channel/channel_event.dart';
+import 'package:discord_ui_practice/bloc/connectivity/connectivity_bloc.dart';
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_event.dart';
 import 'package:discord_ui_practice/bloc/message/conversation_bloc.dart';
@@ -8,14 +11,16 @@ import 'package:discord_ui_practice/bloc/server/server_bloc.dart';
 import 'package:discord_ui_practice/bloc/server/server_event.dart';
 import 'package:discord_ui_practice/view/home/channel_info_page/channel_info_page.dart';
 import 'package:discord_ui_practice/view/home/channel_message_page/channel_message_page.dart';
+import 'package:discord_ui_practice/view/home/home_navigation_bar.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/side_menu_page.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:discord_ui_practice/static/math.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
-enum PageState { LEFT, CENTER, RIGHT }
+enum PageState { LEFT, CENTER, RIGHT, TRANSITION }
 enum SwipeDirection { LEFT, RIGHT }
 
 class HomePage extends StatefulWidget {
@@ -23,42 +28,42 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   static const int _swipeDuration = 350; // animation duration in milli
-  static const int _swipeSensitivity = 250; // velocity
+  static const int _swipeVelocitySensitivity = 250; // velocity
   static const double _swipeThreshold = 0.5;
 
-  AnimationController _animationController;
+  AnimationController _pageAnimController;
+  AnimationController _navBarAnimController;
 
   PageState _pageState = PageState.CENTER;
   SwipeDirection _swipeDirection;
-
   PublishSubject<SwipeDirection> _swipeDirectionSubject = PublishSubject<SwipeDirection>();
   PublishSubject<PageState> _pageStateSubject = PublishSubject<PageState>();
-  Stream<SwipeDirection> get _swipeDirectionStream => _swipeDirectionSubject.stream;
-  Stream<PageState> get _pageStateStream => _pageStateSubject.stream;
 
   Tween<Offset> _tween = Tween<Offset>(begin: Offset.zero, end: Offset.zero);
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(duration: Duration(milliseconds: _swipeDuration), vsync: this);
+    _pageAnimController = AnimationController(duration: Duration(milliseconds: _swipeDuration), vsync: this);
+    _navBarAnimController = AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+
     _pageState = PageState.CENTER;
 
-    _pageStateStream.listen((state) {
+    _pageStateSubject.stream.listen((state) {
       _pageState = state;
     });
 
-    _swipeDirectionStream.listen((swipeDirection) {
+    _swipeDirectionSubject.stream.listen((swipeDirection) {
       _swipeDirection = swipeDirection;
-
       if (_pageState == PageState.CENTER) {
         _tween.begin = Offset.zero;
-        _tween.end = _swipeDirection == SwipeDirection.RIGHT ? Offset(0.88, 0) : Offset(-0.88, 0);
+        _tween.end = _swipeDirection == SwipeDirection.RIGHT ? Offset(0.875, 0) : Offset(-0.875, 0);
       }
     });
 
+    BlocProvider.of<ConnectivityBloc>(context).add(ConnectivityInitiate());
     // context.read<ServerBloc>().add(ServerLoadAll());
     // context.read<DirectMessageBloc>().add(DirectMessageLoadAll());
     // context.read<ChannelBloc>().add(ChannelLoadMessage());
@@ -85,7 +90,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         },
         onHorizontalDragStart: (d) {
           var dir = d.localPosition - startOffset;
-          _swipeDirectionSubject.add(dir.dx.isNegative ? SwipeDirection.LEFT : SwipeDirection.RIGHT);
+          var s = dir.dx.isNegative ? SwipeDirection.LEFT : SwipeDirection.RIGHT;
+          _swipeDirectionSubject.add(s);
+
+          if (s == SwipeDirection.RIGHT && _pageState == PageState.CENTER) {
+            _navBarAnimController.animateTo(1);
+          }
         },
         onHorizontalDragUpdate: (d) {
           Offset dir = d.localPosition - startOffset;
@@ -93,62 +103,107 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           double v = dir.dx.remap(0, _swipeDirection == SwipeDirection.LEFT ? -width : width, 0, 1);
 
           if (!(_swipeDirection == SwipeDirection.RIGHT && _pageState == PageState.RIGHT ||
-              _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.LEFT))
-            _animationController.value = _pageState == PageState.CENTER ? v : 1 - v;
+              _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.LEFT)) {
+            _pageAnimController.value = _pageState == PageState.CENTER ? v : 1 - v;
+          }
         },
         onHorizontalDragEnd: (d) {
           // todo: handle swipe based on velocity
-          if (_animationController.value > _swipeThreshold) {
-            _animationController.animateTo(1, curve: Curves.easeInSine).whenComplete(() {
-              if (_pageState == PageState.CENTER)
-                _pageStateSubject.add(_swipeDirection == SwipeDirection.RIGHT ? PageState.RIGHT : PageState.LEFT);
+          if (_pageAnimController.value > _swipeThreshold) {
+            _pageAnimController.animateTo(1, curve: Curves.easeInSine).whenComplete(() {
+              if (_pageState == PageState.CENTER) _pageStateSubject.add(_swipeDirection == SwipeDirection.RIGHT ? PageState.RIGHT : PageState.LEFT);
             });
           } else {
-            _animationController.animateTo(0, curve: Curves.easeInSine);
-            _pageStateSubject.add(PageState.CENTER);
+            _pageAnimController.animateTo(0, curve: Curves.easeInSine).whenComplete(() {
+              _pageStateSubject.add(PageState.CENTER);
+            });
+
+            _navBarAnimController.animateTo(0);
           }
         },
-        child: Container(
-          child: StreamBuilder<Tuple2>(
-              stream: _swipeDirectionStream.withLatestFrom(
-                  _pageStateStream, (swipeDirection, pageState) => Tuple2(swipeDirection, pageState)),
-              initialData: Tuple2(SwipeDirection.RIGHT, PageState.CENTER),
-              builder: (c, AsyncSnapshot<Tuple2> s) {
-                return Stack(
-                  children: [
-                    // StreamBuilder(
-                    //   stream: _swipeDirectionStream,
-                    //   builder: (c, AsyncSnapshot<SwipeDirection> s) {
-                    //     return s.data == SwipeDirection.RIGHT ? SideMenuPage() : ChannelInfoPage();
-                    //   },
-                    // ),
-                    //
-                    Visibility(
-                      visible: s.data.item1 == SwipeDirection.RIGHT && s.data.item2 == PageState.CENTER ||
-                          s.data.item2 == PageState.RIGHT,
-                      maintainState: true,
-                      maintainAnimation: true,
-                      maintainSize: true,
-                      child: SideMenuPage(),
-                    ),
-                    Visibility(
-                      visible: s.data.item1 == SwipeDirection.LEFT && s.data.item2 == PageState.CENTER ||
-                          s.data.item2 == PageState.LEFT,
-                      maintainState: true,
-                      maintainAnimation: true,
-                      maintainSize: true,
-                      child: ChannelInfoPage(),
-                    ),
-                    SlideTransition(
-                      position:
-                          _tween.animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOutCubic)),
-                      child: ChannelMessagePage(),
-                    ),
-                  ],
-                );
-              }),
+        child: SafeArea(
+          child: Column(
+            children: [
+              _NetworkConnectionIndicator(),
+              Expanded(
+                child: StreamBuilder<Tuple2<SwipeDirection, PageState>>(
+                  stream: _swipeDirectionSubject.stream.withLatestFrom(_pageStateSubject.stream, (s, p) => Tuple2(s, p)),
+                  initialData: Tuple2(SwipeDirection.RIGHT, PageState.CENTER),
+                  builder: (c, s) {
+                    return Stack(
+                      children: [
+                        Visibility(
+                          visible: s.data.item1 == SwipeDirection.RIGHT && s.data.item2 == PageState.CENTER || s.data.item2 == PageState.RIGHT,
+                          maintainState: true,
+                          maintainAnimation: true,
+                          maintainSize: true,
+                          child: SideMenuPage(),
+                        ),
+                        Visibility(
+                          visible: s.data.item1 == SwipeDirection.LEFT && s.data.item2 == PageState.CENTER || s.data.item2 == PageState.LEFT,
+                          maintainState: true,
+                          maintainAnimation: true,
+                          maintainSize: true,
+                          child: ChannelInfoPage(),
+                        ),
+                        Positioned.fill(
+                          child: SlideTransition(
+                            position: _tween.animate(CurvedAnimation(parent: _pageAnimController, curve: Curves.easeInOutCubic)),
+                            child: GestureDetector(
+                              onTap: () {
+                                _pageAnimController.animateTo(0).whenComplete(() => _pageStateSubject.add(PageState.CENTER));
+                              },
+                              child: Stack(
+                                children: [
+                                  ChannelMessagePage(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: SlideTransition(
+                            child: HomeNavigationBar(),
+                            position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_navBarAnimController),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+}
+
+class _NetworkConnectionIndicator extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder(
+      bloc: BlocProvider.of<ConnectivityBloc>(context),
+      builder: (c, s) {
+        return Visibility(
+          visible: s is ConnectivityNotAvailable,
+          child: Container(
+            padding: EdgeInsets.only(top: 2, bottom: 8),
+            child: Text(
+              "Network connectivity is limited` or unavailable.",
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

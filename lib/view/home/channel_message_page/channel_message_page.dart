@@ -17,24 +17,24 @@ class ChannelMessagePage extends StatefulWidget {
 
 class _ChannelMessagePageState extends State<ChannelMessagePage> {
   @override
-  void initState() {}
-
-  @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.vertical(top:Radius.circular(10)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 1,
+          ),
+        ],
+      ),
       child: ClipRRect(
         clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
         child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Color(0xff363940),
-            boxShadow: [
-              BoxShadow(color: Colors.black, blurRadius: 15),
-            ],
-          ),
+          // width: MediaQuery.of(context).size.width,
+          // height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+          color: Color(0xff363940),
           child: Column(
             children: [
               _ChatHeader(),
@@ -55,7 +55,7 @@ class _ChatHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: Color(0xff303136),
       ),
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.only(right: 15, left: 10),
       height: 55,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
