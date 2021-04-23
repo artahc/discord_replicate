@@ -2,26 +2,37 @@ import 'package:discord_ui_practice/bloc/direct_message/direct_message_bloc.dart
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_event.dart';
 import 'package:discord_ui_practice/bloc/server/server_bloc.dart';
 import 'package:discord_ui_practice/bloc/server/server_state.dart';
+import 'package:discord_ui_practice/bloc/user/user_bloc.dart';
+import 'package:discord_ui_practice/model/server_data.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/direct_message_item.dart';
+import 'package:discord_ui_practice/view/home/side_menu_page/server_item.dart';
 import 'package:discord_ui_practice/view/widgets/circle_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
-class SideMenuPage extends StatelessWidget {
+class SideMenuPage extends StatefulWidget {
+  @override
+  _SideMenuPageState createState() => _SideMenuPageState();
+}
+
+class _SideMenuPageState extends State<SideMenuPage> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _ServerList(),
-          _DirectMessageList(),
-          SizedBox(
-            width: 55,
-          )
-        ],
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _ServerList(),
+        _DirectMessageList(),
+        SizedBox(width: 55),
+      ],
     );
   }
 }
@@ -32,64 +43,71 @@ class _ServerList extends StatelessWidget {
     return IntrinsicWidth(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
-        margin: EdgeInsets.symmetric(vertical: 15),
+        margin: EdgeInsets.symmetric(vertical: 10),
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Color(0xff7289da),
-                ),
-                width: 45,
-                height: 45,
+              MaterialButton(
+                padding: EdgeInsets.all(0),
+                minWidth: 0,
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                visualDensity: VisualDensity.compact,
+                onPressed: () {
+                  print("Direct Message Pressed");
+                },
                 child: Container(
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    "assets/direct-message.png",
-                    height: 20,
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Color(0xff7289da),
+                  ),
+                  width: 45,
+                  height: 45,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      "assets/direct-message.png",
+                      height: 20,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
               Divider(
                 height: 20,
-                color: Colors.white70,
+                color: Colors.white38,
                 indent: 10,
                 endIndent: 10,
               ),
               BlocBuilder(
-                bloc: context.read<ServerBloc>(),
-                builder: (c, state) {
-                  if (state is ServerLoadAllSuccess) {
+                bloc: BlocProvider.of<UserBloc>(context),
+                builder: (c, s) {
+                  if (s is UserLoadJoinedServerSuccess) {
                     return Column(
-                      children: List.generate(
-                        state.servers.length,
-                        (index) => Container(
-                          margin: EdgeInsets.only(bottom: 10),
-                          child: CircleContainer(
-                            45,
-                            45,
-                            color: Color(0xff36393f),
-                            child: Container(
-                              color: Colors.white70,
-                            ),
-                          ),
-                        ),
-                      ),
+                      children: s.userServers.map(
+                        (data) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8),
+                            child: ServerItem(data),
+                          );
+                        },
+                      ).toList(),
                     );
-                  } else
+                  } else {
                     return Container();
+                  }
                 },
-              ),
+              )
             ],
           ),
         ),
       ),
     );
   }
+
+  PublishSubject<ServerData> _updateCurrentServerStream = PublishSubject();
 }
 
 class _DirectMessageList extends StatelessWidget {
@@ -99,7 +117,7 @@ class _DirectMessageList extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
           color: Color(0xff2c2f33),
         ),
         child: Column(
@@ -165,8 +183,7 @@ class _DirectMessageList extends StatelessWidget {
                             },
                             itemCount: 5,
                             itemBuilder: (context, index) {
-                              return DirectMessageItem(
-                                  "randomId", "Random User", UserStatus("emoji", "Working on stuff~2qqqqqqq"));
+                              return DirectMessageItem("randomId", "Random User", UserStatus("emoji", "Working on stuff~2qqqqqqq"));
                             }),
                       );
                     else
