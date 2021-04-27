@@ -37,77 +37,130 @@ class _SideMenuPageState extends State<SideMenuPage> {
   }
 }
 
-class _ServerList extends StatelessWidget {
+class _ServerList extends StatefulWidget {
+  @override
+  _ServerListState createState() => _ServerListState();
+}
+
+class _ServerListState extends State<_ServerList> {
+  Key _selectedKey;
+  Key _directMessageKey = ValueKey("direct-message");
+
+
+  List<ServerData> _serverList;
+
+  @override
+  void initState() {
+    _selectedKey = _directMessageKey;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return IntrinsicWidth(
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        margin: EdgeInsets.symmetric(vertical: 10),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              MaterialButton(
-                padding: EdgeInsets.all(0),
-                minWidth: 0,
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                visualDensity: VisualDensity.compact,
-                onPressed: () {
-                  print("Direct Message Pressed");
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Color(0xff7289da),
-                  ),
-                  width: 45,
-                  height: 45,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      "assets/direct-message.png",
-                      height: 20,
-                      color: Colors.white,
-                    ),
-                  ),
+    return Container(
+      width: 70,
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        padding: EdgeInsets.only(top: 10, bottom: 65),
+        children: [
+          MaterialButton(
+            key: _directMessageKey,
+            padding: EdgeInsets.all(0),
+            minWidth: 0,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            visualDensity: VisualDensity.compact,
+            onPressed: () {
+              print("Direct Message Pressed");
+              if (_selectedKey != _directMessageKey)
+                setState(() {
+                  _selectedKey = _directMessageKey;
+                });
+            },
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              decoration: BoxDecoration(
+                borderRadius: _selectedKey == _directMessageKey ? BorderRadius.circular(16) : BorderRadius.circular(28),
+                color: _selectedKey == _directMessageKey ? Color(0xff7289da) : Color(0xff363940),
+              ),
+              width: 45,
+              height: 45,
+              child: Container(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  "assets/direct-message.png",
+                  height: 20,
+                  color: Colors.white,
                 ),
               ),
-              Divider(
-                height: 20,
-                color: Colors.white38,
-                indent: 10,
-                endIndent: 10,
-              ),
-              BlocBuilder(
-                bloc: BlocProvider.of<UserBloc>(context),
-                builder: (c, s) {
-                  if (s is UserLoadJoinedServerSuccess) {
-                    return Column(
-                      children: s.userServers.map(
-                        (data) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
-                            child: ServerItem(data),
-                          );
-                        },
-                      ).toList(),
-                    );
-                  } else {
-                    return Container();
-                  }
-                },
-              )
-            ],
+            ),
           ),
-        ),
+          Divider(
+            height: 22,
+            color: Colors.white38,
+            indent: 22,
+            endIndent: 22,
+          ),
+          Column(
+            children: List.generate(3, (index) => ServerData("id$index", "name$index", List.empty())).map((serverData) {
+              var serverKey = ValueKey(serverData.id);
+              var serverItem = ServerItem(
+                key: serverKey,
+                data: serverData,
+                isSelected: _selectedKey == serverKey,
+                onSelected: (key) {
+                  if (key != _selectedKey)
+                    setState(() {
+                      _selectedKey = key;
+                    });
+                },
+              );
+
+              return LongPressDraggable<ServerData>(
+                data: serverData,
+                feedback: serverItem,
+                childWhenDragging: Container(),
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  child: serverItem,
+                ),
+              );
+            }).toList(),
+          ),
+          MaterialButton(
+            key: _directMessageKey,
+            padding: EdgeInsets.all(0),
+            minWidth: 0,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            visualDensity: VisualDensity.compact,
+            onPressed: () {
+              print("Add Pressed");
+              if (this._selectedKey != _directMessageKey)
+                setState(() {
+                  this._selectedKey = _directMessageKey;
+                });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(28),
+                color: Color(0xff363940),
+              ),
+              width: 45,
+              height: 45,
+              child: Container(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  "assets/search.png",
+                  height: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
-
-  PublishSubject<ServerData> _updateCurrentServerStream = PublishSubject();
 }
 
 class _DirectMessageList extends StatelessWidget {

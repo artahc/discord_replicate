@@ -12,4 +12,9 @@ class ServerData {
   static ServerData createDummy() {
     return ServerData("serverId+${Random().nextInt(999)}", "name", [ChannelData("channelName")]);
   }
+
+  @override
+  String toString() {
+    return {"id": id, "name": name, "channels": channels.toString()}.toString();
+  }
 }

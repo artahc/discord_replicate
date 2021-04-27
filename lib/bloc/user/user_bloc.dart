@@ -3,28 +3,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class UserEvent {}
 
-class UserLoadJoinedServerInitiate extends UserEvent {}
+class UserLoadAllServerInitiate extends UserEvent {}
 
 abstract class UserState {}
 
-class UserLoadJoinedServerInitial extends UserState {}
+class UserLoadAllServerInitial extends UserState {}
 
-class UserLoadJoinedServerSuccess extends UserState {
+class UserLoadAllServerSuccess extends UserState {
   List<ServerData> userServers;
 
-  UserLoadJoinedServerSuccess(this.userServers);
+  UserLoadAllServerSuccess(this.userServers);
 }
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  UserBloc() : super(UserLoadJoinedServerInitial());
+  UserBloc() : super(UserLoadAllServerInitial());
 
   void _loadUserServers() {
-    emit(UserLoadJoinedServerSuccess(List.generate(5, (index) => ServerData.createDummy())));
+    emit(UserLoadAllServerSuccess(List.generate(5, (index) => ServerData.createDummy())));
   }
 
   @override
   Stream<UserState> mapEventToState(UserEvent event) async* {
-    if (event is UserLoadJoinedServerInitiate) {
+    if (event is UserLoadAllServerInitiate) {
       _loadUserServers();
     }
   }

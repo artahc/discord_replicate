@@ -2,13 +2,12 @@ import 'package:discord_ui_practice/model/server_data.dart';
 import 'package:flutter/material.dart';
 
 class ServerItem extends StatefulWidget {
+  final Key key;
   final ServerData data;
-  bool isSelected;
-  final Function(ServerData) onSelected;
+  final bool isSelected;
+  final Function(Key) onSelected;
 
-  ServerItem(this.data, {this.onSelected, this.isSelected=false}) {
-    print("Build server item : ${data.id}");
-  }
+  ServerItem({this.key, this.data, this.isSelected = false, this.onSelected});
 
   @override
   _ServerItemState createState() => _ServerItemState();
@@ -24,11 +23,11 @@ class _ServerItemState extends State<ServerItem> {
       highlightColor: Colors.transparent,
       visualDensity: VisualDensity.compact,
       onPressed: () {
-        widget.onSelected.call(widget.data);
-        print("Server Pressed");
+        // print ("Server ${widget.data.toString()}");
+        widget.onSelected?.call(widget.key);
       },
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
+        duration: Duration(milliseconds: 250),
         curve: Curves.easeInOutSine,
         key: ValueKey("direct-message"),
         decoration: BoxDecoration(
