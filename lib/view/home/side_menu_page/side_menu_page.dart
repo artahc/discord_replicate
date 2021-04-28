@@ -46,7 +46,6 @@ class _ServerListState extends State<_ServerList> {
   Key _selectedKey;
   Key _directMessageKey = ValueKey("direct-message");
 
-
   List<ServerData> _serverList;
 
   @override
@@ -56,6 +55,7 @@ class _ServerListState extends State<_ServerList> {
 
   @override
   Widget build(BuildContext context) {
+    _serverList = List.generate(3, (index) => ServerData("id$index", "name$index", List.empty()));
     return Container(
       width: 70,
       child: ListView(
@@ -70,7 +70,6 @@ class _ServerListState extends State<_ServerList> {
             highlightColor: Colors.transparent,
             visualDensity: VisualDensity.compact,
             onPressed: () {
-              print("Direct Message Pressed");
               if (_selectedKey != _directMessageKey)
                 setState(() {
                   _selectedKey = _directMessageKey;
@@ -95,40 +94,43 @@ class _ServerListState extends State<_ServerList> {
             ),
           ),
           Divider(
-            height: 22,
+            key: ValueKey("dm-divider"),
             color: Colors.white38,
+            height: 22,
             indent: 22,
             endIndent: 22,
           ),
           Column(
-            children: List.generate(3, (index) => ServerData("id$index", "name$index", List.empty())).map((serverData) {
-              var serverKey = ValueKey(serverData.id);
-              var serverItem = ServerItem(
-                key: serverKey,
-                data: serverData,
-                isSelected: _selectedKey == serverKey,
+            children: [
+              GroupServerItem(isExpanded: false,),
+              ServerItem(
+                key: ValueKey("a"),
+                data: ServerData.createDummy(),
+                margin: EdgeInsets.only(bottom: 8),
+                isSelected: _selectedKey == ValueKey("a"),
                 onSelected: (key) {
                   if (key != _selectedKey)
                     setState(() {
                       _selectedKey = key;
                     });
                 },
-              );
-
-              return LongPressDraggable<ServerData>(
-                data: serverData,
-                feedback: serverItem,
-                childWhenDragging: Container(),
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: serverItem,
-                ),
-              );
-            }).toList(),
+              ),
+              ServerItem(
+                key: ValueKey("b"),
+                data: ServerData.createDummy(),
+                margin: EdgeInsets.only(bottom: 8),
+                isSelected: _selectedKey == ValueKey("b"),
+                onSelected: (key) {
+                  if (key != _selectedKey)
+                    setState(() {
+                      _selectedKey = key;
+                    });
+                },
+              ),
+            ],
           ),
           MaterialButton(
             key: _directMessageKey,
-            padding: EdgeInsets.all(0),
             minWidth: 0,
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
