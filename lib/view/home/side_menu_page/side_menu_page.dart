@@ -1,17 +1,13 @@
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_event.dart';
-import 'package:discord_ui_practice/bloc/server/server_bloc.dart';
-import 'package:discord_ui_practice/bloc/server/server_state.dart';
-import 'package:discord_ui_practice/bloc/user/user_bloc.dart';
 import 'package:discord_ui_practice/model/server_data.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/direct_message_item.dart';
+import 'package:discord_ui_practice/view/home/side_menu_page/group_server_item.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/server_item.dart';
-import 'package:discord_ui_practice/view/widgets/circle_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 
 class SideMenuPage extends StatefulWidget {
   @override
@@ -46,16 +42,24 @@ class _ServerListState extends State<_ServerList> {
   Key _selectedKey;
   Key _directMessageKey = ValueKey("direct-message");
 
-  List<ServerData> _serverList;
-
   @override
   void initState() {
+    super.initState();
     _selectedKey = _directMessageKey;
   }
 
   @override
   Widget build(BuildContext context) {
-    _serverList = List.generate(3, (index) => ServerData("id$index", "name$index", List.empty()));
+    List<ServerData> _data = [
+      SingleServerData("id1", "single1", List.empty()),
+      SingleServerData("id2", "single2", List.empty()),
+      GroupServerData([
+        SingleServerData("id3", "group3", List.empty()),
+        SingleServerData("id4", "group4", List.empty()),
+        SingleServerData("id5", "group5", List.empty()),
+      ])
+    ];
+
     return Container(
       width: 70,
       child: ListView(
@@ -69,14 +73,9 @@ class _ServerListState extends State<_ServerList> {
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             visualDensity: VisualDensity.compact,
-            onPressed: () {
-              if (_selectedKey != _directMessageKey)
-                setState(() {
-                  _selectedKey = _directMessageKey;
-                });
-            },
+            onPressed: () {},
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 300),
+              duration: Duration(milliseconds: 150),
               decoration: BoxDecoration(
                 borderRadius: _selectedKey == _directMessageKey ? BorderRadius.circular(16) : BorderRadius.circular(28),
                 color: _selectedKey == _directMessageKey ? Color(0xff7289da) : Color(0xff363940),
@@ -100,47 +99,36 @@ class _ServerListState extends State<_ServerList> {
             indent: 22,
             endIndent: 22,
           ),
-          Column(
-            children: [
-              GroupServerItem(isExpanded: false,),
-              ServerItem(
-                key: ValueKey("a"),
-                data: ServerData.createDummy(),
-                margin: EdgeInsets.only(bottom: 8),
-                isSelected: _selectedKey == ValueKey("a"),
-                onSelected: (key) {
-                  if (key != _selectedKey)
-                    setState(() {
-                      _selectedKey = key;
-                    });
-                },
-              ),
-              ServerItem(
-                key: ValueKey("b"),
-                data: ServerData.createDummy(),
-                margin: EdgeInsets.only(bottom: 8),
-                isSelected: _selectedKey == ValueKey("b"),
-                onSelected: (key) {
-                  if (key != _selectedKey)
-                    setState(() {
-                      _selectedKey = key;
-                    });
-                },
-              ),
-            ],
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _data.length,
+            itemBuilder: (_, index) {
+
+              if (_data[index] is SingleServerData){
+                return ServerItem(
+                  key: ValueKey(_data[index]),
+                  data: _data[index],
+                );
+              } else {
+                (_data[index] as GroupServerData).
+                return GroupServerItem()
+              }
+
+
+            },
+            separatorBuilder: (_, index) {
+              return Divider(height: 7);
+            },
           ),
           MaterialButton(
-            key: _directMessageKey,
             minWidth: 0,
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             visualDensity: VisualDensity.compact,
+            padding: const EdgeInsets.only(top: 14),
             onPressed: () {
               print("Add Pressed");
-              if (this._selectedKey != _directMessageKey)
-                setState(() {
-                  this._selectedKey = _directMessageKey;
-                });
             },
             child: Container(
               decoration: BoxDecoration(

@@ -157,6 +157,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           maintainState: true,
                           maintainAnimation: true,
                           maintainSize: true,
+                          maintainInteractivity: false,
+                          maintainSemantics: false,
                           child: SideMenuPage(),
                         ),
                         Visibility(
