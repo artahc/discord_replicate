@@ -5,12 +5,12 @@ import 'package:discord_ui_practice/model/channel_data.dart';
 import 'package:discord_ui_practice/model/server_data.dart';
 import 'package:discord_ui_practice/repository/server_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 /// Consider deleting this or merge functionality with server bloc
 class ServerBloc extends Bloc<ServerEvent, ServerState> {
   final NetworkingMethodChannel _networkApi;
   final ServerRepository _repository;
-
   ServerBloc(this._repository, this._networkApi) : super(ServerLoadAllInitial());
 
   @override
@@ -24,5 +24,10 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
 
   Stream<List<ChannelData>> _loadChannel() async* {
     await Future.value([ChannelData("channelName")]);
+  }
+
+  @override
+  Future<void> close() {
+    return super.close();
   }
 }

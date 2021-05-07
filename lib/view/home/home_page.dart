@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _pageAnimController = AnimationController(duration: Duration(milliseconds: _swipeDuration), vsync: this);
-    _navBarAnimController = AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+    _navBarAnimController = AnimationController(duration: Duration(milliseconds: 300), vsync: this);
 
     _pageState = PageState.CENTER;
 
@@ -65,7 +65,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
 
     BlocProvider.of<ConnectivityBloc>(context).add(ConnectivityInitiate());
-    BlocProvider.of<UserBloc>(context).add(UserLoadJoinedServerInitiate());
 
     // context.read<ServerBloc>().add(ServerLoadAll());
     // context.read<DirectMessageBloc>().add(DirectMessageLoadAll());
@@ -127,10 +126,28 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         child: SafeArea(
           child: Column(
             children: [
-              _NetworkConnectionIndicator(),
+              BlocBuilder(
+                bloc: BlocProvider.of<ConnectivityBloc>(context),
+                builder: (c, s) {
+                  return Visibility(
+                    visible: s is ConnectivityNotAvailable,
+                    child: Container(
+                      padding: EdgeInsets.only(top: 2, bottom: 8),
+                      child: Text(
+                        "Network connectivity is limited or unavailable.",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
               Expanded(
                 child: StreamBuilder<Tuple2<SwipeDirection, PageState>>(
-                  stream: _swipeDirectionSubject.stream.withLatestFrom(_pageStateSubject.stream, (s, p) => Tuple2(s, p)),
+                  stream: _swipeDirectionSubject.stream.withLatestFrom(_pageStateSubject.stream, (swipe, page) => Tuple2(swipe, page)),
                   initialData: Tuple2(SwipeDirection.RIGHT, PageState.CENTER),
                   builder: (c, s) {
                     return Stack(
@@ -140,6 +157,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           maintainState: true,
                           maintainAnimation: true,
                           maintainSize: true,
+                          maintainInteractivity: false,
+                          maintainSemantics: false,
                           child: SideMenuPage(),
                         ),
                         Visibility(
@@ -182,31 +201,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _NetworkConnectionIndicator extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder(
-      bloc: BlocProvider.of<ConnectivityBloc>(context),
-      builder: (c, s) {
-        return Visibility(
-          visible: s is ConnectivityNotAvailable,
-          child: Container(
-            padding: EdgeInsets.only(top: 2, bottom: 8),
-            child: Text(
-              "Network connectivity is limited` or unavailable.",
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }
