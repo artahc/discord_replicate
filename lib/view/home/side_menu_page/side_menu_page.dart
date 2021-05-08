@@ -59,6 +59,12 @@ class _ServerListState extends State<_ServerList> {
         SingleServerData("id3", "group3", List.empty()),
         SingleServerData("id4", "group4", List.empty()),
         SingleServerData("id5", "group5", List.empty()),
+        SingleServerData("id6", "group6", List.empty()),
+        SingleServerData("id7", "group7", List.empty()),
+        SingleServerData("id8", "group8", List.empty()),
+        SingleServerData("id9", "group9", List.empty()),
+        SingleServerData("id10", "group10", List.empty()),
+        SingleServerData("id11", "group11", List.empty()),
       ]),
     ];
 
@@ -107,7 +113,7 @@ class _ServerListState extends State<_ServerList> {
               shrinkWrap: true,
               itemCount: _data.length,
               separatorBuilder: (_, index){
-                return Divider(height: Style.serverItemSpacing/2,);
+                return SizedBox(height: Style.serverItemSpacing);
               },
               itemBuilder: (_, index) {
                 if (_data[index] is SingleServerData) {

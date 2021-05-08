@@ -14,9 +14,13 @@ class ServerItem extends StatefulWidget {
 }
 
 class _ServerItemState extends State<ServerItem> {
+  bool _isFocused = false;
+  Widget _serverIndicator;
+
   @override
   void initState() {
     super.initState();
+    _serverIndicator = ServerItemIndicator(isFocused: _isFocused);
   }
 
   @override
@@ -50,6 +54,9 @@ class _ServerItemState extends State<ServerItem> {
           visualDensity: VisualDensity.compact,
           onPressed: () {
             print(widget.data.name);
+            setState(() {
+              _isFocused = !_isFocused;
+            });
           },
           child: LongPressDraggable(
             feedback: avatar,
@@ -60,7 +67,7 @@ class _ServerItemState extends State<ServerItem> {
               duration: Duration(milliseconds: 150),
               curve: Curves.easeInOutSine,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(28),
+                borderRadius: BorderRadius.circular(_isFocused ? 16 : 28),
                 color: Color(0xff7289da),
               ),
             ),
@@ -68,22 +75,31 @@ class _ServerItemState extends State<ServerItem> {
         ),
         Align(
           alignment: Alignment.centerLeft,
-          child: const ServerItemIndicator(),
+          child: ServerItemIndicator(isFocused: _isFocused),
         )
       ],
     );
   }
 }
 
-class ServerItemIndicator extends StatelessWidget {
-  const ServerItemIndicator({Key key}) : super(key: key);
+class ServerItemIndicator extends StatefulWidget {
+  final bool isFocused;
+
+  const ServerItemIndicator({Key key, this.isFocused = false}) : super(key: key);
 
   @override
+  _ServerItemIndicatorState createState() => _ServerItemIndicatorState();
+}
+
+class _ServerItemIndicatorState extends State<ServerItemIndicator> with SingleTickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 35,
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 100),
+      height: widget.isFocused ? 35 : 10,
       width: 5,
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.horizontal(right: Radius.circular(16))),
+      decoration:
+          BoxDecoration(color: Colors.white, borderRadius: BorderRadius.horizontal(right: Radius.circular(16))),
     );
   }
 }
