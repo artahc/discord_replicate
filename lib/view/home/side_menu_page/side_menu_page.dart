@@ -1,7 +1,9 @@
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_event.dart';
 import 'package:discord_ui_practice/model/server_data.dart';
+import 'package:discord_ui_practice/static/style.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/direct_message_item.dart';
+import 'package:discord_ui_practice/view/home/side_menu_page/group_server_item.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/group_server_item.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/server_item.dart';
 import 'package:flutter/material.dart';
@@ -57,24 +59,19 @@ class _ServerListState extends State<_ServerList> {
         SingleServerData("id3", "group3", List.empty()),
         SingleServerData("id4", "group4", List.empty()),
         SingleServerData("id5", "group5", List.empty()),
-      ])
+      ]),
     ];
 
     return Container(
       width: 70,
-      child: ListView(
-        scrollDirection: Axis.vertical,
+      alignment: Alignment.topCenter,
+      child: SingleChildScrollView(
         padding: EdgeInsets.only(top: 10, bottom: 65),
-        children: [
-          MaterialButton(
-            key: _directMessageKey,
-            padding: EdgeInsets.all(0),
-            minWidth: 0,
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            visualDensity: VisualDensity.compact,
-            onPressed: () {},
-            child: AnimatedContainer(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AnimatedContainer(
               duration: Duration(milliseconds: 150),
               decoration: BoxDecoration(
                 borderRadius: _selectedKey == _directMessageKey ? BorderRadius.circular(16) : BorderRadius.circular(28),
@@ -82,72 +79,86 @@ class _ServerListState extends State<_ServerList> {
               ),
               width: 45,
               height: 45,
-              child: Container(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  "assets/direct-message.png",
-                  height: 20,
-                  color: Colors.white,
+              child: MaterialButton(
+                key: _directMessageKey,
+                padding: EdgeInsets.all(0),
+                minWidth: 0,
+                splashColor: Colors.transparent,
+                // highlightColor: Colors.transparent,
+                visualDensity: VisualDensity.compact,
+                onPressed: () {},
+                child: Container(
+                  child: Image.asset(
+                    "assets/direct-message.png",
+                    height: 20,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-          Divider(
-            key: ValueKey("dm-divider"),
-            color: Colors.white38,
-            height: 22,
-            indent: 22,
-            endIndent: 22,
-          ),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: _data.length,
-            itemBuilder: (_, index) {
-
-              if (_data[index] is SingleServerData){
-                return ServerItem(
-                  key: ValueKey(_data[index]),
-                  data: _data[index],
-                );
-              } else {
-                (_data[index] as GroupServerData).
-                return GroupServerItem()
-              }
-
-
-            },
-            separatorBuilder: (_, index) {
-              return Divider(height: 7);
-            },
-          ),
-          MaterialButton(
-            minWidth: 0,
-            splashColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            visualDensity: VisualDensity.compact,
-            padding: const EdgeInsets.only(top: 14),
-            onPressed: () {
-              print("Add Pressed");
-            },
-            child: Container(
+            Divider(
+              key: ValueKey("dm-divider"),
+              color: Colors.white38,
+              height: 22,
+              indent: 22,
+              endIndent: 22,
+            ),
+            ListView.separated(
+              shrinkWrap: true,
+              itemCount: _data.length,
+              separatorBuilder: (_, index){
+                return Divider(height: Style.serverItemSpacing/2,);
+              },
+              itemBuilder: (_, index) {
+                if (_data[index] is SingleServerData) {
+                  return ServerItem(data: _data[index]);
+                } else {
+                  return GroupServerItem(
+                    children: (_data[index] as GroupServerData).serverData.map((e) => ServerItem(data: (e))).toList(),
+                  );
+                }
+              },
+            ),
+            // Wrap(
+            //   runSpacing: Style.serverItemSpacing,
+            //   children: _data.map((data) {
+            //     if (data is SingleServerData) {
+            //       return ServerItem(data: data);
+            //     } else {
+            //       return GroupServerItem(
+            //         children: (data as GroupServerData).serverData.map((e) => ServerItem(data: e)).toList(),
+            //       );
+            //     }
+            //   }).toList(),
+            // ),
+            Container(
+              margin: const EdgeInsets.only(top: 5),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(28),
                 color: Color(0xff363940),
               ),
               width: 45,
               height: 45,
-              child: Container(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  "assets/search.png",
-                  height: 20,
-                  color: Colors.white,
+              child: MaterialButton(
+                minWidth: 0,
+                splashColor: Colors.transparent,
+                // highlightColor: Colors.transparent,
+                visualDensity: VisualDensity.compact,
+                onPressed: () {
+                  print("Add Pressed");
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    "assets/search.png",
+                    height: 20,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -226,7 +237,8 @@ class _DirectMessageList extends StatelessWidget {
                             },
                             itemCount: 5,
                             itemBuilder: (context, index) {
-                              return DirectMessageItem("randomId", "Random User", UserStatus("emoji", "Working on stuff~2qqqqqqq"));
+                              return DirectMessageItem(
+                                  "randomId", "Random User", UserStatus("emoji", "Working on stuff~2qqqqqqq"));
                             }),
                       );
                     else

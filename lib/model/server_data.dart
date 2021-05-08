@@ -4,7 +4,6 @@ import 'package:discord_ui_practice/model/channel_data.dart';
 
 abstract class ServerData {}
 
-
 class SingleServerData extends ServerData{
   final String id;
   final String name;
@@ -23,7 +22,7 @@ class SingleServerData extends ServerData{
 
 }
 class GroupServerData extends ServerData {
-  List<ServerData> serverData;
+  List<SingleServerData> serverData;
 
   GroupServerData(this.serverData);
 }

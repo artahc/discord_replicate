@@ -17,7 +17,7 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   Stream<ServerState> mapEventToState(ServerEvent event) async* {
     if (event is ServerLoadAll) {
       await emit(ServerLoadAllSuccess(
-        List.from(Iterable<ServerData>.generate(30, (i) => ServerData.createDummy())),
+        List.from(Iterable<ServerData>.generate(30, (i) => SingleServerData.createDummy())),
       ));
     }
   }

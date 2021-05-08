@@ -19,7 +19,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserLoadAllServerInitial());
 
   void _loadUserServers() {
-    emit(UserLoadAllServerSuccess(List.generate(5, (index) => ServerData.createDummy())));
+    emit(UserLoadAllServerSuccess(List.generate(5, (index) => SingleServerData.createDummy())));
   }
 
   @override
