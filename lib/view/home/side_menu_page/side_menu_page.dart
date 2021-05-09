@@ -1,6 +1,7 @@
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_ui_practice/bloc/direct_message/direct_message_event.dart';
 import 'package:discord_ui_practice/model/server_data.dart';
+import 'package:discord_ui_practice/static/config.dart';
 import 'package:discord_ui_practice/static/style.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/direct_message_item.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/group_server_item.dart';
@@ -44,6 +45,9 @@ class _ServerList extends StatefulWidget {
 class _ServerListState extends State<_ServerList> {
   Key _selectedKey;
   Key _directMessageKey = ValueKey("direct-message");
+
+  GlobalKey listViewServerKey = GlobalKey();
+
 
   @override
   void initState() {

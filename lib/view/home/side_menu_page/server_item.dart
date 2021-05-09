@@ -24,30 +24,17 @@ class _ServerItemState extends State<ServerItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        MaterialButton(
-          padding: EdgeInsets.all(0),
-          minWidth: 0,
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          visualDensity: VisualDensity.compact,
-          onPressed: () {
-            print(widget.data.name);
-            setState(() {
-              _isFocused = !_isFocused;
-            });
-          },
-          child: LongPressDraggable<SingleServerData>(
+    return Container(
+      color: Colors.white30,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Draggable<SingleServerData>(
             data: widget.data,
             feedback: Container(
-              width: 45,
+              width: 50,
               height: 45,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(26),
-                color: const Color(0xff7289da),
-              ),
+              color: Colors.blueAccent,
             ),
             childWhenDragging: Container(
               width: 45,
@@ -58,23 +45,36 @@ class _ServerItemState extends State<ServerItem> {
               ),
             ),
             axis: Axis.vertical,
-            child: AnimatedContainer(
-              width: 45,
-              height: 45,
-              duration: Duration(milliseconds: 150),
-              curve: Curves.easeInOutSine,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(_isFocused ? 16 : 28),
-                color: Color(0xff7289da),
+            child: MaterialButton(
+              padding: EdgeInsets.all(0),
+              minWidth: 0,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              visualDensity: VisualDensity.compact,
+              onPressed: () {
+                print(widget.data.name);
+                setState(() {
+                  _isFocused = !_isFocused;
+                });
+              },
+              child: AnimatedContainer(
+                width: 45,
+                height: 45,
+                duration: Duration(milliseconds: 150),
+                curve: Curves.easeInOutSine,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(_isFocused ? 16 : 28),
+                  color: Color(0xff7289da),
+                ),
               ),
             ),
           ),
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: ServerItemIndicator(isFocused: _isFocused),
-        )
-      ],
+          Align(
+            alignment: Alignment.centerLeft,
+            child: ServerItemIndicator(isFocused: _isFocused),
+          )
+        ],
+      ),
     );
   }
 }
