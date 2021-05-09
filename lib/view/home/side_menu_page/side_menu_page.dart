@@ -135,10 +135,6 @@ class _ServerListState extends State<_ServerList> {
                 }
               },
             ),
-            Overlay(
-              initialEntries: [
-              ],
-            ),
             Container(
               margin: const EdgeInsets.only(top: 5),
               decoration: BoxDecoration(

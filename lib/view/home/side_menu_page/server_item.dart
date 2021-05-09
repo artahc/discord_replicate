@@ -20,7 +20,6 @@ class _ServerItemState extends State<ServerItem> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -40,34 +39,34 @@ class _ServerItemState extends State<ServerItem> {
               _isFocused = !_isFocused;
             });
           },
-        ),
-        LongPressDraggable<SingleServerData>(
-          data: widget.data,
-          feedback:Container(
-            width: 45,
-            height: 45,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(26),
-              color: const Color(0xff7289da),
+          child: LongPressDraggable<SingleServerData>(
+            data: widget.data,
+            feedback: Container(
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(26),
+                color: const Color(0xff7289da),
+              ),
             ),
-          ),
-          childWhenDragging: Container(
-            width: 45,
-            height: 45,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(26),
-              color: const Color(0xff363940),
+            childWhenDragging: Container(
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(26),
+                color: const Color(0xff363940),
+              ),
             ),
-          ),
-          axis: Axis.vertical,
-          child: AnimatedContainer(
-            width: 45,
-            height: 45,
-            duration: Duration(milliseconds: 150),
-            curve: Curves.easeInOutSine,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(_isFocused ? 16 : 28),
-              color: Color(0xff7289da),
+            axis: Axis.vertical,
+            child: AnimatedContainer(
+              width: 45,
+              height: 45,
+              duration: Duration(milliseconds: 150),
+              curve: Curves.easeInOutSine,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(_isFocused ? 16 : 28),
+                color: Color(0xff7289da),
+              ),
             ),
           ),
         ),
