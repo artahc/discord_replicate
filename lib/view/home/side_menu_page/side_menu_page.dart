@@ -5,6 +5,7 @@ import 'package:discord_ui_practice/static/style.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/direct_message_item.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/group_server_item.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/group_server_item.dart';
+import 'package:discord_ui_practice/view/home/side_menu_page/grouppable_container.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/server_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -58,13 +59,13 @@ class _ServerListState extends State<_ServerList> {
       GroupServerData([
         SingleServerData("id3", "group3", List.empty()),
         SingleServerData("id4", "group4", List.empty()),
-        SingleServerData("id5", "group5", List.empty()),
-        SingleServerData("id6", "group6", List.empty()),
-        SingleServerData("id7", "group7", List.empty()),
-        SingleServerData("id8", "group8", List.empty()),
-        SingleServerData("id9", "group9", List.empty()),
-        SingleServerData("id10", "group10", List.empty()),
-        SingleServerData("id11", "group11", List.empty()),
+        // SingleServerData("id5", "group5", List.empty()),
+        // SingleServerData("id6", "group6", List.empty()),
+        // SingleServerData("id7", "group7", List.empty()),
+        // SingleServerData("id8", "group8", List.empty()),
+        // SingleServerData("id9", "group9", List.empty()),
+        // SingleServerData("id10", "group10", List.empty()),
+        // SingleServerData("id11", "group11", List.empty()),
       ]),
     ];
 
@@ -112,12 +113,21 @@ class _ServerListState extends State<_ServerList> {
             ListView.separated(
               shrinkWrap: true,
               itemCount: _data.length,
-              separatorBuilder: (_, index){
-                return SizedBox(height: Style.serverItemSpacing);
-              },
+              separatorBuilder: (_, index) => SizedBox(height: Style.serverItemSpacing),
               itemBuilder: (_, index) {
                 if (_data[index] is SingleServerData) {
-                  return ServerItem(data: _data[index]);
+                  var serverItem = ServerItem(data: _data[index]);
+                  return GroupableContainer(
+                    initialServerItem: ServerItem(data: _data[index]),
+                    avatarWhenGroupPreview: Container(
+                      width: 45,
+                      height: 45,
+                      decoration: BoxDecoration(
+                          color: const Color(0xff7289da),
+                          borderRadius: BorderRadius.circular(26)
+                      ),
+                    ),
+                  );
                 } else {
                   return GroupServerItem(
                     children: (_data[index] as GroupServerData).serverData.map((e) => ServerItem(data: (e))).toList(),
@@ -125,18 +135,11 @@ class _ServerListState extends State<_ServerList> {
                 }
               },
             ),
-            // Wrap(
-            //   runSpacing: Style.serverItemSpacing,
-            //   children: _data.map((data) {
-            //     if (data is SingleServerData) {
-            //       return ServerItem(data: data);
-            //     } else {
-            //       return GroupServerItem(
-            //         children: (data as GroupServerData).serverData.map((e) => ServerItem(data: e)).toList(),
-            //       );
-            //     }
-            //   }).toList(),
-            // ),
+            Overlay(
+              initialEntries: [
+                Overl
+              ],
+            ),
             Container(
               margin: const EdgeInsets.only(top: 5),
               decoration: BoxDecoration(

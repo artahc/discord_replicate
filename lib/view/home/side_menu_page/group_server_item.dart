@@ -1,4 +1,5 @@
 import 'package:discord_ui_practice/static/style.dart';
+import 'package:discord_ui_practice/view/home/side_menu_page/server_indicator.dart';
 import 'package:discord_ui_practice/view/home/side_menu_page/server_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +28,10 @@ class _GroupServerItemState extends State<GroupServerItem> with TickerProviderSt
     super.initState();
     _children = widget.children.toList();
     _folderAnimController = AnimationController(duration: Duration(milliseconds: 350), vsync: this);
+    _gridAnimController = AnimationController(duration: Duration(milliseconds: 350), vsync: this);
+
     _folderAnimController.value = _isExpanded ? 0 : 1;
-    // _gridAnimController = AnimationController(duration: Duration(milliseconds: 350), vsync: this);
+    _gridAnimController.value = _isExpanded ? 1 : 0;
     _groupChildren = _GroupChildren(key: _groupChildrenKey, children: _children);
   }
 
@@ -54,13 +57,13 @@ class _GroupServerItemState extends State<GroupServerItem> with TickerProviderSt
           children: [
             Container(
               width: 45,
-              height: 45,
               child: ClipRect(
                 child: Stack(
                   children: [
                     SlideTransition(
                       position: _folderTween.animate(_folderAnimController),
                       child: Container(
+                        height: 45,
                         alignment: Alignment.center,
                         padding: EdgeInsets.only(top: 8, bottom: 8),
                         child: Image.asset(
@@ -71,22 +74,25 @@ class _GroupServerItemState extends State<GroupServerItem> with TickerProviderSt
                       ),
                     ),
                     SlideTransition(
-                      position: _gridTween.animate(_folderAnimController),
-                      child: GridView.count(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        crossAxisCount: 2,
-                        padding: const EdgeInsets.all(5),
-                        mainAxisSpacing: 2,
-                        crossAxisSpacing: 2,
-                        children: widget.children.take(4).map((e) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(26),
-                              color: Color(0xff7289da),
-                            ),
-                          );
-                        }).toList(),
+                      position: _gridTween.animate(_gridAnimController),
+                      child: Container(
+                        height: 45,
+                        child: GridView.count(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          crossAxisCount: 2,
+                          padding: const EdgeInsets.all(5),
+                          mainAxisSpacing: 2,
+                          crossAxisSpacing: 2,
+                          children: widget.children.take(4).map((e) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(26),
+                                color: Color(0xff7289da),
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ],
@@ -115,11 +121,12 @@ class _GroupServerItemState extends State<GroupServerItem> with TickerProviderSt
                       .animateTo(1, curve: Curves.easeIn, duration: Duration(milliseconds: 150))
                       .whenComplete(() {
                     // _gridAnimController.animateTo(0, curve: Curves.easeOut, duration: Duration(milliseconds: 300));
-                    Future.delayed(Duration(milliseconds: 150)).then((value) {
-                      // _gridAnimController.value = 0;
-                    });
+                    // Future.delayed(Duration(milliseconds: 150)).then((value) {
+                      _gridAnimController.value = 1;
+                    // });
                   });
                 } else {
+                  _gridAnimController.value = 0;
                   _folderAnimController.animateTo(0, curve: Curves.easeOut, duration: Duration(milliseconds: 300));
                   // _gridAnimController.animateTo(1, curve: Curves.easeIn, duration: Duration(milliseconds: 150));
                 }
