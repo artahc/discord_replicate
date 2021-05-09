@@ -137,7 +137,6 @@ class _ServerListState extends State<_ServerList> {
             ),
             Overlay(
               initialEntries: [
-                Overl
               ],
             ),
             Container(
