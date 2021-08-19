@@ -8,10 +8,10 @@ class ChannelInfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SizedBox(width: 55),
         Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(right: 6),
+          child: Container(
+            margin: EdgeInsets.only(left: (MediaQuery.of(context).size.width * 0.125) + 5),
+            padding: EdgeInsets.only(right: 5),
             child: ClipRRect(
               clipBehavior: Clip.antiAlias,
               borderRadius: BorderRadius.vertical(top:Radius.circular(10)),

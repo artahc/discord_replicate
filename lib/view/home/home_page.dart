@@ -21,7 +21,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tuple/tuple.dart';
 
-enum PageState { LEFT, CENTER, RIGHT, TRANSITION }
+enum PageState { LEFT, CENTER, RIGHT }
 enum SwipeDirection { LEFT, RIGHT }
 
 class HomePage extends StatefulWidget {

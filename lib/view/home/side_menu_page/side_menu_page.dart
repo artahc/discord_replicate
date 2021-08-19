@@ -31,7 +31,7 @@ class _SideMenuPageState extends State<SideMenuPage> {
       children: [
         _ServerList(),
         _DirectMessageList(),
-        SizedBox(width: 55),
+        // SizedBox(width: MediaQuery.of(context).size.width * 0.130),
       ],
     );
   }
@@ -47,7 +47,6 @@ class _ServerListState extends State<_ServerList> {
   Key _directMessageKey = ValueKey("direct-message");
 
   GlobalKey listViewServerKey = GlobalKey();
-
 
   @override
   void initState() {
@@ -120,16 +119,12 @@ class _ServerListState extends State<_ServerList> {
               separatorBuilder: (_, index) => SizedBox(height: Style.serverItemSpacing),
               itemBuilder: (_, index) {
                 if (_data[index] is SingleServerData) {
-                  var serverItem = ServerItem(data: _data[index]);
                   return GroupableContainer(
                     initialServerItem: ServerItem(data: _data[index]),
                     avatarWhenGroupPreview: Container(
                       width: 45,
                       height: 45,
-                      decoration: BoxDecoration(
-                          color: const Color(0xff7289da),
-                          borderRadius: BorderRadius.circular(26)
-                      ),
+                      decoration: BoxDecoration(color: const Color(0xff7289da), borderRadius: BorderRadius.circular(26)),
                     ),
                   );
                 } else {
@@ -150,7 +145,7 @@ class _ServerListState extends State<_ServerList> {
               child: MaterialButton(
                 minWidth: 0,
                 splashColor: Colors.transparent,
-                // highlightColor: Colors.transparent,
+                highlightColor: Colors.transparent,
                 visualDensity: VisualDensity.compact,
                 onPressed: () {
                   print("Add Pressed");
@@ -177,6 +172,7 @@ class _DirectMessageList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: Container(
+        margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width * 0.125) + 5),
         padding: EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
@@ -245,8 +241,7 @@ class _DirectMessageList extends StatelessWidget {
                             },
                             itemCount: 5,
                             itemBuilder: (context, index) {
-                              return DirectMessageItem(
-                                  "randomId", "Random User", UserStatus("emoji", "Working on stuff~2qqqqqqq"));
+                              return DirectMessageItem("randomId", "Random User", UserStatus("emoji", "Working on stuff~2qqqqqqq"));
                             }),
                       );
                     else

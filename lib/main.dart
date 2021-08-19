@@ -7,6 +7,7 @@ import 'package:discord_ui_practice/bloc/user/user_bloc.dart';
 import 'package:discord_ui_practice/method_channel/networking_channel.dart';
 import 'package:discord_ui_practice/repository/channel_repository.dart';
 import 'package:discord_ui_practice/repository/server_repository.dart';
+import 'package:discord_ui_practice/test_widget/test_scene.dart';
 import 'package:discord_ui_practice/view/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
