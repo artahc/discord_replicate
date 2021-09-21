@@ -1,72 +1,92 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class AppTheme {
   static final darkThemeData = ThemeData(
     brightness: Brightness.dark,
+    highlightColor: Colors.transparent,
+    splashColor: Colors.transparent,
     backgroundColor: Color(0xff202226),
     colorScheme: ColorScheme.dark(
+      brightness: Brightness.dark,
       primary: Color(0xff303136),
       secondary: Color(0xff363940),
+      surface: Color(0xff303136),
+      onPrimary: Color(0xffb9bbbe),
+      onSecondary: Color(0xff72767b),
+      onSurface: Color(0xffb9bbbe),
+    ),
+    textTheme: TextTheme(
+      headline5: TextStyle(
+        color: Colors.white,
+        fontSize: 24,
+      ),
+      headline6: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 0.15,
+      ),
+      subtitle1: TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+      ),
+      subtitle2: TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      bodyText1: TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+        letterSpacing: 0.5,
+      ),
+      bodyText2: TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        letterSpacing: 0.25,
+        height: 1.5,
+      ),
+      caption: TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+        letterSpacing: 0.4,
+      ),
+    ),
+    iconTheme: IconThemeData(
+      color: Color(0xffb9bbbe),
+      size: 16,
+    ),
+    buttonTheme: ButtonThemeData(
+      colorScheme: ColorScheme.dark(
+        primary: Color(0xff7289da),
+        secondary: Color(0xff72767b),
+        // surface: Color(0xff363940),
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+      ),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Color(0xff17191c),
     ),
-
-    iconTheme: IconThemeData(
-      color: Color(0xffb9bbbe),
-      size: 16,
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: Color(0xff7289da),
     ),
-    textTheme: TextTheme(
-      headline4: TextStyle(
-        color: Color(0xffffffff),
-        fontSize: 22,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.bold,
+    inputDecorationTheme: InputDecorationTheme(
+      isDense: true,
+      focusedBorder: InputBorder.none,
+      border: InputBorder.none,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      floatingLabelStyle: TextStyle(
+        fontSize: 12,
+        color: Color(0xff72767b),
+        overflow: TextOverflow.ellipsis,
       ),
-      headline5: TextStyle(
-        color: Color(0xffffffff),
-        fontSize: 16,
-        fontStyle: FontStyle.normal,
-        fontWeight: FontWeight.bold,
-      ),
-      headline6: TextStyle(
-        color: Color(0xffffffff),
+      hintStyle: TextStyle(
         fontSize: 14,
-        fontStyle: FontStyle.normal,
-      ),
-      subtitle1: TextStyle(
-        color: Colors.white,
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-      ),
-      subtitle2: TextStyle(
-        color: Colors.white,
-        fontSize: 10,
-        fontWeight: FontWeight.w500,
-      ),
-      bodyText1: TextStyle(
-        color: Color(0xffffffff),
-        fontSize: 12,
-        fontStyle: FontStyle.normal,
-      ),
-    ),
-
-    accentTextTheme: TextTheme(
-      subtitle1: TextStyle(
         color: Color(0xff72767b),
-        fontSize: 12,
-        fontWeight: FontWeight.w500,
-      ),
-      subtitle2: TextStyle(
-        color: Color(0xff72767b),
-        fontSize: 10,
-        fontWeight: FontWeight.w500,
-      ),
-      bodyText1: TextStyle(
-        color: Color(0xff72767b),
-        fontSize: 12,
-        fontStyle: FontStyle.normal,
       ),
     ),
   );

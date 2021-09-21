@@ -1,4 +1,4 @@
-// import 'package:discord_ui_practice/view/home/channel_page/channel_message_page.dart';
+// import 'package:discord_ui_practice/view/landing_view/channel_page/channel_message_panel.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_test/flutter_test.dart';
 //

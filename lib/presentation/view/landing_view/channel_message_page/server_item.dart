@@ -34,7 +34,7 @@ class ServerItem extends StatelessWidget {
               curve: Curves.easeInOutSine,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(selected ? 16 : 28),
-                color: Color(0xff7289da),
+                color: Theme.of(context).buttonTheme.colorScheme!.primary,
               ),
             ),
           ),

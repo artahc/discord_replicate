@@ -1,3 +1,4 @@
+import 'package:discord_ui_practice/external/app_icon.dart';
 import 'package:discord_ui_practice/presentation/view/widgets/circle_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -46,12 +47,12 @@ class _ChannelInfoHeader extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Text(
-              "@ User",
-              style: Theme.of(context).textTheme.headline5,
+              "# general",
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
           ImageIcon(
-            AssetImage("assets/more-options.png"),
+            AssetImage(AppIcon.more_icon),
             size: 18,
           ),
         ],
@@ -78,12 +79,14 @@ class _ChannelInfoMenus extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 ImageIcon(
-                  AssetImage("assets/phone-call.png"),
-                  size: 20,
+                  AssetImage(AppIcon.phone_icon),
+                  size: 18,
                 ),
                 Text(
                   "Call",
-                  style: Theme.of(context).accentTextTheme.subtitle2,
+                  style: Theme.of(context).textTheme.caption!.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary
+                  ),
                 ),
               ],
             ),
@@ -96,12 +99,14 @@ class _ChannelInfoMenus extends StatelessWidget {
               runAlignment: WrapAlignment.center,
               children: [
                 ImageIcon(
-                  AssetImage("assets/video-camera.png"),
+                  AssetImage(AppIcon.video_icon),
                   size: 20,
                 ),
                 Text(
                   "Video",
-                  style: Theme.of(context).accentTextTheme.subtitle2,
+                  style: Theme.of(context).textTheme.caption!.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary
+                  ),
                 ),
               ],
             ),
@@ -114,12 +119,14 @@ class _ChannelInfoMenus extends StatelessWidget {
               runAlignment: WrapAlignment.center,
               children: [
                 ImageIcon(
-                  AssetImage("assets/notification.png"),
+                  AssetImage(AppIcon.notification_icon),
                   size: 20,
                 ),
                 Text(
                   "Notification",
-                  style: Theme.of(context).accentTextTheme.subtitle2,
+                  style: Theme.of(context).textTheme.caption!.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary
+                  ),
                 ),
               ],
             ),
@@ -132,12 +139,14 @@ class _ChannelInfoMenus extends StatelessWidget {
               runAlignment: WrapAlignment.center,
               children: [
                 ImageIcon(
-                  AssetImage("assets/search.png"),
+                  AssetImage(AppIcon.search_icon),
                   size: 20,
                 ),
                 Text(
                   "Search",
-                  style: Theme.of(context).accentTextTheme.subtitle2,
+                  style: Theme.of(context).textTheme.caption!.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary
+                  ),
                 ),
               ],
             ),
@@ -153,7 +162,7 @@ class _ChannelInfoMember extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -170,28 +179,24 @@ class _ChannelInfoMember extends StatelessWidget {
 class _ChannelInfoInviteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          CircleContainer(
-            40,
-            40,
-            color: Color(0xff303136),
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        CircleContainer(
+            size: Size(40, 40),
+            color: Theme.of(context).colorScheme.primary,
             child: ImageIcon (
-              AssetImage ("assets/add-user.png"),
+              AssetImage (AppIcon.add_user_icon),
             )
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 20),
+          child: Text(
+            "Create Group DM",
+            style: Theme.of(context).textTheme.bodyText2,
           ),
-          Container(
-            margin: EdgeInsets.only(left: 20),
-            child: Text(
-              "Create Group DM",
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

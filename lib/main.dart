@@ -1,8 +1,7 @@
 import 'package:discord_ui_practice/domain/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_ui_practice/domain/bloc/server/server_bloc.dart';
 import 'package:discord_ui_practice/domain/cubit/theme/theme_cubit.dart';
-import 'package:discord_ui_practice/presentation/view/home/home_page.dart';
-import 'package:discord_ui_practice/test_main.dart';
+import 'package:discord_ui_practice/presentation/view/welcome/register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,7 +44,7 @@ class Main extends StatelessWidget {
           return MaterialApp(
             theme: theme,
             debugShowCheckedModeBanner: false,
-            home: HomePage(),
+            home: RegisterPage(),
           );
         });
   }

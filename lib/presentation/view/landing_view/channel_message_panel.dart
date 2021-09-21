@@ -1,8 +1,8 @@
 import 'package:discord_ui_practice/data/model/message_data.dart';
-import 'package:discord_ui_practice/presentation/view/home/channel_message_page/channel_message_item.dart';
+import 'package:discord_ui_practice/external/app_icon.dart';
+import 'package:discord_ui_practice/presentation/view/landing_view/channel_message_page/channel_message_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChannelMessagePage extends StatefulWidget {
   @override
@@ -13,20 +13,10 @@ class _ChannelMessagePageState extends State<ChannelMessagePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // decoration: BoxDecoration(
-      //   borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-      //   boxShadow: [
-      //     BoxShadow(
-      //       color: Colors.black26,
-      //       blurRadius: 1,
-      //     ),
-      //   ],
-      // ),
       child: ClipRRect(
         clipBehavior: Clip.antiAlias,
         borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
         child: Container(
-          color: Theme.of(context).colorScheme.secondary,
           child: Column(
             children: [
               _ChatHeader(),
@@ -58,7 +48,7 @@ class _ChatHeader extends StatelessWidget {
               onPressed: () {},
               iconSize: 18,
               icon: ImageIcon(
-                AssetImage("assets/menu-button.png"),
+                AssetImage(AppIcon.menu_icon),
               ),
             ),
           ),
@@ -69,8 +59,8 @@ class _ChatHeader extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    "# general",
-                    style: Theme.of(context).textTheme.headline4,
+                    "# Direct Message",
+                    style: Theme.of(context).textTheme.headline6,
                   ),
                 ],
               ),
@@ -88,7 +78,7 @@ class _ChatHeader extends StatelessWidget {
                   print("Call pressed");
                 },
                 icon: ImageIcon(
-                  AssetImage("assets/phone-call.png"),
+                  AssetImage(AppIcon.phone_icon),
                 ),
               ),
               IconButton(
@@ -98,7 +88,7 @@ class _ChatHeader extends StatelessWidget {
                 },
                 visualDensity: VisualDensity.compact,
                 icon: ImageIcon(
-                  AssetImage("assets/video-camera.png"),
+                  AssetImage(AppIcon.video_icon),
                 ),
               ),
               IconButton(
@@ -108,7 +98,7 @@ class _ChatHeader extends StatelessWidget {
                 visualDensity: VisualDensity.compact,
                 iconSize: 20,
                 icon: ImageIcon(
-                  AssetImage("assets/group.png"),
+                  AssetImage(AppIcon.group_icon),
                 ),
               ),
             ],
@@ -124,6 +114,7 @@ class _ChatBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
+        color: Theme.of(context).colorScheme.secondary,
         child: ListView.builder(
           itemCount: 15,
           itemBuilder: (context, index) {
@@ -142,8 +133,8 @@ class _ChatInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
+      color: Theme.of(context).colorScheme.secondary,
       padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(),
       child: Row(
         children: [
           Wrap(
@@ -159,7 +150,7 @@ class _ChatInput extends StatelessWidget {
                     visualDensity: VisualDensity.compact,
                     iconSize: 20,
                     icon: ImageIcon(
-                      AssetImage("assets/insert-picture-icon.png"),
+                      AssetImage(AppIcon.picture_icon),
                     ),
                   ),
                 ),
@@ -174,7 +165,7 @@ class _ChatInput extends StatelessWidget {
                     visualDensity: VisualDensity.compact,
                     iconSize: 20,
                     icon: ImageIcon(
-                      AssetImage("assets/giftbox.png"),
+                      AssetImage(AppIcon.gift_icon),
                     ),
                   ),
                 ),
@@ -208,14 +199,12 @@ class _ChatInput extends StatelessWidget {
                           isDense: true,
                           contentPadding: EdgeInsets.symmetric(
                             vertical: 0,
-                            horizontal: 10,
+                            horizontal: 15,
                           ),
                           focusedBorder: InputBorder.none,
                           border: InputBorder.none,
                           hintText: "Message #general",
-                          hintStyle: TextStyle(
-                            color: Color(0xffb9bbbe),
-                          ),
+                          hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
                         ),
                       ),
                     ),
@@ -228,7 +217,7 @@ class _ChatInput extends StatelessWidget {
                         visualDensity: VisualDensity.compact,
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         child: ImageIcon(
-                          AssetImage("assets/emoji.png"),
+                          AssetImage(AppIcon.emoji_icon),
                           color: IconTheme.of(context).color,
                           size: 20,
                         ),

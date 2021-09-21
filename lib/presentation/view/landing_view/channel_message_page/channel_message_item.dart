@@ -18,7 +18,10 @@ class MessageItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleContainer(40, 40, child: null,),
+          CircleContainer(
+            size: Size(40, 40),
+            child: null,
+          ),
           Expanded(
             child: Container(
               margin: EdgeInsets.only(left: 12),
@@ -29,22 +32,16 @@ class MessageItem extends StatelessWidget {
                     spacing: 10,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      Text(
-                        data.userName,
-                        style: Theme.of(context).textTheme.headline6
-                      ),
-                      Text(
-                        DateFormat.yMEd().add_jms().format(data.createdAt),
-                        style: Theme.of(context).accentTextTheme.subtitle2
-                      ),
+                      Text(data.userName, style: Theme.of(context).textTheme.bodyText1),
+                      Text(DateFormat.yMMMd().add_jm().format(data.createdAt),
+                          style: Theme.of(context).textTheme.caption!.copyWith(
+                                color: Theme.of(context).colorScheme.onSecondary,
+                              )),
                     ],
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 2),
-                    child: Text(
-                      this.data.message,
-                      style: Theme.of(context).textTheme.bodyText1
-                    ),
+                    child: Text(this.data.message, style: Theme.of(context).textTheme.bodyText2),
                   ),
                 ],
               ),

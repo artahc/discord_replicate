@@ -1,0 +1,86 @@
+import 'package:discord_ui_practice/external/app_icon.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+class WelcomePage extends StatelessWidget {
+  const WelcomePage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 25),
+                width: 220,
+                child: Center(
+                  child: Image.asset(AppIcon.discord_text_icon),
+                ),
+              ),
+              Expanded(
+                child: Container(),
+              ),
+              Text(
+                "Welcome to Discord",
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      height: 2,
+                    ),
+              ),
+              Text(
+                "Join over 100 million people who use Discord to talk with communities and friends.",
+                style: Theme.of(context).textTheme.caption!.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      height: 2,
+                    ),
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 25),
+              SizedBox(
+                height: 45,
+                width: double.infinity,
+                child: MaterialButton(
+                  elevation: 0,
+                  color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text("Register"),
+                  onPressed: () {
+                    print("LOGIN");
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              SizedBox(
+                height: 45,
+                width: double.infinity,
+                child: MaterialButton(
+                  elevation: 0,
+                  color: Theme.of(context).buttonTheme.colorScheme!.secondary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text("Login"),
+                  onPressed: () {
+                    print("LOGIN");
+                  },
+                ),
+              ),
+              SizedBox(height: 25),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+

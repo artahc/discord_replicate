@@ -1,8 +1,9 @@
 import 'package:discord_ui_practice/domain/cubit/theme/theme_cubit.dart';
+import 'package:discord_ui_practice/external/app_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomeNavigationBar extends StatelessWidget {
+class AppNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +20,7 @@ class HomeNavigationBar extends StatelessWidget {
                 iconSize: 24,
                 visualDensity: VisualDensity.compact,
                 icon: ImageIcon(
-                    AssetImage("assets/discord.png")
+                    AssetImage(AppIcon.discord_icon)
                 ),
               ),
           ),
@@ -32,7 +33,7 @@ class HomeNavigationBar extends StatelessWidget {
               iconSize: 19,
               visualDensity: VisualDensity.compact,
               icon: ImageIcon(
-                  AssetImage("assets/friends.png")
+                  AssetImage(AppIcon.friend_icon)
               ),
             ),
           ),
@@ -44,7 +45,7 @@ class HomeNavigationBar extends StatelessWidget {
               iconSize: 18,
               visualDensity: VisualDensity.compact,
               icon: ImageIcon(
-                  AssetImage("assets/search.png")
+                  AssetImage(AppIcon.search_icon)
               ),
             ),
           ),
@@ -56,7 +57,7 @@ class HomeNavigationBar extends StatelessWidget {
               iconSize: 21,
               visualDensity: VisualDensity.compact,
               icon: ImageIcon(
-                  AssetImage("assets/mention.png")
+                  AssetImage(AppIcon.mention_icon)
               ),
             ),
           ),
@@ -68,7 +69,7 @@ class HomeNavigationBar extends StatelessWidget {
               iconSize: 20,
               visualDensity: VisualDensity.compact,
               icon: ImageIcon(
-                  AssetImage("assets/insert-picture-icon.png")
+                  AssetImage(AppIcon.picture_icon)
               ),
             ),
           ),

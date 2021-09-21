@@ -1,9 +1,8 @@
-import 'dart:async';
-
-import 'package:discord_ui_practice/presentation/view/home/channel_info_page/channel_info_page.dart';
-import 'package:discord_ui_practice/presentation/view/home/channel_message_page/channel_message_page.dart';
-import 'package:discord_ui_practice/presentation/view/home/home_navigation_bar.dart';
-import 'package:discord_ui_practice/presentation/view/home/side_menu_page/side_menu_page.dart';
+import 'package:discord_ui_practice/presentation/view/landing_view/channel_info_panel.dart';
+import 'package:discord_ui_practice/presentation/view/landing_view/channel_message_panel.dart';
+import 'package:discord_ui_practice/presentation/view/landing_view/direct_message_panel.dart';
+import 'package:discord_ui_practice/presentation/view/landing_view/server_list_panel.dart';
+import 'package:discord_ui_practice/presentation/view/widgets/app_navigation_bar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -12,12 +11,12 @@ import 'package:discord_ui_practice/external/math.dart';
 enum PageState { LEFT, CENTER, RIGHT }
 enum SwipeDirection { LEFT, RIGHT }
 
-class HomePage extends StatefulWidget {
+class HomeView extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeViewState createState() => _HomeViewState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   static const int _swipeDuration = 350; // animation duration in milli
   static const int _navbarAnimDuration = 250; // in milli
   static const int _swipeVelocitySensitivity = 250; // velocity
@@ -121,7 +120,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           maintainSize: true,
                           maintainInteractivity: false,
                           maintainSemantics: false,
-                          child: SideMenuPage(),
+                          child: Row(
+                            children: [
+                              ServerListPanel(),
+                              DirectMessageListPanel(),
+                            ],
+                          ),
                         ),
                         Visibility(
                           visible: _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.CENTER || _pageState == PageState.LEFT,
@@ -147,7 +151,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           right: 0,
                           bottom: 0,
                           child: SlideTransition(
-                            child: HomeNavigationBar(),
+                            child: AppNavigationBar(),
                             position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_navBarAnimController),
                           ),
                         ),

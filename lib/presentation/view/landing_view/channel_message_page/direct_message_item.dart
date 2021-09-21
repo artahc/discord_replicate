@@ -31,9 +31,7 @@ class DirectMessageItem extends StatelessWidget {
       child: Row(
         children: [
           CircleContainer(
-            35,
-            35,
-            color: Colors.white70,
+            size: Size(40, 40),
             child: SizedBox(),
           ),
           Container(
@@ -43,13 +41,7 @@ class DirectMessageItem extends StatelessWidget {
                 spacing: 2,
                 direction: Axis.vertical,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.headline6),
-                  // status
-                  //     ? Container()
-                  //     : Text(
-                  //         status.statusText,
-                  //         style: Theme.of(context).textTheme.subtitle2
-                  //       ),
+                  Text(title, style: Theme.of(context).textTheme.bodyText2),
                 ],
               ),
             ),

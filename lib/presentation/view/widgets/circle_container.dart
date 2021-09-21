@@ -2,21 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CircleContainer extends StatelessWidget {
-  final double height;
-  final double width;
+  final Size size;
   final Color? color;
   final Widget? child;
 
-  CircleContainer(this.height, this.width, {this.color, this.child});
+  CircleContainer({this.size = const Size.square(40), this.color = Colors.transparent, this.child});
 
   @override
   Widget build(BuildContext context) {
     return ClipOval(
       child: Container(
-        color: this.color ?? Colors.white,
+        color: color,
         child: SizedBox(
-          height: this.height,
-          width: this.width,
+          height: size.height,
+          width: size.width,
           child: Container(
             alignment: Alignment.center,
             child: this.child ?? Container(),
