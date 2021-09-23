@@ -80,15 +80,17 @@ class AppTheme {
       contentPadding: const EdgeInsets.symmetric(horizontal: 12),
       floatingLabelBehavior: FloatingLabelBehavior.always,
       floatingLabelStyle: TextStyle(
-        fontSize: 12,
+        fontSize: 14,
         color: Color(0xff72767b),
         overflow: TextOverflow.ellipsis,
       ),
-      hintStyle: TextStyle(
-        fontSize: 14,
+      labelStyle: TextStyle(
+        fontSize: 16,
         color: Color(0xff72767b),
+        overflow: TextOverflow.ellipsis,
       ),
     ),
+
   );
 
   static final lightThemeData = ThemeData();

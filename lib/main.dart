@@ -1,7 +1,8 @@
 import 'package:discord_ui_practice/domain/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_ui_practice/domain/bloc/server/server_bloc.dart';
 import 'package:discord_ui_practice/domain/cubit/theme/theme_cubit.dart';
-import 'package:discord_ui_practice/presentation/view/welcome/register_view.dart';
+import 'package:discord_ui_practice/domain/route_generator.dart';
+import 'package:discord_ui_practice/external/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,15 +13,13 @@ void main() {
     systemNavigationBarColor: Color(0xff202226), // navigation bar color
     statusBarColor: Color(0xff202226), // status bar color
   ));
-  runApp(
-    BlocDependency(
-      child: Main(),
-    ),
-  );
+  runApp(Main());
 }
 
 class BlocDependency extends StatelessWidget {
-  const BlocDependency({Key? key, required Widget child}) : super(key: key);
+  final Widget child;
+
+  const BlocDependency({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class BlocDependency extends StatelessWidget {
         BlocProvider<ServerBloc>(create: (c) => ServerBloc()),
         BlocProvider<DirectMessageBloc>(create: (c) => DirectMessageBloc()),
       ],
-      child: Main(),
+      child: child,
     );
   }
 }
@@ -38,14 +37,18 @@ class BlocDependency extends StatelessWidget {
 class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ThemeCubit, ThemeData>(
-        bloc: BlocProvider.of<ThemeCubit>(context, listen: true),
-        builder: (context, theme) {
-          return MaterialApp(
-            theme: theme,
-            debugShowCheckedModeBanner: false,
-            home: RegisterPage(),
-          );
-        });
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeCubit>(create: (c) => ThemeCubit()),
+        BlocProvider<ServerBloc>(create: (c) => ServerBloc()),
+        BlocProvider<DirectMessageBloc>(create: (c) => DirectMessageBloc()),
+      ],
+      child: MaterialApp(
+        theme: AppTheme.darkThemeData,
+        onGenerateRoute: RouteGenerator.generateRoutes,
+        initialRoute: Routes.WelcomeRoute,
+        debugShowCheckedModeBanner: false,
+      ),
+    );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:discord_ui_practice/domain/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -9,22 +10,113 @@ extension ParseToString on RegisterOptions {
   }
 }
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class RegisterView extends StatefulWidget {
+  const RegisterView({Key? key}) : super(key: key);
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _RegisterPageState extends State<RegisterPage> with TickerProviderStateMixin {
+class _RegisterViewState extends State<RegisterView> with TickerProviderStateMixin {
   late TabController _tabCtrl;
-  late RegisterOptions _registerOption;
+  RegisterOptions _registerOption = RegisterOptions.Phone;
+
+  void _handleOnPressCountryCode() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top),
+      builder: (_) {
+        return Stack(
+          children: [
+            GestureDetector(
+              onTap: () {
+                print("tapp");
+                Navigator.of(_).pop();
+              },
+            ),
+            DraggableScrollableSheet(
+              maxChildSize: 1,
+              initialChildSize: 0.75,
+              minChildSize: 0.5,
+              builder: (_, controller) {
+                return FractionallySizedBox(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5),
+                    child: Container(
+                      decoration: BoxDecoration(color: Theme.of(context).colorScheme.secondary, borderRadius: BorderRadius.circular(5)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              height: 55,
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(5)),
+                              child: TextFormField(
+                                cursorWidth: 3,
+                                cursorRadius: Radius.circular(15),
+                                maxLines: 1,
+                                style: TextStyle(
+                                  height: 1,
+                                ),
+                                textAlignVertical: TextAlignVertical.top,
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    isCollapsed: true,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+                                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                                    hintStyle: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(
+                                          height: 0.8,
+                                          fontSize: 14,
+                                          color: Theme.of(context).colorScheme.onPrimary,
+                                        ),
+                                    hintText: "Search"),
+                              ),
+                            ),
+                            Expanded(
+                              child: ListView.separated(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                controller: controller,
+                                itemBuilder: (_, index) {
+                                  return Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                                    height: 50,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text ("Country"),
+                                        Text ("+01"),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (_, index) => SizedBox(height: 1,),
+                                itemCount: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   initState() {
     super.initState();
     _tabCtrl = TabController(length: 2, vsync: this);
-    _registerOption = RegisterOptions.Phone;
   }
 
   Widget build(BuildContext context) {
@@ -38,7 +130,9 @@ class _RegisterPageState extends State<RegisterPage> with TickerProviderStateMix
           height: 45,
           child: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
         ),
       ),
@@ -61,6 +155,7 @@ class _RegisterPageState extends State<RegisterPage> with TickerProviderStateMix
             ),
             Container(
               height: 35,
+              margin: const EdgeInsets.only(bottom: 25),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(5),
@@ -103,34 +198,41 @@ class _RegisterPageState extends State<RegisterPage> with TickerProviderStateMix
                           : Container(
                               key: ValueKey(1),
                               alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.only(top: 25, right: 10),
                               width: 100,
                               height: 55,
+                              margin: const EdgeInsets.only(right: 10),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.background,
+                                color: Theme.of(context).backgroundColor,
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: MaterialButton(
                                 // color: Colors.white38,
                                 visualDensity: VisualDensity.compact,
                                 padding: const EdgeInsets.all(0),
-                                onPressed: () {},
+                                onPressed: _handleOnPressCountryCode,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: 6),
+                                  padding: const EdgeInsets.only(left: 12, right: 12),
                                   child: Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         "Country Code",
-                                        style: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(height: 1.5),
+                                        style: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(
+                                              fontSize: 10,
+                                              height: 1,
+                                              color: Theme.of(context).colorScheme.onPrimary,
+                                            ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 2),
-                                        child: Text(
-                                          "+62",
-                                          overflow: TextOverflow.ellipsis,
+                                      SizedBox(height: 5),
+                                      Text(
+                                        "+62",
+                                        style: TextStyle(
+                                          height: 1,
                                         ),
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
@@ -151,29 +253,27 @@ class _RegisterPageState extends State<RegisterPage> with TickerProviderStateMix
                     Flexible(
                       flex: 1,
                       child: AnimatedContainer(
-                        margin: const EdgeInsets.only(top: 25),
                         height: 55,
-                        decoration: BoxDecoration(color: Theme.of(context).colorScheme.background, borderRadius: BorderRadius.circular(5)),
+                        decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(5)),
                         duration: Duration(seconds: 1),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 12, right: 12, top: 6),
-                              child: Text(
-                                _registerOption.value(),
-                                style: Theme.of(context).inputDecorationTheme.floatingLabelStyle,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            TextFormField(
-                              cursorWidth: 3,
-                              autofocus: true,
-                              maxLines: 1,
-                              textAlignVertical: TextAlignVertical.center,
-                            ),
-                          ],
+                        child: TextField(
+                          cursorWidth: 3,
+                          cursorRadius: Radius.circular(15),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            floatingLabelStyle: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(
+                                  height: 0.8,
+                                  fontSize: 14,
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                ),
+                            labelText: _registerOption.value(),
+                            labelStyle: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(
+                                  height: 1,
+                                  fontSize: 14,
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
                         ),
                       ),
                     ),
@@ -206,6 +306,7 @@ class _RegisterPageState extends State<RegisterPage> with TickerProviderStateMix
                   child: Text("Next"),
                   onPressed: () {
                     print("Register");
+                    FocusScope.of(context).unfocus();
                   },
                 ),
               ),

@@ -1,0 +1,27 @@
+import 'package:discord_ui_practice/presentation/view/welcome/login_view.dart';
+import 'package:discord_ui_practice/presentation/view/welcome/register_view.dart';
+import 'package:discord_ui_practice/presentation/view/welcome/welcome_view.dart';
+import 'package:flutter/material.dart';
+
+export 'package:discord_ui_practice/presentation/route_transition/custom_transition.dart' show CustomSlideTransition;
+
+class Routes {
+  static const String WelcomeRoute = '/';
+  static const String RegisterRoute = '/login';
+  static const String LoginRoute = '/register';
+}
+
+class RouteGenerator {
+  static Route<dynamic> generateRoutes(RouteSettings settings) {
+    switch (settings.name) {
+      case Routes.WelcomeRoute:
+        return MaterialPageRoute(builder: (_) => const WelcomeView());
+      case Routes.RegisterRoute:
+        return MaterialPageRoute(builder: (_) => const RegisterView());
+      case Routes.LoginRoute:
+        return MaterialPageRoute(builder: (_) => const LoginView());
+      default:
+        return MaterialPageRoute(builder: (_) => const WelcomeView());
+    }
+  }
+}

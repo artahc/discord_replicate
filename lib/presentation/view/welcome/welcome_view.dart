@@ -1,9 +1,12 @@
+import 'package:discord_ui_practice/domain/route_generator.dart';
 import 'package:discord_ui_practice/external/app_icon.dart';
+import 'package:discord_ui_practice/presentation/view/welcome/login_view.dart';
+import 'package:discord_ui_practice/presentation/view/welcome/register_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class WelcomePage extends StatelessWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+class WelcomeView extends StatelessWidget {
+  const WelcomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,8 @@ class WelcomePage extends StatelessWidget {
                   ),
                   child: Text("Register"),
                   onPressed: () {
-                    print("LOGIN");
+                    print("Register");
+                    Navigator.of(context).push(CustomSlideTransition(currentPage: this, nextPage: const RegisterView()));
                   },
                 ),
               ),
@@ -71,7 +75,8 @@ class WelcomePage extends StatelessWidget {
                   ),
                   child: Text("Login"),
                   onPressed: () {
-                    print("LOGIN");
+                    print("Login");
+                    Navigator.of(context).push(CustomSlideTransition(currentPage: this, nextPage: const LoginView()));
                   },
                 ),
               ),
@@ -83,4 +88,3 @@ class WelcomePage extends StatelessWidget {
     );
   }
 }
-
