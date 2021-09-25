@@ -1,8 +1,7 @@
-package com.example.discord_ui_practice
+package com.artahc.discord_replicate
 
 import android.content.Context
 import android.os.Looper
-import android.util.Log
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

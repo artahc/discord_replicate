@@ -1,9 +1,8 @@
-package com.example.discord_ui_practice
+package com.artahc.discord_replicate
 
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.http.GET

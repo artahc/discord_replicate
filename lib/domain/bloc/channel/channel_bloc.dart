@@ -1,9 +1,9 @@
-import 'package:discord_ui_practice/data/model/channel_data.dart';
-import 'package:discord_ui_practice/data/model/message_data.dart';
-import 'package:discord_ui_practice/data/repository/channel_repository.dart';
-import 'package:discord_ui_practice/domain/bloc/channel/channel_event.dart';
-import 'package:discord_ui_practice/domain/bloc/channel/channel_state.dart';
-import 'package:discord_ui_practice/domain/network_wrapper.dart';
+import 'package:discord_replicate/data/model/channel_data.dart';
+import 'package:discord_replicate/data/model/message_data.dart';
+import 'package:discord_replicate/data/repository/channel_repository.dart';
+import 'package:discord_replicate/domain/bloc/channel/channel_event.dart';
+import 'package:discord_replicate/domain/bloc/channel/channel_state.dart';
+import 'package:discord_replicate/domain/network_wrapper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// Consider deleting this or merge functionality with server bloc

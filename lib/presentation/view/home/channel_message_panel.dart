@@ -1,6 +1,6 @@
-import 'package:discord_ui_practice/data/model/message_data.dart';
-import 'package:discord_ui_practice/external/app_icon.dart';
-import 'package:discord_ui_practice/presentation/view/home/channel_message_item.dart';
+import 'package:discord_replicate/data/model/message_data.dart';
+import 'package:discord_replicate/external/app_icon.dart';
+import 'package:discord_replicate/presentation/view/home/channel_message_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

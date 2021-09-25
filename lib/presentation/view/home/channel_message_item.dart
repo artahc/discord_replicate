@@ -1,5 +1,5 @@
-import 'package:discord_ui_practice/data/model/message_data.dart';
-import 'package:discord_ui_practice/presentation/widgets/app_widget.dart';
+import 'package:discord_replicate/data/model/message_data.dart';
+import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';

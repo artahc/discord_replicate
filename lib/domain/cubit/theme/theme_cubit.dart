@@ -1,4 +1,4 @@
-import 'package:discord_ui_practice/external/app_theme.dart';
+import 'package:discord_replicate/external/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

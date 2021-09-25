@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:discord_ui_practice/data/model/channel_data.dart';
+import 'package:discord_replicate/data/model/channel_data.dart';
 import 'package:flutter/material.dart';
 
 @immutable

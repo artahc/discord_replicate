@@ -1,9 +1,9 @@
-import 'package:discord_ui_practice/external/app_extension.dart';
-import 'package:discord_ui_practice/presentation/view/home/bottom_navigation_bar.dart';
-import 'package:discord_ui_practice/presentation/view/home/channel_info_panel.dart';
-import 'package:discord_ui_practice/presentation/view/home/channel_message_panel.dart';
-import 'package:discord_ui_practice/presentation/view/home/direct_message_panel.dart';
-import 'package:discord_ui_practice/presentation/view/home/server_list_panel.dart';
+import 'package:discord_replicate/external/app_extension.dart';
+import 'package:discord_replicate/presentation/view/home/bottom_navigation_bar.dart';
+import 'package:discord_replicate/presentation/view/home/channel_info_panel.dart';
+import 'package:discord_replicate/presentation/view/home/channel_message_panel.dart';
+import 'package:discord_replicate/presentation/view/home/direct_message_panel.dart';
+import 'package:discord_replicate/presentation/view/home/server_list_panel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';

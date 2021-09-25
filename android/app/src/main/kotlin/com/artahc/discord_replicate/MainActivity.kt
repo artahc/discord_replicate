@@ -1,4 +1,4 @@
-package com.example.discord_ui_practice
+package com.artahc.discord_replicate
 
 import android.util.Log
 import io.flutter.embedding.android.FlutterActivity

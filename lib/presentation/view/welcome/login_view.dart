@@ -1,4 +1,4 @@
-import 'package:discord_ui_practice/presentation/widgets/app_widget.dart';
+import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {

@@ -1,7 +1,7 @@
-import 'package:discord_ui_practice/presentation/view/app_view.dart';
+import 'package:discord_replicate/presentation/view/app_view.dart';
 import 'package:flutter/material.dart';
 
-export 'package:discord_ui_practice/presentation/route_transition/app_transition.dart' show CustomSlideTransition;
+export 'package:discord_replicate/presentation/route_transition/app_transition.dart' show CustomSlideTransition;
 
 class Routes {
   static const String WelcomeRoute = '/';

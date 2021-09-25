@@ -1,6 +1,6 @@
-import 'package:discord_ui_practice/data/model/server_data.dart';
-import 'package:discord_ui_practice/domain/bloc/server/server_bloc.dart';
-import 'package:discord_ui_practice/domain/bloc/server/server_event.dart';
+import 'package:discord_replicate/data/model/server_data.dart';
+import 'package:discord_replicate/domain/bloc/server/server_bloc.dart';
+import 'package:discord_replicate/domain/bloc/server/server_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

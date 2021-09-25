@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'package:discord_ui_practice/domain/bloc/server/server_bloc.dart';
-import 'package:discord_ui_practice/domain/bloc/server/server_event.dart';
-import 'package:discord_ui_practice/domain/bloc/server/server_state.dart';
-import 'package:discord_ui_practice/external/app_icon.dart';
-import 'package:discord_ui_practice/presentation/view/home/server_item.dart';
+import 'package:discord_replicate/domain/bloc/server/server_bloc.dart';
+import 'package:discord_replicate/domain/bloc/server/server_event.dart';
+import 'package:discord_replicate/domain/bloc/server/server_state.dart';
+import 'package:discord_replicate/external/app_icon.dart';
+import 'package:discord_replicate/presentation/view/home/server_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

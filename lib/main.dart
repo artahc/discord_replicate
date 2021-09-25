@@ -1,8 +1,8 @@
-import 'package:discord_ui_practice/domain/bloc/direct_message/direct_message_bloc.dart';
-import 'package:discord_ui_practice/domain/bloc/server/server_bloc.dart';
-import 'package:discord_ui_practice/domain/cubit/theme/theme_cubit.dart';
-import 'package:discord_ui_practice/domain/route_generator.dart';
-import 'package:discord_ui_practice/external/app_theme.dart';
+import 'package:discord_replicate/domain/bloc/direct_message/direct_message_bloc.dart';
+import 'package:discord_replicate/domain/bloc/server/server_bloc.dart';
+import 'package:discord_replicate/domain/cubit/theme/theme_cubit.dart';
+import 'package:discord_replicate/domain/route_generator.dart';
+import 'package:discord_replicate/external/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

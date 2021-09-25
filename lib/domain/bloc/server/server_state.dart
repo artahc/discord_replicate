@@ -1,4 +1,4 @@
-import 'package:discord_ui_practice/data/model/server_data.dart';
+import 'package:discord_replicate/data/model/server_data.dart';
 
 abstract class ServerState {}
 

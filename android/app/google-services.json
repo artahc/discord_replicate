@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1070844573766",
+    "project_id": "discordreplicate",
+    "storage_bucket": "discordreplicate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070844573766:android:aaa2509cca56a61da2b247",
+        "android_client_info": {
+          "package_name": "com.artahc.discord_replicate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070844573766-oqaeb1sogg3o9jtp34nhcuvqgarm84fm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWpGjgEqsRS2hfVlV_H6wbuUQKKKzGxXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070844573766-oqaeb1sogg3o9jtp34nhcuvqgarm84fm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

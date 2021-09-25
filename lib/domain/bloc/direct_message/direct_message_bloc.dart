@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:discord_ui_practice/domain/bloc/direct_message/direct_message_event.dart';
-import 'package:discord_ui_practice/domain/bloc/direct_message/direct_message_state.dart';
-import 'package:discord_ui_practice/domain/network_wrapper.dart';
+import 'package:discord_replicate/domain/bloc/direct_message/direct_message_event.dart';
+import 'package:discord_replicate/domain/bloc/direct_message/direct_message_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
