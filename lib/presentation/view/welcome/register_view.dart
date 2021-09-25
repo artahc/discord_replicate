@@ -1,4 +1,5 @@
 import 'package:discord_ui_practice/external/app_icon.dart';
+import 'package:discord_ui_practice/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -193,26 +194,9 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                         Flexible(
                           flex: 1,
                           child: AnimatedContainer(
-                            height: 55,
-                            decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(5)),
                             duration: Duration(seconds: 1),
-                            child: TextFormField(
-                              cursorWidth: 3,
-                              cursorRadius: Radius.circular(15),
-                              maxLines: 1,
-                              style: TextStyle(
-                                height: 1,
-                              ),
-                              textAlignVertical: TextAlignVertical.top,
-                              decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
-                                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                  floatingLabelStyle: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(
-                                        height: 0.8,
-                                        fontSize: 14,
-                                        color: Theme.of(context).colorScheme.onPrimary,
-                                      ),
-                                  labelText: _registerOption.value()),
+                            child: AppInputField(
+                              labelText: _registerOption.value(),
                             ),
                           ),
                         ),
@@ -290,39 +274,15 @@ class _CountryCodeBottomSheetPanelState extends State<CountryCodeBottomSheetPane
       padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
       child: Column(
         children: [
-          Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            height: 55,
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(5)),
-            child: TextFormField(
-              cursorWidth: 3,
-              cursorRadius: Radius.circular(15),
-              maxLines: 1,
-              style: TextStyle(
-                height: 1,
+          AppInputField(
+            hintText: "Search",
+            prefixIcon: Container(
+              padding: const EdgeInsets.only(right: 15, left: 15),
+              child: ImageIcon(
+                AssetImage(AppIcon.search_icon),
+                size: 15,
+                color: IconTheme.of(context).color,
               ),
-              textAlignVertical: TextAlignVertical.top,
-              decoration: InputDecoration(
-                  prefixIconConstraints: BoxConstraints(maxWidth: 30, maxHeight: 30),
-                  prefixIcon: Container(
-                    padding: const EdgeInsets.only(right: 10, left: 5),
-                    child: ImageIcon(
-                      AssetImage(AppIcon.search_icon),
-                      size: 50,
-                      color: IconTheme.of(context).color,
-                    ),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                  floatingLabelStyle: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(
-                        height: 0.8,
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
-                  hintText: "Search",
-                  hintStyle: Theme.of(context).inputDecorationTheme.labelStyle),
             ),
           ),
           Expanded(
@@ -337,7 +297,7 @@ class _CountryCodeBottomSheetPanelState extends State<CountryCodeBottomSheetPane
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Country"),
-                      Text("+0${index}"),
+                      Text("+0$index"),
                     ],
                   ),
                 );

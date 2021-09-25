@@ -1,12 +1,12 @@
-import 'package:discord_ui_practice/presentation/view/landing_view/channel_info_panel.dart';
-import 'package:discord_ui_practice/presentation/view/landing_view/channel_message_panel.dart';
-import 'package:discord_ui_practice/presentation/view/landing_view/direct_message_panel.dart';
-import 'package:discord_ui_practice/presentation/view/landing_view/server_list_panel.dart';
-import 'package:discord_ui_practice/presentation/view/widgets/app_navigation_bar.dart';
+import 'package:discord_ui_practice/external/app_extension.dart';
+import 'package:discord_ui_practice/presentation/view/home/bottom_navigation_bar.dart';
+import 'package:discord_ui_practice/presentation/view/home/channel_info_panel.dart';
+import 'package:discord_ui_practice/presentation/view/home/channel_message_panel.dart';
+import 'package:discord_ui_practice/presentation/view/home/direct_message_panel.dart';
+import 'package:discord_ui_practice/presentation/view/home/server_list_panel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:discord_ui_practice/external/math.dart';
 
 enum PageState { LEFT, CENTER, RIGHT }
 enum SwipeDirection { LEFT, RIGHT }
@@ -19,7 +19,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   static const int _swipeDuration = 350; // animation duration in milli
   static const int _navbarAnimDuration = 250; // in milli
-  static const int _swipeVelocitySensitivity = 250; // velocity
+  // static const int _swipeVelocitySensitivity = 250; // velocity
   static const double _swipeThreshold = 0.5;
 
   late AnimationController _pageAnimController;
@@ -132,7 +132,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           maintainState: true,
                           maintainAnimation: true,
                           maintainSize: true,
-                          child: ChannelInfoPage(),
+                          child: ChannelInfoPanel(),
                         ),
                         Positioned.fill(
                           child: SlideTransition(
@@ -142,7 +142,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                 _pageAnimController.animateTo(0).whenComplete(() => _pageStateSubject.add(PageState.CENTER));
                                 _navBarAnimController.animateTo(0);
                               },
-                              child: ChannelMessagePage(),
+                              child: ChannelMessagePanel(),
                             ),
                           ),
                         ),
@@ -151,7 +151,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           right: 0,
                           bottom: 0,
                           child: SlideTransition(
-                            child: AppNavigationBar(),
+                            child: HomeNavigationBar(),
                             position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_navBarAnimController),
                           ),
                         ),

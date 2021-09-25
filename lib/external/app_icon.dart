@@ -4,7 +4,7 @@ class AppIcon {
   static const discord_icon = _url + "discord.png";
   static const discord_text_icon = _url + "discord_logo_text.png";
   static const picture_icon = _url + "insert-picture-icon.png";
-  static const gift_icon = _url + "giftbox.png";
+  static const gift_icon = _url + "gift-box.png";
   static const emoji_icon = _url + "emoji.png";
   static const phone_icon = _url + "phone-call.png";
   static const video_icon = _url + "video-camera.png";

@@ -1,3 +1,4 @@
+import 'package:discord_ui_practice/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {
@@ -49,56 +50,16 @@ class LoginView extends StatelessWidget {
             ),
             Flexible(
               flex: 1,
-              child: Container(
+              child: AppInputField(
                 margin: const EdgeInsets.only(top: 28),
-                height: 55,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(5)),
-                child: TextFormField(
-                  cursorWidth: 3,
-                  cursorRadius: Radius.circular(15),
-                  maxLines: 1,
-                  style: TextStyle(
-                    height: 1,
-                  ),
-                  textAlignVertical: TextAlignVertical.top,
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      floatingLabelStyle: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(
-                            height: 0.8,
-                            fontSize: 14,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                      labelText: "Email or Phone Number"),
-                ),
+                labelText: "Email or Phone Number",
               ),
             ),
             Flexible(
               flex: 1,
-              child: Container(
+              child: AppInputField(
                 margin: const EdgeInsets.only(top: 12),
-                height: 55,
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(5)),
-                child: TextFormField(
-                  cursorWidth: 3,
-                  cursorRadius: Radius.circular(15),
-                  maxLines: 1,
-                  style: TextStyle(
-                    height: 1,
-                  ),
-                  textAlignVertical: TextAlignVertical.top,
-                  decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      floatingLabelStyle: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(
-                            height: 0.8,
-                            fontSize: 14,
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                      labelText: "Password"),
-                ),
+                labelText: "Password",
               ),
             ),
             Container(
@@ -123,24 +84,12 @@ class LoginView extends StatelessWidget {
                 alignment: Alignment.centerLeft,
               ),
             ),
-
-            Container(
+            AppMaterialButton(
               margin: const EdgeInsets.only(top: 15),
-              child: SizedBox(
-                height: 45,
-                width: double.infinity,
-                child: MaterialButton(
-                  elevation: 0,
-                  color: Theme.of(context).buttonTheme.colorScheme!.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text("Login"),
-                  onPressed: () {
-                    print("Login");
-                  },
-                ),
-              ),
+              onPressed: () {
+                print("Login");
+              },
+              child: Text("Login"),
             ),
           ],
         ),

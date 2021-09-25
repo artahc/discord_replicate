@@ -1,9 +1,9 @@
 import 'package:discord_ui_practice/external/app_icon.dart';
-import 'package:discord_ui_practice/presentation/view/widgets/circle_container.dart';
+import 'package:discord_ui_practice/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ChannelInfoPage extends StatelessWidget {
+class ChannelInfoPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(

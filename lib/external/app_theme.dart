@@ -77,11 +77,12 @@ class AppTheme {
       isDense: true,
       focusedBorder: InputBorder.none,
       border: InputBorder.none,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12),
-      floatingLabelBehavior: FloatingLabelBehavior.always,
+      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       floatingLabelStyle: TextStyle(
+        height: 0.8,
         fontSize: 14,
-        color: Color(0xff72767b),
+        color: Color(0xffb9bbbe),
         overflow: TextOverflow.ellipsis,
       ),
       labelStyle: TextStyle(
@@ -89,8 +90,12 @@ class AppTheme {
         color: Color(0xff72767b),
         overflow: TextOverflow.ellipsis,
       ),
+      hintStyle: TextStyle(
+        fontSize: 16,
+        color: Color(0xff72767b),
+        overflow: TextOverflow.ellipsis,
+      ),
     ),
-
   );
 
   static final lightThemeData = ThemeData();

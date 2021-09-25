@@ -2,6 +2,7 @@ import 'package:discord_ui_practice/domain/route_generator.dart';
 import 'package:discord_ui_practice/external/app_icon.dart';
 import 'package:discord_ui_practice/presentation/view/welcome/login_view.dart';
 import 'package:discord_ui_practice/presentation/view/welcome/register_view.dart';
+import 'package:discord_ui_practice/presentation/widgets/app_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -45,40 +46,23 @@ class WelcomeView extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 25),
-              SizedBox(
-                height: 45,
-                width: double.infinity,
-                child: MaterialButton(
-                  elevation: 0,
-                  color: Theme.of(context).buttonTheme.colorScheme!.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text("Register"),
-                  onPressed: () {
-                    print("Register");
-                    Navigator.of(context).push(CustomSlideTransition(currentPage: this, nextPage: const RegisterView()));
-                  },
-                ),
+              AppMaterialButton(
+                child: Text("Register"),
+                onPressed: () {
+                  print("Register");
+                  Navigator.of(context).push(CustomSlideTransition(currentPage: this, nextPage: const RegisterView()));
+                },
               ),
               SizedBox(
                 height: 10,
               ),
-              SizedBox(
-                height: 45,
-                width: double.infinity,
-                child: MaterialButton(
-                  elevation: 0,
-                  color: Theme.of(context).buttonTheme.colorScheme!.secondary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text("Login"),
-                  onPressed: () {
-                    print("Login");
-                    Navigator.of(context).push(CustomSlideTransition(currentPage: this, nextPage: const LoginView()));
-                  },
-                ),
+              AppMaterialButton(
+                color: Theme.of(context).buttonTheme.colorScheme!.secondary,
+                child: Text("Login"),
+                onPressed: () {
+                  print("Login");
+                  Navigator.of(context).push(CustomSlideTransition(currentPage: this, nextPage: const LoginView()));
+                },
               ),
               SizedBox(height: 25),
             ],

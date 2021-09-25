@@ -1,15 +1,15 @@
 import 'package:discord_ui_practice/data/model/message_data.dart';
 import 'package:discord_ui_practice/external/app_icon.dart';
-import 'package:discord_ui_practice/presentation/view/landing_view/channel_message_page/channel_message_item.dart';
+import 'package:discord_ui_practice/presentation/view/home/channel_message_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ChannelMessagePage extends StatefulWidget {
+class ChannelMessagePanel extends StatefulWidget {
   @override
-  _ChannelMessagePageState createState() => _ChannelMessagePageState();
+  _ChannelMessagePanelState createState() => _ChannelMessagePanelState();
 }
 
-class _ChannelMessagePageState extends State<ChannelMessagePage> {
+class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
