@@ -17,8 +17,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
 
   @override
   void initState() {
-    BlocProvider.of<AuthBloc>(context)
-      ..add(AuthInitialEvent());
+    BlocProvider.of<AuthBloc>(context);
     super.initState();
   }
 

@@ -5,7 +5,7 @@ class AppTheme {
   static final darkThemeData = ThemeData(
     brightness: Brightness.dark,
     highlightColor: Colors.transparent,
-    splashColor: Colors.transparent,
+    splashColor: Color(0xff303136),
     backgroundColor: Color(0xff202226),
     colorScheme: ColorScheme.dark(
       brightness: Brightness.dark,

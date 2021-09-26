@@ -52,7 +52,7 @@ class _MainState extends State<Main> {
             child: MaterialApp(
               theme: AppTheme.darkThemeData,
               onGenerateRoute: RouteGenerator.generateRoutes,
-              initialRoute: Routes.InitialRoute,
+              initialRoute: Routes.WelcomeRoute,
               debugShowCheckedModeBanner: false,
             ),
           );

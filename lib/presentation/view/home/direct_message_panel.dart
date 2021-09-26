@@ -1,9 +1,12 @@
 import 'package:discord_replicate/domain/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/domain/bloc/direct_message/direct_message_state.dart';
+import 'package:discord_replicate/presentation/route_transition/app_transition.dart';
 import 'package:discord_replicate/presentation/view/home/direct_message_item.dart';
 import 'package:discord_replicate/external/app_icon.dart';
+import 'package:discord_replicate/presentation/view/home/direct_message_search_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DirectMessageListPanel extends StatefulWidget {
   @override
@@ -50,26 +53,31 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
               ),
             ),
             Flexible(
-              child: Container(
-                height: 30,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Find or start a conversation",
-                      style: Theme.of(context).textTheme.caption?.copyWith(
-                            color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
-                          ),
-                    ),
-                    ImageIcon(AssetImage(AppIcon.search_icon)),
-                  ],
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(SlideUpTransition(nextPage: DirectMessageSearchPanel()));
+                },
+                child: Container(
+                  height: 30,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Find or start a conversation",
+                        style: Theme.of(context).textTheme.caption?.copyWith(
+                              color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
+                            ),
+                      ),
+                      ImageIcon(AssetImage(AppIcon.search_icon)),
+                    ],
+                  ),
                 ),
               ),
             ),
