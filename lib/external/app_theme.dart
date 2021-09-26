@@ -77,7 +77,7 @@ class AppTheme {
       isDense: true,
       focusedBorder: InputBorder.none,
       border: InputBorder.none,
-      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 12),
+      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       floatingLabelStyle: TextStyle(
         height: 0.8,

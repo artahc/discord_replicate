@@ -1,4 +1,4 @@
-import 'package:discord_replicate/domain/route_generator.dart';
+import 'package:discord_replicate/domain/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/presentation/view/welcome/login_view.dart';
 import 'package:discord_replicate/presentation/view/welcome/register_view.dart';

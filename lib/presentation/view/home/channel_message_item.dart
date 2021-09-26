@@ -18,6 +18,7 @@ class MessageItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleContainer(
+            color: Theme.of(context).buttonTheme.colorScheme?.primary,
             size: Size(40, 40),
             child: null,
           ),

@@ -31,6 +31,7 @@ class DirectMessageItem extends StatelessWidget {
       child: Row(
         children: [
           CircleContainer(
+            color: Theme.of(context).buttonTheme.colorScheme?.primary,
             size: Size(40, 40),
             child: SizedBox(),
           ),

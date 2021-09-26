@@ -1,7 +1,7 @@
 import 'package:discord_replicate/domain/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/domain/bloc/direct_message/direct_message_state.dart';
-import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/presentation/view/home/direct_message_item.dart';
+import 'package:discord_replicate/external/app_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +32,7 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.only(top: 15, bottom: 15),
+              margin: EdgeInsets.only(top: 15, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,35 +49,28 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                 ],
               ),
             ),
-            Container(
-              height: 30,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: TextField(
-                      textAlignVertical: TextAlignVertical.center,
-                      minLines: 1,
-                      style: Theme.of(context).textTheme.subtitle1,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        isCollapsed: true,
-                        focusedBorder: InputBorder.none,
-                        border: InputBorder.none,
-                        hintText: "Find or start a conversation",
-                        // hintStyle: TextStyle(color: Colors.white, fontSize: 12)
-                        hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
-                      ),
+            Flexible(
+              child: Container(
+                height: 30,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Find or start a conversation",
+                      style: Theme.of(context).textTheme.caption?.copyWith(
+                            color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
+                          ),
                     ),
-                  ),
-                  ImageIcon(AssetImage(AppIcon.search_icon)),
-                ],
+                    ImageIcon(AssetImage(AppIcon.search_icon)),
+                  ],
+                ),
               ),
             ),
             Flexible(

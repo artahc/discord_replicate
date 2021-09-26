@@ -1,6 +1,7 @@
 import 'package:discord_replicate/data/model/message_data.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/presentation/view/home/channel_message_item.dart';
+import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -142,7 +143,7 @@ class _ChatInput extends StatelessWidget {
             children: [
               ClipOval(
                 child: Container(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).backgroundColor,
                   child: IconButton(
                     onPressed: () {
                       print("Channel Info pressed");
@@ -157,7 +158,7 @@ class _ChatInput extends StatelessWidget {
               ),
               ClipOval(
                 child: Container(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).backgroundColor,
                   child: IconButton(
                     onPressed: () {
                       print("Channel Info pressed");
@@ -172,65 +173,91 @@ class _ChatInput extends StatelessWidget {
               ),
             ],
           ),
-          Expanded(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: 40),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                width: 100,
-                margin: EdgeInsets.only(left: 5),
-                alignment: Alignment.centerLeft,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25),
-                  // color: Color(0xff303136),
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        minLines: 1,
-                        maxLines: 5,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 0,
-                            horizontal: 15,
-                          ),
-                          focusedBorder: InputBorder.none,
-                          border: InputBorder.none,
-                          hintText: "Message #general",
-                          hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
-                        ),
-                      ),
+
+          Flexible(
+            child: Align(
+              child: AppInputField(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                margin: const EdgeInsets.only(right: 5, left: 5),
+                height: 40,
+                backgroundColor: Theme.of(context).backgroundColor,
+                borderRadius: BorderRadius.circular(50),
+                hintText: "Message #channel",
+                hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+                      color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
+                      height: 1.2,
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(right: 5),
-                      child: MaterialButton(
-                        minWidth: 40,
-                        height: 40,
-                        splashColor: Colors.transparent,
-                        visualDensity: VisualDensity.compact,
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        child: ImageIcon(
-                          AssetImage(AppIcon.emoji_icon),
-                          color: IconTheme.of(context).color,
-                          size: 20,
-                        ),
-                        onPressed: () {
-                          print("emoji pressed");
-                        },
-                      ),
-                    )
-                  ],
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: ImageIcon(
+                    AssetImage(AppIcon.emoji_icon),
+                    size: 20,
+                    color: IconTheme.of(context).color,
+                  ),
                 ),
               ),
             ),
           )
+
+          // Expanded(
+          //   child: ConstrainedBox(
+          //     constraints: BoxConstraints(minHeight: 40),
+          //     child: Container(
+          //       padding: EdgeInsets.symmetric(vertical: 5),
+          //       width: 100,
+          //       margin: EdgeInsets.only(left: 5),
+          //       alignment: Alignment.centerLeft,
+          //       decoration: BoxDecoration(
+          //         borderRadius: BorderRadius.circular(25),
+          //         // color: Color(0xff303136),
+          //         color: Theme.of(context).colorScheme.primary,
+          //       ),
+          //       child: Row(
+          //         children: [
+          //           Expanded(
+          //             child: TextField(
+          //               minLines: 1,
+          //               maxLines: 5,
+          //               style: TextStyle(
+          //                 color: Colors.white,
+          //                 fontSize: 12,
+          //               ),
+          //               decoration: InputDecoration(
+          //                 isDense: true,
+          //                 contentPadding: EdgeInsets.symmetric(
+          //                   vertical: 0,
+          //                   horizontal: 15,
+          //                 ),
+          //                 focusedBorder: InputBorder.none,
+          //                 border: InputBorder.none,
+          //                 hintText: "Message #general",
+          //                 hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
+          //               ),
+          //             ),
+          //           ),
+          //           Container(
+          //             margin: const EdgeInsets.only(right: 5),
+          //             child: MaterialButton(
+          //               minWidth: 40,
+          //               height: 40,
+          //               splashColor: Colors.transparent,
+          //               visualDensity: VisualDensity.compact,
+          //               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          //               child: ImageIcon(
+          //                 AssetImage(AppIcon.emoji_icon),
+          //                 color: IconTheme.of(context).color,
+          //                 size: 20,
+          //               ),
+          //               onPressed: () {
+          //                 print("emoji pressed");
+          //               },
+          //             ),
+          //           )
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

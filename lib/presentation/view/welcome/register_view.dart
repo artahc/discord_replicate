@@ -1,16 +1,10 @@
+import 'package:discord_replicate/domain/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-
-enum RegisterOptions { Phone, Email }
-
-extension ParseToString on RegisterOptions {
-  String value() {
-    return this.toString().split('.').last;
-  }
-}
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -21,7 +15,10 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> with TickerProviderStateMixin {
   late TabController _tabCtrl;
-  late PanelController _bottomSheetCtrl;
+  final PanelController _bottomSheetCtrl = PanelController();
+  final TextEditingController _registerCtrl = TextEditingController();
+  final TextEditingController _countryCodeCtrl = TextEditingController();
+
   RegisterOptions _registerOption = RegisterOptions.Phone;
 
   void _showCountryCodeBottomSheet() {
@@ -31,13 +28,13 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
   @override
   initState() {
     _tabCtrl = TabController(length: 2, vsync: this);
-    _bottomSheetCtrl = PanelController();
     super.initState();
   }
 
   @override
   dispose() {
     _tabCtrl.dispose();
+    _registerCtrl.dispose();
     super.dispose();
   }
 
@@ -59,7 +56,9 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
         snapPoint: 0.5,
         renderPanelSheet: true,
         panelSnapping: true,
-        panel: const CountryCodeBottomSheetPanel(),
+        panel: CountryCodeBottomSheetPanel(
+          countryCodeSearchCtrl: _countryCodeCtrl,
+        ),
         body: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.secondary,
           appBar: AppBar(
@@ -196,6 +195,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                           child: AnimatedContainer(
                             duration: Duration(seconds: 1),
                             child: AppInputField(
+                              controller: _registerCtrl,
                               labelText: _registerOption.value(),
                             ),
                           ),
@@ -210,7 +210,8 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                     child: Text(
                       "View our Privacy Policy",
                       textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
+                      style:
+                          Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
                     ),
                     alignment: Alignment.centerLeft,
                   ),
@@ -230,6 +231,8 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                       onPressed: () {
                         print("Register");
                         FocusScope.of(context).unfocus();
+                        BlocProvider.of<AuthBloc>(context)
+                            .add(AuthSignUpEvent(option: _registerOption, id: _registerCtrl.text));
                       },
                     ),
                   ),
@@ -244,30 +247,15 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
 }
 
 class CountryCodeBottomSheetPanel extends StatefulWidget {
-  const CountryCodeBottomSheetPanel({Key? key}) : super(key: key);
+  final TextEditingController countryCodeSearchCtrl;
+
+  const CountryCodeBottomSheetPanel({Key? key, required this.countryCodeSearchCtrl}) : super(key: key);
 
   @override
   State<CountryCodeBottomSheetPanel> createState() => _CountryCodeBottomSheetPanelState();
 }
 
 class _CountryCodeBottomSheetPanelState extends State<CountryCodeBottomSheetPanel> {
-  late TextEditingController countryCodeSearchCtrl;
-
-  @override
-  void initState() {
-    countryCodeSearchCtrl = TextEditingController();
-    countryCodeSearchCtrl.addListener(() {
-      print("Listen");
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    countryCodeSearchCtrl.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -275,6 +263,7 @@ class _CountryCodeBottomSheetPanelState extends State<CountryCodeBottomSheetPane
       child: Column(
         children: [
           AppInputField(
+            controller: widget.countryCodeSearchCtrl,
             hintText: "Search",
             prefixIcon: Container(
               padding: const EdgeInsets.only(right: 15, left: 15),

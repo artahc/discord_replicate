@@ -1,3 +1,4 @@
+import 'package:discord_replicate/external/app_icon.dart';
 import 'package:flutter/material.dart';
 
 class AppInputField extends StatelessWidget {
@@ -8,30 +9,57 @@ class AppInputField extends StatelessWidget {
   final String? hintText;
   final BoxConstraints? prefixIconConstraint;
   final Widget? prefixIcon;
+  final double height;
+  final TextStyle? hintStyle;
+  final BorderRadius? borderRadius;
+  final Color? backgroundColor;
+  final Widget? suffixIcon;
 
-  const AppInputField({Key? key, this.margin, this.padding, this.labelText, this.hintText, this.prefixIcon, this.prefixIconConstraint, this.controller})
-      : super(key: key);
+  const AppInputField({
+    Key? key,
+    this.controller,
+    this.margin,
+    this.padding,
+    this.height = 55,
+    this.labelText,
+    this.hintText,
+    this.hintStyle,
+    this.prefixIcon,
+    this.prefixIconConstraint,
+    this.suffixIcon,
+    this.backgroundColor,
+    this.borderRadius,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Container(
       margin: margin,
-      height: 55,
+      height: height,
       alignment: Alignment.centerLeft,
-      decoration: BoxDecoration(color: Theme.of(context).backgroundColor, borderRadius: BorderRadius.circular(5)),
-      child: TextFormField(
+      decoration: BoxDecoration(
+        color: backgroundColor ?? Theme.of(context).backgroundColor,
+        borderRadius: borderRadius ?? BorderRadius.circular(5),
+      ),
+      child: TextField(
+        controller: controller,
         cursorWidth: 3,
         cursorRadius: Radius.circular(15),
         maxLines: 1,
         style: TextStyle(
           height: 1,
         ),
-        textAlignVertical: TextAlignVertical.top,
+        textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,
+          hintStyle: hintStyle ?? theme.inputDecorationTheme.hintStyle,
           prefixIcon: prefixIcon,
           prefixIconConstraints: BoxConstraints(maxWidth: 50, maxHeight: 50),
+          suffixIcon: suffixIcon,
+          suffixIconConstraints: BoxConstraints(maxWidth: 100, maxHeight: 100),
+          contentPadding: padding ?? theme.inputDecorationTheme.contentPadding,
         ),
       ),
     );

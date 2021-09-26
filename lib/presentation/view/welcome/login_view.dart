@@ -1,8 +1,34 @@
+import 'package:discord_replicate/domain/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  late TextEditingController _identityCtrl;
+  late TextEditingController _passwordCtrl;
+  late AuthBloc _authBloc;
+
+  @override
+  void initState() {
+    _identityCtrl = TextEditingController();
+    _passwordCtrl = TextEditingController();
+    _authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _identityCtrl.dispose();
+    _passwordCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +44,7 @@ class LoginView extends StatelessWidget {
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context).pop();
+              _authBloc.add(AuthSignOutEvent());
             },
           ),
         ),
@@ -51,6 +78,7 @@ class LoginView extends StatelessWidget {
             Flexible(
               flex: 1,
               child: AppInputField(
+                controller: _identityCtrl,
                 margin: const EdgeInsets.only(top: 28),
                 labelText: "Email or Phone Number",
               ),
@@ -58,6 +86,7 @@ class LoginView extends StatelessWidget {
             Flexible(
               flex: 1,
               child: AppInputField(
+                controller: _passwordCtrl,
                 margin: const EdgeInsets.only(top: 12),
                 labelText: "Password",
               ),
@@ -87,10 +116,13 @@ class LoginView extends StatelessWidget {
             AppMaterialButton(
               margin: const EdgeInsets.only(top: 15),
               onPressed: () {
-                print("Login");
+                var id = _identityCtrl.text;
+                var password = _passwordCtrl.text;
+                _authBloc.add(AuthSignInEvent(id: id, password: password));
               },
               child: Text("Login"),
             ),
+            
           ],
         ),
       ),

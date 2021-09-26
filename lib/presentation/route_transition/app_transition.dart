@@ -4,7 +4,7 @@ class CustomSlideTransition extends PageRouteBuilder {
   final Widget nextPage;
   final Widget currentPage;
 
-  CustomSlideTransition({required this.nextPage, required this.currentPage})
+  CustomSlideTransition({required this.currentPage, required this.nextPage})
       : super(
           pageBuilder: (context, animation, secondaryAnimation) {
             return nextPage;

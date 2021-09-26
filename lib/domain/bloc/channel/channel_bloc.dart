@@ -1,6 +1,5 @@
 import 'package:discord_replicate/data/model/channel_data.dart';
 import 'package:discord_replicate/data/model/message_data.dart';
-import 'package:discord_replicate/data/repository/channel_repository.dart';
 import 'package:discord_replicate/domain/bloc/channel/channel_event.dart';
 import 'package:discord_replicate/domain/bloc/channel/channel_state.dart';
 import 'package:discord_replicate/domain/network_wrapper.dart';

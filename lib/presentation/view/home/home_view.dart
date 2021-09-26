@@ -12,6 +12,8 @@ enum PageState { LEFT, CENTER, RIGHT }
 enum SwipeDirection { LEFT, RIGHT }
 
 class HomeView extends StatefulWidget {
+  const HomeView({Key? key}) : super(key: key);
+
   @override
   _HomeViewState createState() => _HomeViewState();
 }
@@ -85,7 +87,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           double width = MediaQuery.of(context).size.width;
           double v = dir.dx.remap(0, _swipeDirection == SwipeDirection.LEFT ? -width : width, 0, 1);
 
-          if (!(_swipeDirection == SwipeDirection.RIGHT && _pageState == PageState.RIGHT || _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.LEFT)) {
+          if (!(_swipeDirection == SwipeDirection.RIGHT && _pageState == PageState.RIGHT ||
+              _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.LEFT)) {
             _pageAnimController.value = (_pageState == PageState.CENTER ? v : 1 - v);
           }
         },
@@ -93,7 +96,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
           // TODO: handle swipe based on velocity
           if (_pageAnimController.value > _swipeThreshold) {
             _pageAnimController.animateTo(1, curve: Curves.easeInSine).whenComplete(() {
-              if (_pageState == PageState.CENTER) _pageStateSubject.add(_swipeDirection == SwipeDirection.RIGHT ? PageState.RIGHT : PageState.LEFT);
+              if (_pageState == PageState.CENTER)
+                _pageStateSubject.add(_swipeDirection == SwipeDirection.RIGHT ? PageState.RIGHT : PageState.LEFT);
             });
           } else {
             _pageAnimController.animateTo(0, curve: Curves.easeInSine).whenComplete(() {
@@ -114,7 +118,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     return Stack(
                       children: [
                         Visibility(
-                          visible: _swipeDirection == SwipeDirection.RIGHT && _pageState == PageState.CENTER || _pageState == PageState.RIGHT,
+                          visible: _swipeDirection == SwipeDirection.RIGHT && _pageState == PageState.CENTER ||
+                              _pageState == PageState.RIGHT,
                           maintainState: true,
                           maintainAnimation: true,
                           maintainSize: true,
@@ -128,7 +133,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           ),
                         ),
                         Visibility(
-                          visible: _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.CENTER || _pageState == PageState.LEFT,
+                          visible: _swipeDirection == SwipeDirection.LEFT && _pageState == PageState.CENTER ||
+                              _pageState == PageState.LEFT,
                           maintainState: true,
                           maintainAnimation: true,
                           maintainSize: true,
@@ -136,10 +142,13 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         ),
                         Positioned.fill(
                           child: SlideTransition(
-                            position: _tween.animate(CurvedAnimation(parent: _pageAnimController, curve: Curves.easeInOutCubic)),
+                            position: _tween
+                                .animate(CurvedAnimation(parent: _pageAnimController, curve: Curves.easeInOutCubic)),
                             child: GestureDetector(
                               onTap: () {
-                                _pageAnimController.animateTo(0).whenComplete(() => _pageStateSubject.add(PageState.CENTER));
+                                _pageAnimController
+                                    .animateTo(0)
+                                    .whenComplete(() => _pageStateSubject.add(PageState.CENTER));
                                 _navBarAnimController.animateTo(0);
                               },
                               child: ChannelMessagePanel(),
@@ -152,7 +161,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           bottom: 0,
                           child: SlideTransition(
                             child: HomeNavigationBar(),
-                            position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_navBarAnimController),
+                            position:
+                                Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_navBarAnimController),
                           ),
                         ),
                       ],
