@@ -74,7 +74,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               onError: (e) => AuthStateError(e),
             );
         dev.log("Sign up result: $result", name: this.runtimeType.toString());
-        // TODO : emit
+        emit(result);
         break;
       case RegisterOptions.Phone:
         dev.log("Sign up with phone number is not supported yet.", name: this.runtimeType.toString());

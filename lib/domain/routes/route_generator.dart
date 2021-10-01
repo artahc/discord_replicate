@@ -24,7 +24,7 @@ class RouteGenerator {
       case Routes.LoginRoute:
         return MaterialPageRoute(builder: (_) => const LoginView());
       case Routes.LandingRoute:
-        return MaterialPageRoute(builder: (_) => const HomeView());
+        return MaterialPageRoute(builder: (_) => const ChannelView());
       default:
         return MaterialPageRoute(builder: (_) => const WelcomeView());
     }

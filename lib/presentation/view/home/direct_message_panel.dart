@@ -1,9 +1,9 @@
 import 'package:discord_replicate/domain/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/domain/bloc/direct_message/direct_message_state.dart';
 import 'package:discord_replicate/presentation/route_transition/app_transition.dart';
-import 'package:discord_replicate/presentation/view/home/direct_message_item.dart';
+import 'package:discord_replicate/presentation/view/home/direct_message_tile.dart';
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/presentation/view/home/direct_message_search_panel.dart';
+import 'package:discord_replicate/presentation/view/home/search_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -55,7 +55,7 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
             Flexible(
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(SlideUpTransition(nextPage: DirectMessageSearchPanel()));
+                  Navigator.of(context).push(SlideUpTransition(nextPage: SearchPanel()));
                 },
                 child: Container(
                   height: 30,
@@ -89,7 +89,7 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                     builder: (context, state) {
                       return Column(
                         children: [
-                          DirectMessageItem(
+                          DirectMessageTile(
                             id: "randomId",
                             title: "Random User",
                             status: UserStatus("emoji", "Working on stuff~2qqqqqqq"),

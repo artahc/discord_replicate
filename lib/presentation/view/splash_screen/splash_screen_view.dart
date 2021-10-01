@@ -1,7 +1,6 @@
 import 'package:discord_replicate/domain/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/domain/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/presentation/view/app_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:developer' as dev;
@@ -14,10 +13,10 @@ class SplashScreenView extends StatefulWidget {
 }
 
 class _SplashScreenViewState extends State<SplashScreenView> {
-
   @override
   void initState() {
-    BlocProvider.of<AuthBloc>(context);
+    dev.log("Init splash screen");
+    BlocProvider.of<AuthBloc>(context)..add(AuthInitialEvent());
     super.initState();
   }
 
@@ -27,16 +26,13 @@ class _SplashScreenViewState extends State<SplashScreenView> {
       listener: (_, state) {
         if (state is AuthStateSignedIn) {
           Navigator.of(context).pushReplacementNamed(Routes.LandingRoute);
-        }
-        else if (state is AuthStateSignedOut) {
+        } else if (state is AuthStateSignedOut) {
           Navigator.of(context).pushReplacementNamed(Routes.WelcomeRoute);
         }
       },
       child: SizedBox.expand(
         child: Container(
-          color: Theme
-              .of(context)
-              .backgroundColor,
+          color: Theme.of(context).backgroundColor,
           child: Center(
             child: Container(
               constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),

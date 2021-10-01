@@ -5,7 +5,6 @@ import 'package:discord_replicate/domain/cubit/theme/theme_cubit.dart';
 import 'package:discord_replicate/domain/routes/route_generator.dart';
 import 'package:discord_replicate/domain/services/firebase_auth_service.dart';
 import 'package:discord_replicate/external/app_theme.dart';
-import 'package:discord_replicate/presentation/view/splash_screen/splash_screen_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +15,10 @@ import 'dart:developer' as dev;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: Color(0xff202226), // navigation bar color
-    statusBarColor: Color(0xff202226), // status bar color
+    // systemNavigationBarColor: Color(0xff202226), // navigation bar color
+    // statusBarColor: Color(0xff202226), // status bar color
+    systemNavigationBarColor: Colors.transparent, // navigation bar color
+    statusBarColor: Colors.transparent, // statu
   ));
   runApp(Main());
 }
@@ -52,7 +53,7 @@ class _MainState extends State<Main> {
             child: MaterialApp(
               theme: AppTheme.darkThemeData,
               onGenerateRoute: RouteGenerator.generateRoutes,
-              initialRoute: Routes.WelcomeRoute,
+              initialRoute: Routes.InitialRoute,
               debugShowCheckedModeBanner: false,
             ),
           );

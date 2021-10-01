@@ -4,13 +4,13 @@ import 'package:discord_replicate/domain/bloc/server/server_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ServerItem extends StatelessWidget {
+class ServerTile extends StatelessWidget {
   final Key key;
   final ServerData serverData;
   final bool selected;
   final Function? onPressed;
 
-  ServerItem({required this.key, required this.serverData, this.onPressed, this.selected = false}) : super(key: key);
+  ServerTile({required this.key, required this.serverData, this.onPressed, this.selected = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

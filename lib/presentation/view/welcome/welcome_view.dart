@@ -31,7 +31,7 @@ class WelcomeView extends StatelessWidget {
               ),
               Text(
                 "Welcome to Discord",
-                style: Theme.of(context).textTheme.headline5!.copyWith(
+                style: Theme.of(context).textTheme.headline5?.copyWith(
                       fontWeight: FontWeight.bold,
                       height: 2,
                     ),

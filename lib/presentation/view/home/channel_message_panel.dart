@@ -1,11 +1,15 @@
 import 'package:discord_replicate/data/model/message_data.dart';
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/presentation/view/home/channel_message_item.dart';
+import 'package:discord_replicate/presentation/view/app_view.dart';
+import 'package:discord_replicate/presentation/view/home/channel_message_tile.dart';
+import 'package:discord_replicate/presentation/widgets/overlap_swipeable_stack_controller.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ChannelMessagePanel extends StatefulWidget {
+  const ChannelMessagePanel({Key? key}) : super(key: key);
+
   @override
   _ChannelMessagePanelState createState() => _ChannelMessagePanelState();
 }
@@ -32,8 +36,12 @@ class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
 }
 
 class _ChatHeader extends StatelessWidget {
+  const _ChatHeader({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    var controller = context.findAncestorStateOfType<ChannelViewState>()?.channelViewController;
+
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
@@ -46,7 +54,12 @@ class _ChatHeader extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                if (controller?.currentPageState == PageState.OnCenter)
+                  controller?.setState(PageState.OnRight);
+                else
+                  controller?.setState(PageState.OnCenter);
+              },
               iconSize: 18,
               icon: ImageIcon(
                 AssetImage(AppIcon.menu_icon),
@@ -56,12 +69,14 @@ class _ChatHeader extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-              margin: EdgeInsets.only(left: 15),
+              padding: const EdgeInsets.only(left: 5),
               child: Row(
                 children: [
                   Text(
                     "# Direct Message",
-                    style: Theme.of(context).textTheme.headline6,
+                    style: Theme.of(context).textTheme.headline6?.copyWith(
+                          overflow: TextOverflow.clip,
+                        ),
                   ),
                 ],
               ),
@@ -94,6 +109,10 @@ class _ChatHeader extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
+                  if (controller?.currentPageState == PageState.OnCenter)
+                    controller?.setState(PageState.OnLeft);
+                  else
+                    controller?.setState(PageState.OnCenter);
                   print("Channel Info pressed");
                 },
                 visualDensity: VisualDensity.compact,
@@ -119,7 +138,7 @@ class _ChatBody extends StatelessWidget {
         child: ListView.builder(
           itemCount: 15,
           itemBuilder: (context, index) {
-            return MessageItem(MessageData.createDummy());
+            return MessageTile(MessageData.createDummy());
           },
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           scrollDirection: Axis.vertical,
@@ -173,7 +192,6 @@ class _ChatInput extends StatelessWidget {
               ),
             ],
           ),
-
           Flexible(
             child: Align(
               child: AppInputField(
@@ -198,66 +216,6 @@ class _ChatInput extends StatelessWidget {
               ),
             ),
           )
-
-          // Expanded(
-          //   child: ConstrainedBox(
-          //     constraints: BoxConstraints(minHeight: 40),
-          //     child: Container(
-          //       padding: EdgeInsets.symmetric(vertical: 5),
-          //       width: 100,
-          //       margin: EdgeInsets.only(left: 5),
-          //       alignment: Alignment.centerLeft,
-          //       decoration: BoxDecoration(
-          //         borderRadius: BorderRadius.circular(25),
-          //         // color: Color(0xff303136),
-          //         color: Theme.of(context).colorScheme.primary,
-          //       ),
-          //       child: Row(
-          //         children: [
-          //           Expanded(
-          //             child: TextField(
-          //               minLines: 1,
-          //               maxLines: 5,
-          //               style: TextStyle(
-          //                 color: Colors.white,
-          //                 fontSize: 12,
-          //               ),
-          //               decoration: InputDecoration(
-          //                 isDense: true,
-          //                 contentPadding: EdgeInsets.symmetric(
-          //                   vertical: 0,
-          //                   horizontal: 15,
-          //                 ),
-          //                 focusedBorder: InputBorder.none,
-          //                 border: InputBorder.none,
-          //                 hintText: "Message #general",
-          //                 hintStyle: Theme.of(context).inputDecorationTheme.hintStyle,
-          //               ),
-          //             ),
-          //           ),
-          //           Container(
-          //             margin: const EdgeInsets.only(right: 5),
-          //             child: MaterialButton(
-          //               minWidth: 40,
-          //               height: 40,
-          //               splashColor: Colors.transparent,
-          //               visualDensity: VisualDensity.compact,
-          //               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          //               child: ImageIcon(
-          //                 AssetImage(AppIcon.emoji_icon),
-          //                 color: IconTheme.of(context).color,
-          //                 size: 20,
-          //               ),
-          //               onPressed: () {
-          //                 print("emoji pressed");
-          //               },
-          //             ),
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );

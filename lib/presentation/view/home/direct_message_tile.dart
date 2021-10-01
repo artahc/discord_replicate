@@ -13,13 +13,13 @@ class UserStatus {
   }
 }
 
-class DirectMessageItem extends StatelessWidget {
+class DirectMessageTile extends StatelessWidget {
   final String id;
   final String title;
   final bool isGroup;
   final UserStatus? status;
 
-  DirectMessageItem({required this.id, required this.title, this.status, this.isGroup = false});
+  DirectMessageTile({required this.id, required this.title, this.status, this.isGroup = false});
 
   @override
   Widget build(BuildContext context) {
