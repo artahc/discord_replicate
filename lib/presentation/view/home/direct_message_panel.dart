@@ -48,7 +48,6 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                     AssetImage(AppIcon.direct_message_icon),
                     size: 18,
                   ),
-                  // Image(height: 18, image: AssetImage("assets/direct-message.png"))
                 ],
               ),
             ),

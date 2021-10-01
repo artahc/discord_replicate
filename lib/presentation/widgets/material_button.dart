@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppMaterialButton extends StatelessWidget {
   final EdgeInsets? margin;
+  final EdgeInsets? padding;
   final Size size;
   final Widget? child;
   final Function() onPressed;
@@ -14,6 +15,7 @@ class AppMaterialButton extends StatelessWidget {
     this.size = const Size(double.infinity, 45),
     this.color,
     this.margin,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -25,6 +27,7 @@ class AppMaterialButton extends StatelessWidget {
         width: size.width,
         child: MaterialButton(
           elevation: 0,
+          padding: padding ?? const EdgeInsets.all(0),
           color: color ?? Theme.of(context).buttonTheme.colorScheme!.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),

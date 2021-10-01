@@ -15,7 +15,7 @@ class SplashScreenView extends StatefulWidget {
 class _SplashScreenViewState extends State<SplashScreenView> {
   @override
   void initState() {
-    dev.log("Init splash screen");
+    dev.log("Init splash screen", name: this.runtimeType.toString());
     BlocProvider.of<AuthBloc>(context)..add(AuthInitialEvent());
     super.initState();
   }
