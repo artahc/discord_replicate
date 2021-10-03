@@ -39,6 +39,11 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
     super.dispose();
   }
 
+  void _signUp() {
+    FocusScope.of(context).unfocus();
+    BlocProvider.of<AuthBloc>(context).add(AuthEvent.signUpEvent(option: _registerOption, id: _registerCtrl.text));
+  }
+
   Widget build(BuildContext context) {
     return Material(
       child: SlidingUpPanel(
@@ -211,8 +216,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                     child: Text(
                       "View our Privacy Policy",
                       textAlign: TextAlign.start,
-                      style:
-                          Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
+                      style: Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
                     ),
                     alignment: Alignment.centerLeft,
                   ),
@@ -229,12 +233,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text("Next"),
-                      onPressed: () {
-                        print("Register");
-                        FocusScope.of(context).unfocus();
-                        BlocProvider.of<AuthBloc>(context)
-                            .add(AuthSignUpEvent(option: _registerOption, id: _registerCtrl.text));
-                      },
+                      onPressed: _signUp,
                     ),
                   ),
                 ),

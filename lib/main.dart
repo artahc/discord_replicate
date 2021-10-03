@@ -36,8 +36,7 @@ class _MainState extends State<Main> {
     return FutureBuilder(
       future: _initializeFirebase,
       builder: (context, snapshot) {
-        dev.log("Initializing FirebaseApp. ConnectionState: ${snapshot.connectionState}",
-            name: this.runtimeType.toString());
+        dev.log("Initializing FirebaseApp. ConnectionState: ${snapshot.connectionState}", name: this.runtimeType.toString());
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SizedBox.expand(
             child: Container(color: AppTheme.darkThemeData.backgroundColor),
