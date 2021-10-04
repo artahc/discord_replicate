@@ -2,6 +2,8 @@ import 'package:discord_replicate/presentation/widgets/overlap_swipeable_stack_c
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+export './overlap_swipeable_stack_controller.dart';
+
 class OverlapSwipeableStack extends StatelessWidget {
   final OverlapSwipeableStackController channelViewController;
 
@@ -9,7 +11,13 @@ class OverlapSwipeableStack extends StatelessWidget {
   final Widget? rightPage;
   final Widget frontPage;
 
-  const OverlapSwipeableStack({Key? key, required this.channelViewController, required this.frontPage, this.leftPage, this.rightPage}) : super(key: key);
+  const OverlapSwipeableStack({
+    Key? key,
+    required this.channelViewController,
+    required this.frontPage,
+    this.leftPage,
+    this.rightPage,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

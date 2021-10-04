@@ -1,11 +1,9 @@
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/presentation/view/app_view.dart';
 import 'package:discord_replicate/presentation/view/home/bottom_navigation_bar.dart';
 import 'package:discord_replicate/presentation/view/home/channel_info_panel.dart';
 import 'package:discord_replicate/presentation/view/home/channel_message_panel.dart';
 import 'package:discord_replicate/presentation/view/home/friends_panel.dart';
 import 'package:discord_replicate/presentation/widgets/overlap_swipeable_stack.dart';
-import 'package:discord_replicate/presentation/widgets/overlap_swipeable_stack_controller.dart';
 import 'package:discord_replicate/presentation/view/home/direct_message_panel.dart';
 import 'package:discord_replicate/presentation/view/home/server_list_panel.dart';
 import 'package:flutter/gestures.dart';
