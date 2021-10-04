@@ -35,16 +35,27 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
+  void _signIn() {
+    var id = _identityCtrl.text;
+    var password = _passwordCtrl.text;
+    _authBloc.add(AuthEvent.signInEvent(id: id, password: password));
+    dev.log(_authBloc.state.toString(), name: this.runtimeType.toString());
+  }
+
+  void _signOut() {
+    Navigator.of(context).pop();
+    _authBloc.add(AuthEvent.signOutEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener(
       bloc: _authBloc,
       listener: (_, state) {
-        if (state is AuthStateSignedIn)
-          dev.log("User state received ${state.runtimeType}", name: this.runtimeType.toString());
-          SchedulerBinding.instance?.addPostFrameCallback((_) {
-            Navigator.of(context).pushNamedAndRemoveUntil(Routes.LandingRoute, (route) => false);
-          });
+        if (state is AuthStateSignedIn) dev.log("User state received ${state.runtimeType}", name: this.runtimeType.toString());
+        SchedulerBinding.instance?.addPostFrameCallback((_) {
+          Navigator.of(context).pushNamedAndRemoveUntil(Routes.LandingRoute, (route) => false);
+        });
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -57,8 +68,7 @@ class _LoginViewState extends State<LoginView> {
             child: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.of(context).pop();
-                _authBloc.add(AuthSignOutEvent());
+                _signOut();
               },
             ),
           ),
@@ -129,12 +139,7 @@ class _LoginViewState extends State<LoginView> {
               ),
               AppMaterialButton(
                 margin: const EdgeInsets.only(top: 15),
-                onPressed: () {
-                  var id = _identityCtrl.text;
-                  var password = _passwordCtrl.text;
-                  _authBloc.add(AuthSignInEvent(id: id, password: password));
-                  dev.log(_authBloc.state.toString(), name: this.runtimeType.toString());
-                },
+                onPressed: _signIn,
                 child: Text("Login"),
               ),
             ],

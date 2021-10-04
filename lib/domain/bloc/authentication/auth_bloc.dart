@@ -1,7 +1,11 @@
+import 'package:discord_replicate/domain/bloc/authentication/auth_event.dart';
+import 'package:discord_replicate/domain/bloc/authentication/auth_state.dart';
 import 'package:discord_replicate/domain/services/firebase_auth_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:developer' as dev;
+
+export 'auth_event.dart';
+export 'auth_state.dart';
 
 enum RegisterOptions { Phone, Email }
 
@@ -9,46 +13,6 @@ extension ParseToString on RegisterOptions {
   String value() {
     return this.toString().split('.').last;
   }
-}
-
-@immutable
-abstract class AuthEvent {}
-
-class AuthInitialEvent extends AuthEvent {}
-
-class AuthSignInEvent extends AuthEvent {
-  final String id;
-  final String password;
-
-  AuthSignInEvent({required this.id, required this.password});
-}
-
-class AuthSignUpEvent extends AuthEvent {
-  final RegisterOptions option;
-  final String id;
-
-  AuthSignUpEvent({required this.option, required this.id});
-}
-
-class AuthSignOutEvent extends AuthEvent {}
-
-@immutable
-abstract class AuthState {}
-
-class AuthStateInitial extends AuthState {}
-
-class AuthStateSignedIn extends AuthState {
-  final UserCredential credential;
-
-  AuthStateSignedIn({required this.credential});
-}
-
-class AuthStateSignedOut extends AuthState {}
-
-class AuthStateError extends AuthState {
-  final Exception error;
-
-  AuthStateError(this.error);
 }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -61,7 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           (value) => AuthStateSignedIn(credential: value),
           onError: (e) => AuthStateError(e),
         );
-
+        
     dev.log("User signed in.", name: this.runtimeType.toString());
     emit(result);
   }

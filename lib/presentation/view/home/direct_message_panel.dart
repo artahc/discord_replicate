@@ -91,7 +91,6 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                           DirectMessageTile(
                             id: "randomId",
                             title: "Random User",
-                            status: UserStatus("emoji", "Working on stuff~2qqqqqqq"),
                           ),
                         ],
                       );
