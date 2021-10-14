@@ -1,8 +1,8 @@
-import 'package:discord_replicate/external/app_icon.dart';
 import 'package:flutter/material.dart';
 
 class HomeNavigationBar extends StatelessWidget {
   final List<Widget> children;
+  
   HomeNavigationBar({Key? key, this.children = const<Widget>[]}) : super(key: key);
 
   @override

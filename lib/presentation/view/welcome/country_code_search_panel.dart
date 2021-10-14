@@ -24,7 +24,7 @@ class _CountryCodeSearchPanelState extends State<CountryCodeSearchPanel> {
             prefixIcon: Container(
               padding: const EdgeInsets.only(right: 15, left: 15),
               child: ImageIcon(
-                AssetImage(AppIcon.search_icon),
+                AssetImage(AppIcons.search_icon),
                 size: 15,
                 color: IconTheme.of(context).color,
               ),

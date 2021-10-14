@@ -1,4 +1,4 @@
-import 'package:discord_replicate/domain/services/firebase_auth_service.dart';
+import 'package:discord_replicate/data/repository/firebase_auth_repository.dart';
 import 'package:flutter/material.dart';
 
 @immutable

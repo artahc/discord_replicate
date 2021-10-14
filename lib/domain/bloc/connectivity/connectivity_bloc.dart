@@ -40,4 +40,6 @@ class ConnectivityBloc extends Bloc<ConnectivityEvent, ConnectivityState> {
       _connectivityStream = Connectivity().onConnectivityChanged.listen(_handleConnectivityResult);
     }
   }
+
+
 }

@@ -1,4 +1,4 @@
-class AppIcon {
+class AppIcons {
   static const _url = "assets/icons/";
 
   static const discord_icon = _url + "discord.png";

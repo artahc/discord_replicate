@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
 enum UserStatus { Online, Idle, DoNotDisturb, Invisible, Custom }
+extension ParseToString on UserStatus {
+  String value() {
+    return this.toString().split('.').last;
+  }
+}
 
 @immutable
 class UserData {

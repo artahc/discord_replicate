@@ -38,8 +38,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   Stream<ChannelState> _loadChannelInfo() async* {
     print("_loadChannelInfo");
     try {
-      var channelData = ChannelData("Someone's Channel");
-      emit(ChannelInfoLoadSuccess(channelData));
+      emit(ChannelInfoLoadSuccess(ChannelData.createDummy()));
     } catch (e) {
       emit(ChannelLoadInfoFailure());
     }

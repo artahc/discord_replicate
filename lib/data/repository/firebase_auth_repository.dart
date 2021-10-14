@@ -8,7 +8,7 @@ class UserCredential {
   UserCredential(this.idToken);
 }
 
-abstract class AuthService {
+abstract class AuthRepository {
   Future<UserCredential?> getUserCurrentState();
 
   Future<UserCredential> signIn(String email, String password);
@@ -18,10 +18,10 @@ abstract class AuthService {
   void signOut();
 }
 
-class FirebaseAuthService implements AuthService {
+class FirebaseAuthRepository implements AuthRepository {
   final _auth = FirebaseAuth.instance;
 
-  FirebaseAuthService() {
+  FirebaseAuthRepository() {
     _auth.userChanges().listen((event) {
       dev.log("Current user: $event", name: this.runtimeType.toString());
     });

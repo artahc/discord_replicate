@@ -5,11 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ThemeCubit extends Cubit<ThemeData> {
   ThemeCubit() : super(AppTheme.darkThemeData);
 
-  void ChangeToDarkTheme() {
+  void changeToDarkTheme() {
     emit(AppTheme.darkThemeData);
   }
 
-  void ChangeToLightTheme() {
+  void changeToLightTheme() {
     emit(AppTheme.lightThemeData);
   }
 }

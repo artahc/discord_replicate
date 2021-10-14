@@ -2,7 +2,6 @@ import 'package:discord_replicate/data/model/message_data.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/presentation/view/app_view.dart';
 import 'package:discord_replicate/presentation/view/home/channel_message_tile.dart';
-import 'package:discord_replicate/presentation/widgets/overlap_swipeable_stack_controller.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -40,7 +39,7 @@ class _ChatHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = context.findAncestorStateOfType<ChannelViewState>()?.channelViewController;
+    var controller = context.findAncestorStateOfType<ChannelViewState>()?.controller;
 
     return Container(
       decoration: BoxDecoration(
@@ -56,13 +55,13 @@ class _ChatHeader extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 if (controller?.currentPageState == PageState.OnCenter)
-                  controller?.setState(PageState.OnRight);
+                  controller?.setPageState(PageState.OnRight);
                 else
-                  controller?.setState(PageState.OnCenter);
+                  controller?.setPageState(PageState.OnCenter);
               },
               iconSize: 18,
               icon: ImageIcon(
-                AssetImage(AppIcon.menu_icon),
+                AssetImage(AppIcons.menu_icon),
               ),
             ),
           ),
@@ -94,7 +93,7 @@ class _ChatHeader extends StatelessWidget {
                   print("Call pressed");
                 },
                 icon: ImageIcon(
-                  AssetImage(AppIcon.phone_icon),
+                  AssetImage(AppIcons.phone_icon),
                 ),
               ),
               IconButton(
@@ -104,21 +103,21 @@ class _ChatHeader extends StatelessWidget {
                 },
                 visualDensity: VisualDensity.compact,
                 icon: ImageIcon(
-                  AssetImage(AppIcon.video_icon),
+                  AssetImage(AppIcons.video_icon),
                 ),
               ),
               IconButton(
                 onPressed: () {
                   if (controller?.currentPageState == PageState.OnCenter)
-                    controller?.setState(PageState.OnLeft);
+                    controller?.setPageState(PageState.OnLeft);
                   else
-                    controller?.setState(PageState.OnCenter);
+                    controller?.setPageState(PageState.OnCenter);
                   print("Channel Info pressed");
                 },
                 visualDensity: VisualDensity.compact,
                 iconSize: 20,
                 icon: ImageIcon(
-                  AssetImage(AppIcon.group_icon),
+                  AssetImage(AppIcons.group_icon),
                 ),
               ),
             ],
@@ -170,7 +169,7 @@ class _ChatInput extends StatelessWidget {
                     visualDensity: VisualDensity.compact,
                     iconSize: 20,
                     icon: ImageIcon(
-                      AssetImage(AppIcon.picture_icon),
+                      AssetImage(AppIcons.picture_icon),
                     ),
                   ),
                 ),
@@ -185,7 +184,7 @@ class _ChatInput extends StatelessWidget {
                     visualDensity: VisualDensity.compact,
                     iconSize: 20,
                     icon: ImageIcon(
-                      AssetImage(AppIcon.gift_icon),
+                      AssetImage(AppIcons.gift_icon),
                     ),
                   ),
                 ),
@@ -208,7 +207,7 @@ class _ChatInput extends StatelessWidget {
                 suffixIcon: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: ImageIcon(
-                    AssetImage(AppIcon.emoji_icon),
+                    AssetImage(AppIcons.emoji_icon),
                     size: 20,
                     color: IconTheme.of(context).color,
                   ),

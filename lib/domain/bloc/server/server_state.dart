@@ -2,14 +2,14 @@ import 'package:discord_replicate/data/model/server_data.dart';
 
 abstract class ServerState {}
 
-class ServerListInitial extends ServerState {}
+class ServerStateInitial extends ServerState {}
 
-class ServerListLoadInProgress extends ServerState {}
+class ServerStateLoadListInProgress extends ServerState {}
 
-class ServerListLoaded extends ServerState {
-  final List<ServerData> serverData;
+class ServerStateLoadListSuccess extends ServerState {
+  final List<ServerData> serverList;
 
-  ServerListLoaded(this.serverData);
+  ServerStateLoadListSuccess(this.serverList);
 }
 
-class ServerListLoadFailed extends ServerState {}
+class ServerStateLoadListFailed extends ServerState {}

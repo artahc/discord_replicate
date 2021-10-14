@@ -23,7 +23,7 @@ class WelcomeView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 25),
                 width: 220,
                 child: Center(
-                  child: Image.asset(AppIcon.discord_text_icon),
+                  child: Image.asset(AppIcons.discord_text_icon),
                 ),
               ),
               Expanded(

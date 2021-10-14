@@ -10,7 +10,7 @@ class ServerData {
   ServerData(this.id, this.name, this.channels);
 
   static ServerData createDummy(int id) {
-    return ServerData("serverId_$id", "name", [ChannelData("channelName")]);
+    return ServerData("serverId_$id", "name", [ChannelData.createDummy()]);
   }
 }
 

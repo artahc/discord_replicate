@@ -52,7 +52,7 @@ class _ChannelInfoHeader extends StatelessWidget {
             ),
           ),
           ImageIcon(
-            AssetImage(AppIcon.more_icon),
+            AssetImage(AppIcons.more_icon),
             size: 18,
           ),
         ],
@@ -79,7 +79,7 @@ class _ChannelInfoMenus extends StatelessWidget {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 ImageIcon(
-                  AssetImage(AppIcon.phone_icon),
+                  AssetImage(AppIcons.phone_icon),
                   size: 18,
                 ),
                 Text(
@@ -99,7 +99,7 @@ class _ChannelInfoMenus extends StatelessWidget {
               runAlignment: WrapAlignment.center,
               children: [
                 ImageIcon(
-                  AssetImage(AppIcon.video_icon),
+                  AssetImage(AppIcons.video_icon),
                   size: 20,
                 ),
                 Text(
@@ -119,7 +119,7 @@ class _ChannelInfoMenus extends StatelessWidget {
               runAlignment: WrapAlignment.center,
               children: [
                 ImageIcon(
-                  AssetImage(AppIcon.notification_icon),
+                  AssetImage(AppIcons.notification_icon),
                   size: 20,
                 ),
                 Text(
@@ -139,7 +139,7 @@ class _ChannelInfoMenus extends StatelessWidget {
               runAlignment: WrapAlignment.center,
               children: [
                 ImageIcon(
-                  AssetImage(AppIcon.search_icon),
+                  AssetImage(AppIcons.search_icon),
                   size: 20,
                 ),
                 Text(
@@ -186,7 +186,7 @@ class _ChannelInfoInviteButton extends StatelessWidget {
             size: Size(40, 40),
             color: Theme.of(context).colorScheme.primary,
             child: ImageIcon (
-              AssetImage (AppIcon.add_user_icon),
+              AssetImage (AppIcons.add_user_icon),
             )
         ),
         Container(

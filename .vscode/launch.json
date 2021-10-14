@@ -16,9 +16,10 @@
       "flutterMode": "profile"
     },
     {
-      "name": "discord_replicate (just run dude... mode)",
+      "name": "discord_replicate (debug)",
       "request": "launch",
       "type": "dart",
+      "flutterMode": "debug",
       "env": {
         "RELEASE_MODE": false
       }

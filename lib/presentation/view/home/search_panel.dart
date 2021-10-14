@@ -1,3 +1,4 @@
+import 'package:discord_replicate/data/model/channel_data.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -13,6 +14,14 @@ class SearchPanel extends StatefulWidget {
 }
 
 class _SearchPanelState extends State<SearchPanel> {
+  ChannelData _getLastChannel() {
+    return ChannelData.createDummy();
+  }
+
+  List<ChannelData> _getSuggestionChannels() {
+    return List.generate(20, (index) => ChannelData.createDummy());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -50,7 +59,8 @@ class _SearchPanelState extends State<SearchPanel> {
                 ),
               ),
               Container(
-                height: 90,
+                height: 75,
+                margin: const EdgeInsets.only(top: 5),
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   scrollDirection: Axis.horizontal,
@@ -60,26 +70,105 @@ class _SearchPanelState extends State<SearchPanel> {
                   },
                   itemBuilder: (_, index) {
                     return Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(50),
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          color: Colors.white,
-                        ),
-                      ),
-                    );
+                        child: CircleContainer(
+                      color: Colors.white,
+                      size: Size(45, 45),
+                    ));
                   },
                 ),
               ),
               Expanded(
                 child: Container(
+                  width: double.infinity,
                   color: Theme.of(context).colorScheme.secondary,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10, top: 20),
+                          child: Text(
+                            "LAST CHANNEL",
+                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
+                        ),
+                        ChannelTile(data: _getLastChannel()),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+                          child: Text(
+                            "SUGGESTION",
+                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                ),
+                          ),
+                        ),
+                        Column(
+                          children: _getSuggestionChannels().map((e) => ChannelTile(data: e)).toList(),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ChannelTile extends StatelessWidget {
+  final ChannelData data;
+
+  const ChannelTile({Key? key, required this.data}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 55,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Icon(
+              Icons.grid_3x3_rounded,
+              size: 25,
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Wrap(
+                direction: Axis.vertical,
+                children: [
+                  Text(
+                    data.channelName,
+                    style: Theme.of(context).textTheme.subtitle2,
+                  ),
+                  Text(
+                    data.channelName,
+                    style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Text(
+              data.serverName,
+              style: Theme.of(context).textTheme.caption?.copyWith(
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -1,8 +1,10 @@
 import 'package:discord_replicate/external/app_icon.dart';
+import 'package:discord_replicate/presentation/route_transition/app_transition.dart';
 import 'package:discord_replicate/presentation/view/home/bottom_navigation_bar.dart';
 import 'package:discord_replicate/presentation/view/home/channel_info_panel.dart';
 import 'package:discord_replicate/presentation/view/home/channel_message_panel.dart';
 import 'package:discord_replicate/presentation/view/home/friends_panel.dart';
+import 'package:discord_replicate/presentation/view/home/search_panel.dart';
 import 'package:discord_replicate/presentation/widgets/overlap_swipeable_stack.dart';
 import 'package:discord_replicate/presentation/view/home/direct_message_panel.dart';
 import 'package:discord_replicate/presentation/view/home/server_list_panel.dart';
@@ -13,6 +15,7 @@ import 'dart:developer' as dev;
 class LocalChannelRoutes {
   static const main = "/";
   static const friends = "/friends";
+  static const search = "/search";
   static const profile = "/profile";
 }
 
@@ -26,7 +29,9 @@ class ChannelView extends StatefulWidget {
 class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin {
   final _localNavKey = GlobalKey<NavigatorState>();
   String _currentRoute = LocalChannelRoutes.main;
-  late OverlapSwipeableStackController channelViewController = OverlapSwipeableStackController(vsync: this);
+  late OverlapSwipeableStackController _channelViewController = OverlapSwipeableStackController(vsync: this);
+
+  OverlapSwipeableStackController get controller => _channelViewController;
 
   @override
   void initState() {
@@ -36,7 +41,7 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
   @override
   void dispose() {
     super.dispose();
-    channelViewController.dispose();
+    _channelViewController.dispose();
   }
 
   @override
@@ -65,7 +70,7 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
                         maintainState: true,
                         pageBuilder: (_, anim, secondAnim) {
                           return OverlapSwipeableStack(
-                            channelViewController: channelViewController,
+                            channelViewController: _channelViewController,
                             frontPage: ChannelMessagePanel(),
                             leftPage: Row(
                               children: [
@@ -77,6 +82,8 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
                           );
                         },
                       );
+                    case LocalChannelRoutes.search:
+                      return MaterialPageRoute(builder: (_) => SearchPanel(), fullscreenDialog: true);
                     case LocalChannelRoutes.friends:
                       return PageRouteBuilder(
                         maintainState: true,
@@ -121,7 +128,7 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
                           },
                           iconSize: 24,
                           visualDensity: VisualDensity.compact,
-                          icon: ImageIcon(AssetImage(AppIcon.discord_icon)),
+                          icon: ImageIcon(AssetImage(AppIcons.discord_icon)),
                         ),
                       ),
                       Expanded(
@@ -136,15 +143,17 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
                           },
                           iconSize: 19,
                           visualDensity: VisualDensity.compact,
-                          icon: ImageIcon(AssetImage(AppIcon.friend_icon)),
+                          icon: ImageIcon(AssetImage(AppIcons.friend_icon)),
                         ),
                       ),
                       Expanded(
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(SlideUpTransition(nextPage: SearchPanel()));
+                          },
                           iconSize: 18,
                           visualDensity: VisualDensity.compact,
-                          icon: ImageIcon(AssetImage(AppIcon.search_icon)),
+                          icon: ImageIcon(AssetImage(AppIcons.search_icon)),
                         ),
                       ),
                       Expanded(
@@ -152,7 +161,7 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
                           onPressed: () {},
                           iconSize: 21,
                           visualDensity: VisualDensity.compact,
-                          icon: ImageIcon(AssetImage(AppIcon.mention_icon)),
+                          icon: ImageIcon(AssetImage(AppIcons.mention_icon)),
                         ),
                       ),
                       Expanded(
@@ -179,8 +188,7 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
                       ),
                     ],
                   ),
-                  position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(channelViewController.navBarAnimController),
-                  // TODO: Extract this navbar controller, so that page controller only control stacked swipeable panel
+                  position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_channelViewController.navBarAnimController),
                 ),
               ),
             ],

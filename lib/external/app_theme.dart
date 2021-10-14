@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static final darkThemeData = ThemeData(
     brightness: Brightness.dark,
-    highlightColor: Colors.transparent,
-    splashColor: Color(0xff303136),
+    // highlightColor: Colors.transparent,
+    // splashColor: Color(0xff303136),
     backgroundColor: Color(0xff202226),
     colorScheme: ColorScheme.dark(
       brightness: Brightness.dark,

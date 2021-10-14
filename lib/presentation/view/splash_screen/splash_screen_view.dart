@@ -37,7 +37,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
             child: Container(
               constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
               child: ImageIcon(
-                AssetImage(AppIcon.discord_icon),
+                AssetImage(AppIcons.discord_icon),
                 size: 100,
               ),
             ),

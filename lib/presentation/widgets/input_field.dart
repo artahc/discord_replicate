@@ -1,4 +1,3 @@
-import 'package:discord_replicate/external/app_icon.dart';
 import 'package:flutter/material.dart';
 
 class AppInputField extends StatelessWidget {

@@ -1,5 +1,4 @@
 import 'package:discord_replicate/domain/bloc/authentication/auth_bloc.dart';
-import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/presentation/view/welcome/country_code_search_panel.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';

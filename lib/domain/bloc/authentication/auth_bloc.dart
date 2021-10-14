@@ -1,6 +1,6 @@
+import 'package:discord_replicate/data/repository/firebase_auth_repository.dart';
 import 'package:discord_replicate/domain/bloc/authentication/auth_event.dart';
 import 'package:discord_replicate/domain/bloc/authentication/auth_state.dart';
-import 'package:discord_replicate/domain/services/firebase_auth_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:developer' as dev;
 
@@ -16,7 +16,7 @@ extension ParseToString on RegisterOptions {
 }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService _authService;
+  final AuthRepository _authService;
 
   AuthBloc(this._authService) : super(AuthStateInitial());
 
@@ -25,7 +25,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           (value) => AuthStateSignedIn(credential: value),
           onError: (e) => AuthStateError(e),
         );
-        
+
     dev.log("User signed in.", name: this.runtimeType.toString());
     emit(result);
   }
