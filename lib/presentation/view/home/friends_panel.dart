@@ -100,7 +100,7 @@ class FriendsPanel extends StatelessWidget {
                           ),
                         )
                       ],
-                      groupHeaderBuilder: (context, group) {
+                      groupHeaderBuilder: (context, group, index) {
                         return Container(
                           alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -114,7 +114,7 @@ class FriendsPanel extends StatelessWidget {
                           ),
                         );
                       },
-                      itemBuilder: (context, e) {
+                      itemBuilder: (context, element, index) {
                         return Container(
                           height: 75,
                           width: double.infinity,
@@ -133,9 +133,9 @@ class FriendsPanel extends StatelessWidget {
                                     direction: Axis.vertical,
                                     spacing: 5,
                                     children: [
-                                      Text("${e.name}"),
+                                      Text("${element.name}"),
                                       Text(
-                                        "${e.status.value()}",
+                                        "${element.status.value()}",
                                         style: Theme.of(context).textTheme.caption?.copyWith(
                                               color: Theme.of(context).colorScheme.onPrimary,
                                             ),

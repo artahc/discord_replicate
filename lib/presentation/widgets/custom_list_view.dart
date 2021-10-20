@@ -4,18 +4,18 @@ import 'dart:math' as math;
 
 class CustomListView<T> extends StatefulWidget {
   final List<T> elements;
+  final ItemBuilder<T> itemBuilder;
   final List<Widget> beforeListWidget;
   final List<Widget> afterListWidget;
-  final ItemBuilder<T> itemBuilder;
-  final IndexedWidgetBuilder separatorBuilder;
+  final IndexedWidgetBuilder? separatorBuilder;
 
   const CustomListView({
     Key? key,
     required this.elements,
-    required this.beforeListWidget,
-    required this.afterListWidget,
     required this.itemBuilder,
-    required this.separatorBuilder,
+    this.separatorBuilder,
+    this.beforeListWidget = const <Widget>[],
+    this.afterListWidget = const <Widget>[],
   }) : super(key: key);
 
   @override
@@ -39,9 +39,9 @@ class _CustomListViewState<T> extends State<CustomListView<T>> {
             (context, index) {
               final int itemIndex = index ~/ 2;
               if (index.isEven) {
-                return widget.itemBuilder(context, widget.elements[itemIndex]);
+                return widget.itemBuilder(context, widget.elements[itemIndex], itemIndex);
               }
-              return widget.separatorBuilder(context, itemIndex);
+              return widget.separatorBuilder != null ? widget.separatorBuilder!(context, index) : Container();
             },
             childCount: math.max(0, widget.elements.length * 2 - 1),
             semanticIndexCallback: (context, index) {

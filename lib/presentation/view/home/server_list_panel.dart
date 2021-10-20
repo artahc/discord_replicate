@@ -47,7 +47,7 @@ class _ServerListPanelState extends State<ServerListPanel> {
             }
             return CustomListView<ServerData>(
               elements: serverList,
-              itemBuilder: (_, serverData) {
+              itemBuilder: (_, serverData, index) {
                 return ServerTile(
                   key: ValueKey(serverData.id),
                   serverData: serverData,

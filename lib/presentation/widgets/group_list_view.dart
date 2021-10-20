@@ -64,9 +64,9 @@ class _GroupListViewState<T, G> extends State<GroupListView<T, G>> {
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               if (_flattenedElements[index] is T) {
-                return widget.itemBuilder(context, _flattenedElements[index]);
+                return widget.itemBuilder(context, _flattenedElements[index], index);
               } else {
-                return widget.groupHeaderBuilder(context, _flattenedElements[index]);
+                return widget.groupHeaderBuilder(context, _flattenedElements[index], index);
               }
             },
             childCount: _flattenedElements.length,

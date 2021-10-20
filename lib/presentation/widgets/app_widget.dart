@@ -6,4 +6,4 @@ export './material_button.dart';
 export 'group_list_view.dart';
 export './overlap_swipeable_stack.dart';
 
-typedef ItemBuilder<T> = Widget Function(BuildContext context, T item);
+typedef ItemBuilder<T> = Widget Function(BuildContext context, T item, int index);

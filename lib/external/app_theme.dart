@@ -96,6 +96,7 @@ class AppTheme {
         overflow: TextOverflow.ellipsis,
       ),
     ),
+    splashFactory: InkRipple.splashFactory,
   );
 
   static final lightThemeData = ThemeData();
