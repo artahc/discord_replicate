@@ -1,8 +1,8 @@
-import 'package:discord_replicate/data/repository/firebase_auth_repository.dart';
-import 'package:discord_replicate/domain/bloc/authentication/auth_bloc.dart';
-import 'package:discord_replicate/domain/bloc/direct_message/direct_message_bloc.dart';
-import 'package:discord_replicate/domain/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/domain/routes/route_generator.dart';
+import 'package:discord_replicate/repository/firebase_auth_repository.dart';
+import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
+import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
+import 'package:discord_replicate/bloc/server/server_bloc.dart';
+import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,4 +1,4 @@
-import 'package:discord_replicate/data/model/user_data.dart';
+import 'package:discord_replicate/model/user_data.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:collection/collection.dart';
 

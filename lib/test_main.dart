@@ -1,7 +1,7 @@
-import 'package:discord_replicate/data/model/user_data.dart';
+import 'package:discord_replicate/model/user_data.dart';
 import 'package:discord_replicate/external/app_theme.dart';
-import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-import 'package:discord_replicate/presentation/widgets/group_list_view.dart';
+import 'package:discord_replicate/widgets/app_widget.dart';
+import 'package:discord_replicate/widgets/group_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
