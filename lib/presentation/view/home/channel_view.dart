@@ -5,6 +5,7 @@ import 'package:discord_replicate/presentation/view/home/channel_info_panel.dart
 import 'package:discord_replicate/presentation/view/home/channel_message_panel.dart';
 import 'package:discord_replicate/presentation/view/home/friends_panel.dart';
 import 'package:discord_replicate/presentation/view/home/search_panel.dart';
+import 'package:discord_replicate/presentation/view/home/user_setting_panel.dart';
 import 'package:discord_replicate/presentation/widgets/overlap_swipeable_stack.dart';
 import 'package:discord_replicate/presentation/view/home/direct_message_panel.dart';
 import 'package:discord_replicate/presentation/view/home/server_list_panel.dart';
@@ -104,7 +105,7 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
                       return MaterialPageRoute(
                         maintainState: true,
                         fullscreenDialog: true,
-                        builder: (_) => Container(color: Colors.green),
+                        builder: (_) => UserSettingPanel(),
                       );
                   }
                 },

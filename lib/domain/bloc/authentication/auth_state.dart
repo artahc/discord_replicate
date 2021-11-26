@@ -1,21 +1,12 @@
 import 'package:discord_replicate/data/repository/firebase_auth_repository.dart';
-import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-@immutable
-abstract class AuthState {}
+part 'auth_state.freezed.dart';
 
-class AuthStateInitial extends AuthState {}
-
-class AuthStateSignedIn extends AuthState {
-  final UserCredential credential;
-
-  AuthStateSignedIn({required this.credential});
-}
-
-class AuthStateSignedOut extends AuthState {}
-
-class AuthStateError extends AuthState {
-  final Exception error;
-
-  AuthStateError(this.error);
+@freezed
+class AuthState with _$AuthState {
+  const factory AuthState.initial() = AuthStateInitial;
+  const factory AuthState.signedIn({required UserCredential credential}) = AuthStateSignedIn;
+  const factory AuthState.signedOut() = AuthStateSignedOut;
+  const factory AuthState.error({required Exception exception}) = AuthStateError;
 }

@@ -2,9 +2,7 @@ import 'package:discord_replicate/data/repository/firebase_auth_repository.dart'
 import 'package:discord_replicate/domain/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/domain/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/domain/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/domain/cubit/theme/theme_cubit.dart';
 import 'package:discord_replicate/domain/routes/route_generator.dart';
-import 'package:discord_replicate/domain/services/firebase_auth_repository.dart';
 import 'package:discord_replicate/external/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,7 +41,6 @@ class _MainState extends State<Main> {
         } else if (snapshot.connectionState == ConnectionState.done) {
           return MultiBlocProvider(
             providers: [
-              BlocProvider<ThemeCubit>(create: (c) => ThemeCubit()),
               BlocProvider<ServerBloc>(create: (c) => ServerBloc()),
               BlocProvider<DirectMessageBloc>(create: (c) => DirectMessageBloc()),
               BlocProvider<AuthBloc>(create: (c) => AuthBloc(FirebaseAuthRepository())),

@@ -13,7 +13,7 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   Stream<ServerState> mapEventToState(ServerEvent event) async* {
     if (event is ServerListLoadEvent) {
       var servers = Iterable<ServerData>.generate(5, (i) => ServerData.createDummy(i)).toList();
-      dev.log("Dispatched ${event.runtimeType}");
+      dev.log("Dispatched ${event.runtimeType}", name: this.runtimeType.toString());
       emit(ServerStateLoadListSuccess(servers));
     }
   }

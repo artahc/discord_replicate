@@ -20,10 +20,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc(this._authService) : super(AuthStateInitial());
 
+  _handleInitial() async {
+    var userCredential = await _authService.getUserCurrentState();
+    if (userCredential == null) {
+      dev.log("User Credential not found.", name: this.runtimeType.toString());
+      emit(AuthStateSignedOut());
+    } else {
+      dev.log("User Credential not found.", name: this.runtimeType.toString());
+      emit(AuthStateSignedIn(credential: userCredential));
+    }
+  }
+
   Stream<AuthState> _signIn(String email, String password) async* {
     AuthState result = await _authService.signIn(email, password).then(
           (value) => AuthStateSignedIn(credential: value),
-          onError: (e) => AuthStateError(e),
+          onError: (e) => AuthState.error(exception: e),
         );
 
     dev.log("User signed in.", name: this.runtimeType.toString());
@@ -35,14 +46,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       case RegisterOptions.Email:
         AuthState result = await _authService.signUpEmail(id).then(
               (value) => AuthStateSignedIn(credential: value),
-              onError: (e) => AuthStateError(e),
+              onError: (e) => AuthState.error(exception: e),
             );
         dev.log("Sign up result: $result", name: this.runtimeType.toString());
         emit(result);
         break;
       case RegisterOptions.Phone:
         dev.log("Sign up with phone number is not supported yet.", name: this.runtimeType.toString());
-        emit(AuthStateError(Exception("Sign up with phone number is not supported yet.")));
+        emit(AuthState.error(exception: Exception("Sign up with phone number is not supported yet.")));
         break;
     }
   }
@@ -56,18 +67,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
     dev.log("$event received.", name: this.runtimeType.toString());
-    if (event is AuthInitialEvent) {
-      var userCredential = await _authService.getUserCurrentState();
-      if (userCredential == null)
-        emit(AuthStateSignedOut());
-      else
-        emit(AuthStateSignedIn(credential: userCredential));
-    } else if (event is AuthSignInEvent) {
-      yield* _signIn(event.id, event.password);
-    } else if (event is AuthSignUpEvent) {
-      yield* _signUp(event.option, event.id);
-    } else if (event is AuthSignOutEvent) {
-      yield* _signOut();
-    }
+
+    event.when(
+      initialEvent: _handleInitial,
+      signInEvent: (id, password) async* {
+        yield* _signIn(id, password);
+      },
+      signUpEvent: (option, id) async* {
+        yield* _signUp(option, id);
+      },
+      signOutEvent: () async* {
+        yield* _signOut();
+      },
+    );
   }
 }
