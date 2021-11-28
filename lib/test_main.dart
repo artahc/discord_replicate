@@ -1,10 +1,13 @@
 import 'package:discord_replicate/model/user_data.dart';
 import 'package:discord_replicate/external/app_theme.dart';
+import 'package:discord_replicate/repository/graphql_client_repository.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/group_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
+
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,58 +30,44 @@ class MainTestWidget extends StatelessWidget {
     return MaterialApp(
       theme: AppTheme.darkThemeData,
       home: Scaffold(
-        body: SafeArea(child: SemanticIndex()),
+        body: SafeArea(child: SinglePageButton()),
       ),
     );
   }
 }
 
-class SemanticIndex extends StatelessWidget {
-  final List<int> values = List.generate(15, (index) => index + 1);
-  final _scrollController = ScrollController();
-  SemanticIndex({Key? key}) : super(key: key);
+class SinglePageButton extends StatelessWidget {
+  late GraphQLClientRepository _client = GraphQLClientRepository(url: 'https://discord-replicate-backend-1029.herokuapp.com/graphql');
+  void _doQuery() async {
+    final String query = r'''
+      query GetAllServers {
+        servers {
+          id
+          name
+          channels {
+            id
+            name
+          }
+        }
+      }
+    ''';
+
+    var result = await _client.query(query);
+    print(result);
+  }
+
+  SinglePageButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: _scrollController,
-      semanticChildCount: values.length,
-      slivers: [
-        SliverToBoxAdapter(
-          child: AppMaterialButton(
-            size: Size(double.infinity, 55),
-            onPressed: () async {
-              // await _scrollController.animateTo(0, duration: Duration(milliseconds: 100), curve: Curves.bounceOut);
-              _scrollController.position
-                  .animateTo(_scrollController.position.maxScrollExtent, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
-            },
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final int itemIndex = index ~/ 2;
-              if (index.isEven) {
-                return InkWell(
-                  onTap: () {
-                    print(_scrollController);
-                  },
-                  child: Container(
-                    height: 55,
-                    color: Colors.white10,
-                    child: Center(child: Text("Index:$index, ItemIndex: $itemIndex, value: ${values[itemIndex]}")),
-                  ),
-                );
-              }
-              return Text("------");
-            },
-            childCount: math.max(0, values.length * 2 - 1),
-            semanticIndexCallback: (_, index) {
-              return index.isEven ? index ~/ 2 : null;
-            },
-          ),
-        ),
-      ],
+    return Center(
+      child: MaterialButton(
+        color: Colors.blue,
+        child: Text("Request"),
+        onPressed: () async {
+          _doQuery();
+        },
+      ),
     );
   }
 }
