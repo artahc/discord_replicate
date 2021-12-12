@@ -1,3 +1,5 @@
+import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
 import 'package:discord_replicate/view/home/bottom_navigation_bar.dart';
@@ -12,6 +14,8 @@ import 'package:discord_replicate/view/home/server_list_panel.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as dev;
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LocalChannelRoutes {
   static const main = "/";
@@ -31,6 +35,7 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
   final _localNavKey = GlobalKey<NavigatorState>();
   String _currentRoute = LocalChannelRoutes.main;
   late OverlapSwipeableStackController _channelViewController = OverlapSwipeableStackController(vsync: this);
+  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
 
   OverlapSwipeableStackController get controller => _channelViewController;
 
@@ -150,7 +155,7 @@ class ChannelViewState extends State<ChannelView> with TickerProviderStateMixin 
                       Expanded(
                         child: IconButton(
                           onPressed: () {
-                            Navigator.of(context).push(SlideUpTransition(nextPage: SearchPanel()));
+                            _navBloc.add(NavigationEvent.push(context, SlideUpTransition(nextPage: SearchPanel()), true));
                           },
                           iconSize: 18,
                           visualDensity: VisualDensity.compact,

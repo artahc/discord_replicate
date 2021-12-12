@@ -1,3 +1,5 @@
+import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/view/welcome/login_view.dart';
 import 'package:discord_replicate/view/welcome/register_view.dart';
@@ -5,12 +7,14 @@ import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class WelcomeView extends StatelessWidget {
   const WelcomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var _navBloc = BlocProvider.of<NavigationBloc>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: SafeArea(
@@ -50,7 +54,8 @@ class WelcomeView extends StatelessWidget {
                 child: Text("Register"),
                 onPressed: () {
                   print("Register");
-                  Navigator.of(context).push(CustomSlideTransition(currentPage: this, nextPage: const RegisterView()));
+                  var route = CustomSlideTransition(currentPage: this, nextPage: const RegisterView());
+                  _navBloc.add(NavigationEvent.push(context, route, true));
                 },
               ),
               SizedBox(
@@ -61,7 +66,8 @@ class WelcomeView extends StatelessWidget {
                 child: Text("Login"),
                 onPressed: () {
                   print("Login");
-                  Navigator.of(context).push(CustomSlideTransition(currentPage: this, nextPage: const LoginView()));
+                  var route = CustomSlideTransition(currentPage: this, nextPage: const LoginView());
+                  _navBloc.add(NavigationEvent.push(context, route, true));
                 },
               ),
               SizedBox(height: 25),

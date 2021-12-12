@@ -1,4 +1,4 @@
-import 'package:discord_replicate/model/channel_data.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message_data.dart';
 import 'package:discord_replicate/bloc/channel/channel_event.dart';
 import 'package:discord_replicate/bloc/channel/channel_state.dart';
@@ -32,7 +32,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   Stream<ChannelState> _loadChannelInfo() async* {
     print("_loadChannelInfo");
     try {
-      emit(ChannelInfoLoadSuccess(ChannelData.createDummy()));
+      emit(ChannelInfoLoadSuccess(Channel.dummy()));
     } catch (e) {
       emit(ChannelLoadInfoFailure());
     }

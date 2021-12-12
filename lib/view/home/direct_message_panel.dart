@@ -1,5 +1,7 @@
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_state.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
 import 'package:discord_replicate/view/home/direct_message_tile.dart';
 import 'package:discord_replicate/external/app_icon.dart';
@@ -13,11 +15,11 @@ class DirectMessageListPanel extends StatefulWidget {
 }
 
 class _DirectMessageListState extends State<DirectMessageListPanel> {
-  late DirectMessageBloc _directMessageBloc;
+  late DirectMessageBloc _directMessageBloc = BlocProvider.of<DirectMessageBloc>(context);
+  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
 
   @override
   void initState() {
-    _directMessageBloc = BlocProvider.of<DirectMessageBloc>(context);
     super.initState();
   }
 
@@ -51,7 +53,8 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(Scaffold.of(context).context).push(SlideUpTransition(nextPage: SearchPanel(), fullscreenDialog: true));
+                var route = SlideUpTransition(nextPage: SearchPanel(), fullscreenDialog: true);
+                _navBloc.add(NavigationEvent.push(context, route, true));
               },
               child: Container(
                 height: 30,

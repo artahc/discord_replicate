@@ -1,6 +1,11 @@
-import 'package:discord_replicate/model/channel_data.dart';
+import 'dart:developer';
+
+import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SearchPanel extends StatefulWidget {
@@ -14,12 +19,14 @@ class SearchPanel extends StatefulWidget {
 }
 
 class _SearchPanelState extends State<SearchPanel> {
-  ChannelData _getLastChannel() {
-    return ChannelData.createDummy();
+  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
+
+  Channel _getLastChannel() {
+    return Channel.dummy();
   }
 
-  List<ChannelData> _getSuggestionChannels() {
-    return List.generate(20, (index) => ChannelData.createDummy());
+  List<Channel> _getSuggestionChannels() {
+    return List.generate(20, (index) => Channel.dummy());
   }
 
   @override
@@ -41,7 +48,8 @@ class _SearchPanelState extends State<SearchPanel> {
                     color: Theme.of(context).iconTheme.color,
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      log("Pop", name: this.runtimeType.toString());
+                      _navBloc.add(NavigationEvent.pop(context, false));
                     },
                   ),
                 ),
@@ -121,7 +129,7 @@ class _SearchPanelState extends State<SearchPanel> {
 }
 
 class ChannelTile extends StatelessWidget {
-  final ChannelData data;
+  final Channel data;
 
   const ChannelTile({Key? key, required this.data}) : super(key: key);
 

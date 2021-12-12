@@ -1,4 +1,4 @@
-import 'package:discord_replicate/model/user_data.dart';
+import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,8 +8,8 @@ import 'package:flutter/painting.dart';
 class FriendsPanel extends StatelessWidget {
   const FriendsPanel({Key? key}) : super(key: key);
 
-  List<UserData> _fetchUsers() {
-    return List.generate(25, (index) => UserData(name: "$index", status: UserStatus.values[index % 5]));
+  List<User> _fetchUsers() {
+    return List.generate(25, (index) => User.dummy());
   }
 
   @override
@@ -58,9 +58,9 @@ class FriendsPanel extends StatelessWidget {
                 return Expanded(
                   child: Container(
                     color: Theme.of(context).colorScheme.secondary,
-                    child: GroupListView<UserData, UserStatus>(
+                    child: GroupListView<User, User>(
                       elements: users,
-                      groupBy: (e) => e.status,
+                      groupBy: (e) => e,
                       beforeListWidget: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
@@ -106,7 +106,8 @@ class FriendsPanel extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                           color: Theme.of(context).colorScheme.secondary,
                           child: Text(
-                            "${group.value().toUpperCase()} \u2014 ${users.where((e) => e.status == group).length}",
+                            "asd",
+                            // "${group.value().toUpperCase()} \u2014 ${users.where((e) => e.status == group).length}",
                             style: Theme.of(context).textTheme.caption?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).colorScheme.onPrimary,
@@ -133,13 +134,13 @@ class FriendsPanel extends StatelessWidget {
                                     direction: Axis.vertical,
                                     spacing: 5,
                                     children: [
-                                      Text("${element.name}"),
-                                      Text(
-                                        "${element.status.value()}",
-                                        style: Theme.of(context).textTheme.caption?.copyWith(
-                                              color: Theme.of(context).colorScheme.onPrimary,
-                                            ),
-                                      ),
+                                      // Text("${element.credential.email}"),
+                                      // Text(
+                                      //   "${element.status.value()}",
+                                      //   style: Theme.of(context).textTheme.caption?.copyWith(
+                                      //         color: Theme.of(context).colorScheme.onPrimary,
+                                      //       ),
+                                      // ),
                                     ],
                                   ),
                                 ),

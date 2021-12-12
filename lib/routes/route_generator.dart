@@ -1,4 +1,3 @@
-
 import 'package:discord_replicate/view/home/channel_view.dart';
 import 'package:discord_replicate/view/splash_screen/splash_screen_view.dart';
 import 'package:discord_replicate/view/welcome/login_view.dart';

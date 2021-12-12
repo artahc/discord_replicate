@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:discord_replicate/model/server_data.dart';
+import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_event.dart';
 import 'package:discord_replicate/bloc/server/server_state.dart';
@@ -18,10 +18,11 @@ class _ServerListPanelState extends State<ServerListPanel> {
   final String _directMessageId = "direct-message";
   late ServerBloc _serverBloc = BlocProvider.of<ServerBloc>(context);
   StreamController<String> _activeItemController = StreamController();
+  late List<Server> serverList = const <Server>[];
 
   @override
   void initState() {
-    _serverBloc.add(ServerEvent.loadServerList());
+    _serverBloc.add(ServerEvent.loadAll());
     super.initState();
   }
 
@@ -41,21 +42,21 @@ class _ServerListPanelState extends State<ServerListPanel> {
         initialData: _directMessageId,
         builder: (context, snapshot) {
           return BlocBuilder<ServerBloc, ServerState>(builder: (context, state) {
-            var serverList = const <ServerData>[];
             if (state is ServerStateLoadListSuccess) {
-              serverList = state.serverList;
+              serverList = state.servers;
             }
-            return CustomListView<ServerData>(
+
+            return CustomListView<Server>(
               elements: serverList,
-              itemBuilder: (_, serverData, index) {
+              itemBuilder: (_, server, index) {
                 return ServerTile(
-                  key: ValueKey(serverData.id),
-                  serverData: serverData,
+                  key: ValueKey(server.id),
+                  serverData: server,
                   onPressed: () {
-                    _activeItemController.sink.add(serverData.id);
-                    _serverBloc.add(ServerLoadSelectedEvent(serverData));
+                    _activeItemController.sink.add(server.id);
+                    _serverBloc.add(ServerEvent.loadOne(server.id));
                   },
-                  selected: snapshot.data == serverData.id,
+                  selected: snapshot.data == server.id,
                 );
               },
               separatorBuilder: (context, index) => SizedBox(

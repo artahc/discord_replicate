@@ -1,4 +1,6 @@
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,18 +16,16 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  late TextEditingController _identityCtrl;
-  late TextEditingController _passwordCtrl;
-  late AuthBloc _authBloc;
+  late TextEditingController _identityCtrl = TextEditingController();
+  late TextEditingController _passwordCtrl = TextEditingController();
+  late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
+  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
 
   @override
   void initState() {
-    _identityCtrl = TextEditingController();
-    _passwordCtrl = TextEditingController();
-    _authBloc = BlocProvider.of<AuthBloc>(context);
+    super.initState();
     _identityCtrl.text = "artahc@gmail.com";
     _passwordCtrl.text = "artahc123";
-    super.initState();
   }
 
   @override
@@ -39,11 +39,10 @@ class _LoginViewState extends State<LoginView> {
     var id = _identityCtrl.text;
     var password = _passwordCtrl.text;
     _authBloc.add(AuthEvent.signInEvent(id: id, password: password));
-    dev.log(_authBloc.state.toString(), name: this.runtimeType.toString());
   }
 
   void _signOut() {
-    Navigator.of(context).pop();
+    _navBloc.add(NavigationEvent.pop(context, true));
     _authBloc.add(AuthEvent.signOutEvent());
   }
 
@@ -52,10 +51,11 @@ class _LoginViewState extends State<LoginView> {
     return BlocListener(
       bloc: _authBloc,
       listener: (_, state) {
-        if (state is AuthStateSignedIn) dev.log("User state received ${state.runtimeType}", name: this.runtimeType.toString());
-        SchedulerBinding.instance?.addPostFrameCallback((_) {
-          Navigator.of(context).pushNamedAndRemoveUntil(Routes.LandingRoute, (route) => false);
-        });
+        if (state is AuthStateSignedIn) {
+          SchedulerBinding.instance?.addPostFrameCallback((_) {
+            _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.LandingRoute, (route) => false, true));
+          });
+        }
       },
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,

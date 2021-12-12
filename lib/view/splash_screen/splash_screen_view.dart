@@ -16,7 +16,6 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   @override
   void initState() {
     dev.log("Init splash screen", name: this.runtimeType.toString());
-    BlocProvider.of<AuthBloc>(context)..add(AuthEvent.initialEvent());
     super.initState();
   }
 
@@ -25,9 +24,9 @@ class _SplashScreenViewState extends State<SplashScreenView> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (_, state) {
         if (state is AuthStateSignedIn) {
-          Navigator.of(context).pushReplacementNamed(Routes.LandingRoute);
+          // Navigator.of(context).pushReplacementNamed(Routes.LandingRoute);
         } else if (state is AuthStateSignedOut) {
-          Navigator.of(context).pushReplacementNamed(Routes.WelcomeRoute);
+          // Navigator.of(context).pushReplacementNamed(Routes.WelcomeRoute);
         }
       },
       child: SizedBox.expand(

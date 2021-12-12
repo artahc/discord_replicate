@@ -1,4 +1,6 @@
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/view/welcome/country_code_search_panel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,9 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> with TickerProviderStateMixin {
+  late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
+  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
+
   late TabController _tabCtrl;
   final PanelController _bottomSheetCtrl = PanelController();
   final TextEditingController _registerCtrl = TextEditingController();
@@ -40,7 +45,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
 
   void _signUp() {
     FocusScope.of(context).unfocus();
-    BlocProvider.of<AuthBloc>(context).add(AuthEvent.signUpEvent(option: _registerOption, id: _registerCtrl.text));
+    _authBloc.add(AuthEvent.signUpEvent(option: _registerOption, id: _registerCtrl.text));
   }
 
   Widget build(BuildContext context) {
@@ -75,7 +80,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
               child: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  _navBloc.add(NavigationEvent.pop(context, true));
                 },
               ),
             ),

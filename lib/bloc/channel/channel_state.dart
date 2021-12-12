@@ -1,4 +1,4 @@
-import 'package:discord_replicate/model/channel_data.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message_data.dart';
 
 abstract class ChannelState {}
@@ -23,7 +23,7 @@ class ChannelInfoInitial extends ChannelState {}
 class ChannelLoadInfoInProgress extends ChannelState {}
 
 class ChannelInfoLoadSuccess extends ChannelState {
-  final ChannelData data;
+  final Channel data;
 
   ChannelInfoLoadSuccess(this.data);
 }

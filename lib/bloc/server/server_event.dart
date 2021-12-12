@@ -1,17 +1,9 @@
-import 'package:discord_replicate/model/server_data.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class ServerEvent {
-  ServerEvent._();
+part 'server_event.freezed.dart';
 
-  factory ServerEvent.loadServerList() => ServerListLoadEvent();
-}
-
-class ServerListLoadEvent extends ServerEvent {
-  ServerListLoadEvent() : super._();
-}
-
-class ServerLoadSelectedEvent extends ServerEvent {
-  final ServerData serverData;
-
-  ServerLoadSelectedEvent(this.serverData) : super._();
+@freezed
+abstract class ServerEvent with _$ServerEvent {
+  const factory ServerEvent.loadAll() = LoadAllServer;
+  const factory ServerEvent.loadOne(String serverId) = LoadSelectedServer;
 }

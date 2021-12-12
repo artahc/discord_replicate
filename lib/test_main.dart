@@ -1,13 +1,14 @@
-import 'package:discord_replicate/model/user_data.dart';
 import 'package:discord_replicate/external/app_theme.dart';
-import 'package:discord_replicate/repository/graphql_client_repository.dart';
-import 'package:discord_replicate/widgets/app_widget.dart';
-import 'package:discord_replicate/widgets/group_list_view.dart';
+import 'package:discord_replicate/model/credential.dart';
+import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/repository/user_repository.dart';
+import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/util/graphql_client_helper.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:math' as math;
-
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'dart:developer';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,41 +20,58 @@ void main() {
 }
 
 class MainTestWidget extends StatelessWidget {
-  const MainTestWidget({Key? key}) : super(key: key);
-
-  List<UserData> _fetchUsers() {
-    return List.generate(170, (index) => UserData(name: "$index", status: UserStatus.values[index % 5]));
-  }
+  MainTestWidget({Key? key}) : super(key: key);
+  final Future<FirebaseApp> _initializeFirebase = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext _) {
     return MaterialApp(
       theme: AppTheme.darkThemeData,
       home: Scaffold(
-        body: SafeArea(child: SinglePageButton()),
+        body: SafeArea(
+          child: FutureBuilder(
+            future: _initializeFirebase,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container();
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                return SinglePageButton();
+              } else {
+                return Container(
+                  child: Text("Something wrong!"),
+                );
+              }
+            },
+          ),
+        ),
       ),
     );
   }
 }
 
 class SinglePageButton extends StatelessWidget {
-  late GraphQLClientRepository _client = GraphQLClientRepository(url: 'https://discord-replicate-backend-1029.herokuapp.com/graphql');
-  void _doQuery() async {
-    final String query = r'''
-      query GetAllServers {
-        servers {
-          id
-          name
-          channels {
-            id
-            name
-          }
-        }
-      }
-    ''';
+  final String url = "https://7298-182-253-132-151.ngrok.io";
 
-    var result = await _client.query(query);
-    print(result);
+  late AuthService _authService = FirebaseAuthService();
+  late GraphQLClientHelper _client = GraphQLClientHelper(
+    url: url,
+    tokenProvider: () => _authService.getCurrentUserCredential(),
+  );
+  late GraphQLClientHelper _insecureClient = GraphQLClientHelper(
+    url: url,
+    tokenProvider: () => Future.value(Credential(uid: "", email: "", token: "")),
+  );
+
+  late UserRepository _userRepo = UserRepository(graphqlClient: _client);
+
+  void _login() async {
+    await _authService.signOut();
+    await _authService.signIn("artahc@gmail.com", "artahc123");
+  }
+
+  void _doQuery(GraphQLClientHelper client) async {
+    var user = await _userRepo.loadUser("FMYbWPwFWgTvRemhbbz1dLL9HkC2");
+    log("Loaded user ${user.id} ${user.username} ${user.serverRefs}", name: this.runtimeType.toString());
   }
 
   SinglePageButton({Key? key}) : super(key: key);
@@ -61,12 +79,32 @@ class SinglePageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: MaterialButton(
-        color: Colors.blue,
-        child: Text("Request"),
-        onPressed: () async {
-          _doQuery();
-        },
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          MaterialButton(
+            color: Colors.green,
+            child: Text("Login"),
+            onPressed: () async {
+              _login();
+            },
+          ),
+          MaterialButton(
+            color: Colors.blue,
+            child: Text("Request"),
+            onPressed: () async {
+              _doQuery(_client);
+            },
+          ),
+          MaterialButton(
+            color: Colors.red,
+            child: Text("Request without header"),
+            onPressed: () async {
+              _doQuery(_insecureClient);
+            },
+          ),
+        ],
       ),
     );
   }

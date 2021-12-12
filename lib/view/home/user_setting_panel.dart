@@ -1,5 +1,11 @@
+import 'dart:developer';
+
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
+import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'dart:math' as math;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,56 +18,67 @@ class UserSettingPanel extends StatefulWidget {
 }
 
 class _UserSettingPanelState extends State<UserSettingPanel> {
-  late AuthBloc _authBloc = BlocProvider.of(context);
+  late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
+  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(
-              delegate: _PersistentHeaderDelegate(
-                child: Container(
-                  padding: const EdgeInsets.only(left: 15, top: 5, bottom: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "User Settings",
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      Wrap(
-                        direction: Axis.horizontal,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        runAlignment: WrapAlignment.center,
-                        children: [
-                          Container(
-                            child: IconButton(
-                              onPressed: () {
-                                _authBloc.add(AuthEvent.signOutEvent());
-                              },
-                              icon: Icon(Icons.exit_to_app),
-                              splashRadius: 17,
-                              visualDensity: VisualDensity.compact,
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (c, state) {
+        if (state is AuthStateSignedOut) {
+          log("State received $state", name: this.runtimeType.toString());
+          SchedulerBinding.instance?.addPostFrameCallback((_) {
+            _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.WelcomeRoute, (route) => false, true));
+          });
+        }
+      },
+      child: Container(
+        child: SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              SliverPersistentHeader(
+                delegate: _PersistentHeaderDelegate(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 15, top: 5, bottom: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "User Settings",
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        Wrap(
+                          direction: Axis.horizontal,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          runAlignment: WrapAlignment.center,
+                          children: [
+                            Container(
+                              child: IconButton(
+                                onPressed: () {
+                                  _authBloc.add(AuthEvent.signOutEvent());
+                                },
+                                icon: Icon(Icons.exit_to_app),
+                                splashRadius: 17,
+                                visualDensity: VisualDensity.compact,
+                              ),
                             ),
-                          ),
-                          Container(
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.more_vert),
-                              splashRadius: 17,
-                              visualDensity: VisualDensity.compact,
+                            Container(
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.more_vert),
+                                splashRadius: 17,
+                                visualDensity: VisualDensity.compact,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

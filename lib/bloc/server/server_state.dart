@@ -1,15 +1,11 @@
-import 'package:discord_replicate/model/server_data.dart';
+import 'package:discord_replicate/model/server.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-abstract class ServerState {}
+part 'server_state.freezed.dart';
 
-class ServerStateInitial extends ServerState {}
-
-class ServerStateLoadListInProgress extends ServerState {}
-
-class ServerStateLoadListSuccess extends ServerState {
-  final List<ServerData> serverList;
-
-  ServerStateLoadListSuccess(this.serverList);
+@freezed
+abstract class ServerState with _$ServerState {
+  const factory ServerState.initial() = ServerStateInitial;
+  const factory ServerState.loadListSuccess(List<Server> servers) = ServerStateLoadListSuccess;
+  const factory ServerState.loadSelectedSuccess(Server server) = ServerStateLoadSelectedSuccess;
 }
-
-class ServerStateLoadListFailed extends ServerState {}

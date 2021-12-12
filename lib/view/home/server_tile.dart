@@ -1,9 +1,9 @@
-import 'package:discord_replicate/model/server_data.dart';
+import 'package:discord_replicate/model/server.dart';
 import 'package:flutter/material.dart';
 
 class ServerTile extends StatelessWidget {
   final Key key;
-  final ServerData serverData;
+  final Server serverData;
   final bool selected;
   final Function? onPressed;
 

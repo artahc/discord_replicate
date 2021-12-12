@@ -1,9 +1,13 @@
-import 'package:discord_replicate/repository/firebase_auth_repository.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/repository/server_repository.dart';
+import 'package:discord_replicate/repository/user_repository.dart';
+import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_theme.dart';
+import 'package:discord_replicate/util/graphql_client_helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,26 +17,36 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    // systemNavigationBarColor: Color(0xff202226), // navigation bar color
-    // statusBarColor: Color(0xff202226), // status bar color
-    systemNavigationBarColor: Colors.transparent, // navigation bar color
-    statusBarColor: Colors.transparent, // statu
+    systemNavigationBarColor: Colors.transparent,
+    statusBarColor: Colors.transparent,
   ));
   runApp(Main());
 }
 
-class Main extends StatefulWidget {
-  @override
-  State<Main> createState() => _MainState();
-}
+class Main extends StatelessWidget {
+  // Constant
+  final String url = "https://1e98-182-253-132-151.ngrok.io";
 
-class _MainState extends State<Main> {
-  final Future<FirebaseApp> _initializeFirebase = Firebase.initializeApp();
+  // Service
+  late AuthService authService = FirebaseAuthService();
+
+  // Helper Class
+  late GraphQLClientHelper graphqlClient = GraphQLClientHelper(url: url, tokenProvider: () => authService.getCurrentUserCredential());
+
+  // Repository
+  late UserRepository userRepository = UserRepository(graphqlClient: graphqlClient);
+  late ServerRepository serverRepository = ServerRepository(graphQLClient: graphqlClient);
+
+  // Bloc
+  late ServerBloc serverBloc = ServerBloc(serverRepository: serverRepository);
+  late DirectMessageBloc directMessageBloc = DirectMessageBloc();
+  late AuthBloc authBloc = AuthBloc(authService: authService, userRepository: userRepository);
+  late NavigationBloc navBloc = NavigationBloc();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _initializeFirebase,
+      future: Firebase.initializeApp(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SizedBox.expand(
@@ -41,14 +55,15 @@ class _MainState extends State<Main> {
         } else if (snapshot.connectionState == ConnectionState.done) {
           return MultiBlocProvider(
             providers: [
-              BlocProvider<ServerBloc>(create: (c) => ServerBloc()),
-              BlocProvider<DirectMessageBloc>(create: (c) => DirectMessageBloc()),
-              BlocProvider<AuthBloc>(create: (c) => AuthBloc(FirebaseAuthRepository())),
+              BlocProvider<ServerBloc>(create: (c) => serverBloc),
+              BlocProvider<DirectMessageBloc>(create: (c) => directMessageBloc),
+              BlocProvider<AuthBloc>(create: (c) => authBloc),
+              BlocProvider<NavigationBloc>(create: (c) => navBloc),
             ],
             child: MaterialApp(
               theme: AppTheme.darkThemeData,
               onGenerateRoute: RouteGenerator.generateRoutes,
-              initialRoute: Routes.InitialRoute,
+              initialRoute: Routes.WelcomeRoute,
               debugShowCheckedModeBanner: false,
             ),
           );
