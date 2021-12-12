@@ -25,7 +25,7 @@ void main() {
 
 class Main extends StatelessWidget {
   // Constant
-  final String url = "https://1e98-182-253-132-151.ngrok.io";
+  final String url = "https://23e7-182-253-132-151.ngrok.io";
 
   // Service
   late AuthService authService = FirebaseAuthService();

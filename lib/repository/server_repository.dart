@@ -1,15 +1,31 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/util/graphql_client_helper.dart';
 
 class ServerRepository {
-  final GraphQLClientHelper _graphqlClient;
+  final GraphQLClientHelper _client;
 
-  ServerRepository({required GraphQLClientHelper graphQLClient}) : _graphqlClient = graphQLClient;
+  ServerRepository({required GraphQLClientHelper graphQLClient}) : _client = graphQLClient;
 
   Future<List<Server>> loadAll() async {
-    return List.generate(10, (index) => Server.dummy(Random().nextInt(10000)));
+    var query = r"""
+      query Servers {
+        servers {
+          id
+          name
+          channels {
+            id
+            name
+          }  
+        }
+      }
+    """;
+
+    var raw = await _client.query(query);
+    var servers = (raw['servers'] as List<Object?>).map((e) => Server.fromMap(e as Map<String, dynamic>)).toList();
+    return servers;
   }
 
   Future<Server> loadById(String id) async {

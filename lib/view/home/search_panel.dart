@@ -154,11 +154,11 @@ class ChannelTile extends StatelessWidget {
                 direction: Axis.vertical,
                 children: [
                   Text(
-                    data.channelName,
+                    data.name,
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   Text(
-                    data.channelName,
+                    data.name,
                     style: Theme.of(context).textTheme.subtitle2?.copyWith(
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
@@ -170,7 +170,8 @@ class ChannelTile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 15),
             child: Text(
-              data.serverName,
+              "Server Name",
+              // data.serverName,
               style: Theme.of(context).textTheme.caption?.copyWith(
                     color: Theme.of(context).colorScheme.onSecondary,
                   ),

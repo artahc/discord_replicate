@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:discord_replicate/external/app_theme.dart';
 import 'package:discord_replicate/model/credential.dart';
 import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/util/graphql_client_helper.dart';
@@ -50,7 +53,7 @@ class MainTestWidget extends StatelessWidget {
 }
 
 class SinglePageButton extends StatelessWidget {
-  final String url = "https://7298-182-253-132-151.ngrok.io";
+  final String url = "https://23e7-182-253-132-151.ngrok.io";
 
   late AuthService _authService = FirebaseAuthService();
   late GraphQLClientHelper _client = GraphQLClientHelper(
@@ -63,6 +66,7 @@ class SinglePageButton extends StatelessWidget {
   );
 
   late UserRepository _userRepo = UserRepository(graphqlClient: _client);
+  late ServerRepository _serverRepo = ServerRepository(graphQLClient: _client);
 
   void _login() async {
     await _authService.signOut();
@@ -70,8 +74,12 @@ class SinglePageButton extends StatelessWidget {
   }
 
   void _doQuery(GraphQLClientHelper client) async {
-    var user = await _userRepo.loadUser("FMYbWPwFWgTvRemhbbz1dLL9HkC2");
-    log("Loaded user ${user.id} ${user.username} ${user.serverRefs}", name: this.runtimeType.toString());
+    var servers = await _serverRepo.loadAll();
+
+    var json = jsonEncode(servers);
+    log(json, name: this.runtimeType.toString());
+    // var user = await _userRepo.loadUser("FMYbWPwFWgTvRemhbbz1dLL9HkC2");
+    // log("Loaded user ${user.id} ${user.username} ${user.serverRefs}", name: this.runtimeType.toString());
   }
 
   SinglePageButton({Key? key}) : super(key: key);

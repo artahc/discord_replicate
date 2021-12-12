@@ -37,8 +37,11 @@ class User {
     );
   }
 
-  @override
-  String toString() {
-    return '{ id: $id, username: $username, serverRefs: $serverRefs }';
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "username": username,
+      "serverRefs": serverRefs,
+    };
   }
 }

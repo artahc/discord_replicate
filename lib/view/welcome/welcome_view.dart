@@ -65,7 +65,6 @@ class WelcomeView extends StatelessWidget {
                 color: Theme.of(context).buttonTheme.colorScheme!.secondary,
                 child: Text("Login"),
                 onPressed: () {
-                  print("Login");
                   var route = CustomSlideTransition(currentPage: this, nextPage: const LoginView());
                   _navBloc.add(NavigationEvent.push(context, route, true));
                 },
