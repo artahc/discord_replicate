@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/bloc/server/server_event.dart';
 import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/repository/server_repository.dart';

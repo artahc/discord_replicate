@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';

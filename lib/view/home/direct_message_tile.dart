@@ -1,6 +1,5 @@
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 @immutable
 class DirectMessageData {

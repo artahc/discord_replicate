@@ -1,8 +1,6 @@
 import 'package:discord_replicate/model/credential.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
-import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/util/graphql_client_helper.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'dart:developer';
 

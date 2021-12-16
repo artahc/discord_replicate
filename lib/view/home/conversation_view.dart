@@ -15,7 +15,6 @@ import 'package:discord_replicate/widgets/overlap_swipeable_stack.dart';
 import 'package:discord_replicate/view/home/direct_message_panel.dart';
 import 'package:discord_replicate/view/home/server_list_panel.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as dev;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 

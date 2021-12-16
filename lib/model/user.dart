@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'dart:developer';
 
 enum UserStatus { Online, Idle, DoNotDisturb, Invisible, Custom }
 

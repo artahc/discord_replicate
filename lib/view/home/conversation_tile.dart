@@ -1,7 +1,6 @@
 import 'package:discord_replicate/model/message_data.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class ConversationTile extends StatelessWidget {

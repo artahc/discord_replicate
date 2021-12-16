@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:discord_replicate/model/credential.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/util/graphql_client_helper.dart';
 

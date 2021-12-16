@@ -4,7 +4,6 @@ import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/view/welcome/country_code_search_panel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 

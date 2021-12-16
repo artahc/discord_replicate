@@ -7,7 +7,6 @@ import 'package:discord_replicate/view/welcome/login_view.dart';
 import 'package:discord_replicate/view/welcome/register_view.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

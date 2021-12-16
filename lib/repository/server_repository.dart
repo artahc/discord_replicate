@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:math' as math;
-
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/util/graphql_client_helper.dart';
 

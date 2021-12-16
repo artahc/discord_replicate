@@ -4,7 +4,6 @@ import 'package:discord_replicate/view/home/conversation_tile.dart';
 import 'package:discord_replicate/view/home/conversation_view.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ConversationPanel extends StatefulWidget {
   const ConversationPanel({Key? key}) : super(key: key);

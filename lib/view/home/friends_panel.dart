@@ -1,9 +1,7 @@
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 class FriendsPanel extends StatelessWidget {
   const FriendsPanel({Key? key}) : super(key: key);

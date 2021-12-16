@@ -6,7 +6,6 @@ import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:developer' as dev;
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
