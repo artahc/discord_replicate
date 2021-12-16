@@ -1,19 +1,19 @@
 import 'package:discord_replicate/model/message_data.dart';
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/view/home/channel_message_tile.dart';
-import 'package:discord_replicate/view/home/channel_view.dart';
+import 'package:discord_replicate/view/home/conversation_tile.dart';
+import 'package:discord_replicate/view/home/conversation_view.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ChannelMessagePanel extends StatefulWidget {
-  const ChannelMessagePanel({Key? key}) : super(key: key);
+class ConversationPanel extends StatefulWidget {
+  const ConversationPanel({Key? key}) : super(key: key);
 
   @override
-  _ChannelMessagePanelState createState() => _ChannelMessagePanelState();
+  _ConversationPanelState createState() => _ConversationPanelState();
 }
 
-class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
+class _ConversationPanelState extends State<ConversationPanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +39,7 @@ class _ChatHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = context.findAncestorStateOfType<ChannelViewState>()?.controller;
+    var controller = context.findAncestorStateOfType<ConversationViewState>()?.controller;
 
     return Container(
       decoration: BoxDecoration(
@@ -137,7 +137,7 @@ class _ChatBody extends StatelessWidget {
         child: ListView.builder(
           itemCount: 15,
           itemBuilder: (context, index) {
-            return MessageTile(MessageData.createDummy());
+            return ConversationTile(MessageData.createDummy());
           },
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           scrollDirection: Axis.vertical,

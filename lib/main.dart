@@ -1,9 +1,10 @@
+import 'dart:developer';
+
 import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
-import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_theme.dart';
@@ -32,13 +33,18 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   // Constant
-  final String url = "https://5a10-182-253-132-151.ngrok.io";
+  final String url = "https://2da9-8-30-234-55.ngrok.io/";
 
   // Service
   late AuthService authService = FirebaseAuthService();
 
   // Helper Class
-  late GraphQLClientHelper graphqlClient = GraphQLClientHelper(url: url, tokenProvider: () => authService.getCurrentUserCredential());
+  late GraphQLClientHelper graphqlClient = GraphQLClientHelper(
+      url: url,
+      tokenProvider: () async {
+        var credential = await authService.getCurrentUserCredential();
+        return credential;
+      });
 
   // Repository
   late UserRepository userRepository = UserRepository(graphqlClient: graphqlClient);
@@ -46,7 +52,6 @@ class _MainState extends State<Main> {
 
   // Bloc
   late ServerBloc serverBloc = ServerBloc(serverRepository: serverRepository);
-  late DirectMessageBloc directMessageBloc = DirectMessageBloc();
   late AuthBloc authBloc = AuthBloc(authService: authService, userRepository: userRepository);
   late NavigationBloc navBloc = NavigationBloc();
 
@@ -55,7 +60,6 @@ class _MainState extends State<Main> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ServerBloc>(create: (c) => serverBloc),
-        BlocProvider<DirectMessageBloc>(create: (c) => directMessageBloc),
         BlocProvider<AuthBloc>(create: (c) => authBloc),
         BlocProvider<NavigationBloc>(create: (c) => navBloc),
       ],

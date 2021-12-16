@@ -4,7 +4,7 @@ import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ChannelInfoPanel extends StatelessWidget {
+class ConversationInfoPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(

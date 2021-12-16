@@ -1,5 +1,3 @@
-import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
-import 'package:discord_replicate/bloc/direct_message/direct_message_state.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
@@ -15,7 +13,6 @@ class DirectMessageListPanel extends StatefulWidget {
 }
 
 class _DirectMessageListState extends State<DirectMessageListPanel> {
-  late DirectMessageBloc _directMessageBloc = BlocProvider.of<DirectMessageBloc>(context);
   late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
 
   @override
@@ -83,25 +80,20 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
             Expanded(
               child: Container(
                 margin: const EdgeInsets.only(top: 15, bottom: 60),
-                child: BlocBuilder<DirectMessageBloc, DirectMessageState>(
-                  bloc: _directMessageBloc,
-                  builder: (context, state) {
-                    return ScrollConfiguration(
-                      behavior: ClampingScrollBehavior(),
-                      child: ListView.builder(
-                        clipBehavior: Clip.antiAlias,
-                        itemCount: 30,
-                        itemBuilder: (_, index) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: DirectMessageTile(
-                              data: DirectMessageData.createDummy(),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
+                child: ScrollConfiguration(
+                  behavior: ClampingScrollBehavior(),
+                  child: ListView.builder(
+                    clipBehavior: Clip.antiAlias,
+                    itemCount: 5,
+                    itemBuilder: (_, index) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: DirectMessageTile(
+                          data: DirectMessageData.createDummy(),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

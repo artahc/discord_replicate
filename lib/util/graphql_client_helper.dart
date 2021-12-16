@@ -17,8 +17,12 @@ class GraphQLClientHelper {
     _authLink = AuthLink(getToken: () async {
       var credential = await tokenProvider.call();
       var token = credential == null ? "" : credential.token;
-      return 'Bearer $token';
+      var bearer = 'Bearer $token';
+      log(bearer, name: this.runtimeType.toString());
+
+      return bearer;
     });
+
     _link = _authLink.concat(_httpLink);
     _client = GraphQLClient(link: _link, cache: cache ?? GraphQLCache());
   }
@@ -27,7 +31,6 @@ class GraphQLClientHelper {
     log("Request => ${query.trim()}", name: this.runtimeType.toString());
     var options = QueryOptions(document: gql(query), variables: variables);
     var result = await _client.query(options);
-
     if (result.hasException) {
       return Future.error(result.exception!);
     } else {

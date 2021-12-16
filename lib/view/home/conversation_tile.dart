@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-class MessageTile extends StatelessWidget {
+class ConversationTile extends StatelessWidget {
   final MessageData data;
 
-  MessageTile(this.data);
+  ConversationTile(this.data);
 
   @override
   Widget build(BuildContext context) {

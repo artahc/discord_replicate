@@ -28,9 +28,11 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
-      listener: (_, state) {
+      listener: (_, state) async {
         dev.log("$state received.", name: this.runtimeType.toString());
-        _navBloc.add(NavigationEvent.pushNamed(context, Routes.welcome, true));
+        if (state is AuthStateSignedIn)
+          _navBloc.add(NavigationEvent.pushNamed(context, Routes.landing, true));
+        else if (state is AuthStateSignedOut) _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true));
       },
       child: SizedBox.expand(
         child: Container(

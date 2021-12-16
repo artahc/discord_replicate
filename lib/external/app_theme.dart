@@ -80,7 +80,7 @@ class AppTheme {
       contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       floatingLabelStyle: TextStyle(
-        height: 0.8,
+        height: 0.7,
         fontSize: 14,
         color: Color(0xffb9bbbe),
         overflow: TextOverflow.ellipsis,
