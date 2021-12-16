@@ -2,7 +2,6 @@ import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ConversationInfoPanel extends StatelessWidget {
   @override
@@ -21,9 +20,9 @@ class ConversationInfoPanel extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _ChannelInfoHeader(),
-                    _ChannelInfoMenus(),
-                    _ChannelInfoMember(),
+                    _ConversationInfoHeader(),
+                    _ConversationInfoMenus(),
+                    _ConversationInfoMember(),
                   ],
                 ),
               ),
@@ -35,7 +34,7 @@ class ConversationInfoPanel extends StatelessWidget {
   }
 }
 
-class _ChannelInfoHeader extends StatelessWidget {
+class _ConversationInfoHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,7 +61,7 @@ class _ChannelInfoHeader extends StatelessWidget {
   }
 }
 
-class _ChannelInfoMenus extends StatelessWidget {
+class _ConversationInfoMenus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -158,7 +157,7 @@ class ChannelMemberData {
   factory ChannelMemberData.createDummy() => ChannelMemberData(name: "Channel Member");
 }
 
-class _ChannelInfoMember extends StatelessWidget {
+class _ConversationInfoMember extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
