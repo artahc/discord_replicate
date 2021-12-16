@@ -8,25 +8,23 @@ import 'package:flutter/material.dart';
 export 'package:discord_replicate/route_transition/app_transition.dart' show CustomSlideTransition;
 
 class Routes {
-  static const String InitialRoute = '/';
-  static const String WelcomeRoute = '/welcome';
-  static const String RegisterRoute = '/login';
-  static const String LoginRoute = '/register';
-  static const String LandingRoute = '/landing';
-}
+  static const String initial = '/';
+  static const String welcome = 'welcome';
+  static const String register = 'login';
+  static const String login = 'register';
+  static const String landing = 'landing';
 
-class RouteGenerator {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
     switch (settings.name) {
-      case Routes.InitialRoute:
+      case Routes.initial:
         return MaterialPageRoute(builder: (_) => const SplashScreenView());
-      case Routes.WelcomeRoute:
+      case Routes.welcome:
         return MaterialPageRoute(builder: (_) => const WelcomeView());
-      case Routes.RegisterRoute:
+      case Routes.register:
         return MaterialPageRoute(builder: (_) => const RegisterView());
-      case Routes.LoginRoute:
+      case Routes.login:
         return MaterialPageRoute(builder: (_) => const LoginView());
-      case Routes.LandingRoute:
+      case Routes.landing:
         return MaterialPageRoute(builder: (_) => const ChannelView());
       default:
         return MaterialPageRoute(builder: (_) => const WelcomeView());

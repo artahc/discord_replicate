@@ -11,12 +11,12 @@ class Server {
 
   factory Server.dummy(int id) => Server(id: "serverId_$id", name: "name", channels: [Channel.dummy()]);
 
-  factory Server.fromMap(Map<String, dynamic> source) {
+  factory Server.fromJson(Map<String, dynamic> source) {
     var id = source["id"] as String;
     var name = source["name"] as String;
     var channels = (source["channels"] as List<Object?>).map((e) {
       var map = e as Map<String, dynamic>;
-      return Channel.fromMap(map);
+      return Channel.fromJson(map);
     }).toList();
 
     return Server(id: id, name: name, channels: channels);

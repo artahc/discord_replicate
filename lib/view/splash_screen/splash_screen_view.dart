@@ -1,4 +1,6 @@
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +15,13 @@ class SplashScreenView extends StatefulWidget {
 }
 
 class _SplashScreenViewState extends State<SplashScreenView> {
+  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
+  late AuthBloc _authBloc = BlocProvider.of(context);
+
   @override
   void initState() {
     dev.log("Init splash screen", name: this.runtimeType.toString());
+    _authBloc.add(AuthEvent.initialEvent());
     super.initState();
   }
 
@@ -23,11 +29,8 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (_, state) {
-        if (state is AuthStateSignedIn) {
-          // Navigator.of(context).pushReplacementNamed(Routes.LandingRoute);
-        } else if (state is AuthStateSignedOut) {
-          // Navigator.of(context).pushReplacementNamed(Routes.WelcomeRoute);
-        }
+        dev.log("$state received.", name: this.runtimeType.toString());
+        _navBloc.add(NavigationEvent.pushNamed(context, Routes.welcome, true));
       },
       child: SizedBox.expand(
         child: Container(

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/external/app_icon.dart';
@@ -65,6 +67,7 @@ class WelcomeView extends StatelessWidget {
                 color: Theme.of(context).buttonTheme.colorScheme!.secondary,
                 child: Text("Login"),
                 onPressed: () {
+                  log("Login pressed", name: this.runtimeType.toString());
                   var route = CustomSlideTransition(currentPage: this, nextPage: const LoginView());
                   _navBloc.add(NavigationEvent.push(context, route, true));
                 },

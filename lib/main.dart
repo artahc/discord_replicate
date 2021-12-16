@@ -8,24 +8,31 @@ import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_theme.dart';
 import 'package:discord_replicate/util/graphql_client_helper.dart';
+import 'package:discord_replicate/view/splash_screen/splash_screen_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent,
   ));
+  await Firebase.initializeApp();
   runApp(Main());
 }
 
-class Main extends StatelessWidget {
+class Main extends StatefulWidget {
+  @override
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
   // Constant
-  final String url = "https://23e7-182-253-132-151.ngrok.io";
+  final String url = "https://5a10-182-253-132-151.ngrok.io";
 
   // Service
   late AuthService authService = FirebaseAuthService();
@@ -45,34 +52,19 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Firebase.initializeApp(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return SizedBox.expand(
-            child: Container(color: AppTheme.darkThemeData.backgroundColor),
-          );
-        } else if (snapshot.connectionState == ConnectionState.done) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider<ServerBloc>(create: (c) => serverBloc),
-              BlocProvider<DirectMessageBloc>(create: (c) => directMessageBloc),
-              BlocProvider<AuthBloc>(create: (c) => authBloc),
-              BlocProvider<NavigationBloc>(create: (c) => navBloc),
-            ],
-            child: MaterialApp(
-              theme: AppTheme.darkThemeData,
-              onGenerateRoute: RouteGenerator.generateRoutes,
-              initialRoute: Routes.WelcomeRoute,
-              debugShowCheckedModeBanner: false,
-            ),
-          );
-        } else {
-          return Center(
-            child: Text("Error initializing firebase app."),
-          );
-        }
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ServerBloc>(create: (c) => serverBloc),
+        BlocProvider<DirectMessageBloc>(create: (c) => directMessageBloc),
+        BlocProvider<AuthBloc>(create: (c) => authBloc),
+        BlocProvider<NavigationBloc>(create: (c) => navBloc),
+      ],
+      child: MaterialApp(
+        theme: AppTheme.darkThemeData,
+        onGenerateRoute: Routes.generateRoutes,
+        initialRoute: Routes.initial,
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

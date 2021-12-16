@@ -53,7 +53,7 @@ class _LoginViewState extends State<LoginView> {
       listener: (_, state) {
         if (state is AuthStateSignedIn) {
           SchedulerBinding.instance?.addPostFrameCallback((_) {
-            _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.LandingRoute, (route) => false, true));
+            _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.landing, (route) => false, true));
           });
         }
       },
@@ -61,11 +61,12 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
+          elevation: 0,
           leading: SizedBox(
             width: 45,
             height: 45,
             child: IconButton(
+              splashRadius: 20,
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 _signOut();
@@ -74,7 +75,7 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
         body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
           child: Column(
             children: [
               Container(

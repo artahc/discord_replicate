@@ -25,6 +25,6 @@ class UserRepository {
     };
 
     var raw = await _client.query(query, variables: varibales);
-    return User.fromMap(raw['user']);
+    return User.fromJson(raw['user']);
   }
 }

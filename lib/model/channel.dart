@@ -9,7 +9,7 @@ class Channel {
 
   factory Channel.dummy() => Channel(id: "id", name: "name");
 
-  factory Channel.fromMap(Map<String, dynamic> map) {
+  factory Channel.fromJson(Map<String, dynamic> map) {
     return Channel(id: map['id'], name: map['name']);
   }
 

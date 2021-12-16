@@ -24,7 +24,7 @@ class ServerRepository {
     """;
 
     var raw = await _client.query(query);
-    var servers = (raw['servers'] as List<Object?>).map((e) => Server.fromMap(e as Map<String, dynamic>)).toList();
+    var servers = (raw['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
     return servers;
   }
 

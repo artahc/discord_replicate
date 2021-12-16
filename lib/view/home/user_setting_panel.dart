@@ -28,7 +28,7 @@ class _UserSettingPanelState extends State<UserSettingPanel> {
         if (state is AuthStateSignedOut) {
           log("State received $state", name: this.runtimeType.toString());
           SchedulerBinding.instance?.addPostFrameCallback((_) {
-            _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.WelcomeRoute, (route) => false, true));
+            _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true));
           });
         }
       },
