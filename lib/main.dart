@@ -6,6 +6,7 @@ import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_theme.dart';
+import 'package:discord_replicate/test_main.dart';
 import 'package:discord_replicate/util/graphql_client_helper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -29,18 +30,13 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   // Constant
-  final String url = "https://2da9-8-30-234-55.ngrok.io/";
+  final String url = "https://discord-replicate-backend-1029.herokuapp.com/";
 
   // Service
   late AuthService authService = FirebaseAuthService();
 
   // Helper Class
-  late GraphQLClientHelper graphqlClient = GraphQLClientHelper(
-      url: url,
-      tokenProvider: () async {
-        var credential = await authService.getCurrentUserCredential();
-        return credential;
-      });
+  late GraphQLClientHelper graphqlClient = GraphQLClientHelper(url: url, tokenProvider: authService.getCurrentUserCredential);
 
   // Repository
   late UserRepository userRepository = UserRepository(graphqlClient: graphqlClient);

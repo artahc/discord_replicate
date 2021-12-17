@@ -18,11 +18,12 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChannelViewRoutes {
+class LocalRoutes {
   static const main = "/";
-  static const friends = "/friends";
-  static const search = "/search";
-  static const profile = "/profile";
+  static const friends = "friends";
+  static const search = "search";
+  static const mentions = "mentions";
+  static const profile = "profile";
 }
 
 class ConversationView extends StatefulWidget {
@@ -34,7 +35,7 @@ class ConversationView extends StatefulWidget {
 
 class ConversationViewState extends State<ConversationView> with TickerProviderStateMixin {
   // private
-  String _currentRoute = ChannelViewRoutes.main;
+  String _currentRoute = LocalRoutes.main;
   final _localNavKey = GlobalKey<NavigatorState>();
 
   late OverlapSwipeableStackController _channelViewController = OverlapSwipeableStackController(vsync: this);
@@ -73,10 +74,10 @@ class ConversationViewState extends State<ConversationView> with TickerProviderS
             children: [
               Navigator(
                 key: _localNavKey,
-                initialRoute: ChannelViewRoutes.main,
+                initialRoute: LocalRoutes.main,
                 onGenerateRoute: (settings) {
                   switch (settings.name) {
-                    case ChannelViewRoutes.main:
+                    case LocalRoutes.main:
                       return PageRouteBuilder(
                         maintainState: true,
                         pageBuilder: (_, anim, secondAnim) {
@@ -87,26 +88,15 @@ class ConversationViewState extends State<ConversationView> with TickerProviderS
                               children: [
                                 ServerListPanel(),
                                 DirectMessageListPanel(),
-                                BlocBuilder<ServerBloc, ServerState>(
-                                  bloc: _serverBloc,
-                                  builder: (_, state) {
-                                    if (state is ServerStateLoadSelectedSuccess) {
-                                      log("$state is received.", name: this.runtimeType.toString());
-                                      return Container();
-                                    } else {
-                                      return Container();
-                                    }
-                                  },
-                                )
                               ],
                             ),
                             rightPage: ConversationInfoPanel(),
                           );
                         },
                       );
-                    case ChannelViewRoutes.search:
+                    case LocalRoutes.search:
                       return MaterialPageRoute(builder: (_) => SearchPanel(), fullscreenDialog: true);
-                    case ChannelViewRoutes.friends:
+                    case LocalRoutes.friends:
                       return PageRouteBuilder(
                         maintainState: true,
                         fullscreenDialog: true,
@@ -122,7 +112,7 @@ class ConversationViewState extends State<ConversationView> with TickerProviderS
                         },
                         pageBuilder: (_, __, ___) => FriendsPanel(),
                       );
-                    case ChannelViewRoutes.profile:
+                    case LocalRoutes.profile:
                       return MaterialPageRoute(
                         maintainState: true,
                         fullscreenDialog: true,
@@ -132,20 +122,20 @@ class ConversationViewState extends State<ConversationView> with TickerProviderS
                 },
               ),
               AppNavigationBar(
-                navbarController: _channelViewController.navBarAnimController,
+                controller: _channelViewController.navBarAnimController,
                 onHomePressed: () {
-                  if (_currentRoute != ChannelViewRoutes.main) {
+                  if (_currentRoute != LocalRoutes.main) {
                     _localNavKey.currentState?.popUntil((route) => route.isFirst);
                     setState(() {
-                      _currentRoute = ChannelViewRoutes.main;
+                      _currentRoute = LocalRoutes.main;
                     });
                   }
                 },
                 onFriendPressed: () {
-                  if (_currentRoute != ChannelViewRoutes.friends) {
-                    _localNavKey.currentState?.pushNamed(ChannelViewRoutes.friends);
+                  if (_currentRoute != LocalRoutes.friends) {
+                    _localNavKey.currentState?.pushNamed(LocalRoutes.friends);
                     setState(() {
-                      _currentRoute = ChannelViewRoutes.friends;
+                      _currentRoute = LocalRoutes.friends;
                     });
                   }
                 },
@@ -154,10 +144,10 @@ class ConversationViewState extends State<ConversationView> with TickerProviderS
                 },
                 onMentionPressed: () {},
                 onProfilePressed: () {
-                  if (_currentRoute != ChannelViewRoutes.profile) {
-                    _localNavKey.currentState?.pushNamed(ChannelViewRoutes.profile);
+                  if (_currentRoute != LocalRoutes.profile) {
+                    _localNavKey.currentState?.pushNamed(LocalRoutes.profile);
                     setState(() {
-                      _currentRoute = ChannelViewRoutes.profile;
+                      _currentRoute = LocalRoutes.profile;
                     });
                   }
                 },
@@ -171,16 +161,16 @@ class ConversationViewState extends State<ConversationView> with TickerProviderS
 }
 
 class AppNavigationBar extends StatelessWidget {
-  final AnimationController navbarController;
-  Function() onHomePressed;
-  Function() onFriendPressed;
-  Function() onSearchPressed;
-  Function() onMentionPressed;
-  Function() onProfilePressed;
+  final AnimationController controller;
+  final Function() onHomePressed;
+  final Function() onFriendPressed;
+  final Function() onSearchPressed;
+  final Function() onMentionPressed;
+  final Function() onProfilePressed;
 
   AppNavigationBar({
     Key? key,
-    required this.navbarController,
+    required this.controller,
     required this.onHomePressed,
     required this.onFriendPressed,
     required this.onSearchPressed,
@@ -251,7 +241,7 @@ class AppNavigationBar extends StatelessWidget {
             ],
           ),
         ),
-        position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(navbarController),
+        position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(controller),
       ),
     );
   }

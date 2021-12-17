@@ -48,7 +48,6 @@ class _SearchPanelState extends State<SearchPanel> {
                     color: Theme.of(context).iconTheme.color,
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
-                      log("Pop", name: this.runtimeType.toString());
                       _navBloc.add(NavigationEvent.pop(context, false));
                     },
                   ),
