@@ -3,7 +3,7 @@ import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
 
-class ConversationInfoPanel extends StatelessWidget {
+class RoomInfoPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(

@@ -3,11 +3,10 @@ import 'dart:developer';
 import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
-import 'package:discord_replicate/view/home/conversation_info_panel.dart';
-import 'package:discord_replicate/view/home/conversation_panel.dart';
+import 'package:discord_replicate/view/home/room_info_panel.dart';
+import 'package:discord_replicate/view/home/room_message_panel.dart';
 import 'package:discord_replicate/view/home/friends_panel.dart';
 import 'package:discord_replicate/view/home/search_panel.dart';
 import 'package:discord_replicate/view/home/user_setting_panel.dart';
@@ -26,14 +25,14 @@ class LocalRoutes {
   static const profile = "profile";
 }
 
-class ConversationView extends StatefulWidget {
-  const ConversationView({Key? key}) : super(key: key);
+class RoomView extends StatefulWidget {
+  const RoomView({Key? key}) : super(key: key);
 
   @override
-  ConversationViewState createState() => ConversationViewState();
+  RoomViewState createState() => RoomViewState();
 }
 
-class ConversationViewState extends State<ConversationView> with TickerProviderStateMixin {
+class RoomViewState extends State<RoomView> with TickerProviderStateMixin {
   // private
   String _currentRoute = LocalRoutes.main;
   final _localNavKey = GlobalKey<NavigatorState>();
@@ -83,14 +82,14 @@ class ConversationViewState extends State<ConversationView> with TickerProviderS
                         pageBuilder: (_, anim, secondAnim) {
                           return OverlapSwipeableStack(
                             channelViewController: _channelViewController,
-                            frontPage: ConversationPanel(),
+                            frontPage: RoomMessagePanel(),
                             leftPage: Row(
                               children: [
                                 ServerListPanel(),
                                 DirectMessageListPanel(),
                               ],
                             ),
-                            rightPage: ConversationInfoPanel(),
+                            rightPage: RoomInfoPanel(),
                           );
                         },
                       );

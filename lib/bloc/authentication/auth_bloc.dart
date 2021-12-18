@@ -29,14 +29,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (credential == null) {
       emit(AuthState.signedOut());
     } else {
-      var user = await userRepository.loadUser(credential.uid);
+      var user = await userRepository.loadById(credential.uid);
       emit(AuthState.signedIn(credential: credential, user: user));
     }
   }
 
   Stream<AuthState> _signIn(String email, String password) async* {
     var credential = await authService.signIn(email, password);
-    var user = await userRepository.loadUser(credential.uid);
+    var user = await userRepository.loadById(credential.uid);
     log("Token ${credential.token}. \nUser $user", name: this.runtimeType.toString());
     var state = AuthState.signedIn(credential: credential, user: user);
     emit(state);
@@ -46,7 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     switch (option) {
       case RegisterOptions.Email:
         var credential = await authService.signUpEmail(id);
-        var user = await userRepository.loadUser(credential.uid);
+        var user = await userRepository.loadById(credential.uid);
 
         var state = AuthState.signedIn(credential: credential, user: user);
 

@@ -1,18 +1,18 @@
 import 'package:discord_replicate/model/message_data.dart';
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/view/home/conversation_tile.dart';
-import 'package:discord_replicate/view/home/conversation_view.dart';
+import 'package:discord_replicate/view/home/room_message_tile.dart';
+import 'package:discord_replicate/view/home/room_view.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 
-class ConversationPanel extends StatefulWidget {
-  const ConversationPanel({Key? key}) : super(key: key);
+class RoomMessagePanel extends StatefulWidget {
+  const RoomMessagePanel({Key? key}) : super(key: key);
 
   @override
-  _ConversationPanelState createState() => _ConversationPanelState();
+  _RoomMessagePanelState createState() => _RoomMessagePanelState();
 }
 
-class _ConversationPanelState extends State<ConversationPanel> {
+class _RoomMessagePanelState extends State<RoomMessagePanel> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,9 +22,9 @@ class _ConversationPanelState extends State<ConversationPanel> {
         child: Container(
           child: Column(
             children: [
-              _ChatHeader(),
-              _ChatBody(),
-              _ChatInput(),
+              _RoomHeader(),
+              _RoomBody(),
+              _RoomInput(),
             ],
           ),
         ),
@@ -33,12 +33,12 @@ class _ConversationPanelState extends State<ConversationPanel> {
   }
 }
 
-class _ChatHeader extends StatelessWidget {
-  const _ChatHeader({Key? key}) : super(key: key);
+class _RoomHeader extends StatelessWidget {
+  const _RoomHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var controller = context.findAncestorStateOfType<ConversationViewState>()?.controller;
+    var controller = context.findAncestorStateOfType<RoomViewState>()?.controller;
 
     return Container(
       decoration: BoxDecoration(
@@ -127,7 +127,7 @@ class _ChatHeader extends StatelessWidget {
   }
 }
 
-class _ChatBody extends StatelessWidget {
+class _RoomBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -136,7 +136,7 @@ class _ChatBody extends StatelessWidget {
         child: ListView.builder(
           itemCount: 15,
           itemBuilder: (context, index) {
-            return ConversationTile(MessageData.createDummy());
+            return RoomMessageTile(MessageData.createDummy());
           },
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           scrollDirection: Axis.vertical,
@@ -146,7 +146,7 @@ class _ChatBody extends StatelessWidget {
   }
 }
 
-class _ChatInput extends StatelessWidget {
+class _RoomInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

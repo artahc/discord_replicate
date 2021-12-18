@@ -20,12 +20,26 @@ class ServerRepository {
       }
     """;
 
-    var raw = await _client.query(query);
-    var servers = (raw['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
+    var json = await _client.query(query);
+    var servers = (json['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
     return servers;
   }
 
   Future<Server> loadById(String id) async {
-    return Server.dummy(100);
+    var query = """
+      query Server(\$id: String!) {
+        server(id: \$id) {
+          id
+          name
+          channels {
+            id
+            name
+          }
+        }
+      }
+    """;
+
+    var json = await _client.query(query, variables: {"id": id});
+    return Server.fromJson(json['server']);
   }
 }

@@ -6,7 +6,7 @@ class UserRepository {
 
   UserRepository({required GraphQLClientHelper graphqlClient}) : _client = graphqlClient;
 
-  Future<User> loadUser(String uid) async {
+  Future<User> loadById(String uid) async {
     String query = """
       query User(\$uid: String!) {
         user(uid: \$uid) {

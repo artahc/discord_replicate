@@ -3,10 +3,10 @@ import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class ConversationTile extends StatelessWidget {
+class RoomMessageTile extends StatelessWidget {
   final MessageData data;
 
-  ConversationTile(this.data);
+  RoomMessageTile(this.data);
 
   @override
   Widget build(BuildContext context) {
