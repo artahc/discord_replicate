@@ -13,19 +13,19 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
 
   Stream<ServerState> _loadAll() async* {
     var servers = await serverRepository.loadAll();
-    log("Emitting ServerState.loadListSuccess with value $servers", name: this.runtimeType.toString());
+    // log("Emitting ServerState.loadListSuccess with value $servers", name: this.runtimeType.toString());
     emit(ServerState.loadListSuccess(servers));
   }
 
   Stream<ServerState> _loadOne(String serverId) async* {
     var server = await serverRepository.loadById(serverId);
-    log("Emitting ServerState.loadSelectedSuccess with value $server", name: this.runtimeType.toString());
+    // log("Emitting ServerState.loadSelectedSuccess with value $server", name: this.runtimeType.toString());
     emit(ServerState.loadSelectedSuccess(server));
   }
 
   @override
   Stream<ServerState> mapEventToState(ServerEvent event) async* {
-    log("Received event $event", name: this.runtimeType.toString());
+    // log("Received event $event", name: this.runtimeType.toString());
     yield* event.when(
       loadAll: _loadAll,
       loadOne: _loadOne,

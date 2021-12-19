@@ -1,11 +1,14 @@
 import 'dart:developer';
 
 import 'package:discord_replicate/repository/user_repository.dart';
-import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/repository/auth_repository.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
 import 'package:discord_replicate/bloc/authentication/auth_state.dart';
+import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:developer' as dev;
+
+import 'package:hive/hive.dart';
 
 export 'auth_event.dart';
 export 'auth_state.dart';
@@ -19,36 +22,35 @@ extension ParseToString on RegisterOptions {
 }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService authService;
-  final UserRepository userRepository;
+  final AuthRepository authRepo;
+  final UserRepository userRepo;
 
-  AuthBloc({required this.authService, required this.userRepository}) : super(AuthStateInitial());
+  AuthBloc({required this.authRepo, required this.userRepo}) : super(AuthStateInitial());
 
   Stream<AuthState> _handleInitial() async* {
-    var credential = await authService.getCurrentUserCredential();
+    var credential = await authRepo.getCurrentUserCredential();
     if (credential == null) {
       emit(AuthState.signedOut());
     } else {
-      var user = await userRepository.loadById(credential.uid);
-      emit(AuthState.signedIn(credential: credential, user: user));
+      var user = await userRepo.loadById(credential.uid);
+      emit(AuthState.signedIn(credential: credential));
     }
   }
 
   Stream<AuthState> _signIn(String email, String password) async* {
-    var credential = await authService.signIn(email, password);
-    var user = await userRepository.loadById(credential.uid);
-    log("Token ${credential.token}. \nUser $user", name: this.runtimeType.toString());
-    var state = AuthState.signedIn(credential: credential, user: user);
-    emit(state);
+    emit(AuthState.signingIn());
+    var credential = await authRepo.signIn(email, password);
+    var user = await userRepo.loadById(credential.uid);
+    emit(AuthState.signedIn(credential: credential));
   }
 
   Stream<AuthState> _signUp(RegisterOptions option, String id) async* {
     switch (option) {
       case RegisterOptions.Email:
-        var credential = await authService.signUpEmail(id);
-        var user = await userRepository.loadById(credential.uid);
+        var credential = await authRepo.signUpEmail(id);
+        var user = await userRepo.loadById(credential.uid);
 
-        var state = AuthState.signedIn(credential: credential, user: user);
+        var state = AuthState.signedIn(credential: credential);
 
         emit(state);
         break;
@@ -59,14 +61,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _signOut() async* {
-    await authService.signOut();
-    emit(AuthStateSignedOut());
+    await authRepo.signOut();
+    await Hive.deleteFromDisk();
+    emit(AuthState.signedOut());
   }
 
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async* {
-    dev.log("$event received.", name: this.runtimeType.toString());
-
     yield* event.when(
       initialEvent: _handleInitial,
       signInEvent: _signIn,

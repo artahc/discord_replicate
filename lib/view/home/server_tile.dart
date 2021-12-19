@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 class ServerTile extends StatelessWidget {
   final Key key;
-  final Server serverData;
+  final Server data;
   final bool selected;
   final Function? onPressed;
 
-  ServerTile({required this.key, required this.serverData, this.onPressed, this.selected = false}) : super(key: key);
+  ServerTile({required this.key, required this.data, this.onPressed, this.selected = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class ServerTile extends StatelessWidget {
               curve: Curves.easeInOutSine,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(selected ? 16 : 28),
-                color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                color: selected ? Theme.of(context).buttonTheme.colorScheme!.primary : Color(0xff363940),
               ),
             ),
           ),

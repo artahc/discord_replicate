@@ -20,7 +20,6 @@ class _SplashScreenViewState extends State<SplashScreenView> {
 
   @override
   void initState() {
-    dev.log("Init splash screen", name: this.runtimeType.toString());
     _authBloc.add(AuthEvent.initialEvent());
     super.initState();
   }
@@ -29,7 +28,6 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (_, state) async {
-        dev.log("$state received.", name: this.runtimeType.toString());
         if (state is AuthStateSignedIn)
           _navBloc.add(NavigationEvent.pushNamed(context, Routes.landing, true));
         else if (state is AuthStateSignedOut) _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true));

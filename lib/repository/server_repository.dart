@@ -4,7 +4,7 @@ import 'package:discord_replicate/util/graphql_client_helper.dart';
 class ServerRepository {
   final GraphQLClientHelper _client;
 
-  ServerRepository({required GraphQLClientHelper graphQLClient}) : _client = graphQLClient;
+  ServerRepository({required GraphQLClientHelper apiClient}) : _client = apiClient;
 
   Future<List<Server>> loadAll() async {
     var query = r"""
@@ -15,6 +15,8 @@ class ServerRepository {
           channels {
             id
             name
+            roomId
+            access
           }  
         }
       }
@@ -34,6 +36,8 @@ class ServerRepository {
           channels {
             id
             name
+            roomId
+            access
           }
         }
       }

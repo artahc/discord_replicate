@@ -21,11 +21,13 @@ class _$AuthStateTearOff {
     return const AuthStateInitial();
   }
 
-  AuthStateSignedIn signedIn(
-      {required Credential credential, required User user}) {
+  AuthStateSigningIn signingIn() {
+    return const AuthStateSigningIn();
+  }
+
+  AuthStateSignedIn signedIn({required Credential credential}) {
     return AuthStateSignedIn(
       credential: credential,
-      user: user,
     );
   }
 
@@ -48,7 +50,8 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(Credential credential, User user) signedIn,
+    required TResult Function() signingIn,
+    required TResult Function(Credential credential) signedIn,
     required TResult Function() signedOut,
     required TResult Function(Exception exception) error,
   }) =>
@@ -56,7 +59,8 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
   }) =>
@@ -64,7 +68,8 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
@@ -73,6 +78,7 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthStateInitial value) initial,
+    required TResult Function(AuthStateSigningIn value) signingIn,
     required TResult Function(AuthStateSignedIn value) signedIn,
     required TResult Function(AuthStateSignedOut value) signedOut,
     required TResult Function(AuthStateError value) error,
@@ -81,6 +87,7 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,
@@ -89,6 +96,7 @@ mixin _$AuthState {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,
@@ -153,7 +161,8 @@ class _$AuthStateInitial implements AuthStateInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(Credential credential, User user) signedIn,
+    required TResult Function() signingIn,
+    required TResult Function(Credential credential) signedIn,
     required TResult Function() signedOut,
     required TResult Function(Exception exception) error,
   }) {
@@ -164,7 +173,8 @@ class _$AuthStateInitial implements AuthStateInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
   }) {
@@ -175,7 +185,8 @@ class _$AuthStateInitial implements AuthStateInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
@@ -190,6 +201,7 @@ class _$AuthStateInitial implements AuthStateInitial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthStateInitial value) initial,
+    required TResult Function(AuthStateSigningIn value) signingIn,
     required TResult Function(AuthStateSignedIn value) signedIn,
     required TResult Function(AuthStateSignedOut value) signedOut,
     required TResult Function(AuthStateError value) error,
@@ -201,6 +213,7 @@ class _$AuthStateInitial implements AuthStateInitial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,
@@ -212,6 +225,7 @@ class _$AuthStateInitial implements AuthStateInitial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,
@@ -229,11 +243,134 @@ abstract class AuthStateInitial implements AuthState {
 }
 
 /// @nodoc
+abstract class $AuthStateSigningInCopyWith<$Res> {
+  factory $AuthStateSigningInCopyWith(
+          AuthStateSigningIn value, $Res Function(AuthStateSigningIn) then) =
+      _$AuthStateSigningInCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$AuthStateSigningInCopyWithImpl<$Res>
+    extends _$AuthStateCopyWithImpl<$Res>
+    implements $AuthStateSigningInCopyWith<$Res> {
+  _$AuthStateSigningInCopyWithImpl(
+      AuthStateSigningIn _value, $Res Function(AuthStateSigningIn) _then)
+      : super(_value, (v) => _then(v as AuthStateSigningIn));
+
+  @override
+  AuthStateSigningIn get _value => super._value as AuthStateSigningIn;
+}
+
+/// @nodoc
+
+class _$AuthStateSigningIn implements AuthStateSigningIn {
+  const _$AuthStateSigningIn();
+
+  @override
+  String toString() {
+    return 'AuthState.signingIn()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is AuthStateSigningIn);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() signingIn,
+    required TResult Function(Credential credential) signedIn,
+    required TResult Function() signedOut,
+    required TResult Function(Exception exception) error,
+  }) {
+    return signingIn();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
+    TResult Function()? signedOut,
+    TResult Function(Exception exception)? error,
+  }) {
+    return signingIn?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
+    TResult Function()? signedOut,
+    TResult Function(Exception exception)? error,
+    required TResult orElse(),
+  }) {
+    if (signingIn != null) {
+      return signingIn();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(AuthStateInitial value) initial,
+    required TResult Function(AuthStateSigningIn value) signingIn,
+    required TResult Function(AuthStateSignedIn value) signedIn,
+    required TResult Function(AuthStateSignedOut value) signedOut,
+    required TResult Function(AuthStateError value) error,
+  }) {
+    return signingIn(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
+    TResult Function(AuthStateSignedIn value)? signedIn,
+    TResult Function(AuthStateSignedOut value)? signedOut,
+    TResult Function(AuthStateError value)? error,
+  }) {
+    return signingIn?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
+    TResult Function(AuthStateSignedIn value)? signedIn,
+    TResult Function(AuthStateSignedOut value)? signedOut,
+    TResult Function(AuthStateError value)? error,
+    required TResult orElse(),
+  }) {
+    if (signingIn != null) {
+      return signingIn(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AuthStateSigningIn implements AuthState {
+  const factory AuthStateSigningIn() = _$AuthStateSigningIn;
+}
+
+/// @nodoc
 abstract class $AuthStateSignedInCopyWith<$Res> {
   factory $AuthStateSignedInCopyWith(
           AuthStateSignedIn value, $Res Function(AuthStateSignedIn) then) =
       _$AuthStateSignedInCopyWithImpl<$Res>;
-  $Res call({Credential credential, User user});
+  $Res call({Credential credential});
 }
 
 /// @nodoc
@@ -250,17 +387,12 @@ class _$AuthStateSignedInCopyWithImpl<$Res>
   @override
   $Res call({
     Object? credential = freezed,
-    Object? user = freezed,
   }) {
     return _then(AuthStateSignedIn(
       credential: credential == freezed
           ? _value.credential
           : credential // ignore: cast_nullable_to_non_nullable
               as Credential,
-      user: user == freezed
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User,
     ));
   }
 }
@@ -268,16 +400,14 @@ class _$AuthStateSignedInCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthStateSignedIn implements AuthStateSignedIn {
-  const _$AuthStateSignedIn({required this.credential, required this.user});
+  const _$AuthStateSignedIn({required this.credential});
 
   @override
   final Credential credential;
-  @override
-  final User user;
 
   @override
   String toString() {
-    return 'AuthState.signedIn(credential: $credential, user: $user)';
+    return 'AuthState.signedIn(credential: $credential)';
   }
 
   @override
@@ -286,12 +416,11 @@ class _$AuthStateSignedIn implements AuthStateSignedIn {
         (other.runtimeType == runtimeType &&
             other is AuthStateSignedIn &&
             (identical(other.credential, credential) ||
-                other.credential == credential) &&
-            (identical(other.user, user) || other.user == user));
+                other.credential == credential));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, credential, user);
+  int get hashCode => Object.hash(runtimeType, credential);
 
   @JsonKey(ignore: true)
   @override
@@ -302,35 +431,38 @@ class _$AuthStateSignedIn implements AuthStateSignedIn {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(Credential credential, User user) signedIn,
+    required TResult Function() signingIn,
+    required TResult Function(Credential credential) signedIn,
     required TResult Function() signedOut,
     required TResult Function(Exception exception) error,
   }) {
-    return signedIn(credential, user);
+    return signedIn(credential);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
   }) {
-    return signedIn?.call(credential, user);
+    return signedIn?.call(credential);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
   }) {
     if (signedIn != null) {
-      return signedIn(credential, user);
+      return signedIn(credential);
     }
     return orElse();
   }
@@ -339,6 +471,7 @@ class _$AuthStateSignedIn implements AuthStateSignedIn {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthStateInitial value) initial,
+    required TResult Function(AuthStateSigningIn value) signingIn,
     required TResult Function(AuthStateSignedIn value) signedIn,
     required TResult Function(AuthStateSignedOut value) signedOut,
     required TResult Function(AuthStateError value) error,
@@ -350,6 +483,7 @@ class _$AuthStateSignedIn implements AuthStateSignedIn {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,
@@ -361,6 +495,7 @@ class _$AuthStateSignedIn implements AuthStateSignedIn {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,
@@ -374,12 +509,10 @@ class _$AuthStateSignedIn implements AuthStateSignedIn {
 }
 
 abstract class AuthStateSignedIn implements AuthState {
-  const factory AuthStateSignedIn(
-      {required Credential credential,
-      required User user}) = _$AuthStateSignedIn;
+  const factory AuthStateSignedIn({required Credential credential}) =
+      _$AuthStateSignedIn;
 
   Credential get credential;
-  User get user;
   @JsonKey(ignore: true)
   $AuthStateSignedInCopyWith<AuthStateSignedIn> get copyWith =>
       throw _privateConstructorUsedError;
@@ -427,7 +560,8 @@ class _$AuthStateSignedOut implements AuthStateSignedOut {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(Credential credential, User user) signedIn,
+    required TResult Function() signingIn,
+    required TResult Function(Credential credential) signedIn,
     required TResult Function() signedOut,
     required TResult Function(Exception exception) error,
   }) {
@@ -438,7 +572,8 @@ class _$AuthStateSignedOut implements AuthStateSignedOut {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
   }) {
@@ -449,7 +584,8 @@ class _$AuthStateSignedOut implements AuthStateSignedOut {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
@@ -464,6 +600,7 @@ class _$AuthStateSignedOut implements AuthStateSignedOut {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthStateInitial value) initial,
+    required TResult Function(AuthStateSigningIn value) signingIn,
     required TResult Function(AuthStateSignedIn value) signedIn,
     required TResult Function(AuthStateSignedOut value) signedOut,
     required TResult Function(AuthStateError value) error,
@@ -475,6 +612,7 @@ class _$AuthStateSignedOut implements AuthStateSignedOut {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,
@@ -486,6 +624,7 @@ class _$AuthStateSignedOut implements AuthStateSignedOut {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,
@@ -567,7 +706,8 @@ class _$AuthStateError implements AuthStateError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(Credential credential, User user) signedIn,
+    required TResult Function() signingIn,
+    required TResult Function(Credential credential) signedIn,
     required TResult Function() signedOut,
     required TResult Function(Exception exception) error,
   }) {
@@ -578,7 +718,8 @@ class _$AuthStateError implements AuthStateError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
   }) {
@@ -589,7 +730,8 @@ class _$AuthStateError implements AuthStateError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Credential credential, User user)? signedIn,
+    TResult Function()? signingIn,
+    TResult Function(Credential credential)? signedIn,
     TResult Function()? signedOut,
     TResult Function(Exception exception)? error,
     required TResult orElse(),
@@ -604,6 +746,7 @@ class _$AuthStateError implements AuthStateError {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(AuthStateInitial value) initial,
+    required TResult Function(AuthStateSigningIn value) signingIn,
     required TResult Function(AuthStateSignedIn value) signedIn,
     required TResult Function(AuthStateSignedOut value) signedOut,
     required TResult Function(AuthStateError value) error,
@@ -615,6 +758,7 @@ class _$AuthStateError implements AuthStateError {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,
@@ -626,6 +770,7 @@ class _$AuthStateError implements AuthStateError {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AuthStateInitial value)? initial,
+    TResult Function(AuthStateSigningIn value)? signingIn,
     TResult Function(AuthStateSignedIn value)? signedIn,
     TResult Function(AuthStateSignedOut value)? signedOut,
     TResult Function(AuthStateError value)? error,

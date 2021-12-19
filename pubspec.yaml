@@ -27,14 +27,14 @@ dependencies:
   # framework and utility
   flutter_bloc: ^7.0.0
   provider: ^5.0.0
-  rxdart: ^0.26.0
+  rxdart: ^0.27.3
   intl: ^0.17.0
-  tuple: ^2.0.0
-  connectivity: ^3.0.3
   collection: ^1.15.0
   freezed_annotation: ^0.15.0
   meta: ^1.7.0
-  dio: ^4.0.0
+  hive: ^2.0.5
+  hive_flutter: ^1.1.0
+  path_provider: ^2.0.8
 
   # services
   firebase_core: ^1.6.0
@@ -54,6 +54,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.1.4
   freezed: ^0.15.0+1
+  hive_generator: ^1.1.1
   flutter_test:
     sdk: flutter
 

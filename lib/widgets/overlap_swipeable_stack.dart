@@ -83,7 +83,7 @@ class OverlapSwipeableStackController {
   }
 
   void setPageState(PageState pageState) {
-    dev.log("Supposed to move until $pageState.", name: this.runtimeType.toString());
+    // dev.log("Supposed to move until $pageState.", name: this.runtimeType.toString());
     switch (pageState) {
       case PageState.OnLeft:
         swipeDirectionSubject.add(SwipeDirection.Left);
@@ -107,7 +107,6 @@ class OverlapSwipeableStackController {
     pageStateSubject.close();
   }
 }
-
 
 class OverlapSwipeableStack extends StatelessWidget {
   final OverlapSwipeableStackController channelViewController;

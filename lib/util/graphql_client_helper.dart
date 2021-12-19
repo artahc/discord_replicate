@@ -18,8 +18,6 @@ class GraphQLClientHelper {
       var credential = await tokenProvider.call();
       var token = credential == null ? "" : credential.token;
       var bearer = 'Bearer $token';
-      log(bearer, name: this.runtimeType.toString());
-
       return bearer;
     });
 
@@ -34,6 +32,7 @@ class GraphQLClientHelper {
     if (result.hasException) {
       return Future.error(result.exception!);
     } else {
+      log("Response => $result", name: this.runtimeType.toString());
       return result.data!;
     }
   }

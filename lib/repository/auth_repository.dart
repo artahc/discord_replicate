@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:discord_replicate/model/credential.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class AuthService {
+abstract class AuthRepository {
   Future<Credential?> getCurrentUserCredential();
 
   Future<Credential> signIn(String email, String password);
@@ -13,10 +13,10 @@ abstract class AuthService {
   Future<void> signOut();
 }
 
-class FirebaseAuthService implements AuthService {
+class FirebaseAuthRepository implements AuthRepository {
   final _auth = FirebaseAuth.instance;
 
-  FirebaseAuthService();
+  FirebaseAuthRepository();
 
   @override
   Future<Credential?> getCurrentUserCredential() async {

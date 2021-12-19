@@ -25,12 +25,14 @@ class _UserSettingPanelState extends State<UserSettingPanel> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (c, state) {
-        if (state is AuthStateSignedOut) {
-          log("State received $state", name: this.runtimeType.toString());
-          SchedulerBinding.instance?.addPostFrameCallback((_) {
-            _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true));
-          });
-        }
+        state.whenOrNull(
+          signedOut: () {
+            log("State received $state", name: this.runtimeType.toString());
+            SchedulerBinding.instance?.addPostFrameCallback((_) {
+              _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true));
+            });
+          },
+        );
       },
       child: Container(
         child: SafeArea(

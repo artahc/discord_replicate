@@ -1,0 +1,19 @@
+{
+    "__comment" : "Manage indexes of hive object",
+    "user": {
+        "__type" : 0,
+        "0": "field",
+        "1": "field",
+        "2": "field",
+        "3": "field"
+    },
+    "server" : {
+        "__type" : 1
+    },
+    "channel" : {
+        "__type" : 2
+    },
+    "channelAccess" : {
+        "__type" : 3
+    }
+}

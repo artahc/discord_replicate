@@ -1,46 +1,51 @@
-import 'dart:math' as math;
+import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:discord_replicate/model/server.dart';
+import 'package:hive/hive.dart';
 
-enum UserStatus { Online, Idle, DoNotDisturb, Invisible, Custom }
+part 'user.g.dart';
 
-extension ParseToString on UserStatus {
-  String value() {
-    return this.toString().split('.').last;
-  }
-}
+@HiveType(typeId: 0)
+class User extends HiveObject {
+  @HiveField(0)
+  final String uid;
 
-@immutable
-class User {
-  final String id;
+  @HiveField(1)
   final String username;
-  final List<String> serverRefs;
 
-  User({required this.id, required this.username, this.serverRefs = const <String>[]});
+  @HiveField(2)
+  final List<Server> servers;
+
+  User({required this.uid, required this.username, this.servers = const <Server>[]});
+
+  factory User.dummy() {
+    var random = Random().nextInt(15);
+    return User(
+      uid: "id+$random",
+      username: "username+$random",
+      servers: List.generate(5, (index) => Server.dummy(index)),
+    );
+  }
 
   factory User.fromJson(Map<String, dynamic> map) {
-    var serverRefs = (map['serverRefs'] as List<Object?>).map((e) => e as String).toList();
+    var servers = (map['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
     return User(
-      id: map['id'] as String,
+      uid: map['uid'] as String,
       username: map['username'] as String,
-      serverRefs: serverRefs,
+      servers: servers,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "id": id,
+      "uid": uid,
       "username": username,
-      "serverRefs": serverRefs,
+      "servers": servers,
     };
   }
 
-  factory User.dummy() {
-    var random = math.Random().nextInt(15);
-    return User(
-      id: "id+$random",
-      username: "username+$random",
-      serverRefs: List.generate(random, (index) => "server-$index"),
-    );
+  @override
+  String toString() {
+    return this.toJson().toString();
   }
 }
