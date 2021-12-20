@@ -9,5 +9,5 @@
   },
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": true,
-  "workbench.tree.indent": 12,
+  "workbench.tree.indent": 17,
 }

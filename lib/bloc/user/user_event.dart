@@ -5,5 +5,6 @@ part 'user_event.freezed.dart';
 
 @freezed
 class UserEvent with _$UserEvent {
-  const factory UserEvent.loadUser(String uid, {@Default(false) bool fromLocal}) = UserEventLoadMe;
+  const factory UserEvent.loadLocalUser() = UserEventLoadMe;
+  const factory UserEvent.loadRemoteUser(String uid) = UserEventLoadUser;
 }

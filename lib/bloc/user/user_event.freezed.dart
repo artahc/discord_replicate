@@ -17,10 +17,13 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$UserEventTearOff {
   const _$UserEventTearOff();
 
-  UserEventLoadMe loadUser(String uid, {bool fromLocal = false}) {
-    return UserEventLoadMe(
+  UserEventLoadMe loadLocalUser() {
+    return const UserEventLoadMe();
+  }
+
+  UserEventLoadUser loadRemoteUser(String uid) {
+    return UserEventLoadUser(
       uid,
-      fromLocal: fromLocal,
     );
   }
 }
@@ -30,44 +33,43 @@ const $UserEvent = _$UserEventTearOff();
 
 /// @nodoc
 mixin _$UserEvent {
-  String get uid => throw _privateConstructorUsedError;
-  bool get fromLocal => throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String uid, bool fromLocal) loadUser,
+    required TResult Function() loadLocalUser,
+    required TResult Function(String uid) loadRemoteUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String uid, bool fromLocal)? loadUser,
+    TResult Function()? loadLocalUser,
+    TResult Function(String uid)? loadRemoteUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String uid, bool fromLocal)? loadUser,
+    TResult Function()? loadLocalUser,
+    TResult Function(String uid)? loadRemoteUser,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadMe value) loadUser,
+    required TResult Function(UserEventLoadMe value) loadLocalUser,
+    required TResult Function(UserEventLoadUser value) loadRemoteUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadMe value)? loadUser,
+    TResult Function(UserEventLoadMe value)? loadLocalUser,
+    TResult Function(UserEventLoadUser value)? loadRemoteUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadMe value)? loadUser,
+    TResult Function(UserEventLoadMe value)? loadLocalUser,
+    TResult Function(UserEventLoadUser value)? loadRemoteUser,
     required TResult orElse(),
   }) =>
-      throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $UserEventCopyWith<UserEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -75,7 +77,6 @@ mixin _$UserEvent {
 abstract class $UserEventCopyWith<$Res> {
   factory $UserEventCopyWith(UserEvent value, $Res Function(UserEvent) then) =
       _$UserEventCopyWithImpl<$Res>;
-  $Res call({String uid, bool fromLocal});
 }
 
 /// @nodoc
@@ -85,33 +86,13 @@ class _$UserEventCopyWithImpl<$Res> implements $UserEventCopyWith<$Res> {
   final UserEvent _value;
   // ignore: unused_field
   final $Res Function(UserEvent) _then;
-
-  @override
-  $Res call({
-    Object? uid = freezed,
-    Object? fromLocal = freezed,
-  }) {
-    return _then(_value.copyWith(
-      uid: uid == freezed
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String,
-      fromLocal: fromLocal == freezed
-          ? _value.fromLocal
-          : fromLocal // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
 }
 
 /// @nodoc
-abstract class $UserEventLoadMeCopyWith<$Res>
-    implements $UserEventCopyWith<$Res> {
+abstract class $UserEventLoadMeCopyWith<$Res> {
   factory $UserEventLoadMeCopyWith(
           UserEventLoadMe value, $Res Function(UserEventLoadMe) then) =
       _$UserEventLoadMeCopyWithImpl<$Res>;
-  @override
-  $Res call({String uid, bool fromLocal});
 }
 
 /// @nodoc
@@ -123,83 +104,54 @@ class _$UserEventLoadMeCopyWithImpl<$Res> extends _$UserEventCopyWithImpl<$Res>
 
   @override
   UserEventLoadMe get _value => super._value as UserEventLoadMe;
-
-  @override
-  $Res call({
-    Object? uid = freezed,
-    Object? fromLocal = freezed,
-  }) {
-    return _then(UserEventLoadMe(
-      uid == freezed
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String,
-      fromLocal: fromLocal == freezed
-          ? _value.fromLocal
-          : fromLocal // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$UserEventLoadMe implements UserEventLoadMe {
-  const _$UserEventLoadMe(this.uid, {this.fromLocal = false});
-
-  @override
-  final String uid;
-  @JsonKey(defaultValue: false)
-  @override
-  final bool fromLocal;
+  const _$UserEventLoadMe();
 
   @override
   String toString() {
-    return 'UserEvent.loadUser(uid: $uid, fromLocal: $fromLocal)';
+    return 'UserEvent.loadLocalUser()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is UserEventLoadMe &&
-            (identical(other.uid, uid) || other.uid == uid) &&
-            (identical(other.fromLocal, fromLocal) ||
-                other.fromLocal == fromLocal));
+        (other.runtimeType == runtimeType && other is UserEventLoadMe);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, uid, fromLocal);
-
-  @JsonKey(ignore: true)
-  @override
-  $UserEventLoadMeCopyWith<UserEventLoadMe> get copyWith =>
-      _$UserEventLoadMeCopyWithImpl<UserEventLoadMe>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String uid, bool fromLocal) loadUser,
+    required TResult Function() loadLocalUser,
+    required TResult Function(String uid) loadRemoteUser,
   }) {
-    return loadUser(uid, fromLocal);
+    return loadLocalUser();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String uid, bool fromLocal)? loadUser,
+    TResult Function()? loadLocalUser,
+    TResult Function(String uid)? loadRemoteUser,
   }) {
-    return loadUser?.call(uid, fromLocal);
+    return loadLocalUser?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String uid, bool fromLocal)? loadUser,
+    TResult Function()? loadLocalUser,
+    TResult Function(String uid)? loadRemoteUser,
     required TResult orElse(),
   }) {
-    if (loadUser != null) {
-      return loadUser(uid, fromLocal);
+    if (loadLocalUser != null) {
+      return loadLocalUser();
     }
     return orElse();
   }
@@ -207,42 +159,168 @@ class _$UserEventLoadMe implements UserEventLoadMe {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadMe value) loadUser,
+    required TResult Function(UserEventLoadMe value) loadLocalUser,
+    required TResult Function(UserEventLoadUser value) loadRemoteUser,
   }) {
-    return loadUser(this);
+    return loadLocalUser(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadMe value)? loadUser,
+    TResult Function(UserEventLoadMe value)? loadLocalUser,
+    TResult Function(UserEventLoadUser value)? loadRemoteUser,
   }) {
-    return loadUser?.call(this);
+    return loadLocalUser?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadMe value)? loadUser,
+    TResult Function(UserEventLoadMe value)? loadLocalUser,
+    TResult Function(UserEventLoadUser value)? loadRemoteUser,
     required TResult orElse(),
   }) {
-    if (loadUser != null) {
-      return loadUser(this);
+    if (loadLocalUser != null) {
+      return loadLocalUser(this);
     }
     return orElse();
   }
 }
 
 abstract class UserEventLoadMe implements UserEvent {
-  const factory UserEventLoadMe(String uid, {bool fromLocal}) =
-      _$UserEventLoadMe;
+  const factory UserEventLoadMe() = _$UserEventLoadMe;
+}
+
+/// @nodoc
+abstract class $UserEventLoadUserCopyWith<$Res> {
+  factory $UserEventLoadUserCopyWith(
+          UserEventLoadUser value, $Res Function(UserEventLoadUser) then) =
+      _$UserEventLoadUserCopyWithImpl<$Res>;
+  $Res call({String uid});
+}
+
+/// @nodoc
+class _$UserEventLoadUserCopyWithImpl<$Res>
+    extends _$UserEventCopyWithImpl<$Res>
+    implements $UserEventLoadUserCopyWith<$Res> {
+  _$UserEventLoadUserCopyWithImpl(
+      UserEventLoadUser _value, $Res Function(UserEventLoadUser) _then)
+      : super(_value, (v) => _then(v as UserEventLoadUser));
 
   @override
-  String get uid;
+  UserEventLoadUser get _value => super._value as UserEventLoadUser;
+
   @override
-  bool get fromLocal;
+  $Res call({
+    Object? uid = freezed,
+  }) {
+    return _then(UserEventLoadUser(
+      uid == freezed
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UserEventLoadUser implements UserEventLoadUser {
+  const _$UserEventLoadUser(this.uid);
+
   @override
+  final String uid;
+
+  @override
+  String toString() {
+    return 'UserEvent.loadRemoteUser(uid: $uid)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is UserEventLoadUser &&
+            (identical(other.uid, uid) || other.uid == uid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, uid);
+
   @JsonKey(ignore: true)
-  $UserEventLoadMeCopyWith<UserEventLoadMe> get copyWith =>
+  @override
+  $UserEventLoadUserCopyWith<UserEventLoadUser> get copyWith =>
+      _$UserEventLoadUserCopyWithImpl<UserEventLoadUser>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadLocalUser,
+    required TResult Function(String uid) loadRemoteUser,
+  }) {
+    return loadRemoteUser(uid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loadLocalUser,
+    TResult Function(String uid)? loadRemoteUser,
+  }) {
+    return loadRemoteUser?.call(uid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadLocalUser,
+    TResult Function(String uid)? loadRemoteUser,
+    required TResult orElse(),
+  }) {
+    if (loadRemoteUser != null) {
+      return loadRemoteUser(uid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UserEventLoadMe value) loadLocalUser,
+    required TResult Function(UserEventLoadUser value) loadRemoteUser,
+  }) {
+    return loadRemoteUser(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(UserEventLoadMe value)? loadLocalUser,
+    TResult Function(UserEventLoadUser value)? loadRemoteUser,
+  }) {
+    return loadRemoteUser?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UserEventLoadMe value)? loadLocalUser,
+    TResult Function(UserEventLoadUser value)? loadRemoteUser,
+    required TResult orElse(),
+  }) {
+    if (loadRemoteUser != null) {
+      return loadRemoteUser(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UserEventLoadUser implements UserEvent {
+  const factory UserEventLoadUser(String uid) = _$UserEventLoadUser;
+
+  String get uid;
+  @JsonKey(ignore: true)
+  $UserEventLoadUserCopyWith<UserEventLoadUser> get copyWith =>
       throw _privateConstructorUsedError;
 }

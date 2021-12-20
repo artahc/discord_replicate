@@ -1,9 +1,10 @@
 import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:hive/hive.dart';
 
 part 'server.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: HiveConstants.SERVER_TYPE)
 class Server extends HiveObject {
   @HiveField(0)
   final String id;

@@ -1,11 +1,11 @@
 import 'dart:developer';
 
-import 'package:flutter/material.dart';
+import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:hive/hive.dart';
 
 part 'channel.g.dart';
 
-@HiveType(typeId: 4)
+@HiveType(typeId: HiveConstants.CHANNEL_ACCESS_TYPE)
 enum ChannelAccess {
   @HiveField(0)
   PUBLIC,
@@ -14,7 +14,7 @@ enum ChannelAccess {
   PRIVATE
 }
 
-@HiveType(typeId: 3)
+@HiveType(typeId: HiveConstants.CHANNEL_TYPE)
 class Channel extends HiveObject {
   @HiveField(0)
   final String id;

@@ -12,7 +12,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:discord_replicate/util/hive_database_helper.dart';
 
 Future main() async {
@@ -36,21 +35,21 @@ class _MainState extends State<Main> {
   // Constant
   final String url = "http://localhost:4000";
 
-  // Service
-  late AuthRepository authService = FirebaseAuthRepository();
+  late AuthRepository authRepository = FirebaseAuthRepository();
 
   // Helper Class
-  late GraphQLClientHelper apiClient = GraphQLClientHelper(url: url, tokenProvider: authService.getCurrentUserCredential);
+  late GraphQLClientHelper apiClient = GraphQLClientHelper(url: url, tokenProvider: authRepository.getCurrentUserCredential);
   late HiveDatabaseHelper dbHelper = HiveDatabaseHelper();
+
   // Repository
   late UserRepository userRepository = UserRepository(apiClient: apiClient, dbHelper: dbHelper);
   late ServerRepository serverRepository = ServerRepository(apiClient: apiClient);
 
   // Bloc
   late ServerBloc serverBloc = ServerBloc(serverRepository: serverRepository);
-  late AuthBloc authBloc = AuthBloc(authRepo: authService, userRepo: userRepository);
+  late AuthBloc authBloc = AuthBloc(authRepo: authRepository, userRepo: userRepository);
   late NavigationBloc navBloc = NavigationBloc();
-  late UserBloc userBloc = UserBloc();
+  late UserBloc userBloc = UserBloc(userRepo: userRepository, authRepo: authRepository);
 
   @override
   void initState() {

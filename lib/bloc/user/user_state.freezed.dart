@@ -21,9 +21,19 @@ class _$UserStateTearOff {
     return const UserStateInitial();
   }
 
-  UserStateUserLoaded userLoaded(User user) {
-    return UserStateUserLoaded(
+  UserStateLoadLocalUserSuccess loadLocalUserSuccess(LocalUser user) {
+    return UserStateLoadLocalUserSuccess(
       user,
+    );
+  }
+
+  UserStateLoadLocalUserInProgress loadLocalUserInProgress() {
+    return const UserStateLoadLocalUserInProgress();
+  }
+
+  UserStateLoadLocalUserFailed loadLocalUserFailed(Exception exception) {
+    return UserStateLoadLocalUserFailed(
+      exception,
     );
   }
 }
@@ -36,38 +46,55 @@ mixin _$UserState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(User user) userLoaded,
+    required TResult Function(LocalUser user) loadLocalUserSuccess,
+    required TResult Function() loadLocalUserInProgress,
+    required TResult Function(Exception exception) loadLocalUserFailed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(User user)? userLoaded,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(User user)? userLoaded,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateUserLoaded value) userLoaded,
+    required TResult Function(UserStateLoadLocalUserSuccess value)
+        loadLocalUserSuccess,
+    required TResult Function(UserStateLoadLocalUserInProgress value)
+        loadLocalUserInProgress,
+    required TResult Function(UserStateLoadLocalUserFailed value)
+        loadLocalUserFailed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateUserLoaded value)? userLoaded,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateUserLoaded value)? userLoaded,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -129,7 +156,9 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(User user) userLoaded,
+    required TResult Function(LocalUser user) loadLocalUserSuccess,
+    required TResult Function() loadLocalUserInProgress,
+    required TResult Function(Exception exception) loadLocalUserFailed,
   }) {
     return initial();
   }
@@ -138,7 +167,9 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(User user)? userLoaded,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
   }) {
     return initial?.call();
   }
@@ -147,7 +178,9 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(User user)? userLoaded,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -160,7 +193,12 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateUserLoaded value) userLoaded,
+    required TResult Function(UserStateLoadLocalUserSuccess value)
+        loadLocalUserSuccess,
+    required TResult Function(UserStateLoadLocalUserInProgress value)
+        loadLocalUserInProgress,
+    required TResult Function(UserStateLoadLocalUserFailed value)
+        loadLocalUserFailed,
   }) {
     return initial(this);
   }
@@ -169,7 +207,10 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateUserLoaded value)? userLoaded,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
   }) {
     return initial?.call(this);
   }
@@ -178,7 +219,10 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateUserLoaded value)? userLoaded,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -193,55 +237,58 @@ abstract class UserStateInitial implements UserState {
 }
 
 /// @nodoc
-abstract class $UserStateUserLoadedCopyWith<$Res> {
-  factory $UserStateUserLoadedCopyWith(
-          UserStateUserLoaded value, $Res Function(UserStateUserLoaded) then) =
-      _$UserStateUserLoadedCopyWithImpl<$Res>;
-  $Res call({User user});
+abstract class $UserStateLoadLocalUserSuccessCopyWith<$Res> {
+  factory $UserStateLoadLocalUserSuccessCopyWith(
+          UserStateLoadLocalUserSuccess value,
+          $Res Function(UserStateLoadLocalUserSuccess) then) =
+      _$UserStateLoadLocalUserSuccessCopyWithImpl<$Res>;
+  $Res call({LocalUser user});
 }
 
 /// @nodoc
-class _$UserStateUserLoadedCopyWithImpl<$Res>
+class _$UserStateLoadLocalUserSuccessCopyWithImpl<$Res>
     extends _$UserStateCopyWithImpl<$Res>
-    implements $UserStateUserLoadedCopyWith<$Res> {
-  _$UserStateUserLoadedCopyWithImpl(
-      UserStateUserLoaded _value, $Res Function(UserStateUserLoaded) _then)
-      : super(_value, (v) => _then(v as UserStateUserLoaded));
+    implements $UserStateLoadLocalUserSuccessCopyWith<$Res> {
+  _$UserStateLoadLocalUserSuccessCopyWithImpl(
+      UserStateLoadLocalUserSuccess _value,
+      $Res Function(UserStateLoadLocalUserSuccess) _then)
+      : super(_value, (v) => _then(v as UserStateLoadLocalUserSuccess));
 
   @override
-  UserStateUserLoaded get _value => super._value as UserStateUserLoaded;
+  UserStateLoadLocalUserSuccess get _value =>
+      super._value as UserStateLoadLocalUserSuccess;
 
   @override
   $Res call({
     Object? user = freezed,
   }) {
-    return _then(UserStateUserLoaded(
+    return _then(UserStateLoadLocalUserSuccess(
       user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
-              as User,
+              as LocalUser,
     ));
   }
 }
 
 /// @nodoc
 
-class _$UserStateUserLoaded implements UserStateUserLoaded {
-  const _$UserStateUserLoaded(this.user);
+class _$UserStateLoadLocalUserSuccess implements UserStateLoadLocalUserSuccess {
+  const _$UserStateLoadLocalUserSuccess(this.user);
 
   @override
-  final User user;
+  final LocalUser user;
 
   @override
   String toString() {
-    return 'UserState.userLoaded(user: $user)';
+    return 'UserState.loadLocalUserSuccess(user: $user)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is UserStateUserLoaded &&
+            other is UserStateLoadLocalUserSuccess &&
             (identical(other.user, user) || other.user == user));
   }
 
@@ -250,36 +297,43 @@ class _$UserStateUserLoaded implements UserStateUserLoaded {
 
   @JsonKey(ignore: true)
   @override
-  $UserStateUserLoadedCopyWith<UserStateUserLoaded> get copyWith =>
-      _$UserStateUserLoadedCopyWithImpl<UserStateUserLoaded>(this, _$identity);
+  $UserStateLoadLocalUserSuccessCopyWith<UserStateLoadLocalUserSuccess>
+      get copyWith => _$UserStateLoadLocalUserSuccessCopyWithImpl<
+          UserStateLoadLocalUserSuccess>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(User user) userLoaded,
+    required TResult Function(LocalUser user) loadLocalUserSuccess,
+    required TResult Function() loadLocalUserInProgress,
+    required TResult Function(Exception exception) loadLocalUserFailed,
   }) {
-    return userLoaded(user);
+    return loadLocalUserSuccess(user);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(User user)? userLoaded,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
   }) {
-    return userLoaded?.call(user);
+    return loadLocalUserSuccess?.call(user);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(User user)? userLoaded,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
     required TResult orElse(),
   }) {
-    if (userLoaded != null) {
-      return userLoaded(user);
+    if (loadLocalUserSuccess != null) {
+      return loadLocalUserSuccess(user);
     }
     return orElse();
   }
@@ -288,39 +342,335 @@ class _$UserStateUserLoaded implements UserStateUserLoaded {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateUserLoaded value) userLoaded,
+    required TResult Function(UserStateLoadLocalUserSuccess value)
+        loadLocalUserSuccess,
+    required TResult Function(UserStateLoadLocalUserInProgress value)
+        loadLocalUserInProgress,
+    required TResult Function(UserStateLoadLocalUserFailed value)
+        loadLocalUserFailed,
   }) {
-    return userLoaded(this);
+    return loadLocalUserSuccess(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateUserLoaded value)? userLoaded,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
   }) {
-    return userLoaded?.call(this);
+    return loadLocalUserSuccess?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateUserLoaded value)? userLoaded,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
     required TResult orElse(),
   }) {
-    if (userLoaded != null) {
-      return userLoaded(this);
+    if (loadLocalUserSuccess != null) {
+      return loadLocalUserSuccess(this);
     }
     return orElse();
   }
 }
 
-abstract class UserStateUserLoaded implements UserState {
-  const factory UserStateUserLoaded(User user) = _$UserStateUserLoaded;
+abstract class UserStateLoadLocalUserSuccess implements UserState {
+  const factory UserStateLoadLocalUserSuccess(LocalUser user) =
+      _$UserStateLoadLocalUserSuccess;
 
-  User get user;
+  LocalUser get user;
   @JsonKey(ignore: true)
-  $UserStateUserLoadedCopyWith<UserStateUserLoaded> get copyWith =>
-      throw _privateConstructorUsedError;
+  $UserStateLoadLocalUserSuccessCopyWith<UserStateLoadLocalUserSuccess>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $UserStateLoadLocalUserInProgressCopyWith<$Res> {
+  factory $UserStateLoadLocalUserInProgressCopyWith(
+          UserStateLoadLocalUserInProgress value,
+          $Res Function(UserStateLoadLocalUserInProgress) then) =
+      _$UserStateLoadLocalUserInProgressCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$UserStateLoadLocalUserInProgressCopyWithImpl<$Res>
+    extends _$UserStateCopyWithImpl<$Res>
+    implements $UserStateLoadLocalUserInProgressCopyWith<$Res> {
+  _$UserStateLoadLocalUserInProgressCopyWithImpl(
+      UserStateLoadLocalUserInProgress _value,
+      $Res Function(UserStateLoadLocalUserInProgress) _then)
+      : super(_value, (v) => _then(v as UserStateLoadLocalUserInProgress));
+
+  @override
+  UserStateLoadLocalUserInProgress get _value =>
+      super._value as UserStateLoadLocalUserInProgress;
+}
+
+/// @nodoc
+
+class _$UserStateLoadLocalUserInProgress
+    implements UserStateLoadLocalUserInProgress {
+  const _$UserStateLoadLocalUserInProgress();
+
+  @override
+  String toString() {
+    return 'UserState.loadLocalUserInProgress()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is UserStateLoadLocalUserInProgress);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function(LocalUser user) loadLocalUserSuccess,
+    required TResult Function() loadLocalUserInProgress,
+    required TResult Function(Exception exception) loadLocalUserFailed,
+  }) {
+    return loadLocalUserInProgress();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
+  }) {
+    return loadLocalUserInProgress?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
+    required TResult orElse(),
+  }) {
+    if (loadLocalUserInProgress != null) {
+      return loadLocalUserInProgress();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UserStateInitial value) initial,
+    required TResult Function(UserStateLoadLocalUserSuccess value)
+        loadLocalUserSuccess,
+    required TResult Function(UserStateLoadLocalUserInProgress value)
+        loadLocalUserInProgress,
+    required TResult Function(UserStateLoadLocalUserFailed value)
+        loadLocalUserFailed,
+  }) {
+    return loadLocalUserInProgress(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(UserStateInitial value)? initial,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+  }) {
+    return loadLocalUserInProgress?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UserStateInitial value)? initial,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+    required TResult orElse(),
+  }) {
+    if (loadLocalUserInProgress != null) {
+      return loadLocalUserInProgress(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UserStateLoadLocalUserInProgress implements UserState {
+  const factory UserStateLoadLocalUserInProgress() =
+      _$UserStateLoadLocalUserInProgress;
+}
+
+/// @nodoc
+abstract class $UserStateLoadLocalUserFailedCopyWith<$Res> {
+  factory $UserStateLoadLocalUserFailedCopyWith(
+          UserStateLoadLocalUserFailed value,
+          $Res Function(UserStateLoadLocalUserFailed) then) =
+      _$UserStateLoadLocalUserFailedCopyWithImpl<$Res>;
+  $Res call({Exception exception});
+}
+
+/// @nodoc
+class _$UserStateLoadLocalUserFailedCopyWithImpl<$Res>
+    extends _$UserStateCopyWithImpl<$Res>
+    implements $UserStateLoadLocalUserFailedCopyWith<$Res> {
+  _$UserStateLoadLocalUserFailedCopyWithImpl(
+      UserStateLoadLocalUserFailed _value,
+      $Res Function(UserStateLoadLocalUserFailed) _then)
+      : super(_value, (v) => _then(v as UserStateLoadLocalUserFailed));
+
+  @override
+  UserStateLoadLocalUserFailed get _value =>
+      super._value as UserStateLoadLocalUserFailed;
+
+  @override
+  $Res call({
+    Object? exception = freezed,
+  }) {
+    return _then(UserStateLoadLocalUserFailed(
+      exception == freezed
+          ? _value.exception
+          : exception // ignore: cast_nullable_to_non_nullable
+              as Exception,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UserStateLoadLocalUserFailed implements UserStateLoadLocalUserFailed {
+  const _$UserStateLoadLocalUserFailed(this.exception);
+
+  @override
+  final Exception exception;
+
+  @override
+  String toString() {
+    return 'UserState.loadLocalUserFailed(exception: $exception)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is UserStateLoadLocalUserFailed &&
+            (identical(other.exception, exception) ||
+                other.exception == exception));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, exception);
+
+  @JsonKey(ignore: true)
+  @override
+  $UserStateLoadLocalUserFailedCopyWith<UserStateLoadLocalUserFailed>
+      get copyWith => _$UserStateLoadLocalUserFailedCopyWithImpl<
+          UserStateLoadLocalUserFailed>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function(LocalUser user) loadLocalUserSuccess,
+    required TResult Function() loadLocalUserInProgress,
+    required TResult Function(Exception exception) loadLocalUserFailed,
+  }) {
+    return loadLocalUserFailed(exception);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
+  }) {
+    return loadLocalUserFailed?.call(exception);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function(LocalUser user)? loadLocalUserSuccess,
+    TResult Function()? loadLocalUserInProgress,
+    TResult Function(Exception exception)? loadLocalUserFailed,
+    required TResult orElse(),
+  }) {
+    if (loadLocalUserFailed != null) {
+      return loadLocalUserFailed(exception);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UserStateInitial value) initial,
+    required TResult Function(UserStateLoadLocalUserSuccess value)
+        loadLocalUserSuccess,
+    required TResult Function(UserStateLoadLocalUserInProgress value)
+        loadLocalUserInProgress,
+    required TResult Function(UserStateLoadLocalUserFailed value)
+        loadLocalUserFailed,
+  }) {
+    return loadLocalUserFailed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(UserStateInitial value)? initial,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+  }) {
+    return loadLocalUserFailed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UserStateInitial value)? initial,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
+    TResult Function(UserStateLoadLocalUserInProgress value)?
+        loadLocalUserInProgress,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+    required TResult orElse(),
+  }) {
+    if (loadLocalUserFailed != null) {
+      return loadLocalUserFailed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UserStateLoadLocalUserFailed implements UserState {
+  const factory UserStateLoadLocalUserFailed(Exception exception) =
+      _$UserStateLoadLocalUserFailed;
+
+  Exception get exception;
+  @JsonKey(ignore: true)
+  $UserStateLoadLocalUserFailedCopyWith<UserStateLoadLocalUserFailed>
+      get copyWith => throw _privateConstructorUsedError;
 }

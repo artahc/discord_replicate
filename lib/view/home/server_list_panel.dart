@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
@@ -18,10 +20,7 @@ class ServerListPanel extends StatefulWidget {
 }
 
 class _ServerListPanelState extends State<ServerListPanel> {
-  // final String _directMessageId = "direct-message";
-  // final StreamController<String> _activeItemController = StreamController();
   late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-  late ServerBloc _serverBloc = BlocProvider.of<ServerBloc>(context);
   late List<Server> _serverList = const <Server>[];
   late Server? _currentSelectedServer = null;
 
@@ -39,13 +38,12 @@ class _ServerListPanelState extends State<ServerListPanel> {
 
   @override
   void initState() {
-    _serverBloc.add(ServerEvent.loadAll());
+    _userBloc.add(UserEvent.loadLocalUser());
     super.initState();
   }
 
   @override
   void dispose() {
-    // _activeItemController.close();
     super.dispose();
   }
 
@@ -59,9 +57,11 @@ class _ServerListPanelState extends State<ServerListPanel> {
           BlocListener<UserBloc, UserState>(
             bloc: _userBloc,
             listener: (_, state) {
-              if (state is UserStateUserLoaded) {
-                _setServerList(state.user.servers);
-              }
+              state.whenOrNull(
+                loadLocalUserSuccess: (user) {
+                  _setServerList(user.servers);
+                },
+              );
             },
           ),
         ],
