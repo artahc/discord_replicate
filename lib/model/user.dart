@@ -60,7 +60,7 @@ class LocalUser extends User {
       uid: "id+$random",
       username: "name+$random",
       about: "about+$random",
-      servers: List.generate(5, (index) => Server.dummy(index)),
+      servers: List.generate(10, (index) => Server.dummy(index)),
     );
   }
 

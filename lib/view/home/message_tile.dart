@@ -1,12 +1,12 @@
-import 'package:discord_replicate/model/message_data.dart';
+import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class RoomMessageTile extends StatelessWidget {
-  final MessageData data;
+class MessageTile extends StatelessWidget {
+  final Message message;
 
-  RoomMessageTile(this.data);
+  MessageTile(this.message);
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +31,8 @@ class RoomMessageTile extends StatelessWidget {
                     spacing: 10,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      Text(data.userName, style: Theme.of(context).textTheme.bodyText1),
-                      Text(DateFormat.yMMMd().add_jm().format(data.createdAt),
+                      Text(message.sender.username, style: Theme.of(context).textTheme.bodyText1),
+                      Text(DateFormat.yMMMd().add_jm().format(message.sentDate),
                           style: Theme.of(context).textTheme.caption!.copyWith(
                                 color: Theme.of(context).colorScheme.onSecondary,
                               )),
@@ -40,7 +40,14 @@ class RoomMessageTile extends StatelessWidget {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 2),
-                    child: Text(this.data.message, style: Theme.of(context).textTheme.bodyText2),
+                    child: Builder(builder: (_) {
+                      if (message is TextMessage) {
+                        var content = message as TextMessage;
+                        return Text(content.textMessage, style: Theme.of(_).textTheme.bodyText2);
+                      } else {
+                        return Container();
+                      }
+                    }),
                   ),
                 ],
               ),

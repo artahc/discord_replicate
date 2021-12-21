@@ -1,6 +1,6 @@
-import 'package:discord_replicate/model/message_data.dart';
+import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/view/home/room_message_tile.dart';
+import 'package:discord_replicate/view/home/message_tile.dart';
 import 'package:discord_replicate/view/home/room_view.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
@@ -136,7 +136,7 @@ class _RoomBody extends StatelessWidget {
         child: ListView.builder(
           itemCount: 15,
           itemBuilder: (context, index) {
-            return RoomMessageTile(MessageData.createDummy());
+            return MessageTile(TextMessage.dummy());
           },
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           scrollDirection: Axis.vertical,

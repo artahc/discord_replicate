@@ -6,8 +6,7 @@ import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:rxdart/rxdart.dart' as rx;
 
 class UserRepository {
-  final String BOX_NAME = "user";
-  final Exception USER_NOT_FOUND_EXCEPTION = Exception("User not found.");
+  static const String BOX_NAME = "user";
 
   GraphQLClientHelper _api;
   HiveDatabaseHelper _db;
@@ -43,9 +42,11 @@ class UserRepository {
       'uid': uid,
     };
 
-    var local = Stream.value(box.get(uid)).doOnData((user) {
-      if (user != null) log("User found on local database.", name: this.runtimeType.toString());
-    });
+    var local = Stream.value(box.get(uid)).where((user) => user != null).doOnData(
+      (user) {
+        log("User found on local database.", name: this.runtimeType.toString());
+      },
+    );
 
     var remote = Stream.fromFuture(_api.query(query, variables: varibales).then((json) => LocalUser.fromJson(json['user']))).doOnData(
       (user) async {
@@ -54,12 +55,8 @@ class UserRepository {
       },
     );
 
-    var user = await local.concatWith([remote]).firstWhere((e) => e != null).timeout(Duration(seconds: 30));
+    var user = await local.concatWith([remote]).first.timeout(Duration(seconds: 30));
 
-    if (user == null) {
-      throw USER_NOT_FOUND_EXCEPTION;
-    } else {
-      return user;
-    }
+    return user!;
   }
 }

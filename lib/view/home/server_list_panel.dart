@@ -20,17 +20,16 @@ class ServerListPanel extends StatefulWidget {
 }
 
 class _ServerListPanelState extends State<ServerListPanel> {
-  late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
-  late List<Server> _serverList = const <Server>[];
-  late Server? _currentSelectedServer = null;
+  List<Server> _serverList = const <Server>[];
+  Server? _selectedServer;
 
   void _select(Server? value) {
     setState(() {
-      this._currentSelectedServer = value;
+      this._selectedServer = value;
     });
   }
 
-  void _setServerList(List<Server> servers) {
+  void _setServers(List<Server> servers) {
     setState(() {
       this._serverList = servers;
     });
@@ -38,7 +37,6 @@ class _ServerListPanelState extends State<ServerListPanel> {
 
   @override
   void initState() {
-    _userBloc.add(UserEvent.loadLocalUser());
     super.initState();
   }
 
@@ -49,22 +47,21 @@ class _ServerListPanelState extends State<ServerListPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 70,
-      alignment: Alignment.topCenter,
-      child: MultiBlocListener(
-        listeners: [
-          BlocListener<UserBloc, UserState>(
-            bloc: _userBloc,
-            listener: (_, state) {
-              state.whenOrNull(
-                loadLocalUserSuccess: (user) {
-                  _setServerList(user.servers);
-                },
-              );
-            },
-          ),
-        ],
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<UserBloc, UserState>(
+          listener: (_, state) {
+            state.whenOrNull(
+              loadLocalUserSuccess: (user) {
+                _setServers(user.servers);
+              },
+            );
+          },
+        ),
+      ],
+      child: Container(
+        width: 70,
+        alignment: Alignment.topCenter,
         child: CustomListView<Server>(
           elements: _serverList,
           itemBuilder: (_, server, index) {
@@ -74,7 +71,7 @@ class _ServerListPanelState extends State<ServerListPanel> {
               onPressed: () {
                 _select(server);
               },
-              selected: _currentSelectedServer != null && _currentSelectedServer!.id == server.id,
+              selected: _selectedServer != null && _selectedServer!.id == server.id,
             );
           },
           separatorBuilder: (context, index) => SizedBox(
@@ -85,8 +82,8 @@ class _ServerListPanelState extends State<ServerListPanel> {
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 150),
                 decoration: BoxDecoration(
-                  borderRadius: _currentSelectedServer == null ? BorderRadius.circular(16) : BorderRadius.circular(28),
-                  color: _currentSelectedServer == null ? Theme.of(context).buttonTheme.colorScheme!.primary : Color(0xff363940),
+                  borderRadius: _selectedServer == null ? BorderRadius.circular(16) : BorderRadius.circular(28),
+                  color: _selectedServer == null ? Theme.of(context).buttonTheme.colorScheme!.primary : Color(0xff363940),
                 ),
                 width: 45,
                 height: 45,
@@ -138,95 +135,6 @@ class _ServerListPanelState extends State<ServerListPanel> {
           ],
         ),
       ),
-
-      // StreamBuilder<String>(
-      //   stream: _activeItemController.stream,
-      //   initialData: _directMessageId,
-      //   builder: (context, snapshot) {
-      //     return BlocBuilder<ServerBloc, ServerState>(
-      //       builder: (context, state) {
-      //         if (state is ServerStateLoadListSuccess) {
-      //           _serverList = state.servers;
-      //         }
-
-      //         return CustomListView<Server>(
-      //           elements: _serverList,
-      //           itemBuilder: (_, server, index) {
-      //             return ServerTile(
-      //               key: ValueKey(server.id),
-      //               serverData: server,
-      //               onPressed: () {
-      //                 _activeItemController.sink.add(server.id);
-      //                 _serverBloc.add(ServerEvent.loadOne(server.id));
-      //               },
-      //               selected: snapshot.data == server.id,
-      //             );
-      //           },
-      //           separatorBuilder: (context, index) => SizedBox(
-      //             height: 5,
-      //           ),
-      //           beforeListWidget: [
-      //             Center(
-      //               child: AnimatedContainer(
-      //                 duration: Duration(milliseconds: 150),
-      //                 decoration: BoxDecoration(
-      //                   borderRadius: snapshot.data == _directMessageId ? BorderRadius.circular(16) : BorderRadius.circular(28),
-      //                   color: snapshot.data == _directMessageId ? Color(0xff7289da) : Color(0xff363940),
-      //                 ),
-      //                 width: 45,
-      //                 height: 45,
-      //                 child: MaterialButton(
-      //                   padding: EdgeInsets.all(0),
-      //                   minWidth: 0,
-      //                   splashColor: Colors.transparent,
-      //                   // highlightColor: Colors.transparent,
-      //                   visualDensity: VisualDensity.compact,
-      //                   onPressed: () {
-      //                     _activeItemController.sink.add(_directMessageId);
-      //                   },
-      //                   child: Container(
-      //                     child: Image.asset(
-      //                       AppIcons.direct_message_icon,
-      //                       height: 20,
-      //                       color: Colors.white,
-      //                     ),
-      //                   ),
-      //                 ),
-      //               ),
-      //             ),
-      //             Divider(
-      //               color: Colors.white38,
-      //               height: 22,
-      //               indent: 22,
-      //               endIndent: 22,
-      //             ),
-      //           ],
-      //           afterListWidget: [
-      //             Center(
-      //               child: Container(
-      //                 margin: const EdgeInsets.only(top: 10),
-      //                 decoration: BoxDecoration(
-      //                   borderRadius: BorderRadius.circular(50),
-      //                   color: Color(0xff363940),
-      //                 ),
-      //                 width: 45,
-      //                 height: 45,
-      //                 child: IconButton(
-      //                   onPressed: () {
-      //                     print("Add Pressed");
-      //                   },
-      //                   icon: ImageIcon(AssetImage(AppIcons.search_icon)),
-      //                   visualDensity: VisualDensity.compact,
-      //                   iconSize: 20,
-      //                 ),
-      //               ),
-      //             ),
-      //           ],
-      //         );
-      //       },
-      //     );
-      //   },
-      // ),
     );
   }
 }

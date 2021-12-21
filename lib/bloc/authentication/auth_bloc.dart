@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/repository/auth_repository.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
 import 'package:discord_replicate/bloc/authentication/auth_state.dart';
-import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:developer' as dev;
 
@@ -32,7 +29,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (credential == null) {
       emit(AuthState.signedOut());
     } else {
-      var user = await userRepo.loadLocalUser(credential.uid);
       emit(AuthState.signedIn(credential: credential));
     }
   }
@@ -40,7 +36,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _signIn(String email, String password) async* {
     emit(AuthState.signingIn());
     var credential = await authRepo.signIn(email, password);
-    var user = await userRepo.loadLocalUser(credential.uid);
     emit(AuthState.signedIn(credential: credential));
   }
 

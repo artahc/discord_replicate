@@ -2,11 +2,17 @@ import 'dart:developer';
 
 import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
+import 'package:discord_replicate/bloc/room/room_bloc.dart';
+import 'package:discord_replicate/bloc/room/room_state.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
+import 'package:discord_replicate/bloc/server/server_state.dart';
+import 'package:discord_replicate/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
+import 'package:discord_replicate/view/home/channel_list_panel.dart';
 import 'package:discord_replicate/view/home/room_info_panel.dart';
-import 'package:discord_replicate/view/home/room_message_panel.dart';
+import 'package:discord_replicate/view/home/message_panel.dart';
 import 'package:discord_replicate/view/home/friends_panel.dart';
 import 'package:discord_replicate/view/home/search_panel.dart';
 import 'package:discord_replicate/view/home/user_setting_panel.dart';
@@ -17,7 +23,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LocalRoutes {
+class NavBarRoutes {
   static const main = "/";
   static const friends = "friends";
   static const search = "search";
@@ -33,20 +39,20 @@ class RoomView extends StatefulWidget {
 }
 
 class RoomViewState extends State<RoomView> with TickerProviderStateMixin {
-  // private
-  String _currentRoute = LocalRoutes.main;
+  String _currentRoute = NavBarRoutes.main;
   final _localNavKey = GlobalKey<NavigatorState>();
 
   late OverlapSwipeableStackController _channelViewController = OverlapSwipeableStackController(vsync: this);
 
   late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
   late ServerBloc _serverBloc = BlocProvider.of<ServerBloc>(context);
+  late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
 
-  // public
   OverlapSwipeableStackController get controller => _channelViewController;
 
   @override
   void initState() {
+    _userBloc.add(UserEvent.loadLocalUser());
     super.initState();
   }
 
@@ -71,70 +77,82 @@ class RoomViewState extends State<RoomView> with TickerProviderStateMixin {
         child: SafeArea(
           child: Stack(
             children: [
-              Navigator(
-                key: _localNavKey,
-                initialRoute: LocalRoutes.main,
-                onGenerateRoute: (settings) {
-                  switch (settings.name) {
-                    case LocalRoutes.main:
-                      return PageRouteBuilder(
-                        maintainState: true,
-                        pageBuilder: (_, anim, secondAnim) {
-                          return OverlapSwipeableStack(
-                            channelViewController: _channelViewController,
-                            frontPage: RoomMessagePanel(),
-                            leftPage: Row(
-                              children: [
-                                ServerListPanel(),
-                                DirectMessageListPanel(),
-                              ],
-                            ),
-                            rightPage: RoomInfoPanel(),
-                          );
-                        },
-                      );
-                    case LocalRoutes.search:
-                      return MaterialPageRoute(builder: (_) => SearchPanel(), fullscreenDialog: true);
-                    case LocalRoutes.friends:
-                      return PageRouteBuilder(
-                        maintainState: true,
-                        fullscreenDialog: true,
-                        transitionDuration: Duration(milliseconds: 400),
-                        transitionsBuilder: (_, anim, __, child) {
-                          return SlideTransition(
-                            position: Tween<Offset>(
-                              begin: Offset(0, 1),
-                              end: Offset(0, 0),
-                            ).chain(CurveTween(curve: Curves.easeInOutCubic)).animate(anim),
-                            child: child,
-                          );
-                        },
-                        pageBuilder: (_, __, ___) => FriendsPanel(),
-                      );
-                    case LocalRoutes.profile:
-                      return MaterialPageRoute(
-                        maintainState: true,
-                        fullscreenDialog: true,
-                        builder: (_) => UserSettingPanel(),
-                      );
-                  }
-                },
+              // Navigator(
+              //   key: _localNavKey,
+              //   initialRoute: NavBarRoutes.main,
+              //   onGenerateRoute: (settings) {
+              //     switch (settings.name) {
+              //       case NavBarRoutes.main:
+              //         return PageRouteBuilder(
+              //           maintainState: true,
+              //           pageBuilder: (_, anim, secondAnim) {
+              //             return OverlapSwipeableStack(
+              //               channelViewController: _channelViewController,
+              //               frontPage: RoomMessagePanel(),
+              //               leftPage: Row(
+              //                 children: [
+              //                   ServerListPanel(),
+              //                   ChannelListPanel(),
+              //                 ],
+              //               ),
+              //               rightPage: RoomInfoPanel(),
+              //             );
+              //           },
+              //         );
+              //       case NavBarRoutes.search:
+              //         return MaterialPageRoute(builder: (_) => SearchPanel(), fullscreenDialog: true);
+              //       case NavBarRoutes.friends:
+              //         return PageRouteBuilder(
+              //           maintainState: true,
+              //           fullscreenDialog: true,
+              //           transitionDuration: Duration(milliseconds: 400),
+              //           transitionsBuilder: (_, anim, __, child) {
+              //             return SlideTransition(
+              //               position: Tween<Offset>(
+              //                 begin: Offset(0, 1),
+              //                 end: Offset(0, 0),
+              //               ).chain(CurveTween(curve: Curves.easeInOutCubic)).animate(anim),
+              //               child: child,
+              //             );
+              //           },
+              //           pageBuilder: (_, __, ___) => FriendsPanel(),
+              //         );
+              //       case NavBarRoutes.profile:
+              //         return MaterialPageRoute(
+              //           maintainState: true,
+              //           fullscreenDialog: true,
+              //           builder: (_) => UserSettingPanel(),
+              //         );
+              //     }
+              //   },
+              // ),
+              OverlapSwipeableStack(
+                channelViewController: _channelViewController,
+                frontPage: RoomMessagePanel(),
+                leftPage: Row(
+                  children: [
+                    ServerListPanel(),
+                    ChannelListPanel(),
+                    // DirectMessageListPanel(),
+                  ],
+                ),
+                rightPage: RoomInfoPanel(),
               ),
               AppNavigationBar(
                 controller: _channelViewController.navBarAnimController,
                 onHomePressed: () {
-                  if (_currentRoute != LocalRoutes.main) {
+                  if (_currentRoute != NavBarRoutes.main) {
                     _localNavKey.currentState?.popUntil((route) => route.isFirst);
                     setState(() {
-                      _currentRoute = LocalRoutes.main;
+                      _currentRoute = NavBarRoutes.main;
                     });
                   }
                 },
                 onFriendPressed: () {
-                  if (_currentRoute != LocalRoutes.friends) {
-                    _localNavKey.currentState?.pushNamed(LocalRoutes.friends);
+                  if (_currentRoute != NavBarRoutes.friends) {
+                    _localNavKey.currentState?.pushNamed(NavBarRoutes.friends);
                     setState(() {
-                      _currentRoute = LocalRoutes.friends;
+                      _currentRoute = NavBarRoutes.friends;
                     });
                   }
                 },
@@ -143,10 +161,10 @@ class RoomViewState extends State<RoomView> with TickerProviderStateMixin {
                 },
                 onMentionPressed: () {},
                 onProfilePressed: () {
-                  if (_currentRoute != LocalRoutes.profile) {
-                    _localNavKey.currentState?.pushNamed(LocalRoutes.profile);
+                  if (_currentRoute != NavBarRoutes.profile) {
+                    _localNavKey.currentState?.pushNamed(NavBarRoutes.profile);
                     setState(() {
-                      _currentRoute = LocalRoutes.profile;
+                      _currentRoute = NavBarRoutes.profile;
                     });
                   }
                 },

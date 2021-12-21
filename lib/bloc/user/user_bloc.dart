@@ -1,6 +1,7 @@
 import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
 import 'package:discord_replicate/model/credential.dart';
+import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/repository/auth_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
     var credential = await authRepo.getCurrentUserCredential();
     if (credential == null)
-      emit(UserState.loadLocalUserFailed(Exception("Current user session not found.")));
+      emit(UserState.loadLocalUserFailed(Exception("Local user not found. Please login first.")));
     else {
       var user = await userRepo.loadLocalUser(credential.uid);
       emit(UserState.loadLocalUserSuccess(user));
