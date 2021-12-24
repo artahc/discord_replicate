@@ -1,5 +1,5 @@
 import 'package:discord_replicate/repository/user_repository.dart';
-import 'package:discord_replicate/repository/auth_repository.dart';
+import 'package:discord_replicate/repository/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
 import 'package:discord_replicate/bloc/authentication/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,13 +19,13 @@ extension ParseToString on RegisterOptions {
 }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthRepository authRepo;
+  final AuthService authService;
   final UserRepository userRepo;
 
-  AuthBloc({required this.authRepo, required this.userRepo}) : super(AuthStateInitial());
+  AuthBloc({required this.authService, required this.userRepo}) : super(AuthStateInitial());
 
   Stream<AuthState> _handleInitial() async* {
-    var credential = await authRepo.getCurrentUserCredential();
+    var credential = await authService.getCurrentUserCredential();
     if (credential == null) {
       emit(AuthState.signedOut());
     } else {
@@ -35,14 +35,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> _signIn(String email, String password) async* {
     emit(AuthState.signingIn());
-    var credential = await authRepo.signIn(email, password);
+    var credential = await authService.signIn(email, password);
     emit(AuthState.signedIn(credential: credential));
   }
 
   Stream<AuthState> _signUp(RegisterOptions option, String id) async* {
     switch (option) {
       case RegisterOptions.Email:
-        var credential = await authRepo.signUpEmail(id);
+        var credential = await authService.signUpEmail(id);
         var state = AuthState.signedIn(credential: credential);
 
         emit(state);
@@ -54,7 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Stream<AuthState> _signOut() async* {
-    await authRepo.signOut();
+    await authService.signOut();
     await Hive.deleteFromDisk();
     emit(AuthState.signedOut());
   }

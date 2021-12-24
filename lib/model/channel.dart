@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:hive/hive.dart';
@@ -28,9 +29,21 @@ class Channel extends HiveObject {
   @HiveField(3)
   final ChannelAccess access;
 
-  Channel({required this.id, required this.name, required this.roomId, required this.access});
+  @HiveField(4)
+  final String category;
 
-  factory Channel.dummy() => Channel(id: "id", name: "name", roomId: "roomId", access: ChannelAccess.PRIVATE);
+  Channel({required this.id, required this.name, required this.roomId, required this.access, required this.category});
+
+  factory Channel.dummy() {
+    var random = Random().nextInt(1000);
+    return Channel(
+      id: "id-$random",
+      name: "Channel $random",
+      roomId: "roomId-$random",
+      access: ChannelAccess.PRIVATE,
+      category: "Text Channels",
+    );
+  }
 
   factory Channel.fromJson(Map<String, dynamic> map) {
     return Channel(
@@ -38,6 +51,7 @@ class Channel extends HiveObject {
       name: map['name'],
       roomId: map['roomId'],
       access: ChannelAccess.values.where((e) => e.name == map['access']).first,
+      category: "Text Channels",
     );
   }
 
@@ -47,6 +61,7 @@ class Channel extends HiveObject {
       "name": name,
       "roomId": roomId,
       "access": access.name,
+      "category": category,
     };
   }
 

@@ -13,11 +13,11 @@ class UserRepository {
 
   UserRepository({
     required GraphQLClientHelper apiClient,
-    required HiveDatabaseHelper dbHelper,
+    required HiveDatabaseHelper database,
   })  : _api = apiClient,
-        _db = dbHelper;
+        _db = database;
 
-  Future<LocalUser> loadLocalUser(String uid) async {
+  Future<User> loadById(String uid) async {
     var box = await _db.getBox<LocalUser>(BOX_NAME);
     String query = r"""
         query User($uid: String!) {
@@ -55,7 +55,7 @@ class UserRepository {
       },
     );
 
-    var user = await local.concatWith([remote]).first.timeout(Duration(seconds: 30));
+    var user = await local.concatWith([remote]).first;
 
     return user!;
   }

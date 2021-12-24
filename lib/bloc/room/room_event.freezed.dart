@@ -17,9 +17,13 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$RoomEventTearOff {
   const _$RoomEventTearOff();
 
-  RoomEventLoadRoom loadRoom(String id) {
+  RoomEventLoadLastPrivateRoom loadRecentPrivateRoom() {
+    return const RoomEventLoadLastPrivateRoom();
+  }
+
+  RoomEventLoadRoom loadRecentServerRoom(String serverId) {
     return RoomEventLoadRoom(
-      id,
+      serverId,
     );
   }
 }
@@ -29,43 +33,44 @@ const $RoomEvent = _$RoomEventTearOff();
 
 /// @nodoc
 mixin _$RoomEvent {
-  String get id => throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id) loadRoom,
+    required TResult Function() loadRecentPrivateRoom,
+    required TResult Function(String serverId) loadRecentServerRoom,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String id)? loadRoom,
+    TResult Function()? loadRecentPrivateRoom,
+    TResult Function(String serverId)? loadRecentServerRoom,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id)? loadRoom,
+    TResult Function()? loadRecentPrivateRoom,
+    TResult Function(String serverId)? loadRecentServerRoom,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(RoomEventLoadRoom value) loadRoom,
+    required TResult Function(RoomEventLoadLastPrivateRoom value)
+        loadRecentPrivateRoom,
+    required TResult Function(RoomEventLoadRoom value) loadRecentServerRoom,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(RoomEventLoadRoom value)? loadRoom,
+    TResult Function(RoomEventLoadLastPrivateRoom value)? loadRecentPrivateRoom,
+    TResult Function(RoomEventLoadRoom value)? loadRecentServerRoom,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(RoomEventLoadRoom value)? loadRoom,
+    TResult Function(RoomEventLoadLastPrivateRoom value)? loadRecentPrivateRoom,
+    TResult Function(RoomEventLoadRoom value)? loadRecentServerRoom,
     required TResult orElse(),
   }) =>
-      throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $RoomEventCopyWith<RoomEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -73,7 +78,6 @@ mixin _$RoomEvent {
 abstract class $RoomEventCopyWith<$Res> {
   factory $RoomEventCopyWith(RoomEvent value, $Res Function(RoomEvent) then) =
       _$RoomEventCopyWithImpl<$Res>;
-  $Res call({String id});
 }
 
 /// @nodoc
@@ -83,28 +87,124 @@ class _$RoomEventCopyWithImpl<$Res> implements $RoomEventCopyWith<$Res> {
   final RoomEvent _value;
   // ignore: unused_field
   final $Res Function(RoomEvent) _then;
-
-  @override
-  $Res call({
-    Object? id = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
 }
 
 /// @nodoc
-abstract class $RoomEventLoadRoomCopyWith<$Res>
-    implements $RoomEventCopyWith<$Res> {
+abstract class $RoomEventLoadLastPrivateRoomCopyWith<$Res> {
+  factory $RoomEventLoadLastPrivateRoomCopyWith(
+          RoomEventLoadLastPrivateRoom value,
+          $Res Function(RoomEventLoadLastPrivateRoom) then) =
+      _$RoomEventLoadLastPrivateRoomCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$RoomEventLoadLastPrivateRoomCopyWithImpl<$Res>
+    extends _$RoomEventCopyWithImpl<$Res>
+    implements $RoomEventLoadLastPrivateRoomCopyWith<$Res> {
+  _$RoomEventLoadLastPrivateRoomCopyWithImpl(
+      RoomEventLoadLastPrivateRoom _value,
+      $Res Function(RoomEventLoadLastPrivateRoom) _then)
+      : super(_value, (v) => _then(v as RoomEventLoadLastPrivateRoom));
+
+  @override
+  RoomEventLoadLastPrivateRoom get _value =>
+      super._value as RoomEventLoadLastPrivateRoom;
+}
+
+/// @nodoc
+
+class _$RoomEventLoadLastPrivateRoom implements RoomEventLoadLastPrivateRoom {
+  const _$RoomEventLoadLastPrivateRoom();
+
+  @override
+  String toString() {
+    return 'RoomEvent.loadRecentPrivateRoom()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is RoomEventLoadLastPrivateRoom);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadRecentPrivateRoom,
+    required TResult Function(String serverId) loadRecentServerRoom,
+  }) {
+    return loadRecentPrivateRoom();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function()? loadRecentPrivateRoom,
+    TResult Function(String serverId)? loadRecentServerRoom,
+  }) {
+    return loadRecentPrivateRoom?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadRecentPrivateRoom,
+    TResult Function(String serverId)? loadRecentServerRoom,
+    required TResult orElse(),
+  }) {
+    if (loadRecentPrivateRoom != null) {
+      return loadRecentPrivateRoom();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(RoomEventLoadLastPrivateRoom value)
+        loadRecentPrivateRoom,
+    required TResult Function(RoomEventLoadRoom value) loadRecentServerRoom,
+  }) {
+    return loadRecentPrivateRoom(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(RoomEventLoadLastPrivateRoom value)? loadRecentPrivateRoom,
+    TResult Function(RoomEventLoadRoom value)? loadRecentServerRoom,
+  }) {
+    return loadRecentPrivateRoom?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(RoomEventLoadLastPrivateRoom value)? loadRecentPrivateRoom,
+    TResult Function(RoomEventLoadRoom value)? loadRecentServerRoom,
+    required TResult orElse(),
+  }) {
+    if (loadRecentPrivateRoom != null) {
+      return loadRecentPrivateRoom(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class RoomEventLoadLastPrivateRoom implements RoomEvent {
+  const factory RoomEventLoadLastPrivateRoom() = _$RoomEventLoadLastPrivateRoom;
+}
+
+/// @nodoc
+abstract class $RoomEventLoadRoomCopyWith<$Res> {
   factory $RoomEventLoadRoomCopyWith(
           RoomEventLoadRoom value, $Res Function(RoomEventLoadRoom) then) =
       _$RoomEventLoadRoomCopyWithImpl<$Res>;
-  @override
-  $Res call({String id});
+  $Res call({String serverId});
 }
 
 /// @nodoc
@@ -120,12 +220,12 @@ class _$RoomEventLoadRoomCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? id = freezed,
+    Object? serverId = freezed,
   }) {
     return _then(RoomEventLoadRoom(
-      id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      serverId == freezed
+          ? _value.serverId
+          : serverId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -134,14 +234,14 @@ class _$RoomEventLoadRoomCopyWithImpl<$Res>
 /// @nodoc
 
 class _$RoomEventLoadRoom implements RoomEventLoadRoom {
-  const _$RoomEventLoadRoom(this.id);
+  const _$RoomEventLoadRoom(this.serverId);
 
   @override
-  final String id;
+  final String serverId;
 
   @override
   String toString() {
-    return 'RoomEvent.loadRoom(id: $id)';
+    return 'RoomEvent.loadRecentServerRoom(serverId: $serverId)';
   }
 
   @override
@@ -149,11 +249,12 @@ class _$RoomEventLoadRoom implements RoomEventLoadRoom {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is RoomEventLoadRoom &&
-            (identical(other.id, id) || other.id == id));
+            (identical(other.serverId, serverId) ||
+                other.serverId == serverId));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id);
+  int get hashCode => Object.hash(runtimeType, serverId);
 
   @JsonKey(ignore: true)
   @override
@@ -163,27 +264,30 @@ class _$RoomEventLoadRoom implements RoomEventLoadRoom {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id) loadRoom,
+    required TResult Function() loadRecentPrivateRoom,
+    required TResult Function(String serverId) loadRecentServerRoom,
   }) {
-    return loadRoom(id);
+    return loadRecentServerRoom(serverId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String id)? loadRoom,
+    TResult Function()? loadRecentPrivateRoom,
+    TResult Function(String serverId)? loadRecentServerRoom,
   }) {
-    return loadRoom?.call(id);
+    return loadRecentServerRoom?.call(serverId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id)? loadRoom,
+    TResult Function()? loadRecentPrivateRoom,
+    TResult Function(String serverId)? loadRecentServerRoom,
     required TResult orElse(),
   }) {
-    if (loadRoom != null) {
-      return loadRoom(id);
+    if (loadRecentServerRoom != null) {
+      return loadRecentServerRoom(serverId);
     }
     return orElse();
   }
@@ -191,38 +295,40 @@ class _$RoomEventLoadRoom implements RoomEventLoadRoom {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(RoomEventLoadRoom value) loadRoom,
+    required TResult Function(RoomEventLoadLastPrivateRoom value)
+        loadRecentPrivateRoom,
+    required TResult Function(RoomEventLoadRoom value) loadRecentServerRoom,
   }) {
-    return loadRoom(this);
+    return loadRecentServerRoom(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(RoomEventLoadRoom value)? loadRoom,
+    TResult Function(RoomEventLoadLastPrivateRoom value)? loadRecentPrivateRoom,
+    TResult Function(RoomEventLoadRoom value)? loadRecentServerRoom,
   }) {
-    return loadRoom?.call(this);
+    return loadRecentServerRoom?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(RoomEventLoadRoom value)? loadRoom,
+    TResult Function(RoomEventLoadLastPrivateRoom value)? loadRecentPrivateRoom,
+    TResult Function(RoomEventLoadRoom value)? loadRecentServerRoom,
     required TResult orElse(),
   }) {
-    if (loadRoom != null) {
-      return loadRoom(this);
+    if (loadRecentServerRoom != null) {
+      return loadRecentServerRoom(this);
     }
     return orElse();
   }
 }
 
 abstract class RoomEventLoadRoom implements RoomEvent {
-  const factory RoomEventLoadRoom(String id) = _$RoomEventLoadRoom;
+  const factory RoomEventLoadRoom(String serverId) = _$RoomEventLoadRoom;
 
-  @override
-  String get id;
-  @override
+  String get serverId;
   @JsonKey(ignore: true)
   $RoomEventLoadRoomCopyWith<RoomEventLoadRoom> get copyWith =>
       throw _privateConstructorUsedError;

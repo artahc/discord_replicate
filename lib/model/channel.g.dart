@@ -21,13 +21,14 @@ class ChannelAdapter extends TypeAdapter<Channel> {
       name: fields[1] as String,
       roomId: fields[2] as String,
       access: fields[3] as ChannelAccess,
+      category: fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Channel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class ChannelAdapter extends TypeAdapter<Channel> {
       ..writeByte(2)
       ..write(obj.roomId)
       ..writeByte(3)
-      ..write(obj.access);
+      ..write(obj.access)
+      ..writeByte(4)
+      ..write(obj.category);
   }
 
   @override

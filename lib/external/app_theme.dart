@@ -3,17 +3,14 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static final darkThemeData = ThemeData(
     brightness: Brightness.dark,
-    // highlightColor: Colors.transparent,
-    // splashColor: Color(0xff303136),
     backgroundColor: Color(0xff202226),
     colorScheme: ColorScheme.dark(
       brightness: Brightness.dark,
       primary: Color(0xff303136),
       secondary: Color(0xff363940),
-      surface: Color(0xff303136),
       onPrimary: Color(0xffb9bbbe),
-      onSecondary: Color(0xff72767b),
-      onSurface: Color(0xffb9bbbe),
+      onSecondary: Color(0xff73767d),
+      // onSurface: Color(0xffb9bbbe),
     ),
     textTheme: TextTheme(
       headline5: TextStyle(
@@ -22,7 +19,7 @@ class AppTheme {
       ),
       headline6: TextStyle(
         color: Colors.white,
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: FontWeight.bold,
         letterSpacing: 0.15,
       ),
@@ -62,7 +59,7 @@ class AppTheme {
         secondary: Color(0xff72767b),
         // surface: Color(0xff363940),
         onPrimary: Colors.white,
-        onSecondary: Colors.white,
+        onSecondary: Color(0xff575b64),
       ),
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(

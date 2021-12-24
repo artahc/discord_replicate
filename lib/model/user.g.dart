@@ -63,7 +63,7 @@ class RemoteUserAdapter extends TypeAdapter<RemoteUser> {
       uid: fields[0] as String,
       username: fields[1] as String,
       about: fields[2] as String?,
-      mutualServers: (fields[5] as List).cast<Server>(),
+      servers: (fields[5] as List).cast<Server>(),
     );
   }
 
@@ -72,7 +72,7 @@ class RemoteUserAdapter extends TypeAdapter<RemoteUser> {
     writer
       ..writeByte(4)
       ..writeByte(5)
-      ..write(obj.mutualServers)
+      ..write(obj.servers)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
+import 'package:discord_replicate/bloc/room/room_bloc.dart';
+import 'package:discord_replicate/bloc/room/room_event.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
@@ -22,10 +24,16 @@ class ServerListPanel extends StatefulWidget {
 class _ServerListPanelState extends State<ServerListPanel> {
   List<Server> _serverList = const <Server>[];
   Server? _selectedServer;
+  late RoomBloc _roomBloc = BlocProvider.of<RoomBloc>(context);
 
-  void _select(Server? value) {
+  void _select(Server? server) {
+    if (server == null) {
+      _roomBloc.add(RoomEvent.loadRecentPrivateRoom());
+    } else {
+      _roomBloc.add(RoomEvent.loadRecentServerRoom(server.channels.first.roomId));
+    } 
     setState(() {
-      this._selectedServer = value;
+      this._selectedServer = server;
     });
   }
 

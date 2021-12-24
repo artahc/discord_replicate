@@ -101,7 +101,7 @@ class _SearchPanelState extends State<SearchPanel> {
                                 ),
                           ),
                         ),
-                        ChannelTile(data: _getLastChannel()),
+                        _SearchChannelTile(data: _getLastChannel()),
                         Container(
                           margin: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
                           child: Text(
@@ -112,7 +112,7 @@ class _SearchPanelState extends State<SearchPanel> {
                           ),
                         ),
                         Column(
-                          children: _getSuggestionChannels().map((e) => ChannelTile(data: e)).toList(),
+                          children: _getSuggestionChannels().map((e) => _SearchChannelTile(data: e)).toList(),
                         )
                       ],
                     ),
@@ -127,10 +127,10 @@ class _SearchPanelState extends State<SearchPanel> {
   }
 }
 
-class ChannelTile extends StatelessWidget {
+class _SearchChannelTile extends StatelessWidget {
   final Channel data;
 
-  const ChannelTile({Key? key, required this.data}) : super(key: key);
+  const _SearchChannelTile({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

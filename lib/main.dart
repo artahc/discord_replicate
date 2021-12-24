@@ -1,8 +1,10 @@
 import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/room/room_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/repository/room_repository.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
-import 'package:discord_replicate/repository/auth_repository.dart';
+import 'package:discord_replicate/repository/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
@@ -36,19 +38,21 @@ class _MainState extends State<Main> {
   final String url = "http://localhost:4000";
 
   // Helper Class
-  late GraphQLClientHelper apiClient = GraphQLClientHelper(url: url, tokenProvider: authRepository.getCurrentUserCredential);
-  late HiveDatabaseHelper dbHelper = HiveDatabaseHelper();
+  late GraphQLClientHelper client = GraphQLClientHelper(url: url, tokenProvider: authService.getCurrentUserCredential);
+  late HiveDatabaseHelper db = HiveDatabaseHelper();
 
   // Repository
-  late AuthRepository authRepository = FirebaseAuthRepository();
-  late UserRepository userRepository = UserRepository(apiClient: apiClient, dbHelper: dbHelper);
-  late ServerRepository serverRepository = ServerRepository(apiClient: apiClient);
+  late AuthService authService = FirebaseAuthService();
+  late UserRepository userRepository = UserRepository(apiClient: client, database: db);
+  late ServerRepository serverRepository = ServerRepository(apiClient: client);
+  late RoomRepository roomRepository = RoomRepository(apiClient: client, database: db);
 
   // Bloc
   late ServerBloc serverBloc = ServerBloc(serverRepository: serverRepository);
-  late AuthBloc authBloc = AuthBloc(authRepo: authRepository, userRepo: userRepository);
+  late AuthBloc authBloc = AuthBloc(authService: authService, userRepo: userRepository);
   late NavigationBloc navBloc = NavigationBloc();
-  late UserBloc userBloc = UserBloc(userRepo: userRepository, authRepo: authRepository);
+  late UserBloc userBloc = UserBloc(userRepo: userRepository, authRepo: authService);
+  late RoomBloc roomBloc = RoomBloc(roomRepo: roomRepository, userRepo: userRepository);
 
   @override
   void initState() {

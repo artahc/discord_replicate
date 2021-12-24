@@ -92,13 +92,13 @@ class LocalUser extends User {
 @HiveType(typeId: HiveConstants.REMOTE_USER_TYPE)
 class RemoteUser extends User {
   @HiveField(5)
-  final List<Server> mutualServers;
+  final List<Server> servers;
 
   RemoteUser({
     required String uid,
     required String username,
     required String? about,
-    required this.mutualServers,
+    required this.servers,
   }) : super(uid: uid, username: username, about: about);
 
   factory RemoteUser.dummy() {
@@ -107,7 +107,7 @@ class RemoteUser extends User {
       uid: "id+$random",
       username: "name+$random",
       about: "about+$random",
-      mutualServers: List.generate(5, (index) => Server.dummy(index)),
+      servers: List.generate(5, (index) => Server.dummy(index)),
     );
   }
 
@@ -117,7 +117,7 @@ class RemoteUser extends User {
       uid: map['uid'] as String,
       username: map['username'] as String,
       about: map['about'] as String?,
-      mutualServers: servers,
+      servers: servers,
     );
   }
 
@@ -126,7 +126,7 @@ class RemoteUser extends User {
       "uid": uid,
       "name": username,
       "about": about,
-      "servers": mutualServers,
+      "servers": servers,
     };
   }
 
