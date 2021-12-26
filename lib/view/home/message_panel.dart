@@ -136,7 +136,7 @@ class _RoomBody extends StatelessWidget {
         child: ListView.builder(
           itemCount: 15,
           itemBuilder: (context, index) {
-            return MessageTile(TextMessage.dummy());
+            return MessageTile(Message.dummy());
           },
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           scrollDirection: Axis.vertical,

@@ -37,12 +37,13 @@ class _MainState extends State<Main> {
   // Constant
   final String url = "http://localhost:4000";
 
+  late AuthService authService = FirebaseAuthService();
+
   // Helper Class
   late GraphQLClientHelper client = GraphQLClientHelper(url: url, tokenProvider: authService.getCurrentUserCredential);
   late HiveDatabaseHelper db = HiveDatabaseHelper();
 
   // Repository
-  late AuthService authService = FirebaseAuthService();
   late UserRepository userRepository = UserRepository(apiClient: client, database: db);
   late ServerRepository serverRepository = ServerRepository(apiClient: client);
   late RoomRepository roomRepository = RoomRepository(apiClient: client, database: db);

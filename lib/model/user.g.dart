@@ -6,36 +6,39 @@ part of 'user.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class LocalUserAdapter extends TypeAdapter<LocalUser> {
+class UserAdapter extends TypeAdapter<User> {
   @override
   final int typeId = 3;
 
   @override
-  LocalUser read(BinaryReader reader) {
+  User read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return LocalUser(
+    return User(
       uid: fields[0] as String,
-      username: fields[1] as String,
+      name: fields[1] as String,
+      avatarUrl: fields[3] as String?,
       about: fields[2] as String?,
-      servers: (fields[5] as List).cast<Server>(),
+      servers: (fields[4] as List).cast<Server>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, LocalUser obj) {
+  void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(4)
       ..writeByte(5)
-      ..write(obj.servers)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
-      ..write(obj.username)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.about);
+      ..write(obj.about)
+      ..writeByte(3)
+      ..write(obj.avatarUrl)
+      ..writeByte(4)
+      ..write(obj.servers);
   }
 
   @override
@@ -44,50 +47,7 @@ class LocalUserAdapter extends TypeAdapter<LocalUser> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is LocalUserAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class RemoteUserAdapter extends TypeAdapter<RemoteUser> {
-  @override
-  final int typeId = 4;
-
-  @override
-  RemoteUser read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return RemoteUser(
-      uid: fields[0] as String,
-      username: fields[1] as String,
-      about: fields[2] as String?,
-      servers: (fields[5] as List).cast<Server>(),
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, RemoteUser obj) {
-    writer
-      ..writeByte(4)
-      ..writeByte(5)
-      ..write(obj.servers)
-      ..writeByte(0)
-      ..write(obj.uid)
-      ..writeByte(1)
-      ..write(obj.username)
-      ..writeByte(2)
-      ..write(obj.about);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is RemoteUserAdapter &&
+      other is UserAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

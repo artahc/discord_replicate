@@ -1,33 +1,67 @@
 import 'dart:math';
 
 import 'package:discord_replicate/model/user.dart';
+import 'package:equatable/equatable.dart';
+
+enum MessageType { TEXT, IMAGE, GIF }
 
 abstract class Message {
   final String id;
-  final User sender;
-  final DateTime sentDate;
+  final String senderId;
+  final DateTime date;
 
-  Message(this.id, this.sender, this.sentDate);
-}
+  Message({required this.id, required this.senderId, required this.date});
 
-class TextMessage extends Message {
-  final String textMessage;
-
-  TextMessage({
-    required String id,
-    required User sender,
-    required DateTime sentDate,
-    required this.textMessage,
-  }) : super(id, sender, sentDate);
-
-  factory TextMessage.dummy() {
+  factory Message.dummy() {
     var random = Random().nextInt(1000);
     return TextMessage(
       id: "message-id-$random",
-      sender: RemoteUser.dummy(),
-      sentDate: DateTime.now(),
-      textMessage:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer laoreet eget velit non lobortis. Proin malesuada est eu efficitur luctus. Nunc aliquet dui quis dui maximus, eu porta orci bibendum. Pellentesque ac urna ullamcorper nunc elementum tempus vel vel lorem. Fusce posuere nunc nec neque imperdiet, id tempus eros rhoncus.",
+      senderId: "sender-id-$random",
+      message: "Lorem ipsum",
+      date: DateTime.now(),
     );
   }
+
+  factory Message.fromJson(Map<String, dynamic> map) {
+    var id = map['id'] as String;
+    var senderId = map['senderId'] as String;
+    var date = DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as int) * 1000);
+    var message = map['message'] as String;
+
+    // todo: Return correct Message implementation based on type.
+    return TextMessage(
+      id: id,
+      senderId: senderId,
+      date: date,
+      message: message,
+    );
+  }
+}
+
+class TextMessage extends Message with EquatableMixin {
+  final String message;
+
+  TextMessage({
+    required String id,
+    required String senderId,
+    required DateTime date,
+    required this.message,
+  }) : super(id: id, date: date, senderId: senderId);
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "senderId": senderId,
+      "date": date.millisecondsSinceEpoch / 1000,
+      "message": message,
+    };
+  }
+
+  @override
+  String toString() {
+    return this.toJson().toString();
+  }
+
+  @override
+  List<Object?> get props => [id, senderId, date, message];
 }

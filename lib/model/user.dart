@@ -2,73 +2,57 @@ import 'dart:math';
 
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/util/hive_database_helper.dart';
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 part 'user.g.dart';
 
-abstract class User extends HiveObject {
+@HiveType(typeId: HiveConstants.USER_TYPE)
+class User extends HiveObject with EquatableMixin {
   @HiveField(0)
   final String uid;
 
   @HiveField(1)
-  final String username;
+  final String name;
 
   @HiveField(2)
   final String? about;
 
-  // @HiveField(2)
-  // final List<Server> servers;
+  @HiveField(3)
+  final String? avatarUrl;
 
-  User({required this.uid, required this.username, required this.about});
-
-  // factory User.fromJson(Map<String, dynamic> json) => User(uid: json['uid'], username: json['username']);
-  // factory User.dummy() {
-  //   var random = Random().nextInt(15);
-  //   return User(
-  //     uid: "id+$random",
-  //     username: "name+$random",
-  //     // username: "username+$random",
-  //     // servers: List.generate(5, (index) => Server.dummy(index)),
-  //   );
-  // }
-
-  Map<String, dynamic> toJson() {
-    return {"uid": uid, "username": username};
-  }
-
-  @override
-  String toString() {
-    return this.toJson().toString();
-  }
-}
-
-@HiveType(typeId: HiveConstants.LOCAL_USER_TYPE)
-class LocalUser extends User {
-  @HiveField(5)
+  @HiveField(4)
   final List<Server> servers;
 
-  LocalUser({
-    required String uid,
-    required String username,
-    required String? about,
-    required this.servers,
-  }) : super(uid: uid, username: username, about: about);
+  User({
+    required this.uid,
+    required this.name,
+    required this.avatarUrl,
+    required this.about,
+    this.servers = const <Server>[],
+  });
 
-  factory LocalUser.dummy() {
+  factory User.dummy() {
     var random = Random().nextInt(15);
-    return LocalUser(
+    return User(
       uid: "id+$random",
-      username: "name+$random",
+      name: "name+$random",
+      avatarUrl: "avatarUrl+$random",
       about: "about+$random",
       servers: List.generate(10, (index) => Server.dummy(index)),
     );
   }
 
-  factory LocalUser.fromJson(Map<String, dynamic> map) {
-    var servers = (map['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
-    return LocalUser(
+  factory User.fromJson(Map<String, dynamic> map) {
+    var servers = <Server>[];
+    if (map.containsKey('servers')) {
+      servers = (map['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
+    }
+
+    return User(
       uid: map['uid'] as String,
-      username: map['username'] as String,
+      name: map['name'] as String,
+      avatarUrl: map['avatarUrl'] as String?,
       about: map['about'] as String?,
       servers: servers,
     );
@@ -77,9 +61,10 @@ class LocalUser extends User {
   Map<String, dynamic> toJson() {
     return {
       "uid": uid,
-      "name": username,
+      "name": name,
+      "avatarUrl": avatarUrl,
       "about": about,
-      "servers": servers,
+      if (servers.isNotEmpty) "servers": servers,
     };
   }
 
@@ -87,51 +72,7 @@ class LocalUser extends User {
   String toString() {
     return this.toJson().toString();
   }
-}
-
-@HiveType(typeId: HiveConstants.REMOTE_USER_TYPE)
-class RemoteUser extends User {
-  @HiveField(5)
-  final List<Server> servers;
-
-  RemoteUser({
-    required String uid,
-    required String username,
-    required String? about,
-    required this.servers,
-  }) : super(uid: uid, username: username, about: about);
-
-  factory RemoteUser.dummy() {
-    var random = Random().nextInt(15);
-    return RemoteUser(
-      uid: "id+$random",
-      username: "name+$random",
-      about: "about+$random",
-      servers: List.generate(5, (index) => Server.dummy(index)),
-    );
-  }
-
-  factory RemoteUser.fromJson(Map<String, dynamic> map) {
-    var servers = (map['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
-    return RemoteUser(
-      uid: map['uid'] as String,
-      username: map['username'] as String,
-      about: map['about'] as String?,
-      servers: servers,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "uid": uid,
-      "name": username,
-      "about": about,
-      "servers": servers,
-    };
-  }
 
   @override
-  String toString() {
-    return this.toJson().toString();
-  }
+  List<Object?> get props => [uid];
 }

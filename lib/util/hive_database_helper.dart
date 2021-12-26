@@ -10,8 +10,8 @@ class HiveConstants {
   static const int SERVER_TYPE = 0;
   static const int CHANNEL_TYPE = 1;
   static const int CHANNEL_ACCESS_TYPE = 2;
-  static const int LOCAL_USER_TYPE = 3;
-  static const int REMOTE_USER_TYPE = 4;
+  static const int PROFILE_TYPE = 4;
+  static const int USER_TYPE = 3;
 }
 
 class HiveDatabaseHelper {
@@ -19,8 +19,7 @@ class HiveDatabaseHelper {
     var dir = await getApplicationDocumentsDirectory();
     Hive.init(dir.path);
     Hive
-      ..registerAdapter(LocalUserAdapter())
-      ..registerAdapter(RemoteUserAdapter())
+      ..registerAdapter(UserAdapter())
       ..registerAdapter(ServerAdapter())
       ..registerAdapter(ChannelAdapter())
       ..registerAdapter(ChannelAccessAdapter());

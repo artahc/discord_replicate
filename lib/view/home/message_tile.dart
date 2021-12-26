@@ -31,8 +31,8 @@ class MessageTile extends StatelessWidget {
                     spacing: 10,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      Text(message.sender.username, style: Theme.of(context).textTheme.bodyText1),
-                      Text(DateFormat.yMMMd().add_jm().format(message.sentDate),
+                      Text(message.senderId, style: Theme.of(context).textTheme.bodyText1),
+                      Text(DateFormat.yMMMd().add_jm().format(message.date),
                           style: Theme.of(context).textTheme.caption!.copyWith(
                                 color: Theme.of(context).colorScheme.onSecondary,
                               )),
@@ -43,7 +43,7 @@ class MessageTile extends StatelessWidget {
                     child: Builder(builder: (_) {
                       if (message is TextMessage) {
                         var content = message as TextMessage;
-                        return Text(content.textMessage, style: Theme.of(_).textTheme.bodyText2);
+                        return Text(content.message, style: Theme.of(_).textTheme.bodyText2);
                       } else {
                         return Container();
                       }

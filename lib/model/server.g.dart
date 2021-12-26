@@ -19,19 +19,22 @@ class ServerAdapter extends TypeAdapter<Server> {
     return Server(
       id: fields[0] as String,
       name: fields[1] as String,
-      channels: (fields[2] as List).cast<Channel>(),
+      imageUrl: fields[2] as String?,
+      channels: (fields[3] as List).cast<Channel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Server obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
+      ..write(obj.imageUrl)
+      ..writeByte(3)
       ..write(obj.channels);
   }
 

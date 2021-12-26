@@ -12,8 +12,8 @@ class GraphQLClientHelper {
 
   late Future<Credential?> Function() tokenProvider;
 
-  GraphQLClientHelper({required String url, required this.tokenProvider, GraphQLCache? cache}) {
-    _httpLink = HttpLink(url);
+  GraphQLClientHelper({required String url, required this.tokenProvider, GraphQLCache? cache, Map<String, String>? defaultHeader}) {
+    _httpLink = HttpLink(url, defaultHeaders: defaultHeader ?? {});
     _authLink = AuthLink(getToken: () async {
       var credential = await tokenProvider.call();
       var token = credential == null ? "" : credential.token;

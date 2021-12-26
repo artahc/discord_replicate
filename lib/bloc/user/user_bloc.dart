@@ -19,8 +19,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (credential == null)
       emit(UserState.loadLocalUserFailed(Exception("Local user not found. Please login first.")));
     else {
-      var user = await userRepo.loadById(credential.uid);
-      emit(UserState.loadLocalUserSuccess(user as LocalUser));
+      var user = await userRepo.loadUser(credential.uid);
+      emit(UserState.loadLocalUserSuccess(user as User));
     }
   }
 

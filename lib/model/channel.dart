@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:math';
 
 import 'package:discord_replicate/util/hive_database_helper.dart';
+import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 part 'channel.g.dart';
@@ -16,7 +17,7 @@ enum ChannelAccess {
 }
 
 @HiveType(typeId: HiveConstants.CHANNEL_TYPE)
-class Channel extends HiveObject {
+class Channel extends HiveObject with EquatableMixin {
   @HiveField(0)
   final String id;
 
@@ -29,10 +30,10 @@ class Channel extends HiveObject {
   @HiveField(3)
   final ChannelAccess access;
 
-  @HiveField(4)
-  final String category;
+  // @HiveField(4)
+  // final String category;
 
-  Channel({required this.id, required this.name, required this.roomId, required this.access, required this.category});
+  Channel({required this.id, required this.name, required this.roomId, required this.access});
 
   factory Channel.dummy() {
     var random = Random().nextInt(1000);
@@ -41,18 +42,22 @@ class Channel extends HiveObject {
       name: "Channel $random",
       roomId: "roomId-$random",
       access: ChannelAccess.PRIVATE,
-      category: "Text Channels",
+      // category: "Text Channels",
     );
   }
 
   factory Channel.fromJson(Map<String, dynamic> map) {
-    return Channel(
-      id: map['id'],
-      name: map['name'],
-      roomId: map['roomId'],
-      access: ChannelAccess.values.where((e) => e.name == map['access']).first,
-      category: "Text Channels",
-    );
+    try {
+      return Channel(
+        id: map['id'],
+        name: map['name'],
+        roomId: map['room']['id'],
+        access: ChannelAccess.values.where((e) => e.name == map['access']).first,
+        // category: "Text Channels",
+      );
+    } catch (e) {
+      throw FormatException("Error when parsing Channel from JSON", e);
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -61,7 +66,7 @@ class Channel extends HiveObject {
       "name": name,
       "roomId": roomId,
       "access": access.name,
-      "category": category,
+      // "category": category,
     };
   }
 
@@ -69,4 +74,7 @@ class Channel extends HiveObject {
   String toString() {
     return this.toJson().toString();
   }
+
+  @override
+  List<Object?> get props => [id, name, roomId, access];
 }

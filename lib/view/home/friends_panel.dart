@@ -7,7 +7,7 @@ class FriendsPanel extends StatelessWidget {
   const FriendsPanel({Key? key}) : super(key: key);
 
   List<User> _fetchUsers() {
-    return List.generate(25, (index) => RemoteUser.dummy());
+    return List.generate(25, (index) => User.dummy());
   }
 
   @override
