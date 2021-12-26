@@ -35,6 +35,7 @@ dependencies:
   hive: ^2.0.5
   hive_flutter: ^1.1.0
   path_provider: ^2.0.8
+  equatable: ^2.0.3
 
   # services
   firebase_core: ^1.6.0
@@ -57,6 +58,7 @@ dev_dependencies:
   hive_generator: ^1.1.1
   flutter_test:
     sdk: flutter
+  mockito: ^5.0.17
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
