@@ -10,4 +10,6 @@
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": true,
   "workbench.tree.indent": 17,
+  "editor.foldingStrategy": "indentation",
+  "todohighlight.isCaseSensitive": false
 }
