@@ -8,24 +8,24 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository userRepo;
-  final AuthService authRepo;
+  final AuthService authService;
 
-  UserBloc({required this.userRepo, required this.authRepo}) : super(UserState.initial());
+  UserBloc({required this.userRepo, required this.authService}) : super(UserState.initial());
 
   Stream<UserState> _loadLocalUser() async* {
     emit(UserState.loadLocalUserInProgress());
 
-    var credential = await authRepo.getCurrentUserCredential();
+    var credential = await authService.getCurrentUserCredential();
     if (credential == null)
       emit(UserState.loadLocalUserFailed(Exception("Local user not found. Please login first.")));
     else {
       var user = await userRepo.loadUser(credential.uid);
-      emit(UserState.loadLocalUserSuccess(user as User));
+      emit(UserState.loadLocalUserSuccess(user));
     }
   }
 
   Stream<UserState> _loadRemoteUser(String uid) async* {
-    // var user = await userRepo.loadLocalUser(uid);
+    var user = await userRepo.loadUser(uid);
   }
 
   @override

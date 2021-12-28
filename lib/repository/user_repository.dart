@@ -5,10 +5,10 @@ import 'package:discord_replicate/util/graphql_client_helper.dart';
 import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:rxdart/rxdart.dart' as rx;
 
-class UserQueries {
-  UserQueries._();
+class UserQuery {
+  UserQuery._();
 
-  static final loadUserById = r"""
+  static final loadUser = r"""
     query User($uid: String!) {
       user(uid: $uid) {
         uid
@@ -31,6 +31,8 @@ class UserQueries {
       }
     }
   """;
+
+  // factory UserQuery.loadUserById(String uid) = Query();
 }
 
 class UserRepository {
@@ -62,7 +64,7 @@ class UserRepository {
     );
 
     var remote = Stream.fromFuture(
-      _api.query(UserQueries.loadUserById, variables: varibales).then((json) => User.fromJson(json['user'])),
+      _api.query(UserQuery.loadUser, variables: varibales).then((json) => User.fromJson(json['user'])),
     ).doOnError(
       (e, s) {
         log("Error when fetching user from remote : $e");

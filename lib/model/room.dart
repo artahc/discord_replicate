@@ -32,14 +32,20 @@ class Room extends HiveObject with EquatableMixin {
     try {
       var id = map['id'] as String;
       var name = map['name'] as String;
-      var members = map['members'] as List<Object?>;
-      var messages = map['messages'] as List<Object?>;
+
+      var members = <User>[];
+      if (map.containsKey('members') && (map['members'] as List<Object?>).isNotEmpty)
+        members = (map['members'] as List<Object?>).map((e) => User.fromJson(e as Map<String, dynamic>)).toList();
+
+      var messages = <Message>[];
+      if (map.containsKey('messages') && (map['messages'] as List<Object?>).isNotEmpty)
+        messages = (map['messages'] as List<Object?>).map((e) => Message.fromJson(e as Map<String, dynamic>)).toList();
 
       return Room(
         id: id,
         name: name,
-        members: members.map((e) => User.fromJson(e as Map<String, dynamic>)).toList(),
-        messages: messages.map((e) => Message.fromJson(e as Map<String, dynamic>)).toList(),
+        members: members,
+        messages: messages,
       );
     } catch (e) {
       throw FormatException("Error when parsing Room from JSON.", e);

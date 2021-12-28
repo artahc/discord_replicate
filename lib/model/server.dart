@@ -28,10 +28,12 @@ class Server extends HiveObject with EquatableMixin {
       var id = map["id"] as String;
       var name = map["name"] as String;
       var imageUrl = map["imageUrl"] as String?;
-      var channels = (map["channels"] as List<Object?>).map((e) {
-        var channel = e as Map<String, dynamic>;
-        return Channel.fromJson(channel);
-      }).toList();
+      var channels = <Channel>[];
+      if (map.containsKey("channels") && (map['channels'] as List<Object?>).isNotEmpty)
+        channels = (map["channels"] as List<Object?>).map((e) {
+          var channel = e as Map<String, dynamic>;
+          return Channel.fromJson(channel);
+        }).toList();
 
       return Server(
         id: id,

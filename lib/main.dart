@@ -52,7 +52,7 @@ class _MainState extends State<Main> {
   late ServerBloc serverBloc = ServerBloc(serverRepository: serverRepository);
   late AuthBloc authBloc = AuthBloc(authService: authService, userRepo: userRepository);
   late NavigationBloc navBloc = NavigationBloc();
-  late UserBloc userBloc = UserBloc(userRepo: userRepository, authRepo: authService);
+  late UserBloc userBloc = UserBloc(userRepo: userRepository, authService: authService);
   late RoomBloc roomBloc = RoomBloc(roomRepo: roomRepository, userRepo: userRepository);
 
   @override
@@ -68,6 +68,7 @@ class _MainState extends State<Main> {
         BlocProvider<AuthBloc>(create: (c) => authBloc),
         BlocProvider<NavigationBloc>(create: (c) => navBloc),
         BlocProvider<UserBloc>(create: (c) => userBloc),
+        BlocProvider<RoomBloc>(create: (c) => roomBloc),
       ],
       child: MaterialApp(
         theme: AppTheme.darkThemeData,

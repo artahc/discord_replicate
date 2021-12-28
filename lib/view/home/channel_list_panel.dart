@@ -53,7 +53,6 @@ class _ChannelListPanelState extends State<ChannelListPanel> {
             ),
             Expanded(
               child: Container(
-                color: Theme.of(context).colorScheme.secondary,
                 child: CustomListView<Channel>(
                   elements: List.generate(25, (index) => Channel.dummy()),
                   itemBuilder: (context, item, index) {

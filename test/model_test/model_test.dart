@@ -23,7 +23,6 @@ main() {
       var userId = "FMYbWPwFWgTvRemhbbz1dLL9HkC2";
       var userAva = "avatar-url";
       var userName = "alias-name";
-      var userAbout = null;
 
       var messageId = "message-id-580";
       var messagePayload = "message";
@@ -66,7 +65,7 @@ main() {
       var roomMap = jsonDecode(roomJson);
       var messageMap = jsonDecode(messageJson);
 
-      var user = User(uid: userId, name: userName, avatarUrl: userAva, about: userAbout);
+      var user = User(uid: userId, name: userName, avatarUrl: userAva, about: null);
       var message = Message.fromJson(messageMap);
 
       var expectedRoom = Room(
@@ -82,12 +81,101 @@ main() {
 
       var room = Room.fromJson(roomMap);
 
-      print(room.messages);
-      print(expectedRoom.messages);
+      assert(expectedRoom == room);
+      assert(listEquality.equals(room.members, expectedRoom.members));
+      assert(listEquality.equals(room.messages, expectedRoom.messages));
+    });
+
+    test("Parse JSON string to Room model, empty messages", () {
+      var roomId = "65l2SQFgkqYRXXJyRfWT";
+      var roomName = "room-name";
+      var memberPool = "Xs6WqQiH2JuwPJrAZvB9";
+
+      var userId = "FMYbWPwFWgTvRemhbbz1dLL9HkC2";
+      var userAva = "avatar-url";
+      var userName = "alias-name";
+
+      var roomJson = """
+        {
+          "id": "$roomId",
+          "name": "$roomName",
+          "memberPool": "$memberPool",
+          "messages": [],
+          "members": [
+            {
+              "uid": "$userId",
+              "avatarUrl": "$userAva",
+              "name": "$userName",
+              "about": null
+            }
+          ]
+        }
+      """;
+
+      var roomMap = jsonDecode(roomJson);
+
+      var user = User(uid: userId, name: userName, avatarUrl: userAva, about: null);
+
+      var expectedRoom = Room(
+        id: roomId,
+        name: roomName,
+        members: [
+          user,
+        ],
+        messages: [],
+      );
+
+      var room = Room.fromJson(roomMap);
 
       assert(expectedRoom == room);
       assert(listEquality.equals(room.members, expectedRoom.members));
       assert(listEquality.equals(room.messages, expectedRoom.messages));
+      assert(equality.equals(room, expectedRoom));
+    });
+
+    test("Parse JSON string to Room model, no messages", () {
+      var roomId = "65l2SQFgkqYRXXJyRfWT";
+      var roomName = "room-name";
+      var memberPool = "Xs6WqQiH2JuwPJrAZvB9";
+
+      var userId = "FMYbWPwFWgTvRemhbbz1dLL9HkC2";
+      var userAva = "avatar-url";
+      var userName = "alias-name";
+
+      var roomJson = """
+        {
+          "id": "$roomId",
+          "name": "$roomName",
+          "memberPool": "$memberPool",
+          "members": [
+            {
+              "uid": "$userId",
+              "avatarUrl": "$userAva",
+              "name": "$userName",
+              "about": null
+            }
+          ]
+        }
+      """;
+
+      var roomMap = jsonDecode(roomJson);
+
+      var user = User(uid: userId, name: userName, avatarUrl: userAva, about: null);
+
+      var expectedRoom = Room(
+        id: roomId,
+        name: roomName,
+        members: [
+          user,
+        ],
+      );
+
+      var room = Room.fromJson(roomMap);
+
+      assert(expectedRoom == room);
+      assert(listEquality.equals(room.members, expectedRoom.members));
+      assert(listEquality.equals(room.messages, expectedRoom.messages));
+      assert(equality.equals(room, expectedRoom));
     });
   });
 
@@ -115,7 +203,7 @@ main() {
       assert(mapEquality.equals(map, user.toJson()));
     });
 
-    test("Parse JSON without Server with NULL to User model", () {
+    test("Parse JSON without Server, and includes nullable field to User model", () {
       var uid = "uid";
       var avatar = "avatar";
       var name = "name";
@@ -136,6 +224,30 @@ main() {
 
       assert(user == expectedUser);
       assert(mapEquality.equals(map, user.toJson()));
+    });
+
+    test("Parse JSON with empty Server, and includes nullable field to User model", () {
+      var uid = "uid";
+      var avatar = "avatar";
+      var name = "name";
+      var about = "about";
+
+      var json = """
+        {
+          "uid": "$uid",
+          "avatarUrl": null,
+          "name": "$name",
+          "about": null,
+          "servers": []
+        }
+      """;
+
+      var map = jsonDecode(json);
+      var expectedUser = User(uid: uid, name: name, about: about, avatarUrl: avatar, servers: []);
+      var user = User.fromJson(map);
+
+      assert(user == expectedUser);
+      assert(equality.equals(expectedUser, user));
     });
 
     test("Parse JSON with Server and Channels to User model", () {
@@ -183,8 +295,6 @@ main() {
         servers: [expectedServer],
       );
       var user = User.fromJson(userJson);
-
-      print("${user.toJson()} \n ${expectedUser.toJson()}");
 
       assert(user == expectedUser);
       assert(equality.equals(user.toJson(), expectedUser.toJson()));
@@ -254,10 +364,17 @@ main() {
       """);
 
       var server = Server.fromJson(serverJson);
-      assert(server.id == "JkBxr0EoQOYyDeXagC2h");
-      assert(server.name == "server-name-2");
-      assert(server.imageUrl == "image-url-1");
-      assert(server.channels.length == 2);
+      var expectedServer = Server(
+        id: "JkBxr0EoQOYyDeXagC2h",
+        imageUrl: "image-url-1",
+        name: "server-name-2",
+        channels: [
+          Channel(id: "G0ShfA2Ky1haunzTUbxb", name: "channel-name-1", roomId: "65l2SQFgkqYRXXJyRfWT", access: ChannelAccess.PUBLIC),
+          Channel(id: "GYnLIbFtyufOSfK5zuUb", name: "channel-name-2", roomId: "65l2SQFgkqYRXXJyRfWT", access: ChannelAccess.PRIVATE),
+        ],
+      );
+
+      assert(equality.equals(server, expectedServer));
     });
   });
 

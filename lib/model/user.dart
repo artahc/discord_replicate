@@ -44,18 +44,22 @@ class User extends HiveObject with EquatableMixin {
   }
 
   factory User.fromJson(Map<String, dynamic> map) {
-    var servers = <Server>[];
-    if (map.containsKey('servers')) {
-      servers = (map['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
-    }
+    try {
+      var servers = <Server>[];
+      if (map.containsKey('servers') && (map['servers'] as List<Object?>).isNotEmpty) {
+        servers = (map['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
+      }
 
-    return User(
-      uid: map['uid'] as String,
-      name: map['name'] as String,
-      avatarUrl: map['avatarUrl'] as String?,
-      about: map['about'] as String?,
-      servers: servers,
-    );
+      return User(
+        uid: map['uid'] as String,
+        name: map['name'] as String,
+        avatarUrl: map['avatarUrl'] as String?,
+        about: map['about'] as String?,
+        servers: servers,
+      );
+    } catch (e) {
+      throw Exception("Error parsing User from JSON");
+    }
   }
 
   Map<String, dynamic> toJson() {

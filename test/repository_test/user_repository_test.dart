@@ -24,8 +24,6 @@ Future main() async {
     var mockBox = MockBox<User>();
     var mockUserRepo = UserRepository(apiClient: mockClient, database: mockDb);
 
-    // var authService = FirebaseAuthService();
-    // var db = HiveDatabaseHelper();
     var api = GraphQLClientHelper(
       url: "http://localhost:4000",
       tokenProvider: () => Future.value(Credential(email: "", token: "", uid: "")),
@@ -34,7 +32,7 @@ Future main() async {
     var userRepo = UserRepository(apiClient: api, database: mockDb);
 
     test("Load user from remote includes Server and Channel, should be able parse GraphQL result to User model.", () async {
-      String query = UserQueries.loadUserById;
+      String query = UserQuery.loadUser;
       var uid = "FMYbWPwFWgTvRemhbbz1dLL9HkC2";
       var variables = {
         "uid": uid,

@@ -30,9 +30,6 @@ class Channel extends HiveObject with EquatableMixin {
   @HiveField(3)
   final ChannelAccess access;
 
-  // @HiveField(4)
-  // final String category;
-
   Channel({required this.id, required this.name, required this.roomId, required this.access});
 
   factory Channel.dummy() {
@@ -53,7 +50,6 @@ class Channel extends HiveObject with EquatableMixin {
         name: map['name'],
         roomId: map['room']['id'],
         access: ChannelAccess.values.where((e) => e.name == map['access']).first,
-        // category: "Text Channels",
       );
     } catch (e) {
       throw FormatException("Error when parsing Channel from JSON", e);
@@ -66,7 +62,6 @@ class Channel extends HiveObject with EquatableMixin {
       "name": name,
       "roomId": roomId,
       "access": access.name,
-      // "category": category,
     };
   }
 
