@@ -17,27 +17,27 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$AuthEventTearOff {
   const _$AuthEventTearOff();
 
-  InitialEvent initialEvent() {
-    return const InitialEvent();
+  AuthEventInitial initialEvent() {
+    return const AuthEventInitial();
   }
 
-  AuthSignInEvent signInEvent({required String id, required String password}) {
-    return AuthSignInEvent(
+  AuthEventSignIn signInEvent({required String id, required String password}) {
+    return AuthEventSignIn(
       id: id,
       password: password,
     );
   }
 
-  AuthSignUpEvent signUpEvent(
+  AuthEventSignUp signUpEvent(
       {required RegisterOptions option, required String id}) {
-    return AuthSignUpEvent(
+    return AuthEventSignUp(
       option: option,
       id: id,
     );
   }
 
-  AuthSignOutEvent signOutEvent() {
-    return const AuthSignOutEvent();
+  AuthEventSignOut signOutEvent() {
+    return const AuthEventSignOut();
   }
 }
 
@@ -73,26 +73,26 @@ mixin _$AuthEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialEvent value) initialEvent,
-    required TResult Function(AuthSignInEvent value) signInEvent,
-    required TResult Function(AuthSignUpEvent value) signUpEvent,
-    required TResult Function(AuthSignOutEvent value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initialEvent,
+    required TResult Function(AuthEventSignIn value) signInEvent,
+    required TResult Function(AuthEventSignUp value) signUpEvent,
+    required TResult Function(AuthEventSignOut value) signOutEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -114,27 +114,27 @@ class _$AuthEventCopyWithImpl<$Res> implements $AuthEventCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class $InitialEventCopyWith<$Res> {
-  factory $InitialEventCopyWith(
-          InitialEvent value, $Res Function(InitialEvent) then) =
-      _$InitialEventCopyWithImpl<$Res>;
+abstract class $AuthEventInitialCopyWith<$Res> {
+  factory $AuthEventInitialCopyWith(
+          AuthEventInitial value, $Res Function(AuthEventInitial) then) =
+      _$AuthEventInitialCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$InitialEventCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
-    implements $InitialEventCopyWith<$Res> {
-  _$InitialEventCopyWithImpl(
-      InitialEvent _value, $Res Function(InitialEvent) _then)
-      : super(_value, (v) => _then(v as InitialEvent));
+class _$AuthEventInitialCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
+    implements $AuthEventInitialCopyWith<$Res> {
+  _$AuthEventInitialCopyWithImpl(
+      AuthEventInitial _value, $Res Function(AuthEventInitial) _then)
+      : super(_value, (v) => _then(v as AuthEventInitial));
 
   @override
-  InitialEvent get _value => super._value as InitialEvent;
+  AuthEventInitial get _value => super._value as AuthEventInitial;
 }
 
 /// @nodoc
 
-class _$InitialEvent implements InitialEvent {
-  const _$InitialEvent();
+class _$AuthEventInitial implements AuthEventInitial {
+  const _$AuthEventInitial();
 
   @override
   String toString() {
@@ -144,7 +144,7 @@ class _$InitialEvent implements InitialEvent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is InitialEvent);
+        (other.runtimeType == runtimeType && other is AuthEventInitial);
   }
 
   @override
@@ -190,10 +190,10 @@ class _$InitialEvent implements InitialEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialEvent value) initialEvent,
-    required TResult Function(AuthSignInEvent value) signInEvent,
-    required TResult Function(AuthSignUpEvent value) signUpEvent,
-    required TResult Function(AuthSignOutEvent value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initialEvent,
+    required TResult Function(AuthEventSignIn value) signInEvent,
+    required TResult Function(AuthEventSignUp value) signUpEvent,
+    required TResult Function(AuthEventSignOut value) signOutEvent,
   }) {
     return initialEvent(this);
   }
@@ -201,10 +201,10 @@ class _$InitialEvent implements InitialEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
   }) {
     return initialEvent?.call(this);
   }
@@ -212,10 +212,10 @@ class _$InitialEvent implements InitialEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
     required TResult orElse(),
   }) {
     if (initialEvent != null) {
@@ -225,34 +225,34 @@ class _$InitialEvent implements InitialEvent {
   }
 }
 
-abstract class InitialEvent implements AuthEvent {
-  const factory InitialEvent() = _$InitialEvent;
+abstract class AuthEventInitial implements AuthEvent {
+  const factory AuthEventInitial() = _$AuthEventInitial;
 }
 
 /// @nodoc
-abstract class $AuthSignInEventCopyWith<$Res> {
-  factory $AuthSignInEventCopyWith(
-          AuthSignInEvent value, $Res Function(AuthSignInEvent) then) =
-      _$AuthSignInEventCopyWithImpl<$Res>;
+abstract class $AuthEventSignInCopyWith<$Res> {
+  factory $AuthEventSignInCopyWith(
+          AuthEventSignIn value, $Res Function(AuthEventSignIn) then) =
+      _$AuthEventSignInCopyWithImpl<$Res>;
   $Res call({String id, String password});
 }
 
 /// @nodoc
-class _$AuthSignInEventCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
-    implements $AuthSignInEventCopyWith<$Res> {
-  _$AuthSignInEventCopyWithImpl(
-      AuthSignInEvent _value, $Res Function(AuthSignInEvent) _then)
-      : super(_value, (v) => _then(v as AuthSignInEvent));
+class _$AuthEventSignInCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
+    implements $AuthEventSignInCopyWith<$Res> {
+  _$AuthEventSignInCopyWithImpl(
+      AuthEventSignIn _value, $Res Function(AuthEventSignIn) _then)
+      : super(_value, (v) => _then(v as AuthEventSignIn));
 
   @override
-  AuthSignInEvent get _value => super._value as AuthSignInEvent;
+  AuthEventSignIn get _value => super._value as AuthEventSignIn;
 
   @override
   $Res call({
     Object? id = freezed,
     Object? password = freezed,
   }) {
-    return _then(AuthSignInEvent(
+    return _then(AuthEventSignIn(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -267,8 +267,8 @@ class _$AuthSignInEventCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthSignInEvent implements AuthSignInEvent {
-  const _$AuthSignInEvent({required this.id, required this.password});
+class _$AuthEventSignIn implements AuthEventSignIn {
+  const _$AuthEventSignIn({required this.id, required this.password});
 
   @override
   final String id;
@@ -284,7 +284,7 @@ class _$AuthSignInEvent implements AuthSignInEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is AuthSignInEvent &&
+            other is AuthEventSignIn &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.password, password) ||
                 other.password == password));
@@ -295,8 +295,8 @@ class _$AuthSignInEvent implements AuthSignInEvent {
 
   @JsonKey(ignore: true)
   @override
-  $AuthSignInEventCopyWith<AuthSignInEvent> get copyWith =>
-      _$AuthSignInEventCopyWithImpl<AuthSignInEvent>(this, _$identity);
+  $AuthEventSignInCopyWith<AuthEventSignIn> get copyWith =>
+      _$AuthEventSignInCopyWithImpl<AuthEventSignIn>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -338,10 +338,10 @@ class _$AuthSignInEvent implements AuthSignInEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialEvent value) initialEvent,
-    required TResult Function(AuthSignInEvent value) signInEvent,
-    required TResult Function(AuthSignUpEvent value) signUpEvent,
-    required TResult Function(AuthSignOutEvent value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initialEvent,
+    required TResult Function(AuthEventSignIn value) signInEvent,
+    required TResult Function(AuthEventSignUp value) signUpEvent,
+    required TResult Function(AuthEventSignOut value) signOutEvent,
   }) {
     return signInEvent(this);
   }
@@ -349,10 +349,10 @@ class _$AuthSignInEvent implements AuthSignInEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
   }) {
     return signInEvent?.call(this);
   }
@@ -360,10 +360,10 @@ class _$AuthSignInEvent implements AuthSignInEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
     required TResult orElse(),
   }) {
     if (signInEvent != null) {
@@ -373,41 +373,41 @@ class _$AuthSignInEvent implements AuthSignInEvent {
   }
 }
 
-abstract class AuthSignInEvent implements AuthEvent {
-  const factory AuthSignInEvent(
-      {required String id, required String password}) = _$AuthSignInEvent;
+abstract class AuthEventSignIn implements AuthEvent {
+  const factory AuthEventSignIn(
+      {required String id, required String password}) = _$AuthEventSignIn;
 
   String get id;
   String get password;
   @JsonKey(ignore: true)
-  $AuthSignInEventCopyWith<AuthSignInEvent> get copyWith =>
+  $AuthEventSignInCopyWith<AuthEventSignIn> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AuthSignUpEventCopyWith<$Res> {
-  factory $AuthSignUpEventCopyWith(
-          AuthSignUpEvent value, $Res Function(AuthSignUpEvent) then) =
-      _$AuthSignUpEventCopyWithImpl<$Res>;
+abstract class $AuthEventSignUpCopyWith<$Res> {
+  factory $AuthEventSignUpCopyWith(
+          AuthEventSignUp value, $Res Function(AuthEventSignUp) then) =
+      _$AuthEventSignUpCopyWithImpl<$Res>;
   $Res call({RegisterOptions option, String id});
 }
 
 /// @nodoc
-class _$AuthSignUpEventCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
-    implements $AuthSignUpEventCopyWith<$Res> {
-  _$AuthSignUpEventCopyWithImpl(
-      AuthSignUpEvent _value, $Res Function(AuthSignUpEvent) _then)
-      : super(_value, (v) => _then(v as AuthSignUpEvent));
+class _$AuthEventSignUpCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
+    implements $AuthEventSignUpCopyWith<$Res> {
+  _$AuthEventSignUpCopyWithImpl(
+      AuthEventSignUp _value, $Res Function(AuthEventSignUp) _then)
+      : super(_value, (v) => _then(v as AuthEventSignUp));
 
   @override
-  AuthSignUpEvent get _value => super._value as AuthSignUpEvent;
+  AuthEventSignUp get _value => super._value as AuthEventSignUp;
 
   @override
   $Res call({
     Object? option = freezed,
     Object? id = freezed,
   }) {
-    return _then(AuthSignUpEvent(
+    return _then(AuthEventSignUp(
       option: option == freezed
           ? _value.option
           : option // ignore: cast_nullable_to_non_nullable
@@ -422,8 +422,8 @@ class _$AuthSignUpEventCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthSignUpEvent implements AuthSignUpEvent {
-  const _$AuthSignUpEvent({required this.option, required this.id});
+class _$AuthEventSignUp implements AuthEventSignUp {
+  const _$AuthEventSignUp({required this.option, required this.id});
 
   @override
   final RegisterOptions option;
@@ -439,7 +439,7 @@ class _$AuthSignUpEvent implements AuthSignUpEvent {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is AuthSignUpEvent &&
+            other is AuthEventSignUp &&
             (identical(other.option, option) || other.option == option) &&
             (identical(other.id, id) || other.id == id));
   }
@@ -449,8 +449,8 @@ class _$AuthSignUpEvent implements AuthSignUpEvent {
 
   @JsonKey(ignore: true)
   @override
-  $AuthSignUpEventCopyWith<AuthSignUpEvent> get copyWith =>
-      _$AuthSignUpEventCopyWithImpl<AuthSignUpEvent>(this, _$identity);
+  $AuthEventSignUpCopyWith<AuthEventSignUp> get copyWith =>
+      _$AuthEventSignUpCopyWithImpl<AuthEventSignUp>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -492,10 +492,10 @@ class _$AuthSignUpEvent implements AuthSignUpEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialEvent value) initialEvent,
-    required TResult Function(AuthSignInEvent value) signInEvent,
-    required TResult Function(AuthSignUpEvent value) signUpEvent,
-    required TResult Function(AuthSignOutEvent value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initialEvent,
+    required TResult Function(AuthEventSignIn value) signInEvent,
+    required TResult Function(AuthEventSignUp value) signUpEvent,
+    required TResult Function(AuthEventSignOut value) signOutEvent,
   }) {
     return signUpEvent(this);
   }
@@ -503,10 +503,10 @@ class _$AuthSignUpEvent implements AuthSignUpEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
   }) {
     return signUpEvent?.call(this);
   }
@@ -514,10 +514,10 @@ class _$AuthSignUpEvent implements AuthSignUpEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
     required TResult orElse(),
   }) {
     if (signUpEvent != null) {
@@ -527,40 +527,40 @@ class _$AuthSignUpEvent implements AuthSignUpEvent {
   }
 }
 
-abstract class AuthSignUpEvent implements AuthEvent {
-  const factory AuthSignUpEvent(
+abstract class AuthEventSignUp implements AuthEvent {
+  const factory AuthEventSignUp(
       {required RegisterOptions option,
-      required String id}) = _$AuthSignUpEvent;
+      required String id}) = _$AuthEventSignUp;
 
   RegisterOptions get option;
   String get id;
   @JsonKey(ignore: true)
-  $AuthSignUpEventCopyWith<AuthSignUpEvent> get copyWith =>
+  $AuthEventSignUpCopyWith<AuthEventSignUp> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AuthSignOutEventCopyWith<$Res> {
-  factory $AuthSignOutEventCopyWith(
-          AuthSignOutEvent value, $Res Function(AuthSignOutEvent) then) =
-      _$AuthSignOutEventCopyWithImpl<$Res>;
+abstract class $AuthEventSignOutCopyWith<$Res> {
+  factory $AuthEventSignOutCopyWith(
+          AuthEventSignOut value, $Res Function(AuthEventSignOut) then) =
+      _$AuthEventSignOutCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$AuthSignOutEventCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
-    implements $AuthSignOutEventCopyWith<$Res> {
-  _$AuthSignOutEventCopyWithImpl(
-      AuthSignOutEvent _value, $Res Function(AuthSignOutEvent) _then)
-      : super(_value, (v) => _then(v as AuthSignOutEvent));
+class _$AuthEventSignOutCopyWithImpl<$Res> extends _$AuthEventCopyWithImpl<$Res>
+    implements $AuthEventSignOutCopyWith<$Res> {
+  _$AuthEventSignOutCopyWithImpl(
+      AuthEventSignOut _value, $Res Function(AuthEventSignOut) _then)
+      : super(_value, (v) => _then(v as AuthEventSignOut));
 
   @override
-  AuthSignOutEvent get _value => super._value as AuthSignOutEvent;
+  AuthEventSignOut get _value => super._value as AuthEventSignOut;
 }
 
 /// @nodoc
 
-class _$AuthSignOutEvent implements AuthSignOutEvent {
-  const _$AuthSignOutEvent();
+class _$AuthEventSignOut implements AuthEventSignOut {
+  const _$AuthEventSignOut();
 
   @override
   String toString() {
@@ -570,7 +570,7 @@ class _$AuthSignOutEvent implements AuthSignOutEvent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is AuthSignOutEvent);
+        (other.runtimeType == runtimeType && other is AuthEventSignOut);
   }
 
   @override
@@ -616,10 +616,10 @@ class _$AuthSignOutEvent implements AuthSignOutEvent {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialEvent value) initialEvent,
-    required TResult Function(AuthSignInEvent value) signInEvent,
-    required TResult Function(AuthSignUpEvent value) signUpEvent,
-    required TResult Function(AuthSignOutEvent value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initialEvent,
+    required TResult Function(AuthEventSignIn value) signInEvent,
+    required TResult Function(AuthEventSignUp value) signUpEvent,
+    required TResult Function(AuthEventSignOut value) signOutEvent,
   }) {
     return signOutEvent(this);
   }
@@ -627,10 +627,10 @@ class _$AuthSignOutEvent implements AuthSignOutEvent {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
   }) {
     return signOutEvent?.call(this);
   }
@@ -638,10 +638,10 @@ class _$AuthSignOutEvent implements AuthSignOutEvent {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialEvent value)? initialEvent,
-    TResult Function(AuthSignInEvent value)? signInEvent,
-    TResult Function(AuthSignUpEvent value)? signUpEvent,
-    TResult Function(AuthSignOutEvent value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initialEvent,
+    TResult Function(AuthEventSignIn value)? signInEvent,
+    TResult Function(AuthEventSignUp value)? signUpEvent,
+    TResult Function(AuthEventSignOut value)? signOutEvent,
     required TResult orElse(),
   }) {
     if (signOutEvent != null) {
@@ -651,6 +651,6 @@ class _$AuthSignOutEvent implements AuthSignOutEvent {
   }
 }
 
-abstract class AuthSignOutEvent implements AuthEvent {
-  const factory AuthSignOutEvent() = _$AuthSignOutEvent;
+abstract class AuthEventSignOut implements AuthEvent {
+  const factory AuthEventSignOut() = _$AuthEventSignOut;
 }

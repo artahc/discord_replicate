@@ -4,18 +4,18 @@ import 'dart:math' as math;
 
 class CustomListView<T> extends StatefulWidget {
   final List<T> elements;
-  final ItemBuilder<T> itemBuilder;
-  final List<Widget> beforeListWidget;
-  final List<Widget> afterListWidget;
+  final ItemBuilder<T> builder;
+  final List<Widget> before;
+  final List<Widget> after;
   final IndexedWidgetBuilder? separatorBuilder;
 
   const CustomListView({
     Key? key,
     required this.elements,
-    required this.itemBuilder,
+    required this.builder,
     this.separatorBuilder,
-    this.beforeListWidget = const <Widget>[],
-    this.afterListWidget = const <Widget>[],
+    this.before = const <Widget>[],
+    this.after = const <Widget>[],
   }) : super(key: key);
 
   @override
@@ -30,8 +30,8 @@ class _CustomListViewState<T> extends State<CustomListView<T>> {
       slivers: [
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            (context, index) => widget.beforeListWidget[index],
-            childCount: widget.beforeListWidget.length,
+            (context, index) => widget.before[index],
+            childCount: widget.before.length,
           ),
         ),
         SliverList(
@@ -39,7 +39,7 @@ class _CustomListViewState<T> extends State<CustomListView<T>> {
             (context, index) {
               final int itemIndex = index ~/ 2;
               if (index.isEven) {
-                return widget.itemBuilder(context, widget.elements[itemIndex], itemIndex);
+                return widget.builder(context, widget.elements[itemIndex], itemIndex);
               }
               return widget.separatorBuilder != null ? widget.separatorBuilder!(context, index) : Container();
             },
@@ -51,8 +51,8 @@ class _CustomListViewState<T> extends State<CustomListView<T>> {
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
-            (context, index) => widget.afterListWidget[index],
-            childCount: widget.afterListWidget.length,
+            (context, index) => widget.after[index],
+            childCount: widget.after.length,
           ),
         ),
       ],

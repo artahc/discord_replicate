@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
-import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class UserSettingPanel extends StatefulWidget {
 
 class _UserSettingPanelState extends State<UserSettingPanel> {
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
-  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
+  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _UserSettingPanelState extends State<UserSettingPanel> {
           signedOut: () {
             log("State received $state", name: this.runtimeType.toString());
             SchedulerBinding.instance?.addPostFrameCallback((_) {
-              _navBloc.add(NavigationEvent.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true));
+              _navBloc.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true);
             });
           },
         );

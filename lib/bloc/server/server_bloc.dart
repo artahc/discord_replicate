@@ -2,31 +2,32 @@ import 'dart:async';
 
 import 'package:discord_replicate/bloc/server/server_event.dart';
 import 'package:discord_replicate/bloc/server/server_state.dart';
-import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
+import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:developer';
 
 class ServerBloc extends Bloc<ServerEvent, ServerState> {
-  ServerRepository serverRepository;
+  ServerRepository _serverRepo;
 
-  ServerBloc({required this.serverRepository}) : super(ServerStateInitial());
-
-  Stream<ServerState> _loadAll() async* {
-    var servers = await serverRepository.loadAll();
-    emit(ServerState.loadListSuccess(servers));
+  ServerBloc({required ServerRepository serverRepository})
+      : _serverRepo = serverRepository,
+        super(ServerStateInitial()) {
+    on<ServerEvent>((event, emit) => _handleEvent(event, emit));
   }
 
-  Stream<ServerState> _loadOne(String serverId) async* {
-    var server = await serverRepository.loadById(serverId);
-    emit(ServerState.loadSelectedSuccess(server));
+  Future<void> _loadServer(String id, emit) async {
+    emit(ServerState.loadServerInProgress());
+    await _serverRepo.load(id).then((server) {
+      emit(ServerState.loadServerSuccess(server, server.channels.first));
+    });
   }
 
-  @override
-  Stream<ServerState> mapEventToState(ServerEvent event) async* {
-    yield* event.when(
-      loadAll: _loadAll,
-      loadOne: _loadOne,
+  _handleEvent(ServerEvent event, emit) async {
+    return await event.maybeWhen(
+      loadServer: (String id) => _loadServer(id, emit),
+      orElse: () async {
+        throw UnimplementedError();
+      },
     );
   }
 }

@@ -4,6 +4,5 @@ part 'server_event.freezed.dart';
 
 @freezed
 abstract class ServerEvent with _$ServerEvent {
-  const factory ServerEvent.loadAll() = LoadAllServer;
-  const factory ServerEvent.loadOne(String serverId) = LoadSelectedServer;
+  const factory ServerEvent.loadServer(String id) = ServerEventLoadServer;
 }

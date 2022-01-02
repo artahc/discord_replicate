@@ -25,8 +25,8 @@ dependencies:
     sdk: flutter
 
   # framework and utility
-  flutter_bloc: ^7.0.0
-  provider: ^5.0.0
+  async: ^2.8.2
+  flutter_bloc: ^8.0.0
   rxdart: ^0.27.3
   intl: ^0.17.0
   collection: ^1.15.0
@@ -59,6 +59,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.0.17
+  bloc_test: ^9.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

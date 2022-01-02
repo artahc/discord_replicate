@@ -22,13 +22,14 @@ class UserAdapter extends TypeAdapter<User> {
       avatarUrl: fields[3] as String?,
       about: fields[2] as String?,
       servers: (fields[4] as List).cast<Server>(),
+      privateRooms: (fields[5] as List).cast<Room>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.uid)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(3)
       ..write(obj.avatarUrl)
       ..writeByte(4)
-      ..write(obj.servers);
+      ..write(obj.servers)
+      ..writeByte(5)
+      ..write(obj.privateRooms);
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:equatable/equatable.dart';
 
@@ -24,18 +25,21 @@ abstract class Message {
   }
 
   factory Message.fromJson(Map<String, dynamic> map) {
-    var id = map['id'] as String;
-    var senderId = map['senderId'] as String;
-    var date = DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as int) * 1000);
-    var message = map['message'] as String;
+    try {
+      var id = map['id'] as String;
+      var senderId = map['senderId'] as String;
+      var date = DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as int) * 1000);
+      var message = map['message'] as String;
 
-    // todo: Return correct Message implementation based on type.
-    return TextMessage(
-      id: id,
-      senderId: senderId,
-      date: date,
-      message: message,
-    );
+      return TextMessage(
+        id: id,
+        senderId: senderId,
+        date: date,
+        message: message,
+      );
+    } catch (e) {
+      throw ParsingException("Error when parsing Message from JSON.", payload: map, source: e);
+    }
   }
 }
 

@@ -1,18 +1,11 @@
+import 'package:discord_replicate/model/room.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 
-@immutable
-class DirectMessageData {
-  final String title;
-
-  DirectMessageData({required this.title});
-  factory DirectMessageData.createDummy() => DirectMessageData(title: "Direct Message");
-}
-
 class DirectMessageTile extends StatelessWidget {
-  final DirectMessageData data;
+  final Room room;
 
-  DirectMessageTile({required this.data});
+  DirectMessageTile({required this.room});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +32,10 @@ class DirectMessageTile extends StatelessWidget {
                     spacing: 2,
                     direction: Axis.vertical,
                     children: [
-                      Text(data.title, style: Theme.of(context).textTheme.bodyText2),
+                      Text(
+                        room.name,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
                     ],
                   ),
                 ),

@@ -6,10 +6,14 @@
     "editor.rulers": [
       150
     ],
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "Dart-Code.dart-code",
   },
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": true,
   "workbench.tree.indent": 17,
   "editor.foldingStrategy": "indentation",
-  "todohighlight.isCaseSensitive": false
+  "todohighlight.isCaseSensitive": false,
+  "debug.console.fontSize": 11,
+  "debug.console.wordWrap": true,
 }

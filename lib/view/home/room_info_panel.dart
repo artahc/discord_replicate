@@ -164,12 +164,12 @@ class _ConversationInfoMember extends StatelessWidget {
       child: Container(
           child: CustomListView<ChannelMemberData>(
         elements: List.generate(15, (index) => ChannelMemberData.createDummy()),
-        itemBuilder: (context, data, index) {
+        builder: (context, data, index) {
           return _ChannelMemberTile(
             channelMemberData: data,
           );
         },
-        beforeListWidget: [_ChannelInfoInviteButton()],
+        before: [_ChannelInfoInviteButton()],
       )),
     );
   }

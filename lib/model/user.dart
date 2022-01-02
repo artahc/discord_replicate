@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:discord_replicate/exception/custom_exception.dart';
+import 'package:discord_replicate/model/message.dart';
+import 'package:discord_replicate/model/room.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:equatable/equatable.dart';
@@ -24,12 +27,16 @@ class User extends HiveObject with EquatableMixin {
   @HiveField(4)
   final List<Server> servers;
 
+  @HiveField(5)
+  final List<Room> privateRooms;
+
   User({
     required this.uid,
     required this.name,
     required this.avatarUrl,
     required this.about,
     this.servers = const <Server>[],
+    this.privateRooms = const <Room>[],
   });
 
   factory User.dummy() {
@@ -39,26 +46,44 @@ class User extends HiveObject with EquatableMixin {
       name: "name+$random",
       avatarUrl: "avatarUrl+$random",
       about: "about+$random",
-      servers: List.generate(10, (index) => Server.dummy(index)),
+      servers: List.generate(10, (index) => Server.dummy()),
+      privateRooms: [
+        Room(
+          id: "dummy_id_$random",
+          name: "room-name",
+          members: [User(uid: "uid", name: "name", avatarUrl: "avatarUrl", about: "about")],
+          messages: [Message.dummy()],
+        )
+      ],
     );
   }
 
   factory User.fromJson(Map<String, dynamic> map) {
     try {
       var servers = <Server>[];
+      var privateRooms = <Room>[];
+      var about = "";
+
       if (map.containsKey('servers') && (map['servers'] as List<Object?>).isNotEmpty) {
         servers = (map['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
       }
+
+      if (map.containsKey('privateRooms') && (map['privateRooms'] as List<dynamic>).isNotEmpty) {
+        privateRooms = (map['privateRooms'] as List<dynamic>).map((e) => Room.fromJson(e as Map<String, dynamic>)).toList();
+      }
+
+      if (map.containsKey('about')) about = map['about'] as String;
 
       return User(
         uid: map['uid'] as String,
         name: map['name'] as String,
         avatarUrl: map['avatarUrl'] as String?,
-        about: map['about'] as String?,
+        about: about,
         servers: servers,
+        privateRooms: privateRooms,
       );
     } catch (e) {
-      throw Exception("Error parsing User from JSON");
+      throw ParsingException("Error parsing User from JSON.", payload: map, source: e);
     }
   }
 
@@ -69,6 +94,7 @@ class User extends HiveObject with EquatableMixin {
       "avatarUrl": avatarUrl,
       "about": about,
       if (servers.isNotEmpty) "servers": servers,
+      if (privateRooms.isNotEmpty) "privateRooms": privateRooms
     };
   }
 
@@ -79,4 +105,14 @@ class User extends HiveObject with EquatableMixin {
 
   @override
   List<Object?> get props => [uid];
+}
+
+extension MapExtensions<T> on Map<String, T> {
+  T tryGet<T>(dynamic key) {
+    if (this.containsKey(key))
+      return this[key] as T;
+    else {
+      throw Exception("Key $key not found on $this");
+    }
+  }
 }

@@ -6,11 +6,13 @@ import 'package:discord_replicate/bloc/room/room_event.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
+import 'package:discord_replicate/model/room.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_event.dart';
 import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/external/app_icon.dart';
+import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/view/home/server_tile.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
@@ -22,30 +24,33 @@ class ServerListPanel extends StatefulWidget {
 }
 
 class _ServerListPanelState extends State<ServerListPanel> {
-  List<Server> _serverList = const <Server>[];
+  List<Server> _servers = const <Server>[];
   Server? _selectedServer;
-  late RoomBloc _roomBloc = BlocProvider.of<RoomBloc>(context);
+
+  // late RoomBloc _roomBloc = BlocProvider.of<RoomBloc>(context);
+  late ServerBloc _serverBloc = BlocProvider.of<ServerBloc>(context);
+  late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _select(Server? server) {
-    if (server == null) {
-      _roomBloc.add(RoomEvent.loadRecentPrivateRoom());
-    } else {
-      _roomBloc.add(RoomEvent.loadRecentServerRoom(server.channels.first.roomId));
-    } 
+    if (server != null)
+      _serverBloc.add(ServerEvent.loadServer(server.id));
+    else
+      _userBloc.add(UserEvent.loadRecentPrivateRooms());
+
     setState(() {
       this._selectedServer = server;
     });
   }
 
-  void _setServers(List<Server> servers) {
+  void _onUserLoaded(User user) {
     setState(() {
-      this._serverList = servers;
+      this._servers = user.servers;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -55,37 +60,16 @@ class _ServerListPanelState extends State<ServerListPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<UserBloc, UserState>(
-          listener: (_, state) {
-            state.whenOrNull(
-              loadLocalUserSuccess: (user) {
-                _setServers(user.servers);
-              },
-            );
-          },
-        ),
-      ],
-      child: Container(
-        width: 70,
-        alignment: Alignment.topCenter,
+    return Container(
+      width: 70,
+      alignment: Alignment.topCenter,
+      child: BlocListener<UserBloc, UserState>(
+        listener: (_, state) {
+          state.whenOrNull(loadLocalUserSuccess: _onUserLoaded);
+        },
         child: CustomListView<Server>(
-          elements: _serverList,
-          itemBuilder: (_, server, index) {
-            return ServerTile(
-              key: ValueKey(server.id),
-              data: server,
-              onPressed: () {
-                _select(server);
-              },
-              selected: _selectedServer != null && _selectedServer!.id == server.id,
-            );
-          },
-          separatorBuilder: (context, index) => SizedBox(
-            height: 5,
-          ),
-          beforeListWidget: [
+          elements: _servers,
+          before: [
             Center(
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 150),
@@ -120,10 +104,25 @@ class _ServerListPanelState extends State<ServerListPanel> {
               endIndent: 22,
             ),
           ],
-          afterListWidget: [
+          builder: (_, server, index) {
+            return ServerTile(
+              key: ValueKey(server.id),
+              data: server,
+              onPressed: () {
+                _select(server);
+              },
+              selected: _selectedServer != null && _selectedServer!.id == server.id,
+            );
+          },
+          separatorBuilder: (context, index) => SizedBox(
+            height: 5,
+          ),
+          after: [
+            SizedBox(
+              height: 10,
+            ),
             Center(
               child: Container(
-                margin: const EdgeInsets.only(top: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   color: Color(0xff363940),
@@ -131,9 +130,7 @@ class _ServerListPanelState extends State<ServerListPanel> {
                 width: 45,
                 height: 45,
                 child: IconButton(
-                  onPressed: () {
-                    print("Add Pressed");
-                  },
+                  onPressed: () {},
                   icon: ImageIcon(AssetImage(AppIcons.search_icon)),
                   visualDensity: VisualDensity.compact,
                   iconSize: 20,

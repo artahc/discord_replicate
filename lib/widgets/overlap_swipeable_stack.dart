@@ -82,7 +82,7 @@ class OverlapSwipeableStackController {
     }
   }
 
-  void setPageState(PageState pageState) {
+  void animateTo(PageState pageState) {
     // dev.log("Supposed to move until $pageState.", name: this.runtimeType.toString());
     switch (pageState) {
       case PageState.OnLeft:
@@ -164,7 +164,7 @@ class OverlapSwipeableStack extends StatelessWidget {
                     CurvedAnimation(parent: channelViewController.pageAnimController, curve: Curves.easeInOutCubic),
                   ),
                   child: GestureDetector(
-                    onTap: () => channelViewController.setPageState(PageState.OnCenter),
+                    onTap: () => channelViewController.animateTo(PageState.OnCenter),
                     child: frontPage,
                   ),
                 ),

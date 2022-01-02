@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:math';
 
+import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
@@ -52,7 +53,7 @@ class Channel extends HiveObject with EquatableMixin {
         access: ChannelAccess.values.where((e) => e.name == map['access']).first,
       );
     } catch (e) {
-      throw FormatException("Error when parsing Channel from JSON", e);
+      throw ParsingException("Error when parsing Channel from JSON", payload: map, source: e);
     }
   }
 

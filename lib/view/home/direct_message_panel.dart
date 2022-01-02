@@ -1,5 +1,12 @@
-import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'dart:developer';
+
+import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
+import 'package:discord_replicate/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/bloc/user/user_state.dart';
+import 'package:discord_replicate/model/room.dart';
+import 'package:discord_replicate/model/server.dart';
+import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
 import 'package:discord_replicate/view/home/direct_message_tile.dart';
 import 'package:discord_replicate/external/app_icon.dart';
@@ -13,11 +20,23 @@ class DirectMessageListPanel extends StatefulWidget {
 }
 
 class _DirectMessageListState extends State<DirectMessageListPanel> {
-  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
+  late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
+
+  List<Room> _privateRooms = <Room>[];
+  Room? _currentRoom;
 
   @override
   void initState() {
     super.initState();
+    log(_userBloc.state.toString(), name: runtimeType.toString());
+  }
+
+  void _onUserLoaded(User user) {
+    setState(() {
+      _privateRooms = user.privateRooms;
+      _currentRoom = user.privateRooms.last;
+    });
   }
 
   @override
@@ -51,7 +70,7 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
             InkWell(
               onTap: () {
                 var route = SlideUpTransition(nextPage: SearchPanel(), fullscreenDialog: true);
-                _navBloc.add(NavigationEvent.push(context, route, true));
+                _navBloc.push(context, route, true);
               },
               child: Container(
                 height: 30,
@@ -77,22 +96,27 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                 ),
               ),
             ),
-            Expanded(
-              child: Container(
-                margin: const EdgeInsets.only(top: 15, bottom: 60),
-                child: ScrollConfiguration(
-                  behavior: ClampingScrollBehavior(),
-                  child: ListView.builder(
-                    clipBehavior: Clip.antiAlias,
-                    itemCount: 5,
-                    itemBuilder: (_, index) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: DirectMessageTile(
-                          data: DirectMessageData.createDummy(),
-                        ),
-                      );
-                    },
+            BlocListener<UserBloc, UserState>(
+              listener: (_, state) {
+                state.whenOrNull(loadLocalUserSuccess: _onUserLoaded);
+              },
+              child: Expanded(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 15, bottom: 60),
+                  child: ScrollConfiguration(
+                    behavior: ClampingScrollBehavior(),
+                    child: ListView.builder(
+                      clipBehavior: Clip.antiAlias,
+                      itemCount: _privateRooms.length,
+                      itemBuilder: (_, index) {
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: DirectMessageTile(
+                            room: _privateRooms[index],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

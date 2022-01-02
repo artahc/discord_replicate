@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
@@ -19,7 +19,7 @@ class SearchPanel extends StatefulWidget {
 }
 
 class _SearchPanelState extends State<SearchPanel> {
-  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
+  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
   Channel _getLastChannel() {
     return Channel.dummy();
@@ -48,7 +48,7 @@ class _SearchPanelState extends State<SearchPanel> {
                     color: Theme.of(context).iconTheme.color,
                     icon: Icon(Icons.arrow_back),
                     onPressed: () {
-                      _navBloc.add(NavigationEvent.pop(context, false));
+                      _navBloc.pop(context, false);
                     },
                   ),
                 ),
@@ -59,9 +59,7 @@ class _SearchPanelState extends State<SearchPanel> {
                   child: IconButton(
                     color: Theme.of(context).iconTheme.color,
                     icon: Icon(Icons.filter_list),
-                    onPressed: () {
-                      print("Filter");
-                    },
+                    onPressed: () {},
                   ),
                 ),
               ),

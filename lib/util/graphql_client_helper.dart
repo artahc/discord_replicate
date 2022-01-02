@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:discord_replicate/exception/custom_exception.dart';
+import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/credential.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-class GraphQLClientHelper {
+class GraphQLClientHelper with ExceptionMapperMixin {
   late GraphQLClient _client;
   late HttpLink _httpLink;
   late AuthLink _authLink;
@@ -22,18 +24,55 @@ class GraphQLClientHelper {
     });
 
     _link = _authLink.concat(_httpLink);
-    _client = GraphQLClient(link: _link, cache: cache ?? GraphQLCache());
+    _client = GraphQLClient(
+      link: _link,
+      cache: cache ?? GraphQLCache(),
+      defaultPolicies: DefaultPolicies(
+        query: Policies(
+          fetch: FetchPolicy.noCache,
+          cacheReread: CacheRereadPolicy.ignoreAll,
+        ),
+      ),
+    );
   }
 
   Future<Map<String, dynamic>> query(String query, {Map<String, dynamic> variables = const {}}) async {
-    log("Request => ${query.trim()}", name: this.runtimeType.toString());
     var options = QueryOptions(document: gql(query), variables: variables);
     var result = await _client.query(options);
+
+    log("Request => ${query.trim()}", name: this.runtimeType.toString());
+
     if (result.hasException) {
-      return Future.error(result.exception!);
+      return Future.error(mapException(result.exception!));
     } else {
-      log("Response => $result", name: this.runtimeType.toString());
+      log("Response <= $result", name: this.runtimeType.toString());
       return result.data!;
     }
+  }
+
+  Exception mapException(Exception e) {
+    var operationException = e as OperationException;
+    var linkError = operationException.linkException;
+    var gqlErrors = operationException.graphqlErrors;
+
+    log("Response containing errors", name: this.runtimeType.toString());
+
+    if (linkError != null) {
+      log("Link error $linkError", name: this.runtimeType.toString());
+      return linkError;
+    }
+    if (gqlErrors.isNotEmpty) {
+      log("GraphQL error $gqlErrors", name: this.runtimeType.toString());
+      var e = gqlErrors.first;
+      String errorCode = e.extensions!['code'];
+      switch (errorCode) {
+        case 'NOT_FOUND_ERROR':
+          return NotFoundException(e.message, source: e);
+        case 'INTERNAL_SERVER_ERROR':
+          return Exception("Unhandled Error");
+      }
+    }
+
+    return e;
   }
 }

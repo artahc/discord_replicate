@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/util/hive_database_helper.dart';
 import 'package:equatable/equatable.dart';
@@ -19,9 +22,12 @@ class Server extends HiveObject with EquatableMixin {
   @HiveField(3)
   final List<Channel> channels;
 
+  @HiveField(10)
+  DateTime? lastVisit;
+
   Server({required this.id, required this.name, required this.imageUrl, this.channels = const []});
 
-  factory Server.dummy(int id) => Server(id: "serverId_$id", name: "name", imageUrl: "image-url", channels: [Channel.dummy()]);
+  factory Server.dummy() => Server(id: "serverId_${Random().nextInt(1000)}", name: "name", imageUrl: "image-url", channels: [Channel.dummy()]);
 
   factory Server.fromJson(Map<String, dynamic> map) {
     try {
@@ -42,7 +48,7 @@ class Server extends HiveObject with EquatableMixin {
         channels: channels,
       );
     } catch (e) {
-      throw Exception("Error parsing Server from JSON.");
+      throw ParsingException("Error parsing Server from JSON.", payload: map, source: e);
     }
   }
 

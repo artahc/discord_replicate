@@ -1,5 +1,5 @@
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
-import 'package:discord_replicate/bloc/navigation/navigation_bloc.dart';
+import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/view/welcome/country_code_search_panel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
@@ -16,7 +16,7 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> with TickerProviderStateMixin {
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
-  late NavigationBloc _navBloc = BlocProvider.of<NavigationBloc>(context);
+  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
   late TabController _tabCtrl;
   final PanelController _bottomSheetCtrl = PanelController();
@@ -79,7 +79,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
               child: IconButton(
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
-                  _navBloc.add(NavigationEvent.pop(context, true));
+                  _navBloc.pop(context, true);
                 },
               ),
             ),
@@ -123,7 +123,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                       (option) {
                         return Tab(
                           child: Text(
-                            option.value(),
+                            option.name,
                             style: Theme.of(context).textTheme.subtitle2!.copyWith(
                                 color: option == _registerOption
                                     ? Theme.of(context).textTheme.subtitle2!.color
@@ -205,7 +205,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                             duration: Duration(seconds: 1),
                             child: AppInputField(
                               controller: _registerCtrl,
-                              labelText: _registerOption.value(),
+                              labelText: _registerOption.name,
                             ),
                           ),
                         ),

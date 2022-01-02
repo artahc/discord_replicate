@@ -1,49 +1,101 @@
+import 'dart:developer';
+
+import 'package:async/async.dart';
+import 'package:discord_replicate/exception/custom_exception.dart';
+import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/util/graphql_client_helper.dart';
+import 'package:discord_replicate/util/hive_database_helper.dart';
+import 'package:rxdart/rxdart.dart';
 
-class ServerRepository {
-  final GraphQLClientHelper _client;
+class ServerQuery {
+  ServerQuery._();
 
-  ServerRepository({required GraphQLClientHelper apiClient}) : _client = apiClient;
-
-  Future<List<Server>> loadAll() async {
-    var query = r"""
-      query Servers {
-        servers {
+  static final loadById = r"""
+    query Server($id: String!, $limitMember: Int!) {
+      server(id: $id) {
+        id
+        name
+        imageUrl
+        channels {
           id
           name
-          channels {
+          access
+          room {
             id
             name
-            roomId
-            access
-          }  
-        }
-      }
-    """;
-
-    var json = await _client.query(query);
-    var servers = (json['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
-    return servers;
-  }
-
-  Future<Server> loadById(String id) async {
-    var query = """
-      query Server(\$id: String!) {
-        server(id: \$id) {
-          id
-          name
-          channels {
-            id
-            name
-            roomId
-            access
           }
         }
+        members(limit: $limitMember) {
+          uid
+          avatarUrl
+          name
+        }
       }
-    """;
+    }
+  """;
+}
 
-    var json = await _client.query(query, variables: {"id": id});
-    return Server.fromJson(json['server']);
+class ServerRepository with ExceptionMapperMixin {
+  final GraphQLClientHelper _api;
+  final HiveDatabaseHelper _db;
+
+  ServerRepository({required GraphQLClientHelper apiClient, required HiveDatabaseHelper database})
+      : _api = apiClient,
+        _db = database;
+
+  Future<Server> load(String id) async {
+    var query = ServerQuery.loadById;
+    var variables = {
+      "id": id,
+      "limitMember": 20,
+    };
+
+    var local = LazyStream(
+      () async => _db
+          .get<Server>(HiveConstants.SERVER_BOX, id)
+          .then((server) {
+            if (server != null) log("Server found on local database. $server", name: runtimeType.toString());
+            return server;
+          })
+          .asStream()
+          .where((server) => server != null),
+    );
+
+    var remote = LazyStream(
+      () async {
+        return _api
+            .query(query, variables: variables)
+            .then((json) async {
+              var server = Server.fromJson(json['server']);
+              await _db.put(HiveConstants.SERVER_BOX, server.id, server);
+              log("Server retrieved from remote API. $server", name: runtimeType.toString());
+              return server;
+            })
+            .onError((Exception error, stackTrace) => Future.error(mapException(error)))
+            .asStream();
+      },
+    );
+
+    var source = await ConcatStream([local, remote]).firstWhere((element) => element != null);
+    return source!;
+  }
+
+  Future save(Server server) async {
+    await _db.put(HiveConstants.SERVER_BOX, server.id, server);
+  }
+
+  Future saveAll(List<Server> servers) async {
+    for (int i = 0; i < servers.length; i++) {
+      await save(servers[i]);
+    }
+  }
+
+  @override
+  Exception mapException(Exception e) {
+    if (e is NotFoundException) {
+      return NotFoundException("Server not found.", source: e);
+    }
+    return e;
   }
 }

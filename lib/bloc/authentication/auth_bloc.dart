@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/repository/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
@@ -12,40 +14,54 @@ export 'auth_state.dart';
 
 enum RegisterOptions { Phone, Email }
 
-extension ParseToString on RegisterOptions {
-  String value() {
-    return this.toString().split('.').last;
-  }
-}
-
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService authService;
   final UserRepository userRepo;
 
-  AuthBloc({required this.authService, required this.userRepo}) : super(AuthStateInitial());
+  AuthBloc({required this.authService, required this.userRepo}) : super(AuthStateInitial()) {
+    on<AuthEvent>((event, emit) => _handleEvent(event, emit));
+  }
 
-  Stream<AuthState> _handleInitial() async* {
-    var credential = await authService.getCurrentUserCredential();
-    if (credential == null) {
+  _handleEvent(AuthEvent event, emit) {
+    return event.when(
+      initialEvent: () => _handleInitial(emit),
+      signInEvent: (id, password) => _signIn(id, password, emit),
+      signUpEvent: (id, option) => _signUp(id, option, emit),
+      signOutEvent: () => _signOut(emit),
+    );
+  }
+
+  _handleInitial(emit) async {
+    var credential = await authService.getCredential();
+    if (credential == null)
       emit(AuthState.signedOut());
-    } else {
-      emit(AuthState.signedIn(credential: credential));
+    else {
+      await userRepo.load(credential.uid).then((user) {
+        emit(AuthState.signedIn(credential: credential, user: user));
+      }).catchError((e) {
+        emit(AuthState.error(exception: e));
+      });
     }
   }
 
-  Stream<AuthState> _signIn(String email, String password) async* {
+  _signIn(id, password, emit) async {
     emit(AuthState.signingIn());
-    var credential = await authService.signIn(email, password);
-    emit(AuthState.signedIn(credential: credential));
+    var credential = await authService.signIn(id, password);
+
+    await userRepo.load(credential.uid).then((user) async {
+      emit(AuthState.signedIn(credential: credential, user: user));
+    }).onError((error, stackTrace) {
+      emit(AuthState.error(exception: error as Exception));
+    });
   }
 
-  Stream<AuthState> _signUp(RegisterOptions option, String id) async* {
+  _signUp(id, option, emit) async {
     switch (option) {
       case RegisterOptions.Email:
         var credential = await authService.signUpEmail(id);
-        var state = AuthState.signedIn(credential: credential);
+        var user = await userRepo.load(credential.uid);
 
-        emit(state);
+        // emit(AuthState.signedIn(credential: credential, user: user));
         break;
       case RegisterOptions.Phone:
         emit(AuthState.error(exception: Exception("Sign up with phone number is not supported yet.")));
@@ -53,19 +69,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Stream<AuthState> _signOut() async* {
+  _signOut(emit) async {
     await authService.signOut();
     await Hive.deleteFromDisk();
     emit(AuthState.signedOut());
-  }
-
-  @override
-  Stream<AuthState> mapEventToState(AuthEvent event) async* {
-    yield* event.when(
-      initialEvent: _handleInitial,
-      signInEvent: _signIn,
-      signUpEvent: _signUp,
-      signOutEvent: _signOut,
-    );
   }
 }

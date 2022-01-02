@@ -13,6 +13,7 @@ class AppInputField extends StatelessWidget {
   final BorderRadius? borderRadius;
   final Color? backgroundColor;
   final Widget? suffixIcon;
+  final bool obscureText;
 
   const AppInputField({
     Key? key,
@@ -28,6 +29,7 @@ class AppInputField extends StatelessWidget {
     this.suffixIcon,
     this.backgroundColor,
     this.borderRadius,
+    this.obscureText = false,
   }) : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class AppInputField extends StatelessWidget {
         controller: controller,
         cursorWidth: 3,
         cursorRadius: Radius.circular(15),
+        obscureText: obscureText,
         maxLines: 1,
         style: TextStyle(
           height: 1,

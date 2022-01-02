@@ -21,15 +21,15 @@ class _$ServerStateTearOff {
     return const ServerStateInitial();
   }
 
-  ServerStateLoadListSuccess loadListSuccess(List<Server> servers) {
-    return ServerStateLoadListSuccess(
-      servers,
-    );
+  ServerStateLoadServerInProgress loadServerInProgress() {
+    return const ServerStateLoadServerInProgress();
   }
 
-  ServerStateLoadSelectedSuccess loadSelectedSuccess(Server server) {
+  ServerStateLoadSelectedSuccess loadServerSuccess(
+      Server server, Channel recentChannel) {
     return ServerStateLoadSelectedSuccess(
       server,
+      recentChannel,
     );
   }
 }
@@ -42,45 +42,49 @@ mixin _$ServerState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Server> servers) loadListSuccess,
-    required TResult Function(Server server) loadSelectedSuccess,
+    required TResult Function() loadServerInProgress,
+    required TResult Function(Server server, Channel recentChannel)
+        loadServerSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Server> servers)? loadListSuccess,
-    TResult Function(Server server)? loadSelectedSuccess,
+    TResult Function()? loadServerInProgress,
+    TResult Function(Server server, Channel recentChannel)? loadServerSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Server> servers)? loadListSuccess,
-    TResult Function(Server server)? loadSelectedSuccess,
+    TResult Function()? loadServerInProgress,
+    TResult Function(Server server, Channel recentChannel)? loadServerSuccess,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ServerStateInitial value) initial,
-    required TResult Function(ServerStateLoadListSuccess value) loadListSuccess,
+    required TResult Function(ServerStateLoadServerInProgress value)
+        loadServerInProgress,
     required TResult Function(ServerStateLoadSelectedSuccess value)
-        loadSelectedSuccess,
+        loadServerSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ServerStateInitial value)? initial,
-    TResult Function(ServerStateLoadListSuccess value)? loadListSuccess,
-    TResult Function(ServerStateLoadSelectedSuccess value)? loadSelectedSuccess,
+    TResult Function(ServerStateLoadServerInProgress value)?
+        loadServerInProgress,
+    TResult Function(ServerStateLoadSelectedSuccess value)? loadServerSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ServerStateInitial value)? initial,
-    TResult Function(ServerStateLoadListSuccess value)? loadListSuccess,
-    TResult Function(ServerStateLoadSelectedSuccess value)? loadSelectedSuccess,
+    TResult Function(ServerStateLoadServerInProgress value)?
+        loadServerInProgress,
+    TResult Function(ServerStateLoadSelectedSuccess value)? loadServerSuccess,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -144,8 +148,9 @@ class _$ServerStateInitial implements ServerStateInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Server> servers) loadListSuccess,
-    required TResult Function(Server server) loadSelectedSuccess,
+    required TResult Function() loadServerInProgress,
+    required TResult Function(Server server, Channel recentChannel)
+        loadServerSuccess,
   }) {
     return initial();
   }
@@ -154,8 +159,8 @@ class _$ServerStateInitial implements ServerStateInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Server> servers)? loadListSuccess,
-    TResult Function(Server server)? loadSelectedSuccess,
+    TResult Function()? loadServerInProgress,
+    TResult Function(Server server, Channel recentChannel)? loadServerSuccess,
   }) {
     return initial?.call();
   }
@@ -164,8 +169,8 @@ class _$ServerStateInitial implements ServerStateInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Server> servers)? loadListSuccess,
-    TResult Function(Server server)? loadSelectedSuccess,
+    TResult Function()? loadServerInProgress,
+    TResult Function(Server server, Channel recentChannel)? loadServerSuccess,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -178,9 +183,10 @@ class _$ServerStateInitial implements ServerStateInitial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ServerStateInitial value) initial,
-    required TResult Function(ServerStateLoadListSuccess value) loadListSuccess,
+    required TResult Function(ServerStateLoadServerInProgress value)
+        loadServerInProgress,
     required TResult Function(ServerStateLoadSelectedSuccess value)
-        loadSelectedSuccess,
+        loadServerSuccess,
   }) {
     return initial(this);
   }
@@ -189,8 +195,9 @@ class _$ServerStateInitial implements ServerStateInitial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ServerStateInitial value)? initial,
-    TResult Function(ServerStateLoadListSuccess value)? loadListSuccess,
-    TResult Function(ServerStateLoadSelectedSuccess value)? loadSelectedSuccess,
+    TResult Function(ServerStateLoadServerInProgress value)?
+        loadServerInProgress,
+    TResult Function(ServerStateLoadSelectedSuccess value)? loadServerSuccess,
   }) {
     return initial?.call(this);
   }
@@ -199,8 +206,9 @@ class _$ServerStateInitial implements ServerStateInitial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ServerStateInitial value)? initial,
-    TResult Function(ServerStateLoadListSuccess value)? loadListSuccess,
-    TResult Function(ServerStateLoadSelectedSuccess value)? loadSelectedSuccess,
+    TResult Function(ServerStateLoadServerInProgress value)?
+        loadServerInProgress,
+    TResult Function(ServerStateLoadSelectedSuccess value)? loadServerSuccess,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -215,100 +223,79 @@ abstract class ServerStateInitial implements ServerState {
 }
 
 /// @nodoc
-abstract class $ServerStateLoadListSuccessCopyWith<$Res> {
-  factory $ServerStateLoadListSuccessCopyWith(ServerStateLoadListSuccess value,
-          $Res Function(ServerStateLoadListSuccess) then) =
-      _$ServerStateLoadListSuccessCopyWithImpl<$Res>;
-  $Res call({List<Server> servers});
+abstract class $ServerStateLoadServerInProgressCopyWith<$Res> {
+  factory $ServerStateLoadServerInProgressCopyWith(
+          ServerStateLoadServerInProgress value,
+          $Res Function(ServerStateLoadServerInProgress) then) =
+      _$ServerStateLoadServerInProgressCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$ServerStateLoadListSuccessCopyWithImpl<$Res>
+class _$ServerStateLoadServerInProgressCopyWithImpl<$Res>
     extends _$ServerStateCopyWithImpl<$Res>
-    implements $ServerStateLoadListSuccessCopyWith<$Res> {
-  _$ServerStateLoadListSuccessCopyWithImpl(ServerStateLoadListSuccess _value,
-      $Res Function(ServerStateLoadListSuccess) _then)
-      : super(_value, (v) => _then(v as ServerStateLoadListSuccess));
+    implements $ServerStateLoadServerInProgressCopyWith<$Res> {
+  _$ServerStateLoadServerInProgressCopyWithImpl(
+      ServerStateLoadServerInProgress _value,
+      $Res Function(ServerStateLoadServerInProgress) _then)
+      : super(_value, (v) => _then(v as ServerStateLoadServerInProgress));
 
   @override
-  ServerStateLoadListSuccess get _value =>
-      super._value as ServerStateLoadListSuccess;
-
-  @override
-  $Res call({
-    Object? servers = freezed,
-  }) {
-    return _then(ServerStateLoadListSuccess(
-      servers == freezed
-          ? _value.servers
-          : servers // ignore: cast_nullable_to_non_nullable
-              as List<Server>,
-    ));
-  }
+  ServerStateLoadServerInProgress get _value =>
+      super._value as ServerStateLoadServerInProgress;
 }
 
 /// @nodoc
 
-class _$ServerStateLoadListSuccess implements ServerStateLoadListSuccess {
-  const _$ServerStateLoadListSuccess(this.servers);
-
-  @override
-  final List<Server> servers;
+class _$ServerStateLoadServerInProgress
+    implements ServerStateLoadServerInProgress {
+  const _$ServerStateLoadServerInProgress();
 
   @override
   String toString() {
-    return 'ServerState.loadListSuccess(servers: $servers)';
+    return 'ServerState.loadServerInProgress()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ServerStateLoadListSuccess &&
-            const DeepCollectionEquality().equals(other.servers, servers));
+            other is ServerStateLoadServerInProgress);
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(servers));
-
-  @JsonKey(ignore: true)
-  @override
-  $ServerStateLoadListSuccessCopyWith<ServerStateLoadListSuccess>
-      get copyWith =>
-          _$ServerStateLoadListSuccessCopyWithImpl<ServerStateLoadListSuccess>(
-              this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Server> servers) loadListSuccess,
-    required TResult Function(Server server) loadSelectedSuccess,
+    required TResult Function() loadServerInProgress,
+    required TResult Function(Server server, Channel recentChannel)
+        loadServerSuccess,
   }) {
-    return loadListSuccess(servers);
+    return loadServerInProgress();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Server> servers)? loadListSuccess,
-    TResult Function(Server server)? loadSelectedSuccess,
+    TResult Function()? loadServerInProgress,
+    TResult Function(Server server, Channel recentChannel)? loadServerSuccess,
   }) {
-    return loadListSuccess?.call(servers);
+    return loadServerInProgress?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Server> servers)? loadListSuccess,
-    TResult Function(Server server)? loadSelectedSuccess,
+    TResult Function()? loadServerInProgress,
+    TResult Function(Server server, Channel recentChannel)? loadServerSuccess,
     required TResult orElse(),
   }) {
-    if (loadListSuccess != null) {
-      return loadListSuccess(servers);
+    if (loadServerInProgress != null) {
+      return loadServerInProgress();
     }
     return orElse();
   }
@@ -317,46 +304,44 @@ class _$ServerStateLoadListSuccess implements ServerStateLoadListSuccess {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ServerStateInitial value) initial,
-    required TResult Function(ServerStateLoadListSuccess value) loadListSuccess,
+    required TResult Function(ServerStateLoadServerInProgress value)
+        loadServerInProgress,
     required TResult Function(ServerStateLoadSelectedSuccess value)
-        loadSelectedSuccess,
+        loadServerSuccess,
   }) {
-    return loadListSuccess(this);
+    return loadServerInProgress(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ServerStateInitial value)? initial,
-    TResult Function(ServerStateLoadListSuccess value)? loadListSuccess,
-    TResult Function(ServerStateLoadSelectedSuccess value)? loadSelectedSuccess,
+    TResult Function(ServerStateLoadServerInProgress value)?
+        loadServerInProgress,
+    TResult Function(ServerStateLoadSelectedSuccess value)? loadServerSuccess,
   }) {
-    return loadListSuccess?.call(this);
+    return loadServerInProgress?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ServerStateInitial value)? initial,
-    TResult Function(ServerStateLoadListSuccess value)? loadListSuccess,
-    TResult Function(ServerStateLoadSelectedSuccess value)? loadSelectedSuccess,
+    TResult Function(ServerStateLoadServerInProgress value)?
+        loadServerInProgress,
+    TResult Function(ServerStateLoadSelectedSuccess value)? loadServerSuccess,
     required TResult orElse(),
   }) {
-    if (loadListSuccess != null) {
-      return loadListSuccess(this);
+    if (loadServerInProgress != null) {
+      return loadServerInProgress(this);
     }
     return orElse();
   }
 }
 
-abstract class ServerStateLoadListSuccess implements ServerState {
-  const factory ServerStateLoadListSuccess(List<Server> servers) =
-      _$ServerStateLoadListSuccess;
-
-  List<Server> get servers;
-  @JsonKey(ignore: true)
-  $ServerStateLoadListSuccessCopyWith<ServerStateLoadListSuccess>
-      get copyWith => throw _privateConstructorUsedError;
+abstract class ServerStateLoadServerInProgress implements ServerState {
+  const factory ServerStateLoadServerInProgress() =
+      _$ServerStateLoadServerInProgress;
 }
 
 /// @nodoc
@@ -365,7 +350,7 @@ abstract class $ServerStateLoadSelectedSuccessCopyWith<$Res> {
           ServerStateLoadSelectedSuccess value,
           $Res Function(ServerStateLoadSelectedSuccess) then) =
       _$ServerStateLoadSelectedSuccessCopyWithImpl<$Res>;
-  $Res call({Server server});
+  $Res call({Server server, Channel recentChannel});
 }
 
 /// @nodoc
@@ -384,12 +369,17 @@ class _$ServerStateLoadSelectedSuccessCopyWithImpl<$Res>
   @override
   $Res call({
     Object? server = freezed,
+    Object? recentChannel = freezed,
   }) {
     return _then(ServerStateLoadSelectedSuccess(
       server == freezed
           ? _value.server
           : server // ignore: cast_nullable_to_non_nullable
               as Server,
+      recentChannel == freezed
+          ? _value.recentChannel
+          : recentChannel // ignore: cast_nullable_to_non_nullable
+              as Channel,
     ));
   }
 }
@@ -398,14 +388,16 @@ class _$ServerStateLoadSelectedSuccessCopyWithImpl<$Res>
 
 class _$ServerStateLoadSelectedSuccess
     implements ServerStateLoadSelectedSuccess {
-  const _$ServerStateLoadSelectedSuccess(this.server);
+  const _$ServerStateLoadSelectedSuccess(this.server, this.recentChannel);
 
   @override
   final Server server;
+  @override
+  final Channel recentChannel;
 
   @override
   String toString() {
-    return 'ServerState.loadSelectedSuccess(server: $server)';
+    return 'ServerState.loadServerSuccess(server: $server, recentChannel: $recentChannel)';
   }
 
   @override
@@ -413,11 +405,13 @@ class _$ServerStateLoadSelectedSuccess
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is ServerStateLoadSelectedSuccess &&
-            (identical(other.server, server) || other.server == server));
+            (identical(other.server, server) || other.server == server) &&
+            (identical(other.recentChannel, recentChannel) ||
+                other.recentChannel == recentChannel));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, server);
+  int get hashCode => Object.hash(runtimeType, server, recentChannel);
 
   @JsonKey(ignore: true)
   @override
@@ -429,32 +423,33 @@ class _$ServerStateLoadSelectedSuccess
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(List<Server> servers) loadListSuccess,
-    required TResult Function(Server server) loadSelectedSuccess,
+    required TResult Function() loadServerInProgress,
+    required TResult Function(Server server, Channel recentChannel)
+        loadServerSuccess,
   }) {
-    return loadSelectedSuccess(server);
+    return loadServerSuccess(server, recentChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Server> servers)? loadListSuccess,
-    TResult Function(Server server)? loadSelectedSuccess,
+    TResult Function()? loadServerInProgress,
+    TResult Function(Server server, Channel recentChannel)? loadServerSuccess,
   }) {
-    return loadSelectedSuccess?.call(server);
+    return loadServerSuccess?.call(server, recentChannel);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(List<Server> servers)? loadListSuccess,
-    TResult Function(Server server)? loadSelectedSuccess,
+    TResult Function()? loadServerInProgress,
+    TResult Function(Server server, Channel recentChannel)? loadServerSuccess,
     required TResult orElse(),
   }) {
-    if (loadSelectedSuccess != null) {
-      return loadSelectedSuccess(server);
+    if (loadServerSuccess != null) {
+      return loadServerSuccess(server, recentChannel);
     }
     return orElse();
   }
@@ -463,43 +458,47 @@ class _$ServerStateLoadSelectedSuccess
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ServerStateInitial value) initial,
-    required TResult Function(ServerStateLoadListSuccess value) loadListSuccess,
+    required TResult Function(ServerStateLoadServerInProgress value)
+        loadServerInProgress,
     required TResult Function(ServerStateLoadSelectedSuccess value)
-        loadSelectedSuccess,
+        loadServerSuccess,
   }) {
-    return loadSelectedSuccess(this);
+    return loadServerSuccess(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ServerStateInitial value)? initial,
-    TResult Function(ServerStateLoadListSuccess value)? loadListSuccess,
-    TResult Function(ServerStateLoadSelectedSuccess value)? loadSelectedSuccess,
+    TResult Function(ServerStateLoadServerInProgress value)?
+        loadServerInProgress,
+    TResult Function(ServerStateLoadSelectedSuccess value)? loadServerSuccess,
   }) {
-    return loadSelectedSuccess?.call(this);
+    return loadServerSuccess?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ServerStateInitial value)? initial,
-    TResult Function(ServerStateLoadListSuccess value)? loadListSuccess,
-    TResult Function(ServerStateLoadSelectedSuccess value)? loadSelectedSuccess,
+    TResult Function(ServerStateLoadServerInProgress value)?
+        loadServerInProgress,
+    TResult Function(ServerStateLoadSelectedSuccess value)? loadServerSuccess,
     required TResult orElse(),
   }) {
-    if (loadSelectedSuccess != null) {
-      return loadSelectedSuccess(this);
+    if (loadServerSuccess != null) {
+      return loadServerSuccess(this);
     }
     return orElse();
   }
 }
 
 abstract class ServerStateLoadSelectedSuccess implements ServerState {
-  const factory ServerStateLoadSelectedSuccess(Server server) =
-      _$ServerStateLoadSelectedSuccess;
+  const factory ServerStateLoadSelectedSuccess(
+      Server server, Channel recentChannel) = _$ServerStateLoadSelectedSuccess;
 
   Server get server;
+  Channel get recentChannel;
   @JsonKey(ignore: true)
   $ServerStateLoadSelectedSuccessCopyWith<ServerStateLoadSelectedSuccess>
       get copyWith => throw _privateConstructorUsedError;

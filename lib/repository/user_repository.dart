@@ -1,20 +1,33 @@
+import 'dart:async';
 import 'dart:developer';
 
+import 'package:async/async.dart';
+import 'package:discord_replicate/exception/custom_exception.dart';
+import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/util/graphql_client_helper.dart';
 import 'package:discord_replicate/util/hive_database_helper.dart';
-import 'package:rxdart/rxdart.dart' as rx;
+import 'package:rxdart/rxdart.dart';
 
 class UserQuery {
   UserQuery._();
 
-  static final loadUser = r"""
+  static final loadById = r"""
     query User($uid: String!) {
       user(uid: $uid) {
         uid
         avatarUrl
         name
         about
+        privateRooms {
+          id
+          name
+          members {
+            uid
+            name
+            avatarUrl
+          }
+        }
         servers {
           id
           name
@@ -35,9 +48,7 @@ class UserQuery {
   // factory UserQuery.loadUserById(String uid) = Query();
 }
 
-class UserRepository {
-  static const String BOX_NAME = "user";
-
+class UserRepository with ExceptionMapperMixin {
   GraphQLClientHelper _api;
   HiveDatabaseHelper _db;
 
@@ -50,38 +61,46 @@ class UserRepository {
   /// Load user by UID.
   ///
   /// Returns user's profile along with servers and channels basic info.
-  Future<User> loadUser(String uid) async {
-    var box = await _db.getBox<User>(BOX_NAME);
-
+  Future<User> load(String uid) async {
+    var query = UserQuery.loadById;
     var varibales = {
       'uid': uid,
     };
 
-    var local = Stream.value(box.get(uid)).where((user) => user != null).doOnData(
-      (user) {
-        log("User found on local database.", name: this.runtimeType.toString());
-      },
-    );
-
-    var remote = Stream.fromFuture(
-      _api.query(UserQuery.loadUser, variables: varibales).then((json) => User.fromJson(json['user'])),
-    ).doOnError(
-      (e, s) {
-        log("Error when fetching user from remote : $e");
-      },
-    ).doOnData(
-      (user) async {
-        log("User retrieved from remote database.", name: this.runtimeType.toString());
-        await box.put(user.uid, user);
-      },
-    );
-
-    var source = local.concatWith([remote]).doOnError((error, stacktrace) {
-      throw FormatException("User not found.", error);
+    var local = LazyStream(() {
+      return _db
+          .get<User>(HiveConstants.USER_BOX, uid)
+          .then((user) {
+            if (user != null) log("User found on local database. $user", name: runtimeType.toString());
+            return user;
+          })
+          .asStream()
+          .where((user) => user != null);
     });
 
-    var user = await source.first;
+    var remote = LazyStream(() {
+      return _api
+          .query(query, variables: varibales)
+          .then((json) async {
+            var user = User.fromJson(json['user']);
+            await save(user);
+            log("User retrieved from remote API. $user", name: runtimeType.toString());
+            return user;
+          })
+          .onError((Exception error, stackTrace) => Future.error(mapException(error)))
+          .asStream();
+    });
 
-    return user!;
+    var result = await ConcatStream([local, remote]).first;
+    return result!;
+  }
+
+  Future save(User user) async {
+    await _db.put(HiveConstants.USER_BOX, user.uid, user);
+  }
+
+  Exception mapException(Exception e) {
+    if (e is NotFoundException) return NotFoundException("User not found.", source: e);
+    return e;
   }
 }

@@ -17,13 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ServerEventTearOff {
   const _$ServerEventTearOff();
 
-  LoadAllServer loadAll() {
-    return const LoadAllServer();
-  }
-
-  LoadSelectedServer loadOne(String serverId) {
-    return LoadSelectedServer(
-      serverId,
+  ServerEventLoadServer loadServer(String id) {
+    return ServerEventLoadServer(
+      id,
     );
   }
 }
@@ -33,43 +29,43 @@ const $ServerEvent = _$ServerEventTearOff();
 
 /// @nodoc
 mixin _$ServerEvent {
+  String get id => throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadAll,
-    required TResult Function(String serverId) loadOne,
+    required TResult Function(String id) loadServer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadAll,
-    TResult Function(String serverId)? loadOne,
+    TResult Function(String id)? loadServer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadAll,
-    TResult Function(String serverId)? loadOne,
+    TResult Function(String id)? loadServer,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(LoadAllServer value) loadAll,
-    required TResult Function(LoadSelectedServer value) loadOne,
+    required TResult Function(ServerEventLoadServer value) loadServer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(LoadAllServer value)? loadAll,
-    TResult Function(LoadSelectedServer value)? loadOne,
+    TResult Function(ServerEventLoadServer value)? loadServer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoadAllServer value)? loadAll,
-    TResult Function(LoadSelectedServer value)? loadOne,
+    TResult Function(ServerEventLoadServer value)? loadServer,
     required TResult orElse(),
   }) =>
+      throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ServerEventCopyWith<ServerEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -78,6 +74,7 @@ abstract class $ServerEventCopyWith<$Res> {
   factory $ServerEventCopyWith(
           ServerEvent value, $Res Function(ServerEvent) then) =
       _$ServerEventCopyWithImpl<$Res>;
+  $Res call({String id});
 }
 
 /// @nodoc
@@ -87,139 +84,49 @@ class _$ServerEventCopyWithImpl<$Res> implements $ServerEventCopyWith<$Res> {
   final ServerEvent _value;
   // ignore: unused_field
   final $Res Function(ServerEvent) _then;
-}
-
-/// @nodoc
-abstract class $LoadAllServerCopyWith<$Res> {
-  factory $LoadAllServerCopyWith(
-          LoadAllServer value, $Res Function(LoadAllServer) then) =
-      _$LoadAllServerCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class _$LoadAllServerCopyWithImpl<$Res> extends _$ServerEventCopyWithImpl<$Res>
-    implements $LoadAllServerCopyWith<$Res> {
-  _$LoadAllServerCopyWithImpl(
-      LoadAllServer _value, $Res Function(LoadAllServer) _then)
-      : super(_value, (v) => _then(v as LoadAllServer));
-
-  @override
-  LoadAllServer get _value => super._value as LoadAllServer;
-}
-
-/// @nodoc
-
-class _$LoadAllServer implements LoadAllServer {
-  const _$LoadAllServer();
-
-  @override
-  String toString() {
-    return 'ServerEvent.loadAll()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is LoadAllServer);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadAll,
-    required TResult Function(String serverId) loadOne,
-  }) {
-    return loadAll();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadAll,
-    TResult Function(String serverId)? loadOne,
-  }) {
-    return loadAll?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadAll,
-    TResult Function(String serverId)? loadOne,
-    required TResult orElse(),
-  }) {
-    if (loadAll != null) {
-      return loadAll();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(LoadAllServer value) loadAll,
-    required TResult Function(LoadSelectedServer value) loadOne,
-  }) {
-    return loadAll(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(LoadAllServer value)? loadAll,
-    TResult Function(LoadSelectedServer value)? loadOne,
-  }) {
-    return loadAll?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoadAllServer value)? loadAll,
-    TResult Function(LoadSelectedServer value)? loadOne,
-    required TResult orElse(),
-  }) {
-    if (loadAll != null) {
-      return loadAll(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class LoadAllServer implements ServerEvent {
-  const factory LoadAllServer() = _$LoadAllServer;
-}
-
-/// @nodoc
-abstract class $LoadSelectedServerCopyWith<$Res> {
-  factory $LoadSelectedServerCopyWith(
-          LoadSelectedServer value, $Res Function(LoadSelectedServer) then) =
-      _$LoadSelectedServerCopyWithImpl<$Res>;
-  $Res call({String serverId});
-}
-
-/// @nodoc
-class _$LoadSelectedServerCopyWithImpl<$Res>
-    extends _$ServerEventCopyWithImpl<$Res>
-    implements $LoadSelectedServerCopyWith<$Res> {
-  _$LoadSelectedServerCopyWithImpl(
-      LoadSelectedServer _value, $Res Function(LoadSelectedServer) _then)
-      : super(_value, (v) => _then(v as LoadSelectedServer));
-
-  @override
-  LoadSelectedServer get _value => super._value as LoadSelectedServer;
 
   @override
   $Res call({
-    Object? serverId = freezed,
+    Object? id = freezed,
   }) {
-    return _then(LoadSelectedServer(
-      serverId == freezed
-          ? _value.serverId
-          : serverId // ignore: cast_nullable_to_non_nullable
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class $ServerEventLoadServerCopyWith<$Res>
+    implements $ServerEventCopyWith<$Res> {
+  factory $ServerEventLoadServerCopyWith(ServerEventLoadServer value,
+          $Res Function(ServerEventLoadServer) then) =
+      _$ServerEventLoadServerCopyWithImpl<$Res>;
+  @override
+  $Res call({String id});
+}
+
+/// @nodoc
+class _$ServerEventLoadServerCopyWithImpl<$Res>
+    extends _$ServerEventCopyWithImpl<$Res>
+    implements $ServerEventLoadServerCopyWith<$Res> {
+  _$ServerEventLoadServerCopyWithImpl(
+      ServerEventLoadServer _value, $Res Function(ServerEventLoadServer) _then)
+      : super(_value, (v) => _then(v as ServerEventLoadServer));
+
+  @override
+  ServerEventLoadServer get _value => super._value as ServerEventLoadServer;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+  }) {
+    return _then(ServerEventLoadServer(
+      id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -227,61 +134,58 @@ class _$LoadSelectedServerCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadSelectedServer implements LoadSelectedServer {
-  const _$LoadSelectedServer(this.serverId);
+class _$ServerEventLoadServer implements ServerEventLoadServer {
+  const _$ServerEventLoadServer(this.id);
 
   @override
-  final String serverId;
+  final String id;
 
   @override
   String toString() {
-    return 'ServerEvent.loadOne(serverId: $serverId)';
+    return 'ServerEvent.loadServer(id: $id)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is LoadSelectedServer &&
-            (identical(other.serverId, serverId) ||
-                other.serverId == serverId));
+            other is ServerEventLoadServer &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, serverId);
+  int get hashCode => Object.hash(runtimeType, id);
 
   @JsonKey(ignore: true)
   @override
-  $LoadSelectedServerCopyWith<LoadSelectedServer> get copyWith =>
-      _$LoadSelectedServerCopyWithImpl<LoadSelectedServer>(this, _$identity);
+  $ServerEventLoadServerCopyWith<ServerEventLoadServer> get copyWith =>
+      _$ServerEventLoadServerCopyWithImpl<ServerEventLoadServer>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadAll,
-    required TResult Function(String serverId) loadOne,
+    required TResult Function(String id) loadServer,
   }) {
-    return loadOne(serverId);
+    return loadServer(id);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadAll,
-    TResult Function(String serverId)? loadOne,
+    TResult Function(String id)? loadServer,
   }) {
-    return loadOne?.call(serverId);
+    return loadServer?.call(id);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadAll,
-    TResult Function(String serverId)? loadOne,
+    TResult Function(String id)? loadServer,
     required TResult orElse(),
   }) {
-    if (loadOne != null) {
-      return loadOne(serverId);
+    if (loadServer != null) {
+      return loadServer(id);
     }
     return orElse();
   }
@@ -289,40 +193,39 @@ class _$LoadSelectedServer implements LoadSelectedServer {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(LoadAllServer value) loadAll,
-    required TResult Function(LoadSelectedServer value) loadOne,
+    required TResult Function(ServerEventLoadServer value) loadServer,
   }) {
-    return loadOne(this);
+    return loadServer(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(LoadAllServer value)? loadAll,
-    TResult Function(LoadSelectedServer value)? loadOne,
+    TResult Function(ServerEventLoadServer value)? loadServer,
   }) {
-    return loadOne?.call(this);
+    return loadServer?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(LoadAllServer value)? loadAll,
-    TResult Function(LoadSelectedServer value)? loadOne,
+    TResult Function(ServerEventLoadServer value)? loadServer,
     required TResult orElse(),
   }) {
-    if (loadOne != null) {
-      return loadOne(this);
+    if (loadServer != null) {
+      return loadServer(this);
     }
     return orElse();
   }
 }
 
-abstract class LoadSelectedServer implements ServerEvent {
-  const factory LoadSelectedServer(String serverId) = _$LoadSelectedServer;
+abstract class ServerEventLoadServer implements ServerEvent {
+  const factory ServerEventLoadServer(String id) = _$ServerEventLoadServer;
 
-  String get serverId;
+  @override
+  String get id;
+  @override
   @JsonKey(ignore: true)
-  $LoadSelectedServerCopyWith<LoadSelectedServer> get copyWith =>
+  $ServerEventLoadServerCopyWith<ServerEventLoadServer> get copyWith =>
       throw _privateConstructorUsedError;
 }

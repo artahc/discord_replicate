@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class MessageTile extends StatelessWidget {
   final Message message;
 
-  MessageTile(this.message);
+  MessageTile({required this.message});
 
   @override
   Widget build(BuildContext context) {
