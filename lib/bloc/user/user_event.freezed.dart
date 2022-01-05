@@ -17,10 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$UserEventTearOff {
   const _$UserEventTearOff();
 
-  UserEventLoadPrivateRooms loadRecentPrivateRooms() {
-    return const UserEventLoadPrivateRooms();
-  }
-
   UserEventLoadUser loadUser(String uid) {
     return UserEventLoadUser(
       uid,
@@ -39,21 +35,18 @@ const $UserEvent = _$UserEventTearOff();
 mixin _$UserEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadRecentPrivateRooms,
     required TResult Function(String uid) loadUser,
     required TResult Function() loadLocalUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadRecentPrivateRooms,
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadRecentPrivateRooms,
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
     required TResult orElse(),
@@ -61,22 +54,18 @@ mixin _$UserEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadPrivateRooms value)
-        loadRecentPrivateRooms,
     required TResult Function(UserEventLoadUser value) loadUser,
     required TResult Function(UserEventLoadLocalUser value) loadLocalUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateRooms value)? loadRecentPrivateRooms,
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateRooms value)? loadRecentPrivateRooms,
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
     required TResult orElse(),
@@ -97,120 +86,6 @@ class _$UserEventCopyWithImpl<$Res> implements $UserEventCopyWith<$Res> {
   final UserEvent _value;
   // ignore: unused_field
   final $Res Function(UserEvent) _then;
-}
-
-/// @nodoc
-abstract class $UserEventLoadPrivateRoomsCopyWith<$Res> {
-  factory $UserEventLoadPrivateRoomsCopyWith(UserEventLoadPrivateRooms value,
-          $Res Function(UserEventLoadPrivateRooms) then) =
-      _$UserEventLoadPrivateRoomsCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class _$UserEventLoadPrivateRoomsCopyWithImpl<$Res>
-    extends _$UserEventCopyWithImpl<$Res>
-    implements $UserEventLoadPrivateRoomsCopyWith<$Res> {
-  _$UserEventLoadPrivateRoomsCopyWithImpl(UserEventLoadPrivateRooms _value,
-      $Res Function(UserEventLoadPrivateRooms) _then)
-      : super(_value, (v) => _then(v as UserEventLoadPrivateRooms));
-
-  @override
-  UserEventLoadPrivateRooms get _value =>
-      super._value as UserEventLoadPrivateRooms;
-}
-
-/// @nodoc
-
-class _$UserEventLoadPrivateRooms implements UserEventLoadPrivateRooms {
-  const _$UserEventLoadPrivateRooms();
-
-  @override
-  String toString() {
-    return 'UserEvent.loadRecentPrivateRooms()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is UserEventLoadPrivateRooms);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadRecentPrivateRooms,
-    required TResult Function(String uid) loadUser,
-    required TResult Function() loadLocalUser,
-  }) {
-    return loadRecentPrivateRooms();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadRecentPrivateRooms,
-    TResult Function(String uid)? loadUser,
-    TResult Function()? loadLocalUser,
-  }) {
-    return loadRecentPrivateRooms?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadRecentPrivateRooms,
-    TResult Function(String uid)? loadUser,
-    TResult Function()? loadLocalUser,
-    required TResult orElse(),
-  }) {
-    if (loadRecentPrivateRooms != null) {
-      return loadRecentPrivateRooms();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadPrivateRooms value)
-        loadRecentPrivateRooms,
-    required TResult Function(UserEventLoadUser value) loadUser,
-    required TResult Function(UserEventLoadLocalUser value) loadLocalUser,
-  }) {
-    return loadRecentPrivateRooms(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateRooms value)? loadRecentPrivateRooms,
-    TResult Function(UserEventLoadUser value)? loadUser,
-    TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
-  }) {
-    return loadRecentPrivateRooms?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateRooms value)? loadRecentPrivateRooms,
-    TResult Function(UserEventLoadUser value)? loadUser,
-    TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
-    required TResult orElse(),
-  }) {
-    if (loadRecentPrivateRooms != null) {
-      return loadRecentPrivateRooms(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class UserEventLoadPrivateRooms implements UserEvent {
-  const factory UserEventLoadPrivateRooms() = _$UserEventLoadPrivateRooms;
 }
 
 /// @nodoc
@@ -277,7 +152,6 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadRecentPrivateRooms,
     required TResult Function(String uid) loadUser,
     required TResult Function() loadLocalUser,
   }) {
@@ -287,7 +161,6 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadRecentPrivateRooms,
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
   }) {
@@ -297,7 +170,6 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadRecentPrivateRooms,
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
     required TResult orElse(),
@@ -311,8 +183,6 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadPrivateRooms value)
-        loadRecentPrivateRooms,
     required TResult Function(UserEventLoadUser value) loadUser,
     required TResult Function(UserEventLoadLocalUser value) loadLocalUser,
   }) {
@@ -322,7 +192,6 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateRooms value)? loadRecentPrivateRooms,
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
   }) {
@@ -332,7 +201,6 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateRooms value)? loadRecentPrivateRooms,
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
     required TResult orElse(),
@@ -394,7 +262,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadRecentPrivateRooms,
     required TResult Function(String uid) loadUser,
     required TResult Function() loadLocalUser,
   }) {
@@ -404,7 +271,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadRecentPrivateRooms,
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
   }) {
@@ -414,7 +280,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadRecentPrivateRooms,
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
     required TResult orElse(),
@@ -428,8 +293,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadPrivateRooms value)
-        loadRecentPrivateRooms,
     required TResult Function(UserEventLoadUser value) loadUser,
     required TResult Function(UserEventLoadLocalUser value) loadLocalUser,
   }) {
@@ -439,7 +302,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateRooms value)? loadRecentPrivateRooms,
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
   }) {
@@ -449,7 +311,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateRooms value)? loadRecentPrivateRooms,
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
     required TResult orElse(),

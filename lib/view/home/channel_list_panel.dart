@@ -8,91 +8,74 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChannelListPanel extends StatefulWidget {
-  const ChannelListPanel({Key? key}) : super(key: key);
+  final Server server;
+
+  const ChannelListPanel({Key? key, required this.server}) : super(key: key);
 
   @override
   _ChannelListPanelState createState() => _ChannelListPanelState();
 }
 
 class _ChannelListPanelState extends State<ChannelListPanel> {
-  List<Channel> _channels = [];
   Channel? _currentChannel;
+
+  _onServerLoaded(Server server, Channel recentChannel) {
+    setState(() {
+      _currentChannel = recentChannel;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ServerBloc, ServerState>(builder: (_, state) {
-      state.whenOrNull(
-        loadServerSuccess: (server, recentChannel) {
-          _channels = server.channels;
-          _currentChannel = recentChannel;
-        },
-      );
-
-      return Flexible(
-        child: Container(
-          margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width * 0.125) + 5),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          child: Column(
-            children: [
-              // Stack(
-              //   children: [
-              //     Container(
-              //       height: 150,
-              //       child: Placeholder(),
-              //     ),
-              //     Padding(
-              //       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              //       child: Text(
-              //         "Server Name",
-              //         style: Theme.of(context).textTheme.headline6,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              Container(
-                height: 50,
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
+    return Flexible(
+      child: Container(
+        margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width * 0.125) + 5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        child: Column(
+          children: [
+            Container(
+              height: 50,
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Text(
+                      widget.server.name,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                child: CustomListView<Channel>(
+                  elements: widget.server.channels,
+                  builder: (_, channel, __) {
+                    return ChannelTile(channel: channel);
+                  },
+                  before: [
+                    AppMaterialButton(
+                      margin: const EdgeInsets.all(20),
+                      color: Theme.of(context).buttonTheme.colorScheme?.onSecondary,
+                      size: const Size(double.infinity, 35),
                       child: Text(
-                        "Server Name",
-                        style: Theme.of(context).textTheme.headline6,
+                        "Invite Members",
+                        style: Theme.of(context).textTheme.button,
                       ),
+                      onPressed: () {},
                     ),
                   ],
                 ),
               ),
-              Expanded(
-                child: Container(
-                  child: CustomListView<Channel>(
-                    elements: _channels,
-                    builder: (_, channel, __) {
-                      return ChannelTile(channel: channel);
-                    },
-                    before: [
-                      AppMaterialButton(
-                        margin: const EdgeInsets.all(20),
-                        color: Theme.of(context).buttonTheme.colorScheme?.onSecondary,
-                        size: const Size(double.infinity, 35),
-                        child: Text(
-                          "Invite Members",
-                          style: Theme.of(context).textTheme.button,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }
 

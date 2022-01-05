@@ -23,7 +23,7 @@ class RoomQuery {
         }
         messages(limit: $messageLimit) {
           id
-          senderId
+          senderRef
           timestamp
           message
         }

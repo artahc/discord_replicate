@@ -21,29 +21,17 @@ class _$UserStateTearOff {
     return const UserStateInitial();
   }
 
-  UserStateLoadRecentPrivateRoomInProgress loadRecentPrivateRoomInProgress() {
-    return const UserStateLoadRecentPrivateRoomInProgress();
-  }
-
-  UserStateLoadRecentPrivateRoomSuccess loadRecentPrivateRoomSuccess(
-      List<Room> rooms, Room recentRoom) {
-    return UserStateLoadRecentPrivateRoomSuccess(
-      rooms,
-      recentRoom,
-    );
-  }
-
-  UserStateLoadLocalUserInProgress loadLocalUserInProgress() {
+  UserStateLoadLocalUserInProgress loadUserInProgress() {
     return const UserStateLoadLocalUserInProgress();
   }
 
-  UserStateLoadLocalUserSuccess loadLocalUserSuccess(User user) {
+  UserStateLoadLocalUserSuccess loadUserSuccess(User user) {
     return UserStateLoadLocalUserSuccess(
       user,
     );
   }
 
-  UserStateLoadLocalUserFailed loadLocalUserFailed() {
+  UserStateLoadLocalUserFailed loadUserFailed() {
     return const UserStateLoadLocalUserFailed();
   }
 }
@@ -56,76 +44,55 @@ mixin _$UserState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loadRecentPrivateRoomInProgress,
-    required TResult Function(List<Room> rooms, Room recentRoom)
-        loadRecentPrivateRoomSuccess,
-    required TResult Function() loadLocalUserInProgress,
-    required TResult Function(User user) loadLocalUserSuccess,
-    required TResult Function() loadLocalUserFailed,
+    required TResult Function() loadUserInProgress,
+    required TResult Function(User user) loadUserSuccess,
+    required TResult Function() loadUserFailed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateLoadRecentPrivateRoomInProgress value)
-        loadRecentPrivateRoomInProgress,
-    required TResult Function(UserStateLoadRecentPrivateRoomSuccess value)
-        loadRecentPrivateRoomSuccess,
     required TResult Function(UserStateLoadLocalUserInProgress value)
-        loadLocalUserInProgress,
+        loadUserInProgress,
     required TResult Function(UserStateLoadLocalUserSuccess value)
-        loadLocalUserSuccess,
+        loadUserSuccess,
     required TResult Function(UserStateLoadLocalUserFailed value)
-        loadLocalUserFailed,
+        loadUserFailed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -187,12 +154,9 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loadRecentPrivateRoomInProgress,
-    required TResult Function(List<Room> rooms, Room recentRoom)
-        loadRecentPrivateRoomSuccess,
-    required TResult Function() loadLocalUserInProgress,
-    required TResult Function(User user) loadLocalUserSuccess,
-    required TResult Function() loadLocalUserFailed,
+    required TResult Function() loadUserInProgress,
+    required TResult Function(User user) loadUserSuccess,
+    required TResult Function() loadUserFailed,
   }) {
     return initial();
   }
@@ -201,12 +165,9 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
   }) {
     return initial?.call();
   }
@@ -215,12 +176,9 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -233,16 +191,12 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateLoadRecentPrivateRoomInProgress value)
-        loadRecentPrivateRoomInProgress,
-    required TResult Function(UserStateLoadRecentPrivateRoomSuccess value)
-        loadRecentPrivateRoomSuccess,
     required TResult Function(UserStateLoadLocalUserInProgress value)
-        loadLocalUserInProgress,
+        loadUserInProgress,
     required TResult Function(UserStateLoadLocalUserSuccess value)
-        loadLocalUserSuccess,
+        loadUserSuccess,
     required TResult Function(UserStateLoadLocalUserFailed value)
-        loadLocalUserFailed,
+        loadUserFailed,
   }) {
     return initial(this);
   }
@@ -251,14 +205,10 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
   }) {
     return initial?.call(this);
   }
@@ -267,14 +217,10 @@ class _$UserStateInitial implements UserStateInitial {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -286,347 +232,6 @@ class _$UserStateInitial implements UserStateInitial {
 
 abstract class UserStateInitial implements UserState {
   const factory UserStateInitial() = _$UserStateInitial;
-}
-
-/// @nodoc
-abstract class $UserStateLoadRecentPrivateRoomInProgressCopyWith<$Res> {
-  factory $UserStateLoadRecentPrivateRoomInProgressCopyWith(
-          UserStateLoadRecentPrivateRoomInProgress value,
-          $Res Function(UserStateLoadRecentPrivateRoomInProgress) then) =
-      _$UserStateLoadRecentPrivateRoomInProgressCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class _$UserStateLoadRecentPrivateRoomInProgressCopyWithImpl<$Res>
-    extends _$UserStateCopyWithImpl<$Res>
-    implements $UserStateLoadRecentPrivateRoomInProgressCopyWith<$Res> {
-  _$UserStateLoadRecentPrivateRoomInProgressCopyWithImpl(
-      UserStateLoadRecentPrivateRoomInProgress _value,
-      $Res Function(UserStateLoadRecentPrivateRoomInProgress) _then)
-      : super(_value,
-            (v) => _then(v as UserStateLoadRecentPrivateRoomInProgress));
-
-  @override
-  UserStateLoadRecentPrivateRoomInProgress get _value =>
-      super._value as UserStateLoadRecentPrivateRoomInProgress;
-}
-
-/// @nodoc
-
-class _$UserStateLoadRecentPrivateRoomInProgress
-    implements UserStateLoadRecentPrivateRoomInProgress {
-  const _$UserStateLoadRecentPrivateRoomInProgress();
-
-  @override
-  String toString() {
-    return 'UserState.loadRecentPrivateRoomInProgress()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is UserStateLoadRecentPrivateRoomInProgress);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loadRecentPrivateRoomInProgress,
-    required TResult Function(List<Room> rooms, Room recentRoom)
-        loadRecentPrivateRoomSuccess,
-    required TResult Function() loadLocalUserInProgress,
-    required TResult Function(User user) loadLocalUserSuccess,
-    required TResult Function() loadLocalUserFailed,
-  }) {
-    return loadRecentPrivateRoomInProgress();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
-  }) {
-    return loadRecentPrivateRoomInProgress?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
-    required TResult orElse(),
-  }) {
-    if (loadRecentPrivateRoomInProgress != null) {
-      return loadRecentPrivateRoomInProgress();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateLoadRecentPrivateRoomInProgress value)
-        loadRecentPrivateRoomInProgress,
-    required TResult Function(UserStateLoadRecentPrivateRoomSuccess value)
-        loadRecentPrivateRoomSuccess,
-    required TResult Function(UserStateLoadLocalUserInProgress value)
-        loadLocalUserInProgress,
-    required TResult Function(UserStateLoadLocalUserSuccess value)
-        loadLocalUserSuccess,
-    required TResult Function(UserStateLoadLocalUserFailed value)
-        loadLocalUserFailed,
-  }) {
-    return loadRecentPrivateRoomInProgress(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
-  }) {
-    return loadRecentPrivateRoomInProgress?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
-    required TResult orElse(),
-  }) {
-    if (loadRecentPrivateRoomInProgress != null) {
-      return loadRecentPrivateRoomInProgress(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class UserStateLoadRecentPrivateRoomInProgress implements UserState {
-  const factory UserStateLoadRecentPrivateRoomInProgress() =
-      _$UserStateLoadRecentPrivateRoomInProgress;
-}
-
-/// @nodoc
-abstract class $UserStateLoadRecentPrivateRoomSuccessCopyWith<$Res> {
-  factory $UserStateLoadRecentPrivateRoomSuccessCopyWith(
-          UserStateLoadRecentPrivateRoomSuccess value,
-          $Res Function(UserStateLoadRecentPrivateRoomSuccess) then) =
-      _$UserStateLoadRecentPrivateRoomSuccessCopyWithImpl<$Res>;
-  $Res call({List<Room> rooms, Room recentRoom});
-}
-
-/// @nodoc
-class _$UserStateLoadRecentPrivateRoomSuccessCopyWithImpl<$Res>
-    extends _$UserStateCopyWithImpl<$Res>
-    implements $UserStateLoadRecentPrivateRoomSuccessCopyWith<$Res> {
-  _$UserStateLoadRecentPrivateRoomSuccessCopyWithImpl(
-      UserStateLoadRecentPrivateRoomSuccess _value,
-      $Res Function(UserStateLoadRecentPrivateRoomSuccess) _then)
-      : super(_value, (v) => _then(v as UserStateLoadRecentPrivateRoomSuccess));
-
-  @override
-  UserStateLoadRecentPrivateRoomSuccess get _value =>
-      super._value as UserStateLoadRecentPrivateRoomSuccess;
-
-  @override
-  $Res call({
-    Object? rooms = freezed,
-    Object? recentRoom = freezed,
-  }) {
-    return _then(UserStateLoadRecentPrivateRoomSuccess(
-      rooms == freezed
-          ? _value.rooms
-          : rooms // ignore: cast_nullable_to_non_nullable
-              as List<Room>,
-      recentRoom == freezed
-          ? _value.recentRoom
-          : recentRoom // ignore: cast_nullable_to_non_nullable
-              as Room,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$UserStateLoadRecentPrivateRoomSuccess
-    implements UserStateLoadRecentPrivateRoomSuccess {
-  const _$UserStateLoadRecentPrivateRoomSuccess(this.rooms, this.recentRoom);
-
-  @override
-  final List<Room> rooms;
-  @override
-  final Room recentRoom;
-
-  @override
-  String toString() {
-    return 'UserState.loadRecentPrivateRoomSuccess(rooms: $rooms, recentRoom: $recentRoom)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is UserStateLoadRecentPrivateRoomSuccess &&
-            const DeepCollectionEquality().equals(other.rooms, rooms) &&
-            (identical(other.recentRoom, recentRoom) ||
-                other.recentRoom == recentRoom));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(rooms), recentRoom);
-
-  @JsonKey(ignore: true)
-  @override
-  $UserStateLoadRecentPrivateRoomSuccessCopyWith<
-          UserStateLoadRecentPrivateRoomSuccess>
-      get copyWith => _$UserStateLoadRecentPrivateRoomSuccessCopyWithImpl<
-          UserStateLoadRecentPrivateRoomSuccess>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loadRecentPrivateRoomInProgress,
-    required TResult Function(List<Room> rooms, Room recentRoom)
-        loadRecentPrivateRoomSuccess,
-    required TResult Function() loadLocalUserInProgress,
-    required TResult Function(User user) loadLocalUserSuccess,
-    required TResult Function() loadLocalUserFailed,
-  }) {
-    return loadRecentPrivateRoomSuccess(rooms, recentRoom);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
-  }) {
-    return loadRecentPrivateRoomSuccess?.call(rooms, recentRoom);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
-    required TResult orElse(),
-  }) {
-    if (loadRecentPrivateRoomSuccess != null) {
-      return loadRecentPrivateRoomSuccess(rooms, recentRoom);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateLoadRecentPrivateRoomInProgress value)
-        loadRecentPrivateRoomInProgress,
-    required TResult Function(UserStateLoadRecentPrivateRoomSuccess value)
-        loadRecentPrivateRoomSuccess,
-    required TResult Function(UserStateLoadLocalUserInProgress value)
-        loadLocalUserInProgress,
-    required TResult Function(UserStateLoadLocalUserSuccess value)
-        loadLocalUserSuccess,
-    required TResult Function(UserStateLoadLocalUserFailed value)
-        loadLocalUserFailed,
-  }) {
-    return loadRecentPrivateRoomSuccess(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
-  }) {
-    return loadRecentPrivateRoomSuccess?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
-    required TResult orElse(),
-  }) {
-    if (loadRecentPrivateRoomSuccess != null) {
-      return loadRecentPrivateRoomSuccess(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class UserStateLoadRecentPrivateRoomSuccess implements UserState {
-  const factory UserStateLoadRecentPrivateRoomSuccess(
-          List<Room> rooms, Room recentRoom) =
-      _$UserStateLoadRecentPrivateRoomSuccess;
-
-  List<Room> get rooms;
-  Room get recentRoom;
-  @JsonKey(ignore: true)
-  $UserStateLoadRecentPrivateRoomSuccessCopyWith<
-          UserStateLoadRecentPrivateRoomSuccess>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -659,7 +264,7 @@ class _$UserStateLoadLocalUserInProgress
 
   @override
   String toString() {
-    return 'UserState.loadLocalUserInProgress()';
+    return 'UserState.loadUserInProgress()';
   }
 
   @override
@@ -676,44 +281,35 @@ class _$UserStateLoadLocalUserInProgress
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loadRecentPrivateRoomInProgress,
-    required TResult Function(List<Room> rooms, Room recentRoom)
-        loadRecentPrivateRoomSuccess,
-    required TResult Function() loadLocalUserInProgress,
-    required TResult Function(User user) loadLocalUserSuccess,
-    required TResult Function() loadLocalUserFailed,
+    required TResult Function() loadUserInProgress,
+    required TResult Function(User user) loadUserSuccess,
+    required TResult Function() loadUserFailed,
   }) {
-    return loadLocalUserInProgress();
+    return loadUserInProgress();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
   }) {
-    return loadLocalUserInProgress?.call();
+    return loadUserInProgress?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
     required TResult orElse(),
   }) {
-    if (loadLocalUserInProgress != null) {
-      return loadLocalUserInProgress();
+    if (loadUserInProgress != null) {
+      return loadUserInProgress();
     }
     return orElse();
   }
@@ -722,52 +318,40 @@ class _$UserStateLoadLocalUserInProgress
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateLoadRecentPrivateRoomInProgress value)
-        loadRecentPrivateRoomInProgress,
-    required TResult Function(UserStateLoadRecentPrivateRoomSuccess value)
-        loadRecentPrivateRoomSuccess,
     required TResult Function(UserStateLoadLocalUserInProgress value)
-        loadLocalUserInProgress,
+        loadUserInProgress,
     required TResult Function(UserStateLoadLocalUserSuccess value)
-        loadLocalUserSuccess,
+        loadUserSuccess,
     required TResult Function(UserStateLoadLocalUserFailed value)
-        loadLocalUserFailed,
+        loadUserFailed,
   }) {
-    return loadLocalUserInProgress(this);
+    return loadUserInProgress(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
   }) {
-    return loadLocalUserInProgress?.call(this);
+    return loadUserInProgress?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
     required TResult orElse(),
   }) {
-    if (loadLocalUserInProgress != null) {
-      return loadLocalUserInProgress(this);
+    if (loadUserInProgress != null) {
+      return loadUserInProgress(this);
     }
     return orElse();
   }
@@ -823,7 +407,7 @@ class _$UserStateLoadLocalUserSuccess implements UserStateLoadLocalUserSuccess {
 
   @override
   String toString() {
-    return 'UserState.loadLocalUserSuccess(user: $user)';
+    return 'UserState.loadUserSuccess(user: $user)';
   }
 
   @override
@@ -847,44 +431,35 @@ class _$UserStateLoadLocalUserSuccess implements UserStateLoadLocalUserSuccess {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loadRecentPrivateRoomInProgress,
-    required TResult Function(List<Room> rooms, Room recentRoom)
-        loadRecentPrivateRoomSuccess,
-    required TResult Function() loadLocalUserInProgress,
-    required TResult Function(User user) loadLocalUserSuccess,
-    required TResult Function() loadLocalUserFailed,
+    required TResult Function() loadUserInProgress,
+    required TResult Function(User user) loadUserSuccess,
+    required TResult Function() loadUserFailed,
   }) {
-    return loadLocalUserSuccess(user);
+    return loadUserSuccess(user);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
   }) {
-    return loadLocalUserSuccess?.call(user);
+    return loadUserSuccess?.call(user);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
     required TResult orElse(),
   }) {
-    if (loadLocalUserSuccess != null) {
-      return loadLocalUserSuccess(user);
+    if (loadUserSuccess != null) {
+      return loadUserSuccess(user);
     }
     return orElse();
   }
@@ -893,52 +468,40 @@ class _$UserStateLoadLocalUserSuccess implements UserStateLoadLocalUserSuccess {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateLoadRecentPrivateRoomInProgress value)
-        loadRecentPrivateRoomInProgress,
-    required TResult Function(UserStateLoadRecentPrivateRoomSuccess value)
-        loadRecentPrivateRoomSuccess,
     required TResult Function(UserStateLoadLocalUserInProgress value)
-        loadLocalUserInProgress,
+        loadUserInProgress,
     required TResult Function(UserStateLoadLocalUserSuccess value)
-        loadLocalUserSuccess,
+        loadUserSuccess,
     required TResult Function(UserStateLoadLocalUserFailed value)
-        loadLocalUserFailed,
+        loadUserFailed,
   }) {
-    return loadLocalUserSuccess(this);
+    return loadUserSuccess(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
   }) {
-    return loadLocalUserSuccess?.call(this);
+    return loadUserSuccess?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
     required TResult orElse(),
   }) {
-    if (loadLocalUserSuccess != null) {
-      return loadLocalUserSuccess(this);
+    if (loadUserSuccess != null) {
+      return loadUserSuccess(this);
     }
     return orElse();
   }
@@ -983,7 +546,7 @@ class _$UserStateLoadLocalUserFailed implements UserStateLoadLocalUserFailed {
 
   @override
   String toString() {
-    return 'UserState.loadLocalUserFailed()';
+    return 'UserState.loadUserFailed()';
   }
 
   @override
@@ -1000,44 +563,35 @@ class _$UserStateLoadLocalUserFailed implements UserStateLoadLocalUserFailed {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loadRecentPrivateRoomInProgress,
-    required TResult Function(List<Room> rooms, Room recentRoom)
-        loadRecentPrivateRoomSuccess,
-    required TResult Function() loadLocalUserInProgress,
-    required TResult Function(User user) loadLocalUserSuccess,
-    required TResult Function() loadLocalUserFailed,
+    required TResult Function() loadUserInProgress,
+    required TResult Function(User user) loadUserSuccess,
+    required TResult Function() loadUserFailed,
   }) {
-    return loadLocalUserFailed();
+    return loadUserFailed();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
   }) {
-    return loadLocalUserFailed?.call();
+    return loadUserFailed?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loadRecentPrivateRoomInProgress,
-    TResult Function(List<Room> rooms, Room recentRoom)?
-        loadRecentPrivateRoomSuccess,
-    TResult Function()? loadLocalUserInProgress,
-    TResult Function(User user)? loadLocalUserSuccess,
-    TResult Function()? loadLocalUserFailed,
+    TResult Function()? loadUserInProgress,
+    TResult Function(User user)? loadUserSuccess,
+    TResult Function()? loadUserFailed,
     required TResult orElse(),
   }) {
-    if (loadLocalUserFailed != null) {
-      return loadLocalUserFailed();
+    if (loadUserFailed != null) {
+      return loadUserFailed();
     }
     return orElse();
   }
@@ -1046,52 +600,40 @@ class _$UserStateLoadLocalUserFailed implements UserStateLoadLocalUserFailed {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(UserStateInitial value) initial,
-    required TResult Function(UserStateLoadRecentPrivateRoomInProgress value)
-        loadRecentPrivateRoomInProgress,
-    required TResult Function(UserStateLoadRecentPrivateRoomSuccess value)
-        loadRecentPrivateRoomSuccess,
     required TResult Function(UserStateLoadLocalUserInProgress value)
-        loadLocalUserInProgress,
+        loadUserInProgress,
     required TResult Function(UserStateLoadLocalUserSuccess value)
-        loadLocalUserSuccess,
+        loadUserSuccess,
     required TResult Function(UserStateLoadLocalUserFailed value)
-        loadLocalUserFailed,
+        loadUserFailed,
   }) {
-    return loadLocalUserFailed(this);
+    return loadUserFailed(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
   }) {
-    return loadLocalUserFailed?.call(this);
+    return loadUserFailed?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserStateInitial value)? initial,
-    TResult Function(UserStateLoadRecentPrivateRoomInProgress value)?
-        loadRecentPrivateRoomInProgress,
-    TResult Function(UserStateLoadRecentPrivateRoomSuccess value)?
-        loadRecentPrivateRoomSuccess,
     TResult Function(UserStateLoadLocalUserInProgress value)?
-        loadLocalUserInProgress,
-    TResult Function(UserStateLoadLocalUserSuccess value)? loadLocalUserSuccess,
-    TResult Function(UserStateLoadLocalUserFailed value)? loadLocalUserFailed,
+        loadUserInProgress,
+    TResult Function(UserStateLoadLocalUserSuccess value)? loadUserSuccess,
+    TResult Function(UserStateLoadLocalUserFailed value)? loadUserFailed,
     required TResult orElse(),
   }) {
-    if (loadLocalUserFailed != null) {
-      return loadLocalUserFailed(this);
+    if (loadUserFailed != null) {
+      return loadUserFailed(this);
     }
     return orElse();
   }

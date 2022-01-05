@@ -64,7 +64,7 @@ class _LoginViewState extends State<LoginView> {
             error: (exception) {
               log("Error when logging in.", error: exception, name: this.runtimeType.toString());
             },
-            signedIn: (credential, user) {
+            signedIn: (credential) {
               _onSignedIn();
             },
           );

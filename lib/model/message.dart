@@ -27,7 +27,7 @@ abstract class Message {
   factory Message.fromJson(Map<String, dynamic> map) {
     try {
       var id = map['id'] as String;
-      var senderId = map['senderId'] as String;
+      var senderId = map['senderRef'] as String;
       var date = DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as int) * 1000);
       var message = map['message'] as String;
 

@@ -27,8 +27,7 @@ class ServerTile extends StatelessWidget {
             child: AnimatedContainer(
               width: 45,
               height: 45,
-              duration: Duration(milliseconds: 150),
-              curve: Curves.easeInOutSine,
+              duration: Duration(milliseconds: 200),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(selected ? 16 : 28),
                 color: selected ? Theme.of(context).buttonTheme.colorScheme!.primary : Color(0xff363940),

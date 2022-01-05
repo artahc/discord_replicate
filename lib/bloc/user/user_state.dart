@@ -8,11 +8,7 @@ part 'user_state.freezed.dart';
 @freezed
 class UserState with _$UserState {
   const factory UserState.initial() = UserStateInitial;
-
-  const factory UserState.loadRecentPrivateRoomInProgress() = UserStateLoadRecentPrivateRoomInProgress;
-  const factory UserState.loadRecentPrivateRoomSuccess(List<Room> rooms, Room recentRoom) = UserStateLoadRecentPrivateRoomSuccess;
-
-  const factory UserState.loadLocalUserInProgress() = UserStateLoadLocalUserInProgress;
-  const factory UserState.loadLocalUserSuccess(User user) = UserStateLoadLocalUserSuccess;
-  const factory UserState.loadLocalUserFailed() = UserStateLoadLocalUserFailed;
+  const factory UserState.loadUserInProgress() = UserStateLoadLocalUserInProgress;
+  const factory UserState.loadUserSuccess(User user) = UserStateLoadLocalUserSuccess;
+  const factory UserState.loadUserFailed() = UserStateLoadLocalUserFailed;
 }

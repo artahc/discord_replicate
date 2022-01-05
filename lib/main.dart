@@ -39,29 +39,44 @@ class _MainState extends State<Main> {
   final String url = "http://localhost:4000";
   final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey();
 
-  late AuthService authService = FirebaseAuthService();
+  late AuthService authService;
 
   // Helper Class
-  late GraphQLClientHelper client = GraphQLClientHelper(url: url, tokenProvider: authService.getCredential);
-  late HiveDatabaseHelper db = HiveDatabaseHelper();
+  late GraphQLClientHelper client;
+  late HiveDatabaseHelper db;
 
   // Repository
-  late UserRepository userRepository = UserRepository(apiClient: client, database: db);
-  late ServerRepository serverRepository = ServerRepository(apiClient: client, database: db);
-  late RoomRepository roomRepository = RoomRepository(apiClient: client, database: db);
-  late ActivityRepository activityRepository = ActivityRepository();
+  late UserRepository userRepository;
+  late ServerRepository serverRepository;
+  late RoomRepository roomRepository;
+  // late ActivityRepository activityRepository = ActivityRepository();
 
   // Bloc
-  late ServerBloc serverBloc = ServerBloc(serverRepository: serverRepository);
-  late AuthBloc authBloc = AuthBloc(authService: authService, userRepo: userRepository);
-  late UserBloc userBloc = UserBloc(userRepo: userRepository, authService: authService, serverRepo: serverRepository);
+  late AuthBloc authBloc;
+  late UserBloc userBloc;
+  late ServerBloc serverBloc;
 
-  late NavigationCubit navBloc = NavigationCubit(navigator: rootNavigatorKey, authBloc: authBloc);
-  late RoomBloc roomBloc = RoomBloc(roomRepo: roomRepository, userRepo: userRepository, serverBloc: serverBloc, userBloc: userBloc);
+  late NavigationCubit navBloc;
+  late RoomBloc roomBloc;
 
   @override
   void initState() {
     super.initState();
+    authService = FirebaseAuthService();
+
+    client = GraphQLClientHelper(url: url, tokenProvider: authService.getCredential);
+    db = HiveDatabaseHelper();
+
+    userRepository = UserRepository(apiClient: client, database: db);
+    serverRepository = ServerRepository(apiClient: client, database: db);
+    roomRepository = RoomRepository(apiClient: client, database: db);
+
+    authBloc = AuthBloc(authService: authService);
+    userBloc = UserBloc(userRepo: userRepository, authService: authService, serverRepo: serverRepository, authBloc: authBloc);
+    serverBloc = ServerBloc(serverRepository: serverRepository, userBloc: userBloc);
+
+    navBloc = NavigationCubit(navigator: rootNavigatorKey, authBloc: authBloc);
+    roomBloc = RoomBloc(roomRepo: roomRepository, userRepo: userRepository, serverBloc: serverBloc, userBloc: userBloc);
   }
 
   @override

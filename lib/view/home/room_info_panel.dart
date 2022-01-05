@@ -1,9 +1,13 @@
 import 'package:discord_replicate/external/app_icon.dart';
+import 'package:discord_replicate/model/room.dart';
+import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
 
 class RoomInfoPanel extends StatelessWidget {
+  const RoomInfoPanel({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -20,9 +24,148 @@ class RoomInfoPanel extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    _ConversationInfoHeader(),
-                    _ConversationInfoMenus(),
-                    _ConversationInfoMember(),
+                    Container(
+                      color: Theme.of(context).colorScheme.primary,
+                      alignment: Alignment.center,
+                      height: 55,
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "# general",
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                          ),
+                          ImageIcon(
+                            AssetImage(AppIcons.more_icon),
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Theme.of(context).colorScheme.primary,
+                      margin: EdgeInsets.only(top: 2),
+                      padding: EdgeInsets.only(top: 14, bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Wrap(
+                              spacing: 7,
+                              direction: Axis.vertical,
+                              runAlignment: WrapAlignment.center,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                ImageIcon(
+                                  AssetImage(AppIcons.phone_icon),
+                                  size: 18,
+                                ),
+                                Text(
+                                  "Call",
+                                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Wrap(
+                              spacing: 7,
+                              direction: Axis.vertical,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              runAlignment: WrapAlignment.center,
+                              children: [
+                                ImageIcon(
+                                  AssetImage(AppIcons.video_icon),
+                                  size: 20,
+                                ),
+                                Text(
+                                  "Video",
+                                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Wrap(
+                              spacing: 7,
+                              direction: Axis.vertical,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              runAlignment: WrapAlignment.center,
+                              children: [
+                                ImageIcon(
+                                  AssetImage(AppIcons.notification_icon),
+                                  size: 20,
+                                ),
+                                Text(
+                                  "Notification",
+                                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Wrap(
+                              spacing: 7,
+                              direction: Axis.vertical,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              runAlignment: WrapAlignment.center,
+                              children: [
+                                ImageIcon(
+                                  AssetImage(AppIcons.search_icon),
+                                  size: 20,
+                                ),
+                                Text(
+                                  "Search",
+                                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: CustomListView<User>(
+                          elements: List.generate(15, (index) => User.dummy()),
+                          builder: (_, user, index) {
+                            return RoomMemberTile(user: user);
+                          },
+                          before: [
+                            AppMaterialButton(
+                              size: Size(double.infinity, 60),
+                              onPressed: () {},
+                              highlightColor: Theme.of(context).colorScheme.primary,
+                              splashColor: Theme.of(context).colorScheme.primary,
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.zero,
+                              childAlignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  CircleContainer(
+                                    size: Size(35, 35),
+                                    margin: const EdgeInsets.symmetric(horizontal: 15),
+                                    color: Theme.of(context).colorScheme.primary,
+                                    child: Icon(
+                                      Icons.person_add,
+                                      size: 17,
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Invite Members  ",
+                                    style: Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -34,151 +177,10 @@ class RoomInfoPanel extends StatelessWidget {
   }
 }
 
-class _ConversationInfoHeader extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.primary,
-      alignment: Alignment.center,
-      height: 55,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text(
-              "# general",
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-          ImageIcon(
-            AssetImage(AppIcons.more_icon),
-            size: 18,
-          ),
-        ],
-      ),
-    );
-  }
-}
+class RoomMemberTile extends StatelessWidget {
+  final User user;
 
-class _ConversationInfoMenus extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.primary,
-      margin: EdgeInsets.only(top: 2),
-      padding: EdgeInsets.only(top: 14, bottom: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Wrap(
-              spacing: 7,
-              direction: Axis.vertical,
-              runAlignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                ImageIcon(
-                  AssetImage(AppIcons.phone_icon),
-                  size: 18,
-                ),
-                Text(
-                  "Call",
-                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Wrap(
-              spacing: 7,
-              direction: Axis.vertical,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              runAlignment: WrapAlignment.center,
-              children: [
-                ImageIcon(
-                  AssetImage(AppIcons.video_icon),
-                  size: 20,
-                ),
-                Text(
-                  "Video",
-                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Wrap(
-              spacing: 7,
-              direction: Axis.vertical,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              runAlignment: WrapAlignment.center,
-              children: [
-                ImageIcon(
-                  AssetImage(AppIcons.notification_icon),
-                  size: 20,
-                ),
-                Text(
-                  "Notification",
-                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Wrap(
-              spacing: 7,
-              direction: Axis.vertical,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              runAlignment: WrapAlignment.center,
-              children: [
-                ImageIcon(
-                  AssetImage(AppIcons.search_icon),
-                  size: 20,
-                ),
-                Text(
-                  "Search",
-                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-@immutable
-class ChannelMemberData {
-  final String name;
-
-  ChannelMemberData({required this.name});
-  factory ChannelMemberData.createDummy() => ChannelMemberData(name: "Channel Member");
-}
-
-class _ConversationInfoMember extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-          child: CustomListView<ChannelMemberData>(
-        elements: List.generate(15, (index) => ChannelMemberData.createDummy()),
-        builder: (context, data, index) {
-          return _ChannelMemberTile(
-            channelMemberData: data,
-          );
-        },
-        before: [_ChannelInfoInviteButton()],
-      )),
-    );
-  }
-}
-
-class _ChannelMemberTile extends StatelessWidget {
-  final ChannelMemberData channelMemberData;
-
-  const _ChannelMemberTile({Key? key, required this.channelMemberData}) : super(key: key);
+  const RoomMemberTile({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +202,7 @@ class _ChannelMemberTile extends StatelessWidget {
             direction: Axis.vertical,
             children: [
               Text(
-                "Channel Member Data",
+                user.name,
                 style: Theme.of(context).textTheme.bodyText2,
               ),
               Text(
@@ -211,39 +213,6 @@ class _ChannelMemberTile extends StatelessWidget {
               ),
             ],
           )
-        ],
-      ),
-    );
-  }
-}
-
-class _ChannelInfoInviteButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return AppMaterialButton(
-      size: Size(double.infinity, 60),
-      onPressed: () {},
-      highlightColor: Theme.of(context).colorScheme.primary,
-      splashColor: Theme.of(context).colorScheme.primary,
-      color: Colors.transparent,
-      borderRadius: BorderRadius.zero,
-      childAlignment: Alignment.centerLeft,
-      child: Row(
-        children: [
-          CircleContainer(
-            size: Size(35, 35),
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            color: Theme.of(context).colorScheme.primary,
-            child: Icon(
-              Icons.person_add,
-              size: 17,
-              color: Theme.of(context).iconTheme.color,
-            ),
-          ),
-          Text(
-            "Invite Members  ",
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
         ],
       ),
     );

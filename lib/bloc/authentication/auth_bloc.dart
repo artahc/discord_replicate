@@ -16,9 +16,9 @@ enum RegisterOptions { Phone, Email }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService authService;
-  final UserRepository userRepo;
+  // final UserRepository userRepo;
 
-  AuthBloc({required this.authService, required this.userRepo}) : super(AuthStateInitial()) {
+  AuthBloc({required this.authService}) : super(AuthStateInitial()) {
     on<AuthEvent>((event, emit) => _handleEvent(event, emit));
   }
 
@@ -36,32 +36,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (credential == null)
       emit(AuthState.signedOut());
     else {
-      await userRepo.load(credential.uid).then((user) {
-        emit(AuthState.signedIn(credential: credential, user: user));
-      }).catchError((e) {
-        emit(AuthState.error(exception: e));
-      });
+      emit(AuthState.signedIn(credential: credential));
     }
   }
 
   _signIn(id, password, emit) async {
     emit(AuthState.signingIn());
     var credential = await authService.signIn(id, password);
-
-    await userRepo.load(credential.uid).then((user) async {
-      emit(AuthState.signedIn(credential: credential, user: user));
-    }).onError((error, stackTrace) {
-      emit(AuthState.error(exception: error as Exception));
-    });
+    emit(AuthState.signedIn(credential: credential));
   }
 
   _signUp(id, option, emit) async {
     switch (option) {
       case RegisterOptions.Email:
         var credential = await authService.signUpEmail(id);
-        var user = await userRepo.load(credential.uid);
-
-        // emit(AuthState.signedIn(credential: credential, user: user));
+        emit(AuthState.signedIn(credential: credential));
         break;
       case RegisterOptions.Phone:
         emit(AuthState.error(exception: Exception("Sign up with phone number is not supported yet.")));

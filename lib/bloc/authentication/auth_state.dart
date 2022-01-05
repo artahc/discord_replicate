@@ -8,7 +8,7 @@ part 'auth_state.freezed.dart';
 class AuthState with _$AuthState {
   const factory AuthState.initial() = AuthStateInitial;
   const factory AuthState.signingIn() = AuthStateSigningIn;
-  const factory AuthState.signedIn({required Credential credential, required User user}) = AuthStateSignedIn;
+  const factory AuthState.signedIn({required Credential credential}) = AuthStateSignedIn;
   const factory AuthState.signedOut() = AuthStateSignedOut;
   const factory AuthState.error({required Exception exception}) = AuthStateError;
 }
