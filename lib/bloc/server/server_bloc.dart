@@ -14,6 +14,9 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
 
   late StreamSubscription _userStateSubscription;
 
+  StreamController<ServerEvent> _eventStream = StreamController.broadcast();
+  Stream<ServerEvent> get eventStream => _eventStream.stream;
+
   ServerBloc({required ServerRepository serverRepository, required UserBloc userBloc})
       : _serverRepo = serverRepository,
         _userBloc = userBloc,
@@ -31,8 +34,15 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   }
 
   @override
+  void onEvent(ServerEvent event) {
+    _eventStream.sink.add(event);
+    super.onEvent(event);
+  }
+
+  @override
   Future<void> close() async {
     _userStateSubscription.cancel();
+    _eventStream.close();
     return super.close();
   }
 

@@ -4,7 +4,7 @@ import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/model/room.dart';
 import 'package:discord_replicate/view/home/message_tile.dart';
-import 'package:discord_replicate/view/home/room_view.dart';
+import 'package:discord_replicate/view/home/landing_view.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,15 +19,17 @@ class RoomMessagePanel extends StatefulWidget {
 class _RoomMessagePanelState extends State<RoomMessagePanel> {
   @override
   Widget build(BuildContext context) {
-    var pageController = context.findAncestorStateOfType<RoomViewState>()?.controller;
+    var pageController = context.findAncestorStateOfType<LandingViewState>()?.controller;
 
     return BlocBuilder<RoomBloc, RoomState>(
       builder: (_, state) {
         return state.maybeWhen(
           orElse: () {
-            return Container(
-              child: CircularProgressIndicator(
-                color: Colors.white,
+            return Center(
+              child: Container(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
               ),
             );
           },

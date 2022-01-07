@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/room/room_bloc.dart';
 import 'package:discord_replicate/bloc/room/room_event.dart';
 import 'package:discord_replicate/bloc/room/room_state.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
+import 'package:discord_replicate/bloc/server/server_event.dart';
 import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
@@ -19,21 +21,28 @@ import 'package:discord_replicate/view/home/server_list_panel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
-class RoomView extends StatefulWidget {
-  const RoomView({Key? key}) : super(key: key);
+class LandingView extends StatefulWidget {
+  const LandingView({Key? key}) : super(key: key);
 
   @override
-  RoomViewState createState() => RoomViewState();
+  LandingViewState createState() => LandingViewState();
 }
 
-class RoomViewState extends State<RoomView> with TickerProviderStateMixin {
+class LandingViewState extends State<LandingView> with TickerProviderStateMixin {
   late OverlapSwipeableStackController _roomViewController = OverlapSwipeableStackController(vsync: this);
+
+  late ServerBloc _serverBloc;
+  late DirectMessageBloc _dmBloc;
 
   OverlapSwipeableStackController get controller => _roomViewController;
 
   @override
   void initState() {
+    _serverBloc = BlocProvider.of<ServerBloc>(context);
+    _dmBloc = BlocProvider.of<DirectMessageBloc>(context);
+
     super.initState();
   }
 
@@ -60,12 +69,6 @@ class RoomViewState extends State<RoomView> with TickerProviderStateMixin {
               );
             },
             loadUserSuccess: (user) {
-              var servers = user.servers;
-              var privateRooms = user.privateRooms;
-              var recentRoom = user.privateRooms.first;
-              var recentServer = user.servers.first;
-              var showServer = false;
-
               return WillPopScope(
                 onWillPop: () async {
                   return Future.value(true);
@@ -78,14 +81,32 @@ class RoomViewState extends State<RoomView> with TickerProviderStateMixin {
                         frontPage: RoomMessagePanel(),
                         leftPage: Row(
                           children: [
-                            ServerListPanel(servers: servers),
-                            Visibility(
-                              visible: showServer,
-                              child: ChannelListPanel(server: recentServer),
-                            ),
-                            Visibility(
-                              visible: !showServer,
-                              child: DirectMessageListPanel(privateRooms: privateRooms),
+                            ServerListPanel(servers: user.servers),
+                            StreamBuilder(
+                              initialData: DirectMessageEvent.load(user.privateRooms.first.id),
+                              stream: MergeStream([_dmBloc.eventStream, _serverBloc.eventStream]),
+                              builder: (_, snapshot) {
+                                if (snapshot.data is ServerEvent) {
+                                  return BlocBuilder<ServerBloc, ServerState>(
+                                    builder: (_, serverState) {
+                                      return serverState.maybeWhen(
+                                        orElse: () {
+                                          return Center(
+                                            child: Container(
+                                              child: CircularProgressIndicator(color: Colors.white),
+                                            ),
+                                          );
+                                        },
+                                        loadServerSuccess: (server, recentChannel) {
+                                          return ChannelListPanel(server: server);
+                                        },
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return DirectMessageListPanel(privateRooms: user.privateRooms);
+                                }
+                              },
                             ),
                           ],
                         ),

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:math';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
+import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/room/room_bloc.dart';
 import 'package:discord_replicate/bloc/room/room_event.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
@@ -30,16 +32,22 @@ class ServerListPanel extends StatefulWidget {
 class _ServerListPanelState extends State<ServerListPanel> {
   Server? _selectedServer;
 
-  late ServerBloc _serverBloc = BlocProvider.of<ServerBloc>(context);
-  late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+  late ServerBloc _serverBloc;
+  late DirectMessageBloc _dmBloc;
 
   @override
   void initState() {
     super.initState();
+
+    _serverBloc = BlocProvider.of<ServerBloc>(context);
+    _dmBloc = BlocProvider.of<DirectMessageBloc>(context);
   }
 
   void _select(Server? server) {
-    if (server != null) _serverBloc.add(ServerEvent.loadServer(server.id));
+    if (server != null)
+      _serverBloc.add(ServerEvent.loadServer(server.id));
+    else
+      _dmBloc.add(DirectMessageEvent.load("someid"));
 
     setState(() {
       this._selectedServer = server;

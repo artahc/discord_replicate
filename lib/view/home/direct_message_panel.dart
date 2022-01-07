@@ -33,14 +33,6 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
   @override
   void initState() {
     super.initState();
-    log(_userBloc.state.toString(), name: runtimeType.toString());
-  }
-
-  void _onUserLoaded(User user) {
-    setState(() {
-      _privateRooms = user.privateRooms;
-      _currentRoom = user.privateRooms.last;
-    });
   }
 
   @override

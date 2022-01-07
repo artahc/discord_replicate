@@ -1,3 +1,4 @@
+import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/room/room_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
@@ -55,7 +56,7 @@ class _MainState extends State<Main> {
   late AuthBloc authBloc;
   late UserBloc userBloc;
   late ServerBloc serverBloc;
-
+  late DirectMessageBloc dmBloc;
   late NavigationCubit navBloc;
   late RoomBloc roomBloc;
 
@@ -74,7 +75,7 @@ class _MainState extends State<Main> {
     authBloc = AuthBloc(authService: authService);
     userBloc = UserBloc(userRepo: userRepository, authService: authService, serverRepo: serverRepository, authBloc: authBloc);
     serverBloc = ServerBloc(serverRepository: serverRepository, userBloc: userBloc);
-
+    dmBloc = DirectMessageBloc();
     navBloc = NavigationCubit(navigator: rootNavigatorKey, authBloc: authBloc);
     roomBloc = RoomBloc(roomRepo: roomRepository, userRepo: userRepository, serverBloc: serverBloc, userBloc: userBloc);
   }
@@ -88,6 +89,7 @@ class _MainState extends State<Main> {
         BlocProvider<NavigationCubit>(create: (c) => navBloc),
         BlocProvider<UserBloc>(create: (c) => userBloc),
         BlocProvider<RoomBloc>(create: (c) => roomBloc),
+        BlocProvider<DirectMessageBloc>(create: (c) => dmBloc),
       ],
       child: MaterialApp(
         navigatorKey: rootNavigatorKey,

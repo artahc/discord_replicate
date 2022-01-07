@@ -44,8 +44,6 @@ class UserQuery {
       }
     }
   """;
-
-  // factory UserQuery.loadUserById(String uid) = Query();
 }
 
 class UserRepository with ExceptionMapperMixin {

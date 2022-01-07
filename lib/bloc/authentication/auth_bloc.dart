@@ -16,7 +16,6 @@ enum RegisterOptions { Phone, Email }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService authService;
-  // final UserRepository userRepo;
 
   AuthBloc({required this.authService}) : super(AuthStateInitial()) {
     on<AuthEvent>((event, emit) => _handleEvent(event, emit));

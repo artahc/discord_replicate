@@ -1,4 +1,4 @@
-import 'package:discord_replicate/view/home/room_view.dart';
+import 'package:discord_replicate/view/home/landing_view.dart';
 import 'package:discord_replicate/view/splash_screen/splash_screen_view.dart';
 import 'package:discord_replicate/view/welcome/login_view.dart';
 import 'package:discord_replicate/view/welcome/register_view.dart';
@@ -25,7 +25,7 @@ class Routes {
       case Routes.login:
         return MaterialPageRoute(builder: (_) => const LoginView());
       case Routes.landing:
-        return MaterialPageRoute(builder: (_) => const RoomView());
+        return MaterialPageRoute(builder: (_) => const LandingView());
       default:
         return MaterialPageRoute(builder: (_) => const WelcomeView());
     }
