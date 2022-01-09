@@ -4,7 +4,7 @@ import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
-import 'package:discord_replicate/model/room.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
@@ -15,20 +15,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DirectMessageListPanel extends StatefulWidget {
-  final List<Room> privateRooms;
+  final List<Channel> privateRooms;
 
-  const DirectMessageListPanel({Key? key, this.privateRooms = const <Room>[]}) : super(key: key);
+  const DirectMessageListPanel({Key? key, this.privateRooms = const <Channel>[]}) : super(key: key);
 
   @override
   _DirectMessageListState createState() => _DirectMessageListState();
 }
 
 class _DirectMessageListState extends State<DirectMessageListPanel> {
-  late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
-
-  List<Room> _privateRooms = <Room>[];
-  Room? _currentRoom;
 
   @override
   void initState() {
@@ -105,12 +101,12 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                         behavior: ClampingScrollBehavior(),
                         child: ListView.builder(
                           clipBehavior: Clip.antiAlias,
-                          itemCount: _privateRooms.length,
+                          itemCount: user.privateRooms.length,
                           itemBuilder: (_, index) {
                             return ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: DirectMessageTile(
-                                room: _privateRooms[index],
+                                room: user.privateRooms[index],
                               ),
                             );
                           },

@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
+import 'package:discord_replicate/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/bloc/user/user_state.dart';
 import 'package:discord_replicate/model/credential.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
@@ -21,8 +23,10 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late TextEditingController _identityCtrl = TextEditingController();
   late TextEditingController _passwordCtrl = TextEditingController();
+
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
+  late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
 
   @override
   void initState() {
@@ -44,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
     _authBloc.add(AuthEvent.signInEvent(id: id, password: password));
   }
 
-  void _onSignedIn() {
+  void _onUserLoaded() {
     SchedulerBinding.instance?.addPostFrameCallback((_) {
       _navBloc.pushNamedAndRemoveUntil(context, Routes.landing, (route) => false, true);
     });
@@ -57,25 +61,48 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-        bloc: _authBloc,
-        listener: (_, state) {
-          state.whenOrNull(
-            error: (exception) {
-              log("Error when logging in.", error: exception, name: this.runtimeType.toString());
-            },
-            signedIn: (credential) {
-              _onSignedIn();
-            },
-          );
-        },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthBloc, AuthState>(
+          listener: (_, state) {
+            state.whenOrNull(
+              signingIn: () {
+                log("Authenticating...", name: runtimeType.toString());
+              },
+              signedIn: (user) {
+                log("User authenticated.", name: runtimeType.toString());
+              },
+            );
+          },
+        ),
+        BlocListener<UserBloc, UserState>(
+          listener: (_, state) {
+            state.whenOrNull(
+              loadUserSuccess: (user) {
+                log("User loaded.", name: runtimeType.toString());
+                _onUserLoaded();
+              },
+            );
+          },
+        ),
+      ],
+      child: BlocBuilder<UserBloc, UserState>(
+        bloc: _userBloc,
         builder: (_, state) {
           return state.maybeWhen(
-            signingIn: () {
-              return Scaffold(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                body: Center(
-                  child: CircularProgressIndicator(),
+            loadUserInProgress: () {
+              return Material(
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            },
+            loadUserSuccess: (user) {
+              return Material(
+                child: Center(
+                  child: Text("Redirecting you to landing page."),
                 ),
               );
             },
@@ -181,6 +208,8 @@ class _LoginViewState extends State<LoginView> {
           //     ),
           //   );
           // else
-        });
+        },
+      ),
+    );
   }
 }

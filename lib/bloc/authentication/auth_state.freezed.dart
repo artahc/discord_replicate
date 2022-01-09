@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'auth_state.dart';
@@ -415,12 +416,13 @@ class _$AuthStateSignedIn implements AuthStateSignedIn {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is AuthStateSignedIn &&
-            (identical(other.credential, credential) ||
-                other.credential == credential));
+            const DeepCollectionEquality()
+                .equals(other.credential, credential));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, credential);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(credential));
 
   @JsonKey(ignore: true)
   @override
@@ -690,12 +692,12 @@ class _$AuthStateError implements AuthStateError {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is AuthStateError &&
-            (identical(other.exception, exception) ||
-                other.exception == exception));
+            const DeepCollectionEquality().equals(other.exception, exception));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, exception);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(exception));
 
   @JsonKey(ignore: true)
   @override

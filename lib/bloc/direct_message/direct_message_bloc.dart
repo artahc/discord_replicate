@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:discord_replicate/model/room.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -16,7 +16,7 @@ abstract class DirectMessageEvent with _$DirectMessageEvent {
 abstract class DirectMessageState with _$DirectMessageState {
   const factory DirectMessageState.initial() = DirectMessageStateInitial;
   const factory DirectMessageState.loadInProgress() = DirectMessageStateLoadInProgress;
-  const factory DirectMessageState.loadSuccess(Room room) = DirectMessageStateLoadSuccess;
+  const factory DirectMessageState.loadSuccess(Channel room) = DirectMessageStateLoadSuccess;
   const factory DirectMessageState.loadFailed(Exception e) = DirectMessageStateLoadFailed;
 }
 
@@ -42,7 +42,7 @@ class DirectMessageBloc extends Bloc<DirectMessageEvent, DirectMessageState> {
 
   _load(String id, emit) async {
     emit(DirectMessageState.loadInProgress());
-    await Future.delayed(Duration(seconds: 3)).then((value) => emit(DirectMessageState.loadSuccess(Room.dummy())));
+    await Future.delayed(Duration(seconds: 3)).then((value) => emit(DirectMessageState.loadSuccess(Channel.dummy())));
   }
 
   _handleEvent(DirectMessageEvent event, emit) async {

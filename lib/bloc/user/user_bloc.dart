@@ -35,8 +35,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     _authStateSubscription = _authBloc.stream.listen((state) {
       state.whenOrNull(
         signedIn: (credential) {
-          log("Adding UserEvent.loadLocalUser in response to AuthState.signedIn");
+          log("Load local user after sign-in", name: runtimeType.toString());
           add(UserEvent.loadLocalUser());
+        },
+        signedOut: () {
+          log("Delete local user after sign-out", name: runtimeType.toString());
+          add(UserEvent.deleteLocalUser());
         },
       );
     });
@@ -58,9 +62,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
         emit(UserState.loadUserSuccess(user));
       }).catchError((e) {
+        print(e);
         emit(UserState.loadUserFailed());
       });
     }
+  }
+
+  _deleteLocalUser(emit) async {
+    emit(UserState.initial());
   }
 
   _loadUser(String uid, emit) async {}
@@ -68,6 +77,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future _handleEvent(UserEvent event, emit) async {
     return await event.when<Future>(
       loadLocalUser: () => _loadLocalUser(emit),
+      deleteLocalUser: () => _deleteLocalUser(emit),
       loadUser: (String uid) => _loadUser(uid, emit),
     );
   }

@@ -1,13 +1,21 @@
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/model/room.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RoomInfoPanel extends StatelessWidget {
-  const RoomInfoPanel({Key? key}) : super(key: key);
+class ChannelInfoPanel extends StatefulWidget {
+  final Channel room;
 
+  const ChannelInfoPanel({Key? key, required this.room}) : super(key: key);
+
+  @override
+  State<ChannelInfoPanel> createState() => _ChannelInfoPanelState();
+}
+
+class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -34,7 +42,7 @@ class RoomInfoPanel extends StatelessWidget {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              "# general",
+                              widget.room.name,
                               style: Theme.of(context).textTheme.headline6,
                             ),
                           ),

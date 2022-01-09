@@ -1,9 +1,9 @@
-import 'package:discord_replicate/model/room.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 
 class DirectMessageTile extends StatelessWidget {
-  final Room room;
+  final Channel room;
 
   DirectMessageTile({required this.room});
 

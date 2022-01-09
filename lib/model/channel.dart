@@ -1,21 +1,13 @@
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:discord_replicate/exception/custom_exception.dart';
-import 'package:discord_replicate/util/hive_database_helper.dart';
+import 'package:discord_replicate/model/message.dart';
+import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 part 'channel.g.dart';
-
-@HiveType(typeId: HiveConstants.CHANNEL_ACCESS_TYPE)
-enum ChannelAccess {
-  @HiveField(0)
-  PUBLIC,
-
-  @HiveField(1)
-  PRIVATE
-}
 
 @HiveType(typeId: HiveConstants.CHANNEL_TYPE)
 class Channel extends HiveObject with EquatableMixin {
@@ -26,34 +18,49 @@ class Channel extends HiveObject with EquatableMixin {
   final String name;
 
   @HiveField(2)
-  final String roomId;
+  final List<User> members;
 
   @HiveField(3)
-  final ChannelAccess access;
+  final List<Message> messages;
 
-  Channel({required this.id, required this.name, required this.roomId, required this.access});
+  Channel({
+    required this.id,
+    required this.name,
+    this.members = const <User>[],
+    this.messages = const <Message>[],
+  });
 
   factory Channel.dummy() {
     var random = Random().nextInt(1000);
     return Channel(
-      id: "id-$random",
-      name: "Channel $random",
-      roomId: "roomId-$random",
-      access: ChannelAccess.PRIVATE,
-      // category: "Text Channels",
+      id: "room-id-$random",
+      name: "room-name",
+      members: List.generate(15, (index) => User.dummy()),
+      messages: List.generate(15, (index) => Message.dummy()),
     );
   }
 
   factory Channel.fromJson(Map<String, dynamic> map) {
     try {
+      var id = map['id'] as String;
+      var name = map['name'] as String;
+
+      var members = <User>[];
+      if (map.containsKey('members') && (map['members'] as List<Object?>).isNotEmpty)
+        members = (map['members'] as List<Object?>).map((e) => User.fromJson(e as Map<String, dynamic>)).toList();
+
+      var messages = <Message>[];
+      if (map.containsKey('messages') && (map['messages'] as List<Object?>).isNotEmpty)
+        messages = (map['messages'] as List<Object?>).map((e) => Message.fromJson(e as Map<String, dynamic>)).toList();
+
       return Channel(
-        id: map['id'],
-        name: map['name'],
-        roomId: map['room']['id'],
-        access: ChannelAccess.values.where((e) => e.name == map['access']).first,
+        id: id,
+        name: name,
+        members: members,
+        messages: messages,
       );
     } catch (e) {
-      throw ParsingException("Error when parsing Channel from JSON", payload: map, source: e);
+      throw ParsingException("Error when parsing Room from JSON.", payload: map, source: e);
     }
   }
 
@@ -61,8 +68,8 @@ class Channel extends HiveObject with EquatableMixin {
     return {
       "id": id,
       "name": name,
-      "roomId": roomId,
-      "access": access.name,
+      "members": members,
+      "messages": messages,
     };
   }
 
@@ -72,5 +79,5 @@ class Channel extends HiveObject with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [id, name, roomId, access];
+  List<Object?> get props => [id, name];
 }

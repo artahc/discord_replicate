@@ -8,7 +8,7 @@ import 'package:discord_replicate/bloc/room/room_event.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
-import 'package:discord_replicate/model/room.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_event.dart';

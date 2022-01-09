@@ -7,4 +7,5 @@ class UserEvent with _$UserEvent {
 
   const factory UserEvent.loadUser(String uid) = UserEventLoadUser;
   const factory UserEvent.loadLocalUser() = UserEventLoadLocalUser;
+  const factory UserEvent.deleteLocalUser() = UserEventDeleteLocalUser;
 }

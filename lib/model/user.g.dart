@@ -8,7 +8,7 @@ part of 'user.dart';
 
 class UserAdapter extends TypeAdapter<User> {
   @override
-  final int typeId = 3;
+  final int typeId = 1;
 
   @override
   User read(BinaryReader reader) {
@@ -22,7 +22,7 @@ class UserAdapter extends TypeAdapter<User> {
       avatarUrl: fields[3] as String?,
       about: fields[2] as String?,
       servers: (fields[4] as List).cast<Server>(),
-      privateRooms: (fields[5] as List).cast<Room>(),
+      privateRooms: (fields[5] as List).cast<Channel>(),
     );
   }
 

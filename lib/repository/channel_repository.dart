@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
-import 'package:discord_replicate/model/room.dart';
-import 'package:discord_replicate/util/graphql_client_helper.dart';
-import 'package:discord_replicate/util/hive_database_helper.dart';
+import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/service/graphql_client_helper.dart';
+import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:rxdart/rxdart.dart';
 
-class RoomQuery {
-  RoomQuery._();
+class ChannelQuery {
+  ChannelQuery._();
 
   static final String loadById = r"""
     query Room($id: String!, $messageLimit: Int, $memberLimit: Int) {
@@ -33,20 +33,20 @@ class RoomQuery {
   """;
 }
 
-class RoomRepository with ExceptionMapperMixin {
+class ChannelRepository with ExceptionMapperMixin {
   static const String BOX_NAME = "room";
 
   GraphQLClientHelper _api;
-  HiveDatabaseHelper _db;
+  HiveDatabaseService _db;
 
-  RoomRepository({
+  ChannelRepository({
     required GraphQLClientHelper apiClient,
-    required HiveDatabaseHelper database,
+    required HiveDatabaseService database,
   })  : _api = apiClient,
         _db = database;
 
-  Future<Room> load(String id) async {
-    var query = RoomQuery.loadById;
+  Future<Channel> load(String id) async {
+    var query = ChannelQuery.loadById;
     var variables = {
       "id": id,
       "messageLimit": 2,
@@ -54,10 +54,10 @@ class RoomRepository with ExceptionMapperMixin {
     };
     var remote = LazyStream(() {
       return _api.query(query, variables: variables).then((json) {
-        var room = Room.fromJson(json['room']);
+        var channel = Channel.fromJson(json['room']);
         //todo: save into local database
         log("Room retrieved from remote API. $json", name: runtimeType.toString());
-        return room;
+        return channel;
       }).asStream();
     });
 

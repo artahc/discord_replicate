@@ -8,7 +8,7 @@ part of 'channel.dart';
 
 class ChannelAdapter extends TypeAdapter<Channel> {
   @override
-  final int typeId = 5;
+  final int typeId = 2;
 
   @override
   Channel read(BinaryReader reader) {

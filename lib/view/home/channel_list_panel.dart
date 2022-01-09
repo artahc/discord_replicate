@@ -1,11 +1,8 @@
-import 'package:discord_replicate/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChannelListPanel extends StatefulWidget {
   final Server server;

@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'auth_event.dart';
@@ -285,13 +286,15 @@ class _$AuthEventSignIn implements AuthEventSignIn {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is AuthEventSignIn &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.password, password) ||
-                other.password == password));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.password, password));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, password);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(password));
 
   @JsonKey(ignore: true)
   @override
@@ -440,12 +443,15 @@ class _$AuthEventSignUp implements AuthEventSignUp {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is AuthEventSignUp &&
-            (identical(other.option, option) || other.option == option) &&
-            (identical(other.id, id) || other.id == id));
+            const DeepCollectionEquality().equals(other.option, option) &&
+            const DeepCollectionEquality().equals(other.id, id));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, option, id);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(option),
+      const DeepCollectionEquality().hash(id));
 
   @JsonKey(ignore: true)
   @override

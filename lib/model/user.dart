@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/message.dart';
-import 'package:discord_replicate/model/room.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
-import 'package:discord_replicate/util/hive_database_helper.dart';
+import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
@@ -28,7 +28,7 @@ class User extends HiveObject with EquatableMixin {
   final List<Server> servers;
 
   @HiveField(5)
-  final List<Room> privateRooms;
+  final List<Channel> privateRooms;
 
   User({
     required this.uid,
@@ -36,7 +36,7 @@ class User extends HiveObject with EquatableMixin {
     required this.avatarUrl,
     required this.about,
     this.servers = const <Server>[],
-    this.privateRooms = const <Room>[],
+    this.privateRooms = const <Channel>[],
   });
 
   factory User.dummy() {
@@ -46,9 +46,23 @@ class User extends HiveObject with EquatableMixin {
       name: "name+$random",
       avatarUrl: "avatarUrl+$random",
       about: "about+$random",
-      servers: List.generate(10, (index) => Server.dummy()),
+      servers: [
+        Server(
+          id: "dummy_id$random",
+          imageUrl: "dummy",
+          name: "dummy",
+          channels: [
+            Channel(
+              id: "dummy_id_$random",
+              name: "room-name",
+              members: [User(uid: "uid", name: "name", avatarUrl: "avatarUrl", about: "about")],
+              messages: [Message.dummy()],
+            )
+          ],
+        ),
+      ],
       privateRooms: [
-        Room(
+        Channel(
           id: "dummy_id_$random",
           name: "room-name",
           members: [User(uid: "uid", name: "name", avatarUrl: "avatarUrl", about: "about")],
@@ -61,7 +75,7 @@ class User extends HiveObject with EquatableMixin {
   factory User.fromJson(Map<String, dynamic> map) {
     try {
       var servers = <Server>[];
-      var privateRooms = <Room>[];
+      var privateRooms = <Channel>[];
       var about = "";
 
       if (map.containsKey('servers') && (map['servers'] as List<Object?>).isNotEmpty) {
@@ -69,7 +83,7 @@ class User extends HiveObject with EquatableMixin {
       }
 
       if (map.containsKey('privateRooms') && (map['privateRooms'] as List<dynamic>).isNotEmpty) {
-        privateRooms = (map['privateRooms'] as List<dynamic>).map((e) => Room.fromJson(e as Map<String, dynamic>)).toList();
+        privateRooms = (map['privateRooms'] as List<dynamic>).map((e) => Channel.fromJson(e as Map<String, dynamic>)).toList();
       }
 
       if (map.containsKey('about')) about = map['about'] as String;

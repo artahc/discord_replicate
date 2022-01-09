@@ -4,12 +4,12 @@ import 'package:discord_replicate/bloc/room/room_event.dart';
 import 'package:discord_replicate/bloc/room/room_state.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/repository/room_repository.dart';
+import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RoomBloc extends Bloc<RoomEvent, RoomState> {
-  final RoomRepository _roomRepo;
+  final ChannelRepository _channelRepo;
   final UserRepository _userRepo;
 
   final ServerBloc _serverBloc;
@@ -18,8 +18,8 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
   late StreamSubscription _serverStateSubscription;
   late StreamSubscription _userStateSubscription;
 
-  RoomBloc({required RoomRepository roomRepo, required UserRepository userRepo, required ServerBloc serverBloc, required UserBloc userBloc})
-      : _roomRepo = roomRepo,
+  RoomBloc({required ChannelRepository channelRepo, required UserRepository userRepo, required ServerBloc serverBloc, required UserBloc userBloc})
+      : _channelRepo = channelRepo,
         _userRepo = userRepo,
         _serverBloc = serverBloc,
         _userBloc = userBloc,
@@ -40,14 +40,14 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
     _serverStateSubscription = _serverBloc.stream.listen((state) {
       state.whenOrNull(
         loadServerSuccess: (server, recentChannel) {
-          add(RoomEvent.loadRoom(recentChannel.roomId));
+          add(RoomEvent.loadRoom(recentChannel.id));
         },
       );
     });
   }
 
   Future _loadRoom(String id, emit) async {
-    await _roomRepo.load(id).then((room) {
+    await _channelRepo.load(id).then((room) {
       emit(RoomState.loadRoomSuccess(room));
     });
   }

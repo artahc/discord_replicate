@@ -1,20 +1,17 @@
 import 'dart:developer';
 
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
-import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/room/room_bloc.dart';
-import 'package:discord_replicate/bloc/room/room_event.dart';
 import 'package:discord_replicate/bloc/room/room_state.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_event.dart';
 import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
-import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/view/home/channel_list_panel.dart';
 import 'package:discord_replicate/view/home/direct_message_panel.dart';
 import 'package:discord_replicate/view/home/navigation_bar.dart';
-import 'package:discord_replicate/view/home/room_info_panel.dart';
+import 'package:discord_replicate/view/home/channel_info_panel.dart';
 import 'package:discord_replicate/view/home/message_panel.dart';
 import 'package:discord_replicate/widgets/overlap_swipeable_stack.dart';
 import 'package:discord_replicate/view/home/server_list_panel.dart';
@@ -78,7 +75,8 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                     children: [
                       OverlapSwipeableStack(
                         channelViewController: _roomViewController,
-                        frontPage: RoomMessagePanel(),
+
+                        // Server List, Direct Message Panel, and Channel List Panel.
                         leftPage: Row(
                           children: [
                             ServerListPanel(servers: user.servers),
@@ -110,8 +108,45 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                             ),
                           ],
                         ),
-                        rightPage: RoomInfoPanel(),
+
+                        // Message Panel
+                        frontPage: BlocBuilder<RoomBloc, RoomState>(
+                          builder: (_, state) {
+                            return state.maybeWhen(
+                              orElse: () {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                );
+                              },
+                              loadRoomSuccess: (room) {
+                                return RoomMessagePanel(room: room);
+                              },
+                            );
+                          },
+                        ),
+
+                        // Room or Channel Info Panel
+                        rightPage: BlocBuilder<RoomBloc, RoomState>(
+                          builder: (_, state) {
+                            return state.maybeWhen(
+                              orElse: () {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ),
+                                );
+                              },
+                              loadRoomSuccess: (room) {
+                                return ChannelInfoPanel(room: room);
+                              },
+                            );
+                          },
+                        ),
                       ),
+
+                      // Navigation Bar
                       Positioned(
                         left: 0,
                         right: 0,

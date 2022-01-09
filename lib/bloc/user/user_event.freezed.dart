@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'user_event.dart';
@@ -26,6 +27,10 @@ class _$UserEventTearOff {
   UserEventLoadLocalUser loadLocalUser() {
     return const UserEventLoadLocalUser();
   }
+
+  UserEventDeleteLocalUser deleteLocalUser() {
+    return const UserEventDeleteLocalUser();
+  }
 }
 
 /// @nodoc
@@ -37,18 +42,21 @@ mixin _$UserEvent {
   TResult when<TResult extends Object?>({
     required TResult Function(String uid) loadUser,
     required TResult Function() loadLocalUser,
+    required TResult Function() deleteLocalUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
+    TResult Function()? deleteLocalUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
+    TResult Function()? deleteLocalUser,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -56,18 +64,21 @@ mixin _$UserEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(UserEventLoadUser value) loadUser,
     required TResult Function(UserEventLoadLocalUser value) loadLocalUser,
+    required TResult Function(UserEventDeleteLocalUser value) deleteLocalUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
+    TResult Function(UserEventDeleteLocalUser value)? deleteLocalUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
+    TResult Function(UserEventDeleteLocalUser value)? deleteLocalUser,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -138,11 +149,12 @@ class _$UserEventLoadUser implements UserEventLoadUser {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is UserEventLoadUser &&
-            (identical(other.uid, uid) || other.uid == uid));
+            const DeepCollectionEquality().equals(other.uid, uid));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, uid);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(uid));
 
   @JsonKey(ignore: true)
   @override
@@ -154,6 +166,7 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   TResult when<TResult extends Object?>({
     required TResult Function(String uid) loadUser,
     required TResult Function() loadLocalUser,
+    required TResult Function() deleteLocalUser,
   }) {
     return loadUser(uid);
   }
@@ -163,6 +176,7 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
+    TResult Function()? deleteLocalUser,
   }) {
     return loadUser?.call(uid);
   }
@@ -172,6 +186,7 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
+    TResult Function()? deleteLocalUser,
     required TResult orElse(),
   }) {
     if (loadUser != null) {
@@ -185,6 +200,7 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   TResult map<TResult extends Object?>({
     required TResult Function(UserEventLoadUser value) loadUser,
     required TResult Function(UserEventLoadLocalUser value) loadLocalUser,
+    required TResult Function(UserEventDeleteLocalUser value) deleteLocalUser,
   }) {
     return loadUser(this);
   }
@@ -194,6 +210,7 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
+    TResult Function(UserEventDeleteLocalUser value)? deleteLocalUser,
   }) {
     return loadUser?.call(this);
   }
@@ -203,6 +220,7 @@ class _$UserEventLoadUser implements UserEventLoadUser {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
+    TResult Function(UserEventDeleteLocalUser value)? deleteLocalUser,
     required TResult orElse(),
   }) {
     if (loadUser != null) {
@@ -264,6 +282,7 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   TResult when<TResult extends Object?>({
     required TResult Function(String uid) loadUser,
     required TResult Function() loadLocalUser,
+    required TResult Function() deleteLocalUser,
   }) {
     return loadLocalUser();
   }
@@ -273,6 +292,7 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
+    TResult Function()? deleteLocalUser,
   }) {
     return loadLocalUser?.call();
   }
@@ -282,6 +302,7 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String uid)? loadUser,
     TResult Function()? loadLocalUser,
+    TResult Function()? deleteLocalUser,
     required TResult orElse(),
   }) {
     if (loadLocalUser != null) {
@@ -295,6 +316,7 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   TResult map<TResult extends Object?>({
     required TResult Function(UserEventLoadUser value) loadUser,
     required TResult Function(UserEventLoadLocalUser value) loadLocalUser,
+    required TResult Function(UserEventDeleteLocalUser value) deleteLocalUser,
   }) {
     return loadLocalUser(this);
   }
@@ -304,6 +326,7 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
+    TResult Function(UserEventDeleteLocalUser value)? deleteLocalUser,
   }) {
     return loadLocalUser?.call(this);
   }
@@ -313,6 +336,7 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(UserEventLoadUser value)? loadUser,
     TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
+    TResult Function(UserEventDeleteLocalUser value)? deleteLocalUser,
     required TResult orElse(),
   }) {
     if (loadLocalUser != null) {
@@ -324,4 +348,116 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
 
 abstract class UserEventLoadLocalUser implements UserEvent {
   const factory UserEventLoadLocalUser() = _$UserEventLoadLocalUser;
+}
+
+/// @nodoc
+abstract class $UserEventDeleteLocalUserCopyWith<$Res> {
+  factory $UserEventDeleteLocalUserCopyWith(UserEventDeleteLocalUser value,
+          $Res Function(UserEventDeleteLocalUser) then) =
+      _$UserEventDeleteLocalUserCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class _$UserEventDeleteLocalUserCopyWithImpl<$Res>
+    extends _$UserEventCopyWithImpl<$Res>
+    implements $UserEventDeleteLocalUserCopyWith<$Res> {
+  _$UserEventDeleteLocalUserCopyWithImpl(UserEventDeleteLocalUser _value,
+      $Res Function(UserEventDeleteLocalUser) _then)
+      : super(_value, (v) => _then(v as UserEventDeleteLocalUser));
+
+  @override
+  UserEventDeleteLocalUser get _value =>
+      super._value as UserEventDeleteLocalUser;
+}
+
+/// @nodoc
+
+class _$UserEventDeleteLocalUser implements UserEventDeleteLocalUser {
+  const _$UserEventDeleteLocalUser();
+
+  @override
+  String toString() {
+    return 'UserEvent.deleteLocalUser()';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is UserEventDeleteLocalUser);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String uid) loadUser,
+    required TResult Function() loadLocalUser,
+    required TResult Function() deleteLocalUser,
+  }) {
+    return deleteLocalUser();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String uid)? loadUser,
+    TResult Function()? loadLocalUser,
+    TResult Function()? deleteLocalUser,
+  }) {
+    return deleteLocalUser?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String uid)? loadUser,
+    TResult Function()? loadLocalUser,
+    TResult Function()? deleteLocalUser,
+    required TResult orElse(),
+  }) {
+    if (deleteLocalUser != null) {
+      return deleteLocalUser();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(UserEventLoadUser value) loadUser,
+    required TResult Function(UserEventLoadLocalUser value) loadLocalUser,
+    required TResult Function(UserEventDeleteLocalUser value) deleteLocalUser,
+  }) {
+    return deleteLocalUser(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(UserEventLoadUser value)? loadUser,
+    TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
+    TResult Function(UserEventDeleteLocalUser value)? deleteLocalUser,
+  }) {
+    return deleteLocalUser?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(UserEventLoadUser value)? loadUser,
+    TResult Function(UserEventLoadLocalUser value)? loadLocalUser,
+    TResult Function(UserEventDeleteLocalUser value)? deleteLocalUser,
+    required TResult orElse(),
+  }) {
+    if (deleteLocalUser != null) {
+      return deleteLocalUser(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class UserEventDeleteLocalUser implements UserEvent {
+  const factory UserEventDeleteLocalUser() = _$UserEventDeleteLocalUser;
 }

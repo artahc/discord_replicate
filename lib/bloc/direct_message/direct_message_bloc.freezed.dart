@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'direct_message_bloc.dart';
@@ -151,11 +152,12 @@ class _$DirectMessageEventLoad implements DirectMessageEventLoad {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is DirectMessageEventLoad &&
-            (identical(other.id, id) || other.id == id));
+            const DeepCollectionEquality().equals(other.id, id));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(id));
 
   @JsonKey(ignore: true)
   @override
@@ -243,7 +245,7 @@ class _$DirectMessageStateTearOff {
     return const DirectMessageStateLoadInProgress();
   }
 
-  DirectMessageStateLoadSuccess loadSuccess(Room room) {
+  DirectMessageStateLoadSuccess loadSuccess(Channel room) {
     return DirectMessageStateLoadSuccess(
       room,
     );
@@ -265,7 +267,7 @@ mixin _$DirectMessageState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loadInProgress,
-    required TResult Function(Room room) loadSuccess,
+    required TResult Function(Channel room) loadSuccess,
     required TResult Function(Exception e) loadFailed,
   }) =>
       throw _privateConstructorUsedError;
@@ -273,7 +275,7 @@ mixin _$DirectMessageState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
   }) =>
       throw _privateConstructorUsedError;
@@ -281,7 +283,7 @@ mixin _$DirectMessageState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
     required TResult orElse(),
   }) =>
@@ -376,7 +378,7 @@ class _$DirectMessageStateInitial implements DirectMessageStateInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loadInProgress,
-    required TResult Function(Room room) loadSuccess,
+    required TResult Function(Channel room) loadSuccess,
     required TResult Function(Exception e) loadFailed,
   }) {
     return initial();
@@ -387,7 +389,7 @@ class _$DirectMessageStateInitial implements DirectMessageStateInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
   }) {
     return initial?.call();
@@ -398,7 +400,7 @@ class _$DirectMessageStateInitial implements DirectMessageStateInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
     required TResult orElse(),
   }) {
@@ -499,7 +501,7 @@ class _$DirectMessageStateLoadInProgress
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loadInProgress,
-    required TResult Function(Room room) loadSuccess,
+    required TResult Function(Channel room) loadSuccess,
     required TResult Function(Exception e) loadFailed,
   }) {
     return loadInProgress();
@@ -510,7 +512,7 @@ class _$DirectMessageStateLoadInProgress
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
   }) {
     return loadInProgress?.call();
@@ -521,7 +523,7 @@ class _$DirectMessageStateLoadInProgress
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
     required TResult orElse(),
   }) {
@@ -581,7 +583,7 @@ abstract class $DirectMessageStateLoadSuccessCopyWith<$Res> {
           DirectMessageStateLoadSuccess value,
           $Res Function(DirectMessageStateLoadSuccess) then) =
       _$DirectMessageStateLoadSuccessCopyWithImpl<$Res>;
-  $Res call({Room room});
+  $Res call({Channel room});
 }
 
 /// @nodoc
@@ -605,7 +607,7 @@ class _$DirectMessageStateLoadSuccessCopyWithImpl<$Res>
       room == freezed
           ? _value.room
           : room // ignore: cast_nullable_to_non_nullable
-              as Room,
+              as Channel,
     ));
   }
 }
@@ -616,7 +618,7 @@ class _$DirectMessageStateLoadSuccess implements DirectMessageStateLoadSuccess {
   const _$DirectMessageStateLoadSuccess(this.room);
 
   @override
-  final Room room;
+  final Channel room;
 
   @override
   String toString() {
@@ -628,11 +630,12 @@ class _$DirectMessageStateLoadSuccess implements DirectMessageStateLoadSuccess {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is DirectMessageStateLoadSuccess &&
-            (identical(other.room, room) || other.room == room));
+            const DeepCollectionEquality().equals(other.room, room));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, room);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(room));
 
   @JsonKey(ignore: true)
   @override
@@ -645,7 +648,7 @@ class _$DirectMessageStateLoadSuccess implements DirectMessageStateLoadSuccess {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loadInProgress,
-    required TResult Function(Room room) loadSuccess,
+    required TResult Function(Channel room) loadSuccess,
     required TResult Function(Exception e) loadFailed,
   }) {
     return loadSuccess(room);
@@ -656,7 +659,7 @@ class _$DirectMessageStateLoadSuccess implements DirectMessageStateLoadSuccess {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
   }) {
     return loadSuccess?.call(room);
@@ -667,7 +670,7 @@ class _$DirectMessageStateLoadSuccess implements DirectMessageStateLoadSuccess {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
     required TResult orElse(),
   }) {
@@ -717,10 +720,10 @@ class _$DirectMessageStateLoadSuccess implements DirectMessageStateLoadSuccess {
 }
 
 abstract class DirectMessageStateLoadSuccess implements DirectMessageState {
-  const factory DirectMessageStateLoadSuccess(Room room) =
+  const factory DirectMessageStateLoadSuccess(Channel room) =
       _$DirectMessageStateLoadSuccess;
 
-  Room get room;
+  Channel get room;
   @JsonKey(ignore: true)
   $DirectMessageStateLoadSuccessCopyWith<DirectMessageStateLoadSuccess>
       get copyWith => throw _privateConstructorUsedError;
@@ -779,11 +782,12 @@ class _$DirectMessageStateLoadFailed implements DirectMessageStateLoadFailed {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is DirectMessageStateLoadFailed &&
-            (identical(other.e, e) || other.e == e));
+            const DeepCollectionEquality().equals(other.e, e));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, e);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(e));
 
   @JsonKey(ignore: true)
   @override
@@ -796,7 +800,7 @@ class _$DirectMessageStateLoadFailed implements DirectMessageStateLoadFailed {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loadInProgress,
-    required TResult Function(Room room) loadSuccess,
+    required TResult Function(Channel room) loadSuccess,
     required TResult Function(Exception e) loadFailed,
   }) {
     return loadFailed(e);
@@ -807,7 +811,7 @@ class _$DirectMessageStateLoadFailed implements DirectMessageStateLoadFailed {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
   }) {
     return loadFailed?.call(e);
@@ -818,7 +822,7 @@ class _$DirectMessageStateLoadFailed implements DirectMessageStateLoadFailed {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loadInProgress,
-    TResult Function(Room room)? loadSuccess,
+    TResult Function(Channel room)? loadSuccess,
     TResult Function(Exception e)? loadFailed,
     required TResult orElse(),
   }) {

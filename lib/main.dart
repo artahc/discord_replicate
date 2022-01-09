@@ -3,7 +3,7 @@ import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/room/room_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/repository/activity_repository.dart';
-import 'package:discord_replicate/repository/room_repository.dart';
+import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/repository/auth_service.dart';
@@ -11,12 +11,14 @@ import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_theme.dart';
-import 'package:discord_replicate/util/graphql_client_helper.dart';
+import 'package:discord_replicate/service/graphql_client_helper.dart';
+import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:discord_replicate/util/hive_database_helper.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,9 +27,14 @@ Future main() async {
     statusBarColor: Colors.transparent,
   ));
   await Firebase.initializeApp();
-  await HiveDatabaseHelper.initialize();
+  await initializeHive();
 
   runApp(Main());
+}
+
+Future initializeHive() async {
+  var dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
 }
 
 class Main extends StatefulWidget {
@@ -44,12 +51,12 @@ class _MainState extends State<Main> {
 
   // Helper Class
   late GraphQLClientHelper client;
-  late HiveDatabaseHelper db;
+  late HiveDatabaseService db;
 
   // Repository
   late UserRepository userRepository;
   late ServerRepository serverRepository;
-  late RoomRepository roomRepository;
+  late ChannelRepository channelRepository;
   // late ActivityRepository activityRepository = ActivityRepository();
 
   // Bloc
@@ -66,18 +73,18 @@ class _MainState extends State<Main> {
     authService = FirebaseAuthService();
 
     client = GraphQLClientHelper(url: url, tokenProvider: authService.getCredential);
-    db = HiveDatabaseHelper();
+    db = HiveDatabaseService()..initialize();
 
     userRepository = UserRepository(apiClient: client, database: db);
     serverRepository = ServerRepository(apiClient: client, database: db);
-    roomRepository = RoomRepository(apiClient: client, database: db);
+    channelRepository = ChannelRepository(apiClient: client, database: db);
 
     authBloc = AuthBloc(authService: authService);
     userBloc = UserBloc(userRepo: userRepository, authService: authService, serverRepo: serverRepository, authBloc: authBloc);
     serverBloc = ServerBloc(serverRepository: serverRepository, userBloc: userBloc);
     dmBloc = DirectMessageBloc();
     navBloc = NavigationCubit(navigator: rootNavigatorKey, authBloc: authBloc);
-    roomBloc = RoomBloc(roomRepo: roomRepository, userRepo: userRepository, serverBloc: serverBloc, userBloc: userBloc);
+    roomBloc = RoomBloc(channelRepo: channelRepository, userRepo: userRepository, serverBloc: serverBloc, userBloc: userBloc);
   }
 
   @override

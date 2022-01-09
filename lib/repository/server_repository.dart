@@ -4,8 +4,8 @@ import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/server.dart';
-import 'package:discord_replicate/util/graphql_client_helper.dart';
-import 'package:discord_replicate/util/hive_database_helper.dart';
+import 'package:discord_replicate/service/graphql_client_helper.dart';
+import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ServerQuery {
@@ -20,11 +20,6 @@ class ServerQuery {
         channels {
           id
           name
-          access
-          room {
-            id
-            name
-          }
         }
         members(limit: $limitMember) {
           uid
@@ -38,9 +33,9 @@ class ServerQuery {
 
 class ServerRepository with ExceptionMapperMixin {
   final GraphQLClientHelper _api;
-  final HiveDatabaseHelper _db;
+  final HiveDatabaseService _db;
 
-  ServerRepository({required GraphQLClientHelper apiClient, required HiveDatabaseHelper database})
+  ServerRepository({required GraphQLClientHelper apiClient, required HiveDatabaseService database})
       : _api = apiClient,
         _db = database;
 
@@ -53,7 +48,7 @@ class ServerRepository with ExceptionMapperMixin {
 
     var local = LazyStream(
       () async => _db
-          .get<Server>(HiveConstants.SERVER_BOX, id)
+          .get<Server>(id)
           .then((server) {
             if (server != null) log("Server found on local database. $server", name: runtimeType.toString());
             return server;
@@ -68,7 +63,7 @@ class ServerRepository with ExceptionMapperMixin {
             .query(query, variables: variables)
             .then((json) async {
               var server = Server.fromJson(json['server']);
-              await _db.put(HiveConstants.SERVER_BOX, server.id, server);
+              await _db.put<Server>(server.id, server);
               log("Server retrieved from remote API. $server", name: runtimeType.toString());
               return server;
             })
@@ -82,7 +77,7 @@ class ServerRepository with ExceptionMapperMixin {
   }
 
   Future save(Server server) async {
-    await _db.put(HiveConstants.SERVER_BOX, server.id, server);
+    await _db.put<Server>(server.id, server);
   }
 
   Future saveAll(List<Server> servers) async {

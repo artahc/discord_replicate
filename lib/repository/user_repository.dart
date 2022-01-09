@@ -5,8 +5,8 @@ import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/user.dart';
-import 'package:discord_replicate/util/graphql_client_helper.dart';
-import 'package:discord_replicate/util/hive_database_helper.dart';
+import 'package:discord_replicate/service/graphql_client_helper.dart';
+import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UserQuery {
@@ -35,10 +35,6 @@ class UserQuery {
           channels {
             id
             name
-            access
-            room {
-              id
-            }
           }
         }
       }
@@ -48,11 +44,11 @@ class UserQuery {
 
 class UserRepository with ExceptionMapperMixin {
   GraphQLClientHelper _api;
-  HiveDatabaseHelper _db;
+  HiveDatabaseService _db;
 
   UserRepository({
     required GraphQLClientHelper apiClient,
-    required HiveDatabaseHelper database,
+    required HiveDatabaseService database,
   })  : _api = apiClient,
         _db = database;
 
@@ -67,11 +63,12 @@ class UserRepository with ExceptionMapperMixin {
 
     var local = LazyStream(() {
       return _db
-          .get<User>(HiveConstants.USER_BOX, uid)
+          .get<User>(uid)
           .then((user) {
             if (user != null) log("User found on local database. $user", name: runtimeType.toString());
             return user;
           })
+          .onError((Exception error, stackTrace) => Future.error(mapException(error)))
           .asStream()
           .where((user) => user != null);
     });
@@ -94,7 +91,7 @@ class UserRepository with ExceptionMapperMixin {
   }
 
   Future save(User user) async {
-    await _db.put(HiveConstants.USER_BOX, user.uid, user);
+    await _db.put<User>(user.uid, user);
   }
 
   Exception mapException(Exception e) {

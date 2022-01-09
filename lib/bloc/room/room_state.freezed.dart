@@ -1,5 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'room_state.dart';
@@ -21,7 +22,7 @@ class _$RoomStateTearOff {
     return const RoomStateInitial();
   }
 
-  RoomStateLoadRecentRoomSuccess loadRoomSuccess(Room room) {
+  RoomStateLoadRecentRoomSuccess loadRoomSuccess(Channel room) {
     return RoomStateLoadRecentRoomSuccess(
       room,
     );
@@ -36,19 +37,19 @@ mixin _$RoomState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(Room room) loadRoomSuccess,
+    required TResult Function(Channel room) loadRoomSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Room room)? loadRoomSuccess,
+    TResult Function(Channel room)? loadRoomSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Room room)? loadRoomSuccess,
+    TResult Function(Channel room)? loadRoomSuccess,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -130,7 +131,7 @@ class _$RoomStateInitial implements RoomStateInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(Room room) loadRoomSuccess,
+    required TResult Function(Channel room) loadRoomSuccess,
   }) {
     return initial();
   }
@@ -139,7 +140,7 @@ class _$RoomStateInitial implements RoomStateInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Room room)? loadRoomSuccess,
+    TResult Function(Channel room)? loadRoomSuccess,
   }) {
     return initial?.call();
   }
@@ -148,7 +149,7 @@ class _$RoomStateInitial implements RoomStateInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Room room)? loadRoomSuccess,
+    TResult Function(Channel room)? loadRoomSuccess,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -200,7 +201,7 @@ abstract class $RoomStateLoadRecentRoomSuccessCopyWith<$Res> {
           RoomStateLoadRecentRoomSuccess value,
           $Res Function(RoomStateLoadRecentRoomSuccess) then) =
       _$RoomStateLoadRecentRoomSuccessCopyWithImpl<$Res>;
-  $Res call({Room room});
+  $Res call({Channel room});
 }
 
 /// @nodoc
@@ -224,7 +225,7 @@ class _$RoomStateLoadRecentRoomSuccessCopyWithImpl<$Res>
       room == freezed
           ? _value.room
           : room // ignore: cast_nullable_to_non_nullable
-              as Room,
+              as Channel,
     ));
   }
 }
@@ -236,7 +237,7 @@ class _$RoomStateLoadRecentRoomSuccess
   const _$RoomStateLoadRecentRoomSuccess(this.room);
 
   @override
-  final Room room;
+  final Channel room;
 
   @override
   String toString() {
@@ -248,11 +249,12 @@ class _$RoomStateLoadRecentRoomSuccess
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is RoomStateLoadRecentRoomSuccess &&
-            (identical(other.room, room) || other.room == room));
+            const DeepCollectionEquality().equals(other.room, room));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, room);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(room));
 
   @JsonKey(ignore: true)
   @override
@@ -264,7 +266,7 @@ class _$RoomStateLoadRecentRoomSuccess
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(Room room) loadRoomSuccess,
+    required TResult Function(Channel room) loadRoomSuccess,
   }) {
     return loadRoomSuccess(room);
   }
@@ -273,7 +275,7 @@ class _$RoomStateLoadRecentRoomSuccess
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Room room)? loadRoomSuccess,
+    TResult Function(Channel room)? loadRoomSuccess,
   }) {
     return loadRoomSuccess?.call(room);
   }
@@ -282,7 +284,7 @@ class _$RoomStateLoadRecentRoomSuccess
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(Room room)? loadRoomSuccess,
+    TResult Function(Channel room)? loadRoomSuccess,
     required TResult orElse(),
   }) {
     if (loadRoomSuccess != null) {
@@ -325,10 +327,10 @@ class _$RoomStateLoadRecentRoomSuccess
 }
 
 abstract class RoomStateLoadRecentRoomSuccess implements RoomState {
-  const factory RoomStateLoadRecentRoomSuccess(Room room) =
+  const factory RoomStateLoadRecentRoomSuccess(Channel room) =
       _$RoomStateLoadRecentRoomSuccess;
 
-  Room get room;
+  Channel get room;
   @JsonKey(ignore: true)
   $RoomStateLoadRecentRoomSuccessCopyWith<RoomStateLoadRecentRoomSuccess>
       get copyWith => throw _privateConstructorUsedError;
