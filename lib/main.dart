@@ -1,8 +1,6 @@
-import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
+import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/bloc/room/room_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/repository/activity_repository.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
@@ -63,9 +61,8 @@ class _MainState extends State<Main> {
   late AuthBloc authBloc;
   late UserBloc userBloc;
   late ServerBloc serverBloc;
-  late DirectMessageBloc dmBloc;
   late NavigationCubit navBloc;
-  late RoomBloc roomBloc;
+  late ChannelBloc channelBloc;
 
   @override
   void initState() {
@@ -80,30 +77,35 @@ class _MainState extends State<Main> {
     channelRepository = ChannelRepository(apiClient: client, database: db);
 
     authBloc = AuthBloc(authService: authService);
-    userBloc = UserBloc(userRepo: userRepository, authService: authService, serverRepo: serverRepository, authBloc: authBloc);
-    serverBloc = ServerBloc(serverRepository: serverRepository, userBloc: userBloc);
-    dmBloc = DirectMessageBloc();
     navBloc = NavigationCubit(navigator: rootNavigatorKey, authBloc: authBloc);
-    roomBloc = RoomBloc(channelRepo: channelRepository, userRepo: userRepository, serverBloc: serverBloc, userBloc: userBloc);
+    userBloc = UserBloc(userRepo: userRepository, authService: authService, serverRepo: serverRepository, authBloc: authBloc);
+    serverBloc = ServerBloc(serverRepository: serverRepository);
+    channelBloc = ChannelBloc(channelRepository: channelRepository, serverBloc: serverBloc, userBloc: userBloc);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        BlocProvider<ServerBloc>(create: (c) => serverBloc),
-        BlocProvider<AuthBloc>(create: (c) => authBloc),
-        BlocProvider<NavigationCubit>(create: (c) => navBloc),
-        BlocProvider<UserBloc>(create: (c) => userBloc),
-        BlocProvider<RoomBloc>(create: (c) => roomBloc),
-        BlocProvider<DirectMessageBloc>(create: (c) => dmBloc),
+        RepositoryProvider<UserRepository>(create: (c) => userRepository),
+        RepositoryProvider<ServerRepository>(create: (c) => serverRepository),
+        RepositoryProvider<ChannelRepository>(create: (c) => channelRepository),
       ],
-      child: MaterialApp(
-        navigatorKey: rootNavigatorKey,
-        theme: AppTheme.darkThemeData,
-        onGenerateRoute: Routes.generateRoutes,
-        initialRoute: Routes.initial,
-        debugShowCheckedModeBanner: false,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<ServerBloc>(create: (c) => serverBloc),
+          BlocProvider<AuthBloc>(create: (c) => authBloc),
+          BlocProvider<NavigationCubit>(create: (c) => navBloc),
+          BlocProvider<UserBloc>(create: (c) => userBloc),
+          BlocProvider<ChannelBloc>(create: (c) => channelBloc),
+        ],
+        child: MaterialApp(
+          navigatorKey: rootNavigatorKey,
+          theme: AppTheme.darkThemeData,
+          onGenerateRoute: Routes.generateRoutes,
+          initialRoute: Routes.initial,
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }

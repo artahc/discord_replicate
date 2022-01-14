@@ -4,12 +4,11 @@ import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChannelInfoPanel extends StatefulWidget {
-  final Channel room;
+  final Channel channel;
 
-  const ChannelInfoPanel({Key? key, required this.room}) : super(key: key);
+  const ChannelInfoPanel({Key? key, required this.channel}) : super(key: key);
 
   @override
   State<ChannelInfoPanel> createState() => _ChannelInfoPanelState();
@@ -42,7 +41,7 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                           Expanded(
                             flex: 1,
                             child: Text(
-                              widget.room.name,
+                              widget.channel.name,
                               style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
@@ -138,9 +137,9 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                     Expanded(
                       child: Container(
                         child: CustomListView<User>(
-                          elements: List.generate(15, (index) => User.dummy()),
+                          elements: widget.channel.members,
                           builder: (_, user, index) {
-                            return RoomMemberTile(user: user);
+                            return ChannelMemberTile(user: user);
                           },
                           before: [
                             AppMaterialButton(
@@ -185,10 +184,10 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
   }
 }
 
-class RoomMemberTile extends StatelessWidget {
+class ChannelMemberTile extends StatelessWidget {
   final User user;
 
-  const RoomMemberTile({Key? key, required this.user}) : super(key: key);
+  const ChannelMemberTile({Key? key, required this.user}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

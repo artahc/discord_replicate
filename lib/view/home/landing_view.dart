@@ -1,13 +1,8 @@
 import 'dart:developer';
 
-import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
-import 'package:discord_replicate/bloc/room/room_bloc.dart';
-import 'package:discord_replicate/bloc/room/room_state.dart';
+import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/bloc/server/server_event.dart';
-import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/bloc/user/user_state.dart';
 import 'package:discord_replicate/view/home/channel_list_panel.dart';
 import 'package:discord_replicate/view/home/direct_message_panel.dart';
 import 'package:discord_replicate/view/home/navigation_bar.dart';
@@ -31,15 +26,14 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
   late OverlapSwipeableStackController _roomViewController = OverlapSwipeableStackController(vsync: this);
 
   late ServerBloc _serverBloc;
-  late DirectMessageBloc _dmBloc;
+  late ChannelBloc _channelBloc;
 
   OverlapSwipeableStackController get controller => _roomViewController;
 
   @override
   void initState() {
     _serverBloc = BlocProvider.of<ServerBloc>(context);
-    _dmBloc = BlocProvider.of<DirectMessageBloc>(context);
-
+    _channelBloc = BlocProvider.of<ChannelBloc>(context);
     super.initState();
   }
 
@@ -68,7 +62,13 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
             loadUserSuccess: (user) {
               return WillPopScope(
                 onWillPop: () async {
-                  return Future.value(true);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text("Haha cannot exit app."),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                  return Future.value(false);
                 },
                 child: SafeArea(
                   child: Stack(
@@ -81,8 +81,8 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                           children: [
                             ServerListPanel(servers: user.servers),
                             StreamBuilder(
-                              initialData: DirectMessageEvent.load(user.privateRooms.first.id),
-                              stream: MergeStream([_dmBloc.eventStream, _serverBloc.eventStream]),
+                              stream: MergeStream(
+                                  [_serverBloc.eventStream, _channelBloc.eventStream.where((event) => event is ChannelEventLoadRecentPrivate)]),
                               builder: (_, snapshot) {
                                 if (snapshot.data is ServerEvent) {
                                   return BlocBuilder<ServerBloc, ServerState>(
@@ -102,7 +102,7 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                                     },
                                   );
                                 } else {
-                                  return DirectMessageListPanel(privateRooms: user.privateRooms);
+                                  return DirectMessageListPanel(channels: user.privateChannels);
                                 }
                               },
                             ),
@@ -110,25 +110,32 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                         ),
 
                         // Message Panel
-                        frontPage: BlocBuilder<RoomBloc, RoomState>(
+                        frontPage: BlocBuilder<ChannelBloc, ChannelState>(
                           builder: (_, state) {
                             return state.maybeWhen(
                               orElse: () {
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
+                                return ClipRRect(
+                                  clipBehavior: Clip.antiAlias,
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                                  child: Container(
+                                    color: Theme.of(context).colorScheme.primary,
+                                    child: Center(
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 );
                               },
-                              loadRoomSuccess: (room) {
-                                return RoomMessagePanel(room: room);
+                              loadSuccess: (channel) {
+                                return ChannelMessagePanel(key: UniqueKey(), channel: channel, pageController: controller);
                               },
                             );
                           },
                         ),
 
                         // Room or Channel Info Panel
-                        rightPage: BlocBuilder<RoomBloc, RoomState>(
+                        rightPage: BlocBuilder<ChannelBloc, ChannelState>(
                           builder: (_, state) {
                             return state.maybeWhen(
                               orElse: () {
@@ -138,8 +145,8 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                                   ),
                                 );
                               },
-                              loadRoomSuccess: (room) {
-                                return ChannelInfoPanel(room: room);
+                              loadSuccess: (channel) {
+                                return ChannelInfoPanel(channel: channel);
                               },
                             );
                           },

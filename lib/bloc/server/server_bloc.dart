@@ -5,32 +5,33 @@ import 'package:discord_replicate/bloc/server/server_event.dart';
 import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
-import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+export 'server_event.dart';
+export 'server_state.dart';
 
 class ServerBloc extends Bloc<ServerEvent, ServerState> {
   final ServerRepository _serverRepo;
-  final UserBloc _userBloc;
+  // final UserBloc _userBloc;
 
   late StreamSubscription _userStateSubscription;
 
   StreamController<ServerEvent> _eventStream = StreamController.broadcast();
   Stream<ServerEvent> get eventStream => _eventStream.stream;
 
-  ServerBloc({required ServerRepository serverRepository, required UserBloc userBloc})
+  ServerBloc({required ServerRepository serverRepository})
       : _serverRepo = serverRepository,
-        _userBloc = userBloc,
         super(ServerState.initial()) {
     on<ServerEvent>((event, emit) => _handleEvent(event, emit));
 
-    _userStateSubscription = _userBloc.stream.listen((state) {
-      state.whenOrNull(
-        loadUserSuccess: (user) {
-          log("Adding ServerEvent.loadServer in response of UserState.loadLocalUserSuccess", name: runtimeType.toString());
-          add(ServerEvent.loadServer(user.servers.first.id));
-        },
-      );
-    });
+    // _userStateSubscription = _userBloc.stream.listen((state) {
+    //   state.whenOrNull(
+    //     loadUserSuccess: (user) {
+    //       log("Adding ServerEvent.loadServer in response of UserState.loadLocalUserSuccess", name: runtimeType.toString());
+    //       add(ServerEvent.loadServer(user.servers.first.id));
+    //     },
+    //   );
+    // });
   }
 
   @override
@@ -54,11 +55,8 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   }
 
   _handleEvent(ServerEvent event, emit) async {
-    return await event.maybeWhen(
+    return await event.when(
       loadServer: (String id) => _loadServer(id, emit),
-      orElse: () async {
-        throw UnimplementedError();
-      },
     );
   }
 }

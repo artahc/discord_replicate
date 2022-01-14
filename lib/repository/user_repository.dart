@@ -19,7 +19,7 @@ class UserQuery {
         avatarUrl
         name
         about
-        privateRooms {
+        privateChannels {
           id
           name
           members {
@@ -63,7 +63,7 @@ class UserRepository with ExceptionMapperMixin {
 
     var local = LazyStream(() {
       return _db
-          .get<User>(uid)
+          .load<User>(uid)
           .then((user) {
             if (user != null) log("User found on local database. $user", name: runtimeType.toString());
             return user;
@@ -91,7 +91,7 @@ class UserRepository with ExceptionMapperMixin {
   }
 
   Future save(User user) async {
-    await _db.put<User>(user.uid, user);
+    await _db.save<User>(user.uid, user);
   }
 
   Exception mapException(Exception e) {

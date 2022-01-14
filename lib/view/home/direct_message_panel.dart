@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
@@ -15,9 +16,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DirectMessageListPanel extends StatefulWidget {
-  final List<Channel> privateRooms;
+  final List<Channel> channels;
 
-  const DirectMessageListPanel({Key? key, this.privateRooms = const <Channel>[]}) : super(key: key);
+  const DirectMessageListPanel({Key? key, this.channels = const <Channel>[]}) : super(key: key);
 
   @override
   _DirectMessageListState createState() => _DirectMessageListState();
@@ -25,11 +26,7 @@ class DirectMessageListPanel extends StatefulWidget {
 
 class _DirectMessageListState extends State<DirectMessageListPanel> {
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  late ChannelBloc _channelBloc = BlocProvider.of<ChannelBloc>(context);
 
   @override
   Widget build(BuildContext context) {
@@ -101,12 +98,15 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                         behavior: ClampingScrollBehavior(),
                         child: ListView.builder(
                           clipBehavior: Clip.antiAlias,
-                          itemCount: user.privateRooms.length,
+                          itemCount: user.privateChannels.length,
                           itemBuilder: (_, index) {
                             return ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: DirectMessageTile(
-                                room: user.privateRooms[index],
+                                channel: user.privateChannels[index],
+                                onPressed: () {
+                                  _channelBloc.add(ChannelEvent.loadChannel(user.privateChannels[index].id));
+                                },
                               ),
                             );
                           },

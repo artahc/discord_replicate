@@ -1,47 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'message.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserAdapter extends TypeAdapter<User> {
+class TextMessageAdapter extends TypeAdapter<TextMessage> {
   @override
-  final int typeId = 1;
+  final int typeId = 10;
 
   @override
-  User read(BinaryReader reader) {
+  TextMessage read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return User(
-      uid: fields[0] as String,
-      name: fields[1] as String,
-      avatarUrl: fields[3] as String?,
-      about: fields[2] as String?,
-      servers: (fields[4] as List).cast<Server>(),
-      privateChannels: (fields[5] as List).cast<Channel>(),
+    return TextMessage(
+      id: fields[0] as String,
+      senderId: fields[1] as String,
+      date: fields[2] as DateTime,
+      message: fields[4] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, User obj) {
+  void write(BinaryWriter writer, TextMessage obj) {
     writer
-      ..writeByte(6)
-      ..writeByte(0)
-      ..write(obj.uid)
-      ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.about)
-      ..writeByte(3)
-      ..write(obj.avatarUrl)
       ..writeByte(4)
-      ..write(obj.servers)
-      ..writeByte(5)
-      ..write(obj.privateChannels);
+      ..writeByte(4)
+      ..write(obj.message)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.senderId)
+      ..writeByte(2)
+      ..write(obj.date);
   }
 
   @override
@@ -50,7 +44,7 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserAdapter &&
+      other is TextMessageAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

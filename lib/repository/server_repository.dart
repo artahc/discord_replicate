@@ -48,7 +48,7 @@ class ServerRepository with ExceptionMapperMixin {
 
     var local = LazyStream(
       () async => _db
-          .get<Server>(id)
+          .load<Server>(id)
           .then((server) {
             if (server != null) log("Server found on local database. $server", name: runtimeType.toString());
             return server;
@@ -63,7 +63,7 @@ class ServerRepository with ExceptionMapperMixin {
             .query(query, variables: variables)
             .then((json) async {
               var server = Server.fromJson(json['server']);
-              await _db.put<Server>(server.id, server);
+              await _db.save<Server>(server.id, server);
               log("Server retrieved from remote API. $server", name: runtimeType.toString());
               return server;
             })
@@ -77,7 +77,7 @@ class ServerRepository with ExceptionMapperMixin {
   }
 
   Future save(Server server) async {
-    await _db.put<Server>(server.id, server);
+    await _db.save<Server>(server.id, server);
   }
 
   Future saveAll(List<Server> servers) async {

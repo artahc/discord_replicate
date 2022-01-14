@@ -2,13 +2,22 @@ import 'dart:math';
 
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+
+part 'message.g.dart';
 
 enum MessageType { TEXT, IMAGE, GIF }
 
-abstract class Message {
+abstract class Message extends HiveObject {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String senderId;
+
+  @HiveField(2)
   final DateTime date;
 
   Message({required this.id, required this.senderId, required this.date});
@@ -43,7 +52,9 @@ abstract class Message {
   }
 }
 
+@HiveType(typeId: HiveConstants.TEXT_MESSAGE_TYPE)
 class TextMessage extends Message with EquatableMixin {
+  @HiveField(4)
   final String message;
 
   TextMessage({

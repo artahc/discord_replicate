@@ -28,7 +28,7 @@ class User extends HiveObject with EquatableMixin {
   final List<Server> servers;
 
   @HiveField(5)
-  final List<Channel> privateRooms;
+  final List<Channel> privateChannels;
 
   User({
     required this.uid,
@@ -36,7 +36,7 @@ class User extends HiveObject with EquatableMixin {
     required this.avatarUrl,
     required this.about,
     this.servers = const <Server>[],
-    this.privateRooms = const <Channel>[],
+    this.privateChannels = const <Channel>[],
   });
 
   factory User.dummy() {
@@ -61,7 +61,7 @@ class User extends HiveObject with EquatableMixin {
           ],
         ),
       ],
-      privateRooms: [
+      privateChannels: [
         Channel(
           id: "dummy_id_$random",
           name: "room-name",
@@ -75,15 +75,15 @@ class User extends HiveObject with EquatableMixin {
   factory User.fromJson(Map<String, dynamic> map) {
     try {
       var servers = <Server>[];
-      var privateRooms = <Channel>[];
+      var privateChannels = <Channel>[];
       var about = "";
 
       if (map.containsKey('servers') && (map['servers'] as List<Object?>).isNotEmpty) {
         servers = (map['servers'] as List<Object?>).map((e) => Server.fromJson(e as Map<String, dynamic>)).toList();
       }
 
-      if (map.containsKey('privateRooms') && (map['privateRooms'] as List<dynamic>).isNotEmpty) {
-        privateRooms = (map['privateRooms'] as List<dynamic>).map((e) => Channel.fromJson(e as Map<String, dynamic>)).toList();
+      if (map.containsKey('privateChannels') && (map['privateChannels'] as List<dynamic>).isNotEmpty) {
+        privateChannels = (map['privateChannels'] as List<dynamic>).map((e) => Channel.fromJson(e as Map<String, dynamic>)).toList();
       }
 
       if (map.containsKey('about')) about = map['about'] as String;
@@ -94,7 +94,7 @@ class User extends HiveObject with EquatableMixin {
         avatarUrl: map['avatarUrl'] as String?,
         about: about,
         servers: servers,
-        privateRooms: privateRooms,
+        privateChannels: privateChannels,
       );
     } catch (e) {
       throw ParsingException("Error parsing User from JSON.", payload: map, source: e);
@@ -108,7 +108,7 @@ class User extends HiveObject with EquatableMixin {
       "avatarUrl": avatarUrl,
       "about": about,
       if (servers.isNotEmpty) "servers": servers,
-      if (privateRooms.isNotEmpty) "privateRooms": privateRooms
+      if (privateChannels.isNotEmpty) "privateRooms": privateChannels
     };
   }
 

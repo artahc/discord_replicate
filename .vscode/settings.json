@@ -16,4 +16,5 @@
   "todohighlight.isCaseSensitive": false,
   "debug.console.fontSize": 11,
   "debug.console.wordWrap": true,
+  "todo-tree.regex.regexCaseSensitive": false
 }

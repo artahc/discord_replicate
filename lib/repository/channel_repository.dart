@@ -12,8 +12,8 @@ class ChannelQuery {
   ChannelQuery._();
 
   static final String loadById = r"""
-    query Room($id: String!, $messageLimit: Int, $memberLimit: Int) {
-      room(id: $id) {
+    query Channel($id: String!, $messageLimit: Int, $memberLimit: Int) {
+      channel(id: $id) {
         id
         name
         members(limit: $memberLimit) {
@@ -34,8 +34,6 @@ class ChannelQuery {
 }
 
 class ChannelRepository with ExceptionMapperMixin {
-  static const String BOX_NAME = "room";
-
   GraphQLClientHelper _api;
   HiveDatabaseService _db;
 
@@ -49,21 +47,36 @@ class ChannelRepository with ExceptionMapperMixin {
     var query = ChannelQuery.loadById;
     var variables = {
       "id": id,
-      "messageLimit": 2,
-      "memberLimit": 2,
+      "messageLimit": 10,
+      "memberLimit": 30,
     };
+
+    var local = LazyStream(() {
+      return _db
+          .load<Channel>(id)
+          .then((channel) {
+            if (channel != null) log("Channel found on local database. $channel", name: runtimeType.toString());
+            return channel;
+          })
+          .onError((Exception error, stackTrace) => Future.error(mapException(error)))
+          .asStream()
+          .where((channel) => channel != null);
+    });
+
     var remote = LazyStream(() {
       return _api.query(query, variables: variables).then((json) {
-        var channel = Channel.fromJson(json['room']);
-        //todo: save into local database
-        log("Room retrieved from remote API. $json", name: runtimeType.toString());
+        var channel = Channel.fromJson(json['channel']);
+        _db.save<Channel>(channel.id, channel);
+        log("Channel retrieved from remote API. $json", name: runtimeType.toString());
         return channel;
       }).asStream();
     });
 
-    var result = await ConcatStream([remote]).first;
-    return result;
+    var result = await ConcatStream([local, remote]).firstWhere((element) => element != null);
+    return result!;
   }
+
+  Future<void> save(Channel channel) async {}
 
   @override
   Exception mapException(Exception e) {

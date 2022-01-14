@@ -1,20 +1,9 @@
-import 'dart:async';
-import 'dart:developer';
-import 'dart:math';
-import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
-import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
-import 'package:discord_replicate/bloc/room/room_bloc.dart';
-import 'package:discord_replicate/bloc/room/room_event.dart';
-import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/bloc/user/user_event.dart';
-import 'package:discord_replicate/bloc/user/user_state.dart';
+import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/bloc/server/server_event.dart';
-import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/view/home/server_tile.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
@@ -33,21 +22,21 @@ class _ServerListPanelState extends State<ServerListPanel> {
   Server? _selectedServer;
 
   late ServerBloc _serverBloc;
-  late DirectMessageBloc _dmBloc;
+  late ChannelBloc _channelBloc;
 
   @override
   void initState() {
     super.initState();
-
     _serverBloc = BlocProvider.of<ServerBloc>(context);
-    _dmBloc = BlocProvider.of<DirectMessageBloc>(context);
+    _channelBloc = BlocProvider.of<ChannelBloc>(context);
   }
 
   void _select(Server? server) {
     if (server != null)
       _serverBloc.add(ServerEvent.loadServer(server.id));
-    else
-      _dmBloc.add(DirectMessageEvent.load("someid"));
+    else {
+      _channelBloc.add(ChannelEvent.loadRecentPrivate());
+    }
 
     setState(() {
       this._selectedServer = server;

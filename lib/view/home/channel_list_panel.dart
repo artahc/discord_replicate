@@ -16,12 +16,6 @@ class ChannelListPanel extends StatefulWidget {
 class _ChannelListPanelState extends State<ChannelListPanel> {
   Channel? _currentChannel;
 
-  _onServerLoaded(Server server, Channel recentChannel) {
-    setState(() {
-      _currentChannel = recentChannel;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Flexible(

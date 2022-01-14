@@ -3,17 +3,17 @@ import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 
 class DirectMessageTile extends StatelessWidget {
-  final Channel room;
+  final Channel channel;
+  final Function() onPressed;
 
-  DirectMessageTile({required this.room});
+  DirectMessageTile({required this.channel, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {},
-        splashColor: Colors.transparent,
+        onTap: onPressed,
         highlightColor: Theme.of(context).backgroundColor,
         child: Container(
           height: 55,
@@ -33,7 +33,7 @@ class DirectMessageTile extends StatelessWidget {
                     direction: Axis.vertical,
                     children: [
                       Text(
-                        room.name,
+                        channel.name,
                         style: Theme.of(context).textTheme.bodyText2,
                       ),
                     ],
