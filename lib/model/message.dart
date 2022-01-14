@@ -10,7 +10,8 @@ part 'message.g.dart';
 
 enum MessageType { TEXT, IMAGE, GIF }
 
-abstract class Message extends HiveObject {
+@HiveType(typeId: HiveConstants.MESSAGE_TYPE)
+class Message extends HiveObject with EquatableMixin {
   @HiveField(0)
   final String id;
 
@@ -20,16 +21,23 @@ abstract class Message extends HiveObject {
   @HiveField(2)
   final DateTime date;
 
-  Message({required this.id, required this.senderId, required this.date});
+  @HiveField(3)
+  final String message;
+
+  @HiveField(7)
+  final String status;
+
+  Message({required this.id, required this.senderId, required this.date, required this.message, required this.status});
 
   factory Message.dummy() {
     var random = Random().nextInt(1000);
-    return TextMessage(
+    return Message(
       id: "message-id-$random",
       senderId: "sender-id-$random",
       message:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
       date: DateTime.now(),
+      status: "Pending",
     );
   }
 
@@ -40,44 +48,12 @@ abstract class Message extends HiveObject {
       var date = DateTime.fromMillisecondsSinceEpoch((map['timestamp'] as int) * 1000);
       var message = map['message'] as String;
 
-      return TextMessage(
-        id: id,
-        senderId: senderId,
-        date: date,
-        message: message,
-      );
+      return Message(id: id, senderId: senderId, date: date, message: message, status: "Pending");
     } catch (e) {
       throw ParsingException("Error when parsing Message from JSON.", payload: map, source: e);
     }
   }
-}
-
-@HiveType(typeId: HiveConstants.TEXT_MESSAGE_TYPE)
-class TextMessage extends Message with EquatableMixin {
-  @HiveField(4)
-  final String message;
-
-  TextMessage({
-    required String id,
-    required String senderId,
-    required DateTime date,
-    required this.message,
-  }) : super(id: id, date: date, senderId: senderId);
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "senderId": senderId,
-      "date": date.millisecondsSinceEpoch / 1000,
-      "message": message,
-    };
-  }
 
   @override
-  String toString() {
-    return this.toJson().toString();
-  }
-
-  @override
-  List<Object?> get props => [id, senderId, date, message];
+  List<Object?> get props => [id, senderId, message];
 }

@@ -6,36 +6,39 @@ part of 'message.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TextMessageAdapter extends TypeAdapter<TextMessage> {
+class MessageAdapter extends TypeAdapter<Message> {
   @override
   final int typeId = 10;
 
   @override
-  TextMessage read(BinaryReader reader) {
+  Message read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return TextMessage(
+    return Message(
       id: fields[0] as String,
       senderId: fields[1] as String,
       date: fields[2] as DateTime,
-      message: fields[4] as String,
+      message: fields[3] as String,
+      status: fields[7] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, TextMessage obj) {
+  void write(BinaryWriter writer, Message obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(4)
-      ..write(obj.message)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.senderId)
       ..writeByte(2)
-      ..write(obj.date);
+      ..write(obj.date)
+      ..writeByte(3)
+      ..write(obj.message)
+      ..writeByte(7)
+      ..write(obj.status);
   }
 
   @override
@@ -44,7 +47,7 @@ class TextMessageAdapter extends TypeAdapter<TextMessage> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TextMessageAdapter &&
+      other is MessageAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

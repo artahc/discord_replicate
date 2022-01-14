@@ -5,5 +5,5 @@ part 'message_event.freezed.dart';
 
 @freezed
 abstract class MessageEvent with _$MessageEvent {
-  const factory MessageEvent.sendMessage(Message message) = MessageEventSendMessage;
+  const factory MessageEvent.sendMessage(String message) = MessageEventSendMessage;
 }

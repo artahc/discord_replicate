@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$MessageEventTearOff {
   const _$MessageEventTearOff();
 
-  MessageEventSendMessage sendMessage(Message message) {
+  MessageEventSendMessage sendMessage(String message) {
     return MessageEventSendMessage(
       message,
     );
@@ -30,21 +30,21 @@ const $MessageEvent = _$MessageEventTearOff();
 
 /// @nodoc
 mixin _$MessageEvent {
-  Message get message => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Message message) sendMessage,
+    required TResult Function(String message) sendMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(Message message)? sendMessage,
+    TResult Function(String message)? sendMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Message message)? sendMessage,
+    TResult Function(String message)? sendMessage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -75,7 +75,7 @@ abstract class $MessageEventCopyWith<$Res> {
   factory $MessageEventCopyWith(
           MessageEvent value, $Res Function(MessageEvent) then) =
       _$MessageEventCopyWithImpl<$Res>;
-  $Res call({Message message});
+  $Res call({String message});
 }
 
 /// @nodoc
@@ -94,7 +94,7 @@ class _$MessageEventCopyWithImpl<$Res> implements $MessageEventCopyWith<$Res> {
       message: message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as Message,
+              as String,
     ));
   }
 }
@@ -106,7 +106,7 @@ abstract class $MessageEventSendMessageCopyWith<$Res>
           $Res Function(MessageEventSendMessage) then) =
       _$MessageEventSendMessageCopyWithImpl<$Res>;
   @override
-  $Res call({Message message});
+  $Res call({String message});
 }
 
 /// @nodoc
@@ -128,7 +128,7 @@ class _$MessageEventSendMessageCopyWithImpl<$Res>
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as Message,
+              as String,
     ));
   }
 }
@@ -139,7 +139,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   const _$MessageEventSendMessage(this.message);
 
   @override
-  final Message message;
+  final String message;
 
   @override
   String toString() {
@@ -167,7 +167,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Message message) sendMessage,
+    required TResult Function(String message) sendMessage,
   }) {
     return sendMessage(message);
   }
@@ -175,7 +175,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(Message message)? sendMessage,
+    TResult Function(String message)? sendMessage,
   }) {
     return sendMessage?.call(message);
   }
@@ -183,7 +183,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Message message)? sendMessage,
+    TResult Function(String message)? sendMessage,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -222,11 +222,11 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
 }
 
 abstract class MessageEventSendMessage implements MessageEvent {
-  const factory MessageEventSendMessage(Message message) =
+  const factory MessageEventSendMessage(String message) =
       _$MessageEventSendMessage;
 
   @override
-  Message get message;
+  String get message;
   @override
   @JsonKey(ignore: true)
   $MessageEventSendMessageCopyWith<MessageEventSendMessage> get copyWith =>

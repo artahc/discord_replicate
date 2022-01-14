@@ -41,12 +41,7 @@ class MessageTile extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(top: 2),
                     child: Builder(builder: (_) {
-                      if (message is TextMessage) {
-                        var content = message as TextMessage;
-                        return Text(content.message, style: Theme.of(_).textTheme.bodyText2);
-                      } else {
-                        return Container();
-                      }
+                      return Text(message.message, style: Theme.of(_).textTheme.bodyText2);
                     }),
                   ),
                 ],

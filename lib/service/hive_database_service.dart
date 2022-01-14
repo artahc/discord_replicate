@@ -13,7 +13,7 @@ class HiveConstants {
   static const int USER_TYPE = 1;
   static const int CHANNEL_TYPE = 2;
 
-  static const int TEXT_MESSAGE_TYPE = 10;
+  static const int MESSAGE_TYPE = 10;
 
   static const String USER_BOX = "user";
   static const String SERVER_BOX = "server";
@@ -38,7 +38,7 @@ class HiveDatabaseService implements DatabaseService {
       ..registerAdapter(UserAdapter())
       ..registerAdapter(ServerAdapter())
       ..registerAdapter(ChannelAdapter())
-      ..registerAdapter(TextMessageAdapter());
+      ..registerAdapter(MessageAdapter());
   }
 
   Future<Box<T>> _getBox<T>() async {

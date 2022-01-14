@@ -282,8 +282,8 @@ class _MessagePanelInputState extends State<MessagePanelInput> {
                 color: Theme.of(context).buttonTheme.colorScheme?.primary,
                 child: IconButton(
                   onPressed: () {
-                    var message = TextMessage(id: "anjiay", date: DateTime.now(), message: _inputCtrl.text, senderId: "meh");
-                    _messageBloc.add(MessageEvent.sendMessage(message));
+                    // var message = TextMessage(id: "anjiay", date: DateTime.now(), message: _inputCtrl.text, senderId: "meh");
+                    _messageBloc.add(MessageEvent.sendMessage(_inputCtrl.text));
                     _inputCtrl.clear();
                   },
                   visualDensity: VisualDensity.compact,

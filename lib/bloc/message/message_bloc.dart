@@ -22,17 +22,17 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     on<MessageEvent>((event, emit) => _handleEvent(event, emit));
   }
 
-  _sendMessage(Message message, emit) async {
+  _sendMessage(String input, emit) async {
     log("Saving new message for channel ${_channel.id}", name: runtimeType.toString());
 
-    _channel.messages.add(message);
-    _channel.save();
+    var message = Message(id: "id", senderId: "senderId", date: DateTime.now(), message: "Some messages", status: "Pending");
+    
     emit(MessageState.onReceiveNewMessage(message));
   }
 
   _handleEvent(MessageEvent event, emit) async {
     return await event.when(
-      sendMessage: (message) => _sendMessage(message, emit),
+      sendMessage: (input) => _sendMessage(input, emit),
     );
   }
 }

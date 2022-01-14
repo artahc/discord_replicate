@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:rxdart/rxdart.dart';
@@ -31,6 +32,12 @@ class ChannelQuery {
     }
 
   """;
+}
+
+class ChannelMutation {
+  ChannelMutation._();
+
+  static String createMessage = "";
 }
 
 class ChannelRepository with ExceptionMapperMixin {
