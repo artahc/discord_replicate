@@ -41,6 +41,19 @@ class Message extends HiveObject with EquatableMixin {
     );
   }
 
+  // factory Message.pending({
+  //   required String senderId,
+  //   required DateTime date,
+  //   required String message,
+  // }) =>
+  //     Message(
+  //       id: "",
+  //       senderId: "senderId",
+  //       date: date,
+  //       message: message,
+  //       status: "Pending",
+  //     );
+
   factory Message.fromJson(Map<String, dynamic> map) {
     try {
       var id = map['id'] as String;

@@ -23,6 +23,12 @@ class _$MessageEventTearOff {
       message,
     );
   }
+
+  MessageEventNotifyNewMessage notifyNewMessage(Message message) {
+    return MessageEventNotifyNewMessage(
+      message,
+    );
+  }
 }
 
 /// @nodoc
@@ -30,43 +36,44 @@ const $MessageEvent = _$MessageEventTearOff();
 
 /// @nodoc
 mixin _$MessageEvent {
-  String get message => throw _privateConstructorUsedError;
-
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String message) sendMessage,
+    required TResult Function(Message message) notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String message)? sendMessage,
+    TResult Function(Message message)? notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? sendMessage,
+    TResult Function(Message message)? notifyNewMessage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MessageEventSendMessage value) sendMessage,
+    required TResult Function(MessageEventNotifyNewMessage value)
+        notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(MessageEventSendMessage value)? sendMessage,
+    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MessageEventSendMessage value)? sendMessage,
+    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
     required TResult orElse(),
   }) =>
-      throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $MessageEventCopyWith<MessageEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -75,7 +82,6 @@ abstract class $MessageEventCopyWith<$Res> {
   factory $MessageEventCopyWith(
           MessageEvent value, $Res Function(MessageEvent) then) =
       _$MessageEventCopyWithImpl<$Res>;
-  $Res call({String message});
 }
 
 /// @nodoc
@@ -85,27 +91,13 @@ class _$MessageEventCopyWithImpl<$Res> implements $MessageEventCopyWith<$Res> {
   final MessageEvent _value;
   // ignore: unused_field
   final $Res Function(MessageEvent) _then;
-
-  @override
-  $Res call({
-    Object? message = freezed,
-  }) {
-    return _then(_value.copyWith(
-      message: message == freezed
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
 }
 
 /// @nodoc
-abstract class $MessageEventSendMessageCopyWith<$Res>
-    implements $MessageEventCopyWith<$Res> {
+abstract class $MessageEventSendMessageCopyWith<$Res> {
   factory $MessageEventSendMessageCopyWith(MessageEventSendMessage value,
           $Res Function(MessageEventSendMessage) then) =
       _$MessageEventSendMessageCopyWithImpl<$Res>;
-  @override
   $Res call({String message});
 }
 
@@ -168,6 +160,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String message) sendMessage,
+    required TResult Function(Message message) notifyNewMessage,
   }) {
     return sendMessage(message);
   }
@@ -176,6 +169,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(String message)? sendMessage,
+    TResult Function(Message message)? notifyNewMessage,
   }) {
     return sendMessage?.call(message);
   }
@@ -184,6 +178,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(String message)? sendMessage,
+    TResult Function(Message message)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -196,6 +191,8 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(MessageEventSendMessage value) sendMessage,
+    required TResult Function(MessageEventNotifyNewMessage value)
+        notifyNewMessage,
   }) {
     return sendMessage(this);
   }
@@ -204,6 +201,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(MessageEventSendMessage value)? sendMessage,
+    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
   }) {
     return sendMessage?.call(this);
   }
@@ -212,6 +210,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(MessageEventSendMessage value)? sendMessage,
+    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -225,10 +224,148 @@ abstract class MessageEventSendMessage implements MessageEvent {
   const factory MessageEventSendMessage(String message) =
       _$MessageEventSendMessage;
 
-  @override
   String get message;
-  @override
   @JsonKey(ignore: true)
   $MessageEventSendMessageCopyWith<MessageEventSendMessage> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MessageEventNotifyNewMessageCopyWith<$Res> {
+  factory $MessageEventNotifyNewMessageCopyWith(
+          MessageEventNotifyNewMessage value,
+          $Res Function(MessageEventNotifyNewMessage) then) =
+      _$MessageEventNotifyNewMessageCopyWithImpl<$Res>;
+  $Res call({Message message});
+}
+
+/// @nodoc
+class _$MessageEventNotifyNewMessageCopyWithImpl<$Res>
+    extends _$MessageEventCopyWithImpl<$Res>
+    implements $MessageEventNotifyNewMessageCopyWith<$Res> {
+  _$MessageEventNotifyNewMessageCopyWithImpl(
+      MessageEventNotifyNewMessage _value,
+      $Res Function(MessageEventNotifyNewMessage) _then)
+      : super(_value, (v) => _then(v as MessageEventNotifyNewMessage));
+
+  @override
+  MessageEventNotifyNewMessage get _value =>
+      super._value as MessageEventNotifyNewMessage;
+
+  @override
+  $Res call({
+    Object? message = freezed,
+  }) {
+    return _then(MessageEventNotifyNewMessage(
+      message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as Message,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MessageEventNotifyNewMessage implements MessageEventNotifyNewMessage {
+  const _$MessageEventNotifyNewMessage(this.message);
+
+  @override
+  final Message message;
+
+  @override
+  String toString() {
+    return 'MessageEvent.notifyNewMessage(message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is MessageEventNotifyNewMessage &&
+            const DeepCollectionEquality().equals(other.message, message));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(message));
+
+  @JsonKey(ignore: true)
+  @override
+  $MessageEventNotifyNewMessageCopyWith<MessageEventNotifyNewMessage>
+      get copyWith => _$MessageEventNotifyNewMessageCopyWithImpl<
+          MessageEventNotifyNewMessage>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message) sendMessage,
+    required TResult Function(Message message) notifyNewMessage,
+  }) {
+    return notifyNewMessage(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String message)? sendMessage,
+    TResult Function(Message message)? notifyNewMessage,
+  }) {
+    return notifyNewMessage?.call(message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message)? sendMessage,
+    TResult Function(Message message)? notifyNewMessage,
+    required TResult orElse(),
+  }) {
+    if (notifyNewMessage != null) {
+      return notifyNewMessage(message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MessageEventSendMessage value) sendMessage,
+    required TResult Function(MessageEventNotifyNewMessage value)
+        notifyNewMessage,
+  }) {
+    return notifyNewMessage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(MessageEventSendMessage value)? sendMessage,
+    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
+  }) {
+    return notifyNewMessage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MessageEventSendMessage value)? sendMessage,
+    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
+    required TResult orElse(),
+  }) {
+    if (notifyNewMessage != null) {
+      return notifyNewMessage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class MessageEventNotifyNewMessage implements MessageEvent {
+  const factory MessageEventNotifyNewMessage(Message message) =
+      _$MessageEventNotifyNewMessage;
+
+  Message get message;
+  @JsonKey(ignore: true)
+  $MessageEventNotifyNewMessageCopyWith<MessageEventNotifyNewMessage>
+      get copyWith => throw _privateConstructorUsedError;
 }

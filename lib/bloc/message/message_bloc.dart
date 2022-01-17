@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:discord_replicate/bloc/message/message_event.dart';
@@ -5,34 +6,59 @@ import 'package:discord_replicate/bloc/message/message_state.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
+import 'package:discord_replicate/service/messaging_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 export 'message_event.dart';
 export 'message_state.dart';
 
-/// Handles message subscription when opening a channel.
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final Channel _channel;
   final ChannelRepository _channelRepo;
+  final MessagingService _service;
 
-  MessageBloc({required Channel channel, required ChannelRepository channelRepo})
+  late StreamSubscription _channelSubscription;
+
+  MessageBloc({required Channel channel, required ChannelRepository channelRepo, required MessagingService service})
       : _channel = channel,
         _channelRepo = channelRepo,
+        _service = service,
         super(MessageState.initial()) {
     on<MessageEvent>((event, emit) => _handleEvent(event, emit));
+
+    _channelSubscription = _service.subscribe(_channel.id).handleError((e) {
+      log("Error received at subscription site", name: runtimeType.toString(), error: e);
+    }).listen((message) {
+      add(MessageEvent.notifyNewMessage(message));
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    _channelSubscription.cancel();
+    super.close();
   }
 
   _sendMessage(String input, emit) async {
-    log("Saving new message for channel ${_channel.id}", name: runtimeType.toString());
+    // todo: construct pending message with dummy-id, and emit new pending message state
+    await _service.sendMessage(input, _channel.id).then((message) {
+      // todo: save message to local db
+      // todo: delete temporary message with dummy-id
+      log("Message sent!", name: runtimeType.toString());
+      emit(MessageState.onReceiveNewMessage(message));
+    });
+  }
 
-    var message = Message(id: "id", senderId: "senderId", date: DateTime.now(), message: "Some messages", status: "Pending");
-    
+  _onNewMessage(Message message, emit) {
+    // todo: save to local db
+    log("New message notification.", name: runtimeType.toString());
     emit(MessageState.onReceiveNewMessage(message));
   }
 
   _handleEvent(MessageEvent event, emit) async {
     return await event.when(
       sendMessage: (input) => _sendMessage(input, emit),
+      notifyNewMessage: (message) => _onNewMessage(message, emit),
     );
   }
 }
