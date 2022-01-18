@@ -4,13 +4,13 @@ import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 
-class MessagingService {
+class MessageService {
   final GraphQLClientHelper _api;
 
-  const MessagingService(GraphQLClientHelper api) : _api = api;
+  const MessageService(GraphQLClientHelper api) : _api = api;
 
   Future<Message> sendMessage(String message, String channelId) async {
-    String m = r"""
+    String mutation = r"""
       mutation Mutation($input: MessageInput!) {
         createMessage(input: $input) {
           id
@@ -21,7 +21,7 @@ class MessagingService {
       }
     """;
 
-    var v = {
+    var variables = {
       "input": {
         "channelRef": channelId,
         "message": message,
@@ -29,7 +29,7 @@ class MessagingService {
       }
     };
 
-    return await _api.mutate(m, variables: v).then((json) => Message.fromJson(json["createMessage"]));
+    return await _api.mutate(mutation, variables: variables).then((json) => Message.fromJson(json["createMessage"]));
   }
 
   Stream<Message> subscribe(String channelId) async* {

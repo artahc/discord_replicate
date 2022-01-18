@@ -4,14 +4,14 @@ import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
-import 'package:discord_replicate/repository/auth_service.dart';
+import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_theme.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
-import 'package:discord_replicate/service/messaging_service.dart';
+import 'package:discord_replicate/service/message_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,7 +53,7 @@ class _MainState extends State<Main> {
   late HiveDatabaseService db;
 
   // Services
-  late MessagingService messageService;
+  late MessageService messageService;
 
   // Repository
   late UserRepository userRepository;
@@ -85,7 +85,7 @@ class _MainState extends State<Main> {
     userBloc = UserBloc(userRepo: userRepository, authService: authService, serverRepo: serverRepository, authBloc: authBloc);
     serverBloc = ServerBloc(serverRepository: serverRepository);
     channelBloc = ChannelBloc(channelRepository: channelRepository, serverBloc: serverBloc, userBloc: userBloc);
-    messageService = MessagingService(client);
+    messageService = MessageService(client);
   }
 
   @override
@@ -95,7 +95,7 @@ class _MainState extends State<Main> {
         RepositoryProvider<UserRepository>(create: (c) => userRepository),
         RepositoryProvider<ServerRepository>(create: (c) => serverRepository),
         RepositoryProvider<ChannelRepository>(create: (c) => channelRepository),
-        RepositoryProvider<MessagingService>(create: (c) => messageService),
+        RepositoryProvider<MessageService>(create: (c) => messageService),
       ],
       child: MultiBlocProvider(
         providers: [

@@ -352,6 +352,8 @@ abstract class $ServerStateLoadSelectedSuccessCopyWith<$Res> {
           $Res Function(ServerStateLoadSelectedSuccess) then) =
       _$ServerStateLoadSelectedSuccessCopyWithImpl<$Res>;
   $Res call({Server server, Channel recentChannel});
+
+  $ChannelCopyWith<$Res> get recentChannel;
 }
 
 /// @nodoc
@@ -382,6 +384,13 @@ class _$ServerStateLoadSelectedSuccessCopyWithImpl<$Res>
           : recentChannel // ignore: cast_nullable_to_non_nullable
               as Channel,
     ));
+  }
+
+  @override
+  $ChannelCopyWith<$Res> get recentChannel {
+    return $ChannelCopyWith<$Res>(_value.recentChannel, (value) {
+      return _then(_value.copyWith(recentChannel: value));
+    });
   }
 }
 

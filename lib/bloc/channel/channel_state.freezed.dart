@@ -501,6 +501,8 @@ abstract class $ChannelStateLoadSuccessCopyWith<$Res> {
           $Res Function(ChannelStateLoadSuccess) then) =
       _$ChannelStateLoadSuccessCopyWithImpl<$Res>;
   $Res call({Channel channel});
+
+  $ChannelCopyWith<$Res> get channel;
 }
 
 /// @nodoc
@@ -524,6 +526,13 @@ class _$ChannelStateLoadSuccessCopyWithImpl<$Res>
           : channel // ignore: cast_nullable_to_non_nullable
               as Channel,
     ));
+  }
+
+  @override
+  $ChannelCopyWith<$Res> get channel {
+    return $ChannelCopyWith<$Res>(_value.channel, (value) {
+      return _then(_value.copyWith(channel: value));
+    });
   }
 }
 
