@@ -21,13 +21,13 @@ class SearchPanel extends StatefulWidget {
 class _SearchPanelState extends State<SearchPanel> {
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
-  Channel _getLastChannel() {
-    return Channel.dummy();
-  }
+  // Channel _getLastChannel() {
+  //   return Channel.dummy();
+  // }
 
-  List<Channel> _getSuggestionChannels() {
-    return List.generate(20, (index) => Channel.dummy());
-  }
+  // List<Channel> _getSuggestionChannels() {
+  //   return List.generate(20, (index) => Channel.dummy());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +99,7 @@ class _SearchPanelState extends State<SearchPanel> {
                                 ),
                           ),
                         ),
-                        _SearchChannelTile(data: _getLastChannel()),
+                        _SearchChannelTile(data: Channel(id: "", name: "", messages: [], members: [])),
                         Container(
                           margin: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
                           child: Text(
@@ -109,9 +109,8 @@ class _SearchPanelState extends State<SearchPanel> {
                                 ),
                           ),
                         ),
-                        Column(
-                          children: _getSuggestionChannels().map((e) => _SearchChannelTile(data: e)).toList(),
-                        )
+                        // Column(
+                        // )
                       ],
                     ),
                   ),

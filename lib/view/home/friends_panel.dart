@@ -6,10 +6,6 @@ import 'package:flutter/material.dart';
 class FriendsPanel extends StatelessWidget {
   const FriendsPanel({Key? key}) : super(key: key);
 
-  List<User> _fetchUsers() {
-    return List.generate(25, (index) => User.dummy());
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -52,7 +48,7 @@ class FriendsPanel extends StatelessWidget {
             ),
             Builder(
               builder: (context) {
-                var users = _fetchUsers();
+                var users = <User>[];
                 return Expanded(
                   child: Container(
                     color: Theme.of(context).colorScheme.secondary,

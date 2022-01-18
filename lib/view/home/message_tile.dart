@@ -31,7 +31,7 @@ class MessageTile extends StatelessWidget {
                     spacing: 10,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      Text(message.senderId, style: Theme.of(context).textTheme.bodyText1),
+                      Text(message.senderRef, style: Theme.of(context).textTheme.bodyText1),
                       Text(DateFormat.yMMMd().add_jm().format(message.date),
                           style: Theme.of(context).textTheme.caption!.copyWith(
                                 color: Theme.of(context).colorScheme.onSecondary,
