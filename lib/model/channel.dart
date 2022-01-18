@@ -5,79 +5,21 @@ import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+part 'channel.freezed.dart';
 part 'channel.g.dart';
 
-@HiveType(typeId: HiveConstants.CHANNEL_TYPE)
-class Channel extends HiveObject with EquatableMixin {
-  @HiveField(0)
-  final String id;
+@freezed
+class Channel with _$Channel {
+  @HiveType(typeId: HiveConstants.CHANNEL_TYPE, adapterName: "ChannelAdapter")
+  const factory Channel({
+    @HiveField(0) required String id,
+    @HiveField(1) required String name,
+    @HiveField(2) @Default(const <User>[]) List<User> members,
+    @HiveField(3) @Default(const <Message>[]) List<Message> messages,
+  }) = _Channel;
 
-  @HiveField(1)
-  final String name;
-
-  @HiveField(2)
-  final List<User> members;
-
-  @HiveField(3)
-  final List<Message> messages;
-
-  Channel({
-    required this.id,
-    required this.name,
-    this.members = const <User>[],
-    this.messages = const <Message>[],
-  });
-
-  factory Channel.dummy() {
-    var random = Random().nextInt(1000);
-    return Channel(
-      id: "room-id-$random",
-      name: "room-name",
-      members: List.generate(15, (index) => User.dummy()),
-      messages: List.generate(15, (index) => Message.dummy()),
-    );
-  }
-
-  factory Channel.fromJson(Map<String, dynamic> map) {
-    try {
-      var id = map['id'] as String;
-      var name = map['name'] as String;
-
-      var members = <User>[];
-      if (map.containsKey('members') && (map['members'] as List<Object?>).isNotEmpty)
-        members = (map['members'] as List<Object?>).map((e) => User.fromJson(e as Map<String, dynamic>)).toList();
-
-      var messages = <Message>[];
-      if (map.containsKey('messages') && (map['messages'] as List<Object?>).isNotEmpty)
-        messages = (map['messages'] as List<Object?>).map((e) => Message.fromJson(e as Map<String, dynamic>)).toList();
-
-      return Channel(
-        id: id,
-        name: name,
-        members: members,
-        messages: messages,
-      );
-    } catch (e) {
-      throw ParsingException("Error when parsing Room from JSON.", payload: map, source: e);
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "name": name,
-      "members": members,
-      "messages": messages,
-    };
-  }
-
-  @override
-  String toString() {
-    return this.toJson().toString();
-  }
-
-  @override
-  List<Object?> get props => [id, name];
+  factory Channel.fromJson(Map<String, dynamic> map) => _$ChannelFromJson(map);
 }

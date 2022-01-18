@@ -6,17 +6,17 @@ part of 'channel.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ChannelAdapter extends TypeAdapter<Channel> {
+class ChannelAdapter extends TypeAdapter<_$_Channel> {
   @override
   final int typeId = 2;
 
   @override
-  Channel read(BinaryReader reader) {
+  _$_Channel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Channel(
+    return _$_Channel(
       id: fields[0] as String,
       name: fields[1] as String,
       members: (fields[2] as List).cast<User>(),
@@ -25,7 +25,7 @@ class ChannelAdapter extends TypeAdapter<Channel> {
   }
 
   @override
-  void write(BinaryWriter writer, Channel obj) {
+  void write(BinaryWriter writer, _$_Channel obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -48,3 +48,28 @@ class ChannelAdapter extends TypeAdapter<Channel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$_Channel _$$_ChannelFromJson(Map<String, dynamic> json) => _$_Channel(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      members: (json['members'] as List<dynamic>?)
+              ?.map((e) => User.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <User>[],
+      messages: (json['messages'] as List<dynamic>?)
+              ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <Message>[],
+    );
+
+Map<String, dynamic> _$$_ChannelToJson(_$_Channel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'members': instance.members,
+      'messages': instance.messages,
+    };
