@@ -52,7 +52,7 @@ class HiveDatabaseService implements DatabaseService {
       return Future.value(Hive.box(name));
   }
 
-  Future save<T>(dynamic key, T value) async {
+  Future<void> save<T>(dynamic key, T value) async {
     Box<T> box = await _getBox();
     box.put(key, value);
   }
@@ -63,7 +63,7 @@ class HiveDatabaseService implements DatabaseService {
     return result;
   }
 
-  Future saveAll<T>(Map<dynamic, T> values) async {
+  Future<void> saveAll<T>(Map<dynamic, T> values) async {
     Box<T> box = await _getBox<T>();
     await box.putAll(values);
   }
