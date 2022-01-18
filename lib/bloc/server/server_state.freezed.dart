@@ -1,6 +1,5 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'server_state.dart';
@@ -353,6 +352,7 @@ abstract class $ServerStateLoadSelectedSuccessCopyWith<$Res> {
       _$ServerStateLoadSelectedSuccessCopyWithImpl<$Res>;
   $Res call({Server server, Channel recentChannel});
 
+  $ServerCopyWith<$Res> get server;
   $ChannelCopyWith<$Res> get recentChannel;
 }
 
@@ -384,6 +384,13 @@ class _$ServerStateLoadSelectedSuccessCopyWithImpl<$Res>
           : recentChannel // ignore: cast_nullable_to_non_nullable
               as Channel,
     ));
+  }
+
+  @override
+  $ServerCopyWith<$Res> get server {
+    return $ServerCopyWith<$Res>(_value.server, (value) {
+      return _then(_value.copyWith(server: value));
+    });
   }
 
   @override
