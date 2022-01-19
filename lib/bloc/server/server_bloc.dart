@@ -23,15 +23,6 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
       : _serverRepo = serverRepository,
         super(ServerState.initial()) {
     on<ServerEvent>((event, emit) => _handleEvent(event, emit));
-
-    // _userStateSubscription = _userBloc.stream.listen((state) {
-    //   state.whenOrNull(
-    //     loadUserSuccess: (user) {
-    //       log("Adding ServerEvent.loadServer in response of UserState.loadLocalUserSuccess", name: runtimeType.toString());
-    //       add(ServerEvent.loadServer(user.servers.first.id));
-    //     },
-    //   );
-    // });
   }
 
   @override

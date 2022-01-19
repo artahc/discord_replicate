@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
@@ -7,6 +6,7 @@ import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 
 export 'user_event.dart';
 export 'user_state.dart';
@@ -18,6 +18,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   final AuthBloc _authBloc;
 
+  late Logger log = Logger(runtimeType.toString());
   late StreamSubscription _authStateSubscription;
 
   UserBloc({
@@ -35,11 +36,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     _authStateSubscription = _authBloc.stream.listen((state) {
       state.whenOrNull(
         signedIn: (credential) {
-          log("Load local user after sign-in", name: runtimeType.toString());
+          log.fine("Load local user after sign-in.");
           add(UserEvent.loadLocalUser());
         },
         signedOut: () {
-          log("Delete local user after sign-out", name: runtimeType.toString());
+          log.fine("Delete local user after sign-out.");
           add(UserEvent.deleteLocalUser());
         },
       );
@@ -66,8 +67,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       await _userRepo.load(credential.uid).then((user) async {
         if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
         emit(UserState.loadUserSuccess(user));
-      }).catchError((e) {
-        log("Error when loading user after sign-in.", name: runtimeType.toString());
+      }).catchError((e, st) {
+        log.shout("Error when loading user after sign-in.", e, st);
         emit(UserState.loadUserFailed());
       });
     }

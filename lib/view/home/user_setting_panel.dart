@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
@@ -9,6 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'dart:math' as math;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 
 class UserSettingPanel extends StatefulWidget {
   UserSettingPanel({Key? key}) : super(key: key);
@@ -20,14 +19,15 @@ class UserSettingPanel extends StatefulWidget {
 class _UserSettingPanelState extends State<UserSettingPanel> {
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
-
+  late Logger log = Logger(runtimeType.toString());
+  
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (c, state) {
         state.whenOrNull(
           signedOut: () {
-            log("State received $state", name: this.runtimeType.toString());
+            log.info("State received $state");
             SchedulerBinding.instance?.addPostFrameCallback((_) {
               _navBloc.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true);
             });

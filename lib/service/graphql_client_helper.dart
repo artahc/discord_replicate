@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/credential.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:logging/logging.dart';
 
 class GraphQLClientHelper with ExceptionMapperMixin {
   late GraphQLClient _client;
@@ -13,8 +13,8 @@ class GraphQLClientHelper with ExceptionMapperMixin {
   late WebSocketLink _wsLink;
 
   late Link _link;
-
   late Future<Credential?> Function() tokenProvider;
+  late Logger log = Logger(runtimeType.toString());
 
   GraphQLClientHelper({required String url, required this.tokenProvider, GraphQLCache? cache, Map<String, String>? defaultHeader}) {
     _httpLink = HttpLink(url, defaultHeaders: defaultHeader ?? {});
@@ -45,12 +45,11 @@ class GraphQLClientHelper with ExceptionMapperMixin {
     var options = QueryOptions(document: gql(query), variables: variables);
     var result = await _client.query(options);
 
-    log("Query => ${query.trim()}", name: this.runtimeType.toString());
-
+    log.finer("Query => ${query.trim()}");
     if (result.hasException) {
       return Future.error(mapException(result.exception!));
     } else {
-      log("Response <= $result", name: this.runtimeType.toString());
+      log.finer("Response <= $result");
       return result.data!;
     }
   }
@@ -59,12 +58,12 @@ class GraphQLClientHelper with ExceptionMapperMixin {
     var options = MutationOptions(document: gql(mutation), variables: variables);
     var result = await _client.mutate(options);
 
-    log("Mutation => ${mutation.trim()}", name: this.runtimeType.toString());
+    log.finer("Mutation => ${mutation.trim()}");
 
     if (result.hasException) {
       return Future.error(mapException(result.exception!));
     } else {
-      log("Response <= $result", name: this.runtimeType.toString());
+      log.finer("Response <= $result");
       return result.data!;
     }
   }
@@ -73,13 +72,13 @@ class GraphQLClientHelper with ExceptionMapperMixin {
     var options = SubscriptionOptions(document: gql(subscription), variables: variables);
     var stream = _client.subscribe(options);
 
-    log("Subscription => ${subscription.trim()}", name: this.runtimeType.toString());
+    log.finer("Subscription => ${subscription.trim()}");
 
     yield* stream.map((result) {
       if (result.hasException) {
         throw mapException(result.exception!);
       } else {
-        log("Response <= ${result.data}", name: this.runtimeType.toString());
+        log.finer("Response <= ${result.data}");
         return result.data!;
       }
     });
@@ -90,15 +89,13 @@ class GraphQLClientHelper with ExceptionMapperMixin {
     var linkError = operationException.linkException;
     var gqlErrors = operationException.graphqlErrors;
 
-    log("Response containing errors", name: this.runtimeType.toString());
-
     if (linkError != null) {
-      log("Link error $linkError", name: this.runtimeType.toString());
+      log.shout("Link error $linkError", linkError, StackTrace.current);
       return linkError;
     }
     if (gqlErrors.isNotEmpty) {
-      log("GraphQL error $gqlErrors", name: this.runtimeType.toString());
       var graphqlError = gqlErrors.first;
+      log.shout("GraphQL error $gqlErrors", graphqlError, StackTrace.current);
       String errorCode = graphqlError.extensions!['code'];
       switch (errorCode) {
         case 'NOT_FOUND_ERROR':
@@ -107,7 +104,6 @@ class GraphQLClientHelper with ExceptionMapperMixin {
           return e;
       }
     }
-
     return e;
   }
 }

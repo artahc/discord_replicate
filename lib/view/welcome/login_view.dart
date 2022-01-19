@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
@@ -12,6 +10,7 @@ import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -27,6 +26,8 @@ class _LoginViewState extends State<LoginView> {
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
   late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
+
+  late Logger log = Logger(runtimeType.toString());
 
   @override
   void initState() {
@@ -63,23 +64,10 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<AuthBloc, AuthState>(
-          listener: (_, state) {
-            state.whenOrNull(
-              signingIn: () {
-                log("Authenticating...", name: runtimeType.toString());
-              },
-              signedIn: (user) {
-                log("User authenticated.", name: runtimeType.toString());
-              },
-            );
-          },
-        ),
         BlocListener<UserBloc, UserState>(
           listener: (_, state) {
             state.whenOrNull(
               loadUserSuccess: (user) {
-                log("User loaded.", name: runtimeType.toString());
                 _onUserLoaded();
               },
             );

@@ -23,25 +23,18 @@ class NavigationCubit extends Cubit<NavigationState> {
   }
 
   push(BuildContext context, Route<dynamic> route, bool useRoot) async {
-    Navigator.of(context, rootNavigator: useRoot).push(route).whenComplete(() {
-      log("Push complete at ${route.toString()}", name: this.runtimeType.toString());
-    });
+    Navigator.of(context, rootNavigator: useRoot).push(route).whenComplete(() {});
   }
 
   pushNamed(BuildContext context, String route, bool useRoot) async {
-    Navigator.of(context, rootNavigator: useRoot).pushNamed(route).whenComplete(() {
-      log("Push named complete at route $route", name: this.runtimeType.toString());
-    });
+    Navigator.of(context, rootNavigator: useRoot).pushNamed(route).whenComplete(() {});
   }
 
   pushNamedAndRemoveUntil(context, route, predicate, useRoot) async {
-    Navigator.of(context, rootNavigator: useRoot).pushNamedAndRemoveUntil(route, predicate).whenComplete(() {
-      log("Push named  and remove until complete at route $route", name: this.runtimeType.toString());
-    });
+    Navigator.of(context, rootNavigator: useRoot).pushNamedAndRemoveUntil(route, predicate).whenComplete(() {});
   }
 
   pop(context, useRoot) async {
     Navigator.of(context, rootNavigator: useRoot).pop();
-    log("Pop complete at route.", name: this.runtimeType.toString());
   }
 }

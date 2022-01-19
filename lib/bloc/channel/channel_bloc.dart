@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:discord_replicate/bloc/channel/channel_event.dart';
 import 'package:discord_replicate/bloc/channel/channel_state.dart';
@@ -7,6 +6,7 @@ import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logging/logging.dart';
 
 export 'channel_event.dart';
 export 'channel_state.dart';
@@ -19,6 +19,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   final UserBloc _userBloc;
   final ChannelRepository _channelRepository;
 
+  late Logger log = Logger(runtimeType.toString());
   late StreamSubscription<ServerState> _serverStateSubscription;
   late StreamSubscription<UserState> _userStateSubscription;
 
@@ -64,7 +65,6 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   }
 
   _loadRecentPrivate(emit) async {
-    log("Loading recent private channel.", name: runtimeType.toString());
     await _load("PkM6m7lhnvIORIRuoVJv", emit);
   }
 
