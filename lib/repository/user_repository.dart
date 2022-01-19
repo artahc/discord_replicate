@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
@@ -7,6 +6,7 @@ import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UserQuery {
@@ -43,6 +43,8 @@ class UserQuery {
 }
 
 class UserRepository with ExceptionMapperMixin {
+  late Logger log = Logger(runtimeType.toString());
+
   GraphQLClientHelper _api;
   HiveDatabaseService _db;
 
@@ -65,7 +67,7 @@ class UserRepository with ExceptionMapperMixin {
       return _db
           .load<User>(uid)
           .then((user) {
-            if (user != null) log("User found on local database. $user", name: runtimeType.toString());
+            if (user != null) log.fine("User found on local database. $user");
             return user;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
@@ -79,7 +81,7 @@ class UserRepository with ExceptionMapperMixin {
           .then((json) async {
             var user = User.fromJson(json['user']);
             await save(user);
-            log("User retrieved from remote API. $user", name: runtimeType.toString());
+            log.fine("User retrieved from remote API. $user");
             return user;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))

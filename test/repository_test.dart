@@ -8,6 +8,7 @@ import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:logging/logging.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:fixnum/fixnum.dart';
 
@@ -23,7 +24,12 @@ main() {
     },
   );
 
-  group("Remote source", () {
+  Logger.root.level = Level.ALL; // defaults to Level.INFO
+  Logger.root.onRecord.listen((record) {
+    print('${record.level.name}: ${record.time}: ${record.message}');
+  });
+
+  group("Remote Source", () {
     tearDown(() {
       reset(mockDb);
     });
@@ -32,10 +38,12 @@ main() {
       var serverRepo = ServerRepository(apiClient: api, database: mockDb);
 
       when(() => mockDb.save(any(), any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockDb.load<Server?>(any())).thenAnswer((invocation) => Future.value(null));
+      when(() => mockDb.load<Server>(any())).thenAnswer((invocation) => Future.value(null));
 
       var server = await serverRepo.load("JkBxr0EoQOYyDeXagC2h");
 
+      verify(() => mockDb.load<Server>(any())).called(1);
+      verify(() => mockDb.save(any(), any())).called(1);
       expect(server, isA<Server>());
     });
 

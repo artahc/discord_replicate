@@ -1,12 +1,7 @@
-import 'dart:math';
-
-import 'package:discord_replicate/exception/custom_exception.dart';
-import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
-import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
 part 'user.freezed.dart';

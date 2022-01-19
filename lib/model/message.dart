@@ -1,9 +1,4 @@
-import 'dart:math';
-
-import 'package:discord_replicate/exception/custom_exception.dart';
-import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
-import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 

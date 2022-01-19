@@ -232,13 +232,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.6"
-  equatable:
-    dependency: "direct main"
-    description:
-      name: equatable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -303,7 +296,7 @@ packages:
     source: hosted
     version: "1.1.0"
   fixnum:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: fixnum
       url: "https://pub.dartlang.org"
@@ -514,7 +507,7 @@ packages:
     source: hosted
     version: "6.1.4"
   logging:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: logging
       url: "https://pub.dartlang.org"
