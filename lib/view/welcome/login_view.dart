@@ -173,7 +173,7 @@ class _LoginViewState extends State<LoginView> {
                           alignment: Alignment.centerLeft,
                         ),
                       ),
-                      AppMaterialButton(
+                      AppButton(
                         margin: const EdgeInsets.only(top: 15),
                         onPressed: _signIn,
                         child: Text("Login"),

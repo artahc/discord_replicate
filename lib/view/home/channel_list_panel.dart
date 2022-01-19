@@ -49,7 +49,7 @@ class _ChannelListPanelState extends State<ChannelListPanel> {
                     return ChannelTile(channel: channel);
                   },
                   before: [
-                    AppMaterialButton(
+                    AppButton(
                       margin: const EdgeInsets.all(20),
                       color: Theme.of(context).buttonTheme.colorScheme?.onSecondary,
                       size: const Size(double.infinity, 35),

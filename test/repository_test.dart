@@ -10,7 +10,6 @@ import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:fixnum/fixnum.dart';
 
 class MockDb extends Mock implements HiveDatabaseService {}
 
@@ -23,8 +22,6 @@ main() {
       "allow-me-in": "artahc123",
     },
   );
-
-  Logger.level = Level.debug;
 
   group("Remote Source", () {
     tearDown(() {

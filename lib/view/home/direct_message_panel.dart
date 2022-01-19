@@ -100,14 +100,11 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                           clipBehavior: Clip.antiAlias,
                           itemCount: user.privateChannels.length,
                           itemBuilder: (_, index) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: DirectMessageTile(
-                                channel: user.privateChannels[index],
-                                onPressed: () {
-                                  _channelBloc.add(ChannelEvent.loadChannel(user.privateChannels[index].id));
-                                },
-                              ),
+                            return DirectMessageTile(
+                              channel: user.privateChannels[index],
+                              onPressed: () {
+                                _channelBloc.add(ChannelEvent.loadChannel(user.privateChannels[index].id));
+                              },
                             );
                           },
                         ),

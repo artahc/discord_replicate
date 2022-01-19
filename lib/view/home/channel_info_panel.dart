@@ -142,7 +142,7 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                             return ChannelMemberTile(user: user);
                           },
                           before: [
-                            AppMaterialButton(
+                            AppButton(
                               size: Size(double.infinity, 60),
                               onPressed: () {},
                               highlightColor: Theme.of(context).colorScheme.primary,
@@ -191,7 +191,7 @@ class ChannelMemberTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppMaterialButton(
+    return AppButton(
       onPressed: () {},
       size: Size(double.infinity, 65),
       highlightColor: Theme.of(context).colorScheme.primary,

@@ -58,7 +58,7 @@ class FriendsPanel extends StatelessWidget {
                       beforeListWidget: [
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                          child: AppMaterialButton(
+                          child: AppButton(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             onPressed: () {},
                             size: Size(double.infinity, 60),

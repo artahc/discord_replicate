@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppMaterialButton extends StatelessWidget {
+class AppButton extends StatelessWidget {
   final EdgeInsets? margin;
   final EdgeInsets? padding;
   final Size size;
@@ -12,7 +12,7 @@ class AppMaterialButton extends StatelessWidget {
   final BorderRadius? borderRadius;
   final Alignment childAlignment;
 
-  const AppMaterialButton(
+  const AppButton(
       {Key? key,
       required this.onPressed,
       this.child,

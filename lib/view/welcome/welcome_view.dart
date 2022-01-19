@@ -48,7 +48,7 @@ class WelcomeView extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 25),
-              AppMaterialButton(
+              AppButton(
                 child: Text("Register"),
                 onPressed: () {
                   var route = CustomSlideTransition(currentPage: this, nextPage: const RegisterView());
@@ -58,7 +58,7 @@ class WelcomeView extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              AppMaterialButton(
+              AppButton(
                 color: Theme.of(context).buttonTheme.colorScheme!.secondary,
                 child: Text("Login"),
                 onPressed: () {
