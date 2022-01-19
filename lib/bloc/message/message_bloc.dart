@@ -8,7 +8,7 @@ import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/service/message_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 
 export 'message_event.dart';
 export 'message_state.dart';
@@ -18,7 +18,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final ChannelRepository _channelRepo;
   final MessageService _service;
 
-  late Logger log = Logger(runtimeType.toString());
+  late Logger log = Logger();
   late StreamSubscription _channelSubscription;
 
   MessageBloc({required Channel channel, required ChannelRepository channelRepo, required MessageService service})
@@ -29,7 +29,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     on<MessageEvent>((event, emit) => _handleEvent(event, emit));
 
     _channelSubscription = _service.subscribe(_channel.id).handleError((e, st) {
-      log.shout("Error in channel subscription.", e, st);
+      log.e("Error in channel subscription.", e, st);
     }).listen((message) {
       add(MessageEvent.notifyNewMessage(message));
     });
@@ -46,14 +46,14 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     await _service.sendMessage(input, _channel.id).then((message) {
       // todo: save message to local db
       // todo: delete temporary message with dummy-id
-      log.fine("Message sent. $message");
+      log.d("Message sent. $message");
       emit(MessageState.onReceiveNewMessage(message));
     });
   }
 
   _onNewMessage(Message message, emit) {
     // todo: save to local db
-    log.fine("Received new message. $message");
+    log.d("Received new message. $message");
     emit(MessageState.onReceiveNewMessage(message));
   }
 

@@ -6,7 +6,7 @@ import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChannelQuery {
@@ -41,7 +41,7 @@ class ChannelMutation {
 }
 
 class ChannelRepository with ExceptionMapperMixin {
-  late Logger log = Logger(runtimeType.toString());
+  late Logger log = Logger();
 
   GraphQLClientHelper _api;
   HiveDatabaseService _db;
@@ -64,7 +64,7 @@ class ChannelRepository with ExceptionMapperMixin {
       return _db
           .load<Channel>(id)
           .then((channel) {
-            if (channel != null) log.fine("Channel found on local database. $channel");
+            if (channel != null) log.d("Channel found on local database. $channel");
             return channel;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
@@ -76,7 +76,7 @@ class ChannelRepository with ExceptionMapperMixin {
       return _api.query(query, variables: variables).then((json) {
         var channel = Channel.fromJson(json['channel']);
         _db.save<Channel>(channel.id, channel);
-        log.fine("Channel retrieved from remote API. $json");
+        log.d("Channel retrieved from remote API. $json");
         return channel;
       }).asStream();
     });

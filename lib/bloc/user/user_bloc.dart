@@ -6,7 +6,7 @@ import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 
 export 'user_event.dart';
 export 'user_state.dart';
@@ -18,7 +18,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   final AuthBloc _authBloc;
 
-  late Logger log = Logger(runtimeType.toString());
+  late Logger log = Logger();
   late StreamSubscription _authStateSubscription;
 
   UserBloc({
@@ -36,11 +36,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     _authStateSubscription = _authBloc.stream.listen((state) {
       state.whenOrNull(
         signedIn: (credential) {
-          log.fine("Load local user after sign-in.");
+          log.d("Load local user after sign-in.");
           add(UserEvent.loadLocalUser());
         },
         signedOut: () {
-          log.fine("Delete local user after sign-out.");
+          log.d("Delete local user after sign-out.");
           add(UserEvent.deleteLocalUser());
         },
       );
@@ -68,7 +68,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
         emit(UserState.loadUserSuccess(user));
       }).catchError((e, st) {
-        log.shout("Error when loading user after sign-in.", e, st);
+        log.e("Error when loading user after sign-in.", e, st);
         emit(UserState.loadUserFailed());
       });
     }

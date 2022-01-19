@@ -1,16 +1,12 @@
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/bloc/user/user_state.dart';
-import 'package:discord_replicate/model/credential.dart';
-import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -27,7 +23,7 @@ class _LoginViewState extends State<LoginView> {
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
   late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
 
-  late Logger log = Logger(runtimeType.toString());
+  late Logger log = Logger();
 
   @override
   void initState() {

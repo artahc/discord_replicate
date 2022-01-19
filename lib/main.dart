@@ -27,7 +27,6 @@ Future main() async {
   ));
   await Firebase.initializeApp();
   await initializeHive();
-
   runApp(Main());
 }
 

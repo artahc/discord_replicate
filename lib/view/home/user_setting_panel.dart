@@ -7,7 +7,7 @@ import 'package:flutter/scheduler.dart';
 import 'dart:math' as math;
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 
 class UserSettingPanel extends StatefulWidget {
   UserSettingPanel({Key? key}) : super(key: key);
@@ -19,15 +19,15 @@ class UserSettingPanel extends StatefulWidget {
 class _UserSettingPanelState extends State<UserSettingPanel> {
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
-  late Logger log = Logger(runtimeType.toString());
-  
+  late Logger log = Logger();
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (c, state) {
         state.whenOrNull(
           signedOut: () {
-            log.info("State received $state");
+            log.d("State received $state");
             SchedulerBinding.instance?.addPostFrameCallback((_) {
               _navBloc.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true);
             });

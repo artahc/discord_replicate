@@ -8,7 +8,7 @@ import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:fixnum/fixnum.dart';
 
@@ -24,10 +24,7 @@ main() {
     },
   );
 
-  Logger.root.level = Level.ALL; // defaults to Level.INFO
-  Logger.root.onRecord.listen((record) {
-    print('${record.level.name}: ${record.time}: ${record.message}');
-  });
+  Logger.level = Level.debug;
 
   group("Remote Source", () {
     tearDown(() {

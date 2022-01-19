@@ -4,7 +4,7 @@ import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
-import 'package:logging/logging.dart';
+import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ServerQuery {
@@ -31,7 +31,7 @@ class ServerQuery {
 }
 
 class ServerRepository with ExceptionMapperMixin {
-  late Logger log = Logger(runtimeType.toString());
+  late Logger log = Logger();
 
   final GraphQLClientHelper _api;
   final HiveDatabaseService _db;
@@ -51,7 +51,7 @@ class ServerRepository with ExceptionMapperMixin {
       () async => _db
           .load<Server>(id)
           .then((server) {
-            if (server != null) log.fine("Server found on local database. $server");
+            if (server != null) log.d("Server found on local database. $server");
             return server;
           })
           .asStream()
@@ -64,7 +64,7 @@ class ServerRepository with ExceptionMapperMixin {
             .query(query, variables: variables)
             .then((json) async {
               var server = Server.fromJson(json['server']);
-              log.fine("Server retrieved from remote API. $server");
+              log.d("Server retrieved from remote API. $server");
 
               await _db.save<Server>(server.id, server);
               return server;
