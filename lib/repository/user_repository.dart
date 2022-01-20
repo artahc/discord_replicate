@@ -48,11 +48,21 @@ class UserRepository with ExceptionMapperMixin {
   GraphQLClientHelper _api;
   HiveDatabaseService _db;
 
+  User? _currentUser;
+
   UserRepository({
     required GraphQLClientHelper apiClient,
     required HiveDatabaseService database,
   })  : _api = apiClient,
         _db = database;
+
+  User? getCurrentUser() {
+    return _currentUser;
+  }
+
+  Future<void> setCurrentUser(User user) async {
+    this._currentUser = user;
+  }
 
   /// Load user by UID.
   ///

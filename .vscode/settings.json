@@ -15,6 +15,9 @@
   "editor.foldingStrategy": "indentation",
   "todohighlight.isCaseSensitive": false,
   "debug.console.fontSize": 11,
-  "debug.console.wordWrap": true,
+  "debug.console.wordWrap": false,
+  "workbench.colorCustomizations": {
+    "debugConsole.infoForeground": "#1d79a7"
+  },
   "todo-tree.regex.regexCaseSensitive": false
 }

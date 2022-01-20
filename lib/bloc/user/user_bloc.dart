@@ -66,6 +66,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     else {
       await _userRepo.load(credential.uid).then((user) async {
         if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
+        _userRepo.setCurrentUser(user);
         emit(UserState.loadUserSuccess(user));
       }).catchError((e, st) {
         log.e("Error when loading user after sign-in.", e, st);

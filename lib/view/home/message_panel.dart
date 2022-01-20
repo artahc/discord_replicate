@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:discord_replicate/bloc/message/message_bloc.dart';
@@ -5,11 +6,17 @@ import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
+import 'package:discord_replicate/repository/user_repository.dart';
+import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/service/message_service.dart';
 import 'package:discord_replicate/view/home/message_tile.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
+
+final Logger log = Logger();
 
 class ChannelMessagePanel extends StatefulWidget {
   final Channel channel;
@@ -23,11 +30,14 @@ class ChannelMessagePanel extends StatefulWidget {
 
 class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
   late ChannelRepository _channelRepository = RepositoryProvider.of(context);
+  late UserRepository _userRepo = RepositoryProvider.of(context);
   late MessageService _messagingService = RepositoryProvider.of(context);
+
   late MessageBloc _messageBloc = MessageBloc(
     channel: widget.channel,
     channelRepo: _channelRepository,
     service: _messagingService,
+    userRepo: _userRepo,
   );
 
   @override
@@ -147,35 +157,53 @@ class MessagePanelBody extends StatefulWidget {
 
 class _MessagePanelBodyState extends State<MessagePanelBody> {
   late List<Message> _messages = widget.initialMessages;
+  final ScrollController _listViewCtrl = ScrollController(keepScrollOffset: false, initialScrollOffset: 0);
 
   @override
   void initState() {
     super.initState();
   }
 
+  _onSendingMessage(Message message) {
+    log.d("Sending message. ${message.toJson()}");
+    setState(() {
+      _messages.add(message);
+      _listViewCtrl.animateTo(_listViewCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    });
+  }
+
   _onReceiveNewMessage(Message message) async {
     setState(() {
+      var pending = _messages.where((element) => element.contentHash == message.contentHash);
+      if (pending.isNotEmpty) {
+        _messages.remove(pending.first);
+      }
       _messages.add(message);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var messages = _messages.reversed.toList();
     return BlocListener<MessageBloc, MessageState>(
       listener: (_, state) {
         state.whenOrNull(
-          onReceiveNewMessage: (message) => _onReceiveNewMessage(message),
+          sending: (message) => _onSendingMessage(message),
+          receivedNewMessage: (message) => _onReceiveNewMessage(message),
         );
       },
-      child: Expanded(
+      child: Flexible(
+        flex: 1,
         child: Container(
           color: Theme.of(context).colorScheme.secondary,
           child: ListView.builder(
-            itemCount: _messages.length,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            controller: _listViewCtrl,
+            reverse: true,
+            itemCount: messages.length,
             itemBuilder: (_, index) {
-              return MessageTile(message: _messages[index]);
+              return MessageTile(message: messages[index]);
             },
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
             scrollDirection: Axis.vertical,
           ),
         ),

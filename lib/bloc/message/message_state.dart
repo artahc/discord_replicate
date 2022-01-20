@@ -6,5 +6,8 @@ part 'message_state.freezed.dart';
 @freezed
 abstract class MessageState with _$MessageState {
   const factory MessageState.initial() = MessageStateInitial;
-  const factory MessageState.onReceiveNewMessage(Message message) = MessageStateNewMessage;
+  const factory MessageState.sending(Message message) = MessageStateSending;
+  const factory MessageState.receivedNewMessage(Message message) = MessageStateNewMessage;
+
+
 }

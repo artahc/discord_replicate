@@ -4,6 +4,7 @@ import 'package:discord_replicate/bloc/channel/channel_event.dart';
 import 'package:discord_replicate/bloc/channel/channel_state.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -22,6 +23,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   late Logger log = Logger();
   late StreamSubscription<ServerState> _serverStateSubscription;
   late StreamSubscription<UserState> _userStateSubscription;
+  late Channel current;
 
   ChannelBloc({
     required ChannelRepository channelRepository,
@@ -71,6 +73,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   _load(String id, emit) async {
     emit(ChannelState.loadInProgress());
     await _channelRepository.load(id).then((channel) {
+      this.current = channel;
       emit(ChannelState.loadSuccess(channel));
     });
   }

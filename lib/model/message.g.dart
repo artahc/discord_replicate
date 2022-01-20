@@ -58,6 +58,7 @@ _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
       senderRef: json['senderRef'] as String,
       date: const TimestampConverter().fromJson(json['timestamp'] as int),
       message: json['message'] as String,
+      $type: json['runtimeType'] as String?,
     );
 
 Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
@@ -66,4 +67,21 @@ Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
       'senderRef': instance.senderRef,
       'timestamp': const TimestampConverter().toJson(instance.date),
       'message': instance.message,
+      'runtimeType': instance.$type,
+    };
+
+_$_PendingMessage _$$_PendingMessageFromJson(Map<String, dynamic> json) =>
+    _$_PendingMessage(
+      senderRef: json['senderRef'] as String,
+      message: json['message'] as String,
+      date: const TimestampConverter().fromJson(json['timestamp'] as int),
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$_PendingMessageToJson(_$_PendingMessage instance) =>
+    <String, dynamic>{
+      'senderRef': instance.senderRef,
+      'message': instance.message,
+      'timestamp': const TimestampConverter().toJson(instance.date),
+      'runtimeType': instance.$type,
     };

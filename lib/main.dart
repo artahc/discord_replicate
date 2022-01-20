@@ -95,6 +95,7 @@ class _MainState extends State<Main> {
         RepositoryProvider<ServerRepository>(create: (c) => serverRepository),
         RepositoryProvider<ChannelRepository>(create: (c) => channelRepository),
         RepositoryProvider<MessageService>(create: (c) => messageService),
+        RepositoryProvider<AuthService>(create: (c) => authService),
       ],
       child: MultiBlocProvider(
         providers: [

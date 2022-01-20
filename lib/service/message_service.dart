@@ -3,13 +3,15 @@ import 'dart:developer';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
+import 'package:logger/logger.dart';
 
 class MessageService {
   final GraphQLClientHelper _api;
+  late Logger log = Logger();
 
-  const MessageService(GraphQLClientHelper api) : _api = api;
+  MessageService(GraphQLClientHelper api) : _api = api;
 
-  Future<Message> sendMessage(String message, String channelId) async {
+  Future<Message> sendMessage(Message message, String channelId) async {
     String mutation = r"""
       mutation Mutation($input: MessageInput!) {
         createMessage(input: $input) {
@@ -24,8 +26,8 @@ class MessageService {
     var variables = {
       "input": {
         "channelRef": channelId,
-        "message": message,
-        "timestamp": (DateTime.now().millisecondsSinceEpoch.abs() / 1000).abs().toInt(),
+        "message": message.message,
+        "timestamp": message.date.millisecondsSinceEpoch,
       }
     };
 
