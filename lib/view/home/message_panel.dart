@@ -157,18 +157,35 @@ class MessagePanelBody extends StatefulWidget {
 
 class _MessagePanelBodyState extends State<MessagePanelBody> {
   late List<Message> _messages = widget.initialMessages;
-  final ScrollController _listViewCtrl = ScrollController(keepScrollOffset: false, initialScrollOffset: 0);
+  final ScrollController _scrollCtrl = ScrollController(keepScrollOffset: false, initialScrollOffset: 0);
+
+  bool _lockScrolling = true;
 
   @override
   void initState() {
     super.initState();
+    _scrollCtrl.addListener(() {
+      setState(() {
+        if (_scrollCtrl.offset <= (_scrollCtrl.position.minScrollExtent * 0.1))
+          _lockScrolling = true;
+        else
+          _lockScrolling = false;
+      });
+      log.i("$_lockScrolling");
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollCtrl.dispose();
+    super.dispose();
   }
 
   _onSendingMessage(Message message) {
     log.d("Sending message. ${message.toJson()}");
     setState(() {
       _messages.add(message);
-      _listViewCtrl.animateTo(_listViewCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+      _scrollCtrl.animateTo(_scrollCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     });
   }
 
@@ -180,6 +197,10 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
       }
       _messages.add(message);
     });
+
+    if (_lockScrolling) {
+      _scrollCtrl.animateTo(_scrollCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+    }
   }
 
   @override
@@ -198,7 +219,7 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
           color: Theme.of(context).colorScheme.secondary,
           child: ListView.builder(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            controller: _listViewCtrl,
+            controller: _scrollCtrl,
             reverse: true,
             itemCount: messages.length,
             itemBuilder: (_, index) {
