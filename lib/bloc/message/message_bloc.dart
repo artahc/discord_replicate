@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:discord_replicate/bloc/message/message_event.dart';
 import 'package:discord_replicate/bloc/message/message_state.dart';
@@ -7,7 +6,6 @@ import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
-import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/service/message_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';

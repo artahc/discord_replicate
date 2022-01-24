@@ -1,15 +1,24 @@
 import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/model/message.dart';
+import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class MessageTile extends StatelessWidget {
+class MessageTile extends StatefulWidget {
   final Message message;
 
   MessageTile({required this.message});
 
+  @override
+  State<MessageTile> createState() => _MessageTileState();
+}
+
+class _MessageTileState extends State<MessageTile> {
+  late User user;
+  
+  
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -17,7 +26,7 @@ class MessageTile extends StatelessWidget {
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Theme.of(context).colorScheme.primary,
-        onLongPress: () => print(message.contentHash),
+        onLongPress: () => print(widget.message.contentHash),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: Row(
@@ -41,10 +50,10 @@ class MessageTile extends StatelessWidget {
                         children: [
                           Builder(
                             builder: (_) {
-                              return Text(message.senderRef, style: Theme.of(context).textTheme.bodyText1);
+                              return Text(widget.message.senderRef, style: Theme.of(context).textTheme.bodyText1);
                             },
                           ),
-                          Text(DateFormat.yMMMd().add_jm().format(message.date),
+                          Text(DateFormat.yMMMd().add_jm().format(widget.message.date),
                               style: Theme.of(context).textTheme.caption!.copyWith(
                                     color: Theme.of(context).colorScheme.onSecondary,
                                   )),
@@ -53,7 +62,7 @@ class MessageTile extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(top: 2),
                         child: Builder(builder: (_) {
-                          return Text(message.message, style: Theme.of(_).textTheme.bodyText2);
+                          return Text(widget.message.message, style: Theme.of(_).textTheme.bodyText2);
                         }),
                       ),
                     ],

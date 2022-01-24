@@ -8,6 +8,7 @@
     ],
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "Dart-Code.dart-code",
+    
   },
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": true,
@@ -16,8 +17,9 @@
   "todohighlight.isCaseSensitive": false,
   "debug.console.fontSize": 11,
   "debug.console.wordWrap": false,
+  "editor.foldingImportsByDefault": true,
   "workbench.colorCustomizations": {
-    "debugConsole.infoForeground": "#1d79a7"
+    "debugConsole.infoForeground": "#2991c5"
   },
   "todo-tree.regex.regexCaseSensitive": false
 }
