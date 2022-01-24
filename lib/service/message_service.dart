@@ -24,6 +24,7 @@ class MessageService {
       }
     """;
 
+
     var variables = {
       "input": {
         "channelRef": channelId,

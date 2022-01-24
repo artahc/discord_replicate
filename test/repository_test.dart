@@ -5,6 +5,7 @@ import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
+import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,11 +14,14 @@ import 'package:mocktail/mocktail.dart';
 
 class MockDb extends Mock implements HiveDatabaseService {}
 
+class MockAuthService extends Mock implements AuthService {}
+
 main() {
   var mockDb = MockDb();
+  var mockAuthService = MockAuthService();
   var api = GraphQLClientHelper(
-    url: "http://localhost:4000/graphql",
-    authService: () => Future.value(Credential(email: "", token: "", uid: "")),
+    "http://localhost:4000/graphql",
+    authService: mockAuthService,
     defaultHeader: {
       "allow-me-in": "artahc123",
     },

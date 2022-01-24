@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:discord_replicate/bloc/message/message_event.dart';
 import 'package:discord_replicate/bloc/message/message_state.dart';
 import 'package:discord_replicate/model/channel.dart';
@@ -45,7 +47,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   _sendMessage(String input, emit) async {
-    var pendingMessage = Message.pending(senderRef: _userRepo.getCurrentUser()!.uid, message: input, date: DateTime.now());
+    var user = _userRepo.getCurrentUser()!;
+    var date = DateTime.now();
+    var pendingMessage = Message(id:"",sender: user, message: input, date: date);
 
     emit(MessageState.sending(pendingMessage));
 

@@ -18,7 +18,7 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
     };
     return _$_Message(
       id: fields[0] as String,
-      senderRef: fields[1] as String,
+      sender: fields[1] as User,
       date: fields[2] as DateTime,
       message: fields[3] as String,
     );
@@ -31,7 +31,7 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.senderRef)
+      ..write(obj.sender)
       ..writeByte(2)
       ..write(obj.date)
       ..writeByte(3)
@@ -55,7 +55,7 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
 
 _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
       id: json['id'] as String,
-      senderRef: json['senderRef'] as String,
+      sender: User.fromJson(json['sender'] as Map<String, dynamic>),
       date: const TimestampConverter().fromJson(json['timestamp'] as int),
       message: json['message'] as String,
       $type: json['runtimeType'] as String?,
@@ -64,24 +64,25 @@ _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
 Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'senderRef': instance.senderRef,
+      'sender': instance.sender,
       'timestamp': const TimestampConverter().toJson(instance.date),
       'message': instance.message,
       'runtimeType': instance.$type,
     };
 
-_$_PendingMessage _$$_PendingMessageFromJson(Map<String, dynamic> json) =>
-    _$_PendingMessage(
+_$RawMessage _$$RawMessageFromJson(Map<String, dynamic> json) => _$RawMessage(
+      id: json['id'] as String,
       senderRef: json['senderRef'] as String,
+      timestamp: json['timestamp'] as int,
       message: json['message'] as String,
-      date: const TimestampConverter().fromJson(json['timestamp'] as int),
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$_PendingMessageToJson(_$_PendingMessage instance) =>
+Map<String, dynamic> _$$RawMessageToJson(_$RawMessage instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'senderRef': instance.senderRef,
+      'timestamp': instance.timestamp,
       'message': instance.message,
-      'timestamp': const TimestampConverter().toJson(instance.date),
       'runtimeType': instance.$type,
     };
