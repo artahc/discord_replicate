@@ -4,8 +4,10 @@ import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/repository/repository_interface.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -30,7 +32,6 @@ class ChannelQuery {
         }
       }
     }
-
   """;
 }
 
@@ -40,24 +41,25 @@ class ChannelMutation {
   static String createMessage = "";
 }
 
-class ChannelRepository with ExceptionMapperMixin {
+class ChannelRepository implements Repository<Channel> {
   late Logger log = Logger();
 
   GraphQLClientHelper _api;
-  HiveDatabaseService _db;
+  DatabaseService _db;
 
   ChannelRepository({
-    required GraphQLClientHelper apiClient,
-    required HiveDatabaseService database,
-  })  : _api = apiClient,
-        _db = database;
+    GraphQLClientHelper? apiClient,
+    DatabaseService? database,
+  })  : _api = apiClient ?? GetIt.I.get<GraphQLClientHelper>(),
+        _db = database ?? GetIt.I.get<DatabaseService>();
 
+  @override
   Future<Channel> load(String id) async {
     var query = ChannelQuery.loadById;
     var variables = {
       "id": id,
-      "messageLimit": 10,
-      "memberLimit": 30,
+      "messageLimit": 30,
+      "memberLimit": 100,
     };
 
     var local = LazyStream(() {
@@ -85,6 +87,7 @@ class ChannelRepository with ExceptionMapperMixin {
     return result!;
   }
 
+  @override
   Future<void> save(Channel channel) async {}
 
   @override

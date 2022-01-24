@@ -6,6 +6,7 @@ import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 export 'user_event.dart';
@@ -22,13 +23,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   late StreamSubscription _authStateSubscription;
 
   UserBloc({
-    required UserRepository userRepo,
-    required AuthService authService,
-    required ServerRepository serverRepo,
     required AuthBloc authBloc,
-  })  : _authService = authService,
-        _userRepo = userRepo,
-        _serverRepo = serverRepo,
+    UserRepository? userRepo,
+    AuthService? authService,
+    ServerRepository? serverRepo,
+  })  : _authService = authService ?? GetIt.I.get<AuthService>(),
+        _userRepo = userRepo ?? GetIt.I.get<UserRepository>(),
+        _serverRepo = serverRepo ?? GetIt.I.get<ServerRepository>(),
         _authBloc = authBloc,
         super(UserState.initial()) {
     on<UserEvent>((event, emit) => _handleEvent(event, emit));
@@ -37,11 +38,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       state.whenOrNull(
         signedIn: (credential) {
           log.d("Load local user after sign-in.");
-          add(UserEvent.loadLocalUser());
+          add(UserEvent.loadUser());
         },
         signedOut: () {
           log.d("Delete local user after sign-out.");
-          add(UserEvent.deleteLocalUser());
+          add(UserEvent.deleteUser());
         },
       );
     });
@@ -65,7 +66,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(UserState.loadUserFailed());
     else {
       await _userRepo.load(credential.uid).then((user) async {
-        if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
+        user.servers.forEach((element) async {
+          await _serverRepo.save(element);
+        });
+        // if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
         _userRepo.setCurrentUser(user);
         emit(UserState.loadUserSuccess(user));
       }).catchError((e, st) {
@@ -79,13 +83,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(UserState.initial());
   }
 
-  _loadUser(String uid, emit) async {}
-
   _handleEvent(UserEvent event, emit) async {
     return await event.when(
-      loadLocalUser: () => _loadLocalUser(emit),
-      deleteLocalUser: () => _deleteLocalUser(emit),
-      loadUser: (String uid) => _loadUser(uid, emit),
+      loadUser: () => _loadLocalUser(emit),
+      deleteUser: () => _deleteLocalUser(emit),
     );
   }
 }

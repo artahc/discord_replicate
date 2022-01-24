@@ -3,34 +3,36 @@ import 'dart:async';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/credential.dart';
+import 'package:discord_replicate/service/auth_service.dart';
+import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 
 class GraphQLClientHelper with ExceptionMapperMixin {
   late GraphQLClient _client;
-  late HttpLink _httpLink;
-  late AuthLink _authLink;
-  late WebSocketLink _wsLink;
-
-  late Link _link;
-  late Future<Credential?> Function() tokenProvider;
+  late AuthService _authService;
   late Logger log = Logger();
 
-  GraphQLClientHelper({required String url, required this.tokenProvider, GraphQLCache? cache, Map<String, String>? defaultHeader}) {
-    _httpLink = HttpLink(url, defaultHeaders: defaultHeader ?? {});
-    _authLink = AuthLink(getToken: () async {
-      var credential = await tokenProvider.call();
+  GraphQLClientHelper(
+    String url, {
+    AuthService? authService,
+    GraphQLCache? cache,
+    Map<String, String>? defaultHeader,
+  }) : _authService = authService ?? GetIt.I.get<AuthService>() {
+    var httpLink = HttpLink(url, defaultHeaders: defaultHeader ?? {});
+    var authLink = AuthLink(getToken: () async {
+      var credential = await _authService.getCredential(forceRefresh: true);
       var token = credential == null ? "" : credential.token;
       var bearer = 'Bearer $token';
       return bearer;
     });
-    _wsLink = WebSocketLink("ws://localhost:4000/graphql");
+    var wsLink = WebSocketLink("ws://localhost:4000/graphql");
 
-    _link = _authLink.concat(_httpLink);
-    _link = Link.split((request) => request.isSubscription, _wsLink, _link);
+    var link = authLink.concat(httpLink);
+    link = Link.split((request) => request.isSubscription, wsLink, link);
 
     _client = GraphQLClient(
-      link: _link,
+      link: link,
       cache: cache ?? GraphQLCache(),
       defaultPolicies: DefaultPolicies(
         query: Policies(

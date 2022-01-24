@@ -5,6 +5,7 @@ import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
 import 'package:discord_replicate/bloc/authentication/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'dart:developer' as dev;
 
 import 'package:hive/hive.dart';
@@ -15,9 +16,11 @@ export 'auth_state.dart';
 enum RegisterOptions { Phone, Email }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService authService;
+  final AuthService _authRepo;
 
-  AuthBloc({required this.authService}) : super(AuthStateInitial()) {
+  AuthBloc({AuthService? authRepo})
+      : _authRepo = authRepo ?? GetIt.I.get<AuthService>(),
+        super(AuthStateInitial()) {
     on<AuthEvent>((event, emit) => _handleEvent(event, emit));
   }
 
@@ -31,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _handleInitial(emit) async {
-    var credential = await authService.getCredential();
+    var credential = await _authRepo.getCredential();
     if (credential == null)
       emit(AuthState.signedOut());
     else {
@@ -41,14 +44,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _signIn(id, password, emit) async {
     emit(AuthState.signingIn());
-    var credential = await authService.signIn(id, password);
+    var credential = await _authRepo.signIn(id, password);
     emit(AuthState.signedIn(credential: credential));
   }
 
   _signUp(id, option, emit) async {
     switch (option) {
       case RegisterOptions.Email:
-        var credential = await authService.signUpEmail(id);
+        var credential = await _authRepo.signUpEmail(id);
         emit(AuthState.signedIn(credential: credential));
         break;
       case RegisterOptions.Phone:
@@ -58,7 +61,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _signOut(emit) async {
-    await authService.signOut();
+    await _authRepo.signOut();
     await Hive.deleteFromDisk();
     emit(AuthState.signedOut());
   }

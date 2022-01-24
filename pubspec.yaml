@@ -34,6 +34,7 @@ dependencies:
   path_provider: ^2.0.8
   logger: ^1.1.0
   crypto: ^3.0.1
+  get_it: ^7.2.0
 
   hive: ^2.0.5
   hive_flutter: ^1.1.0

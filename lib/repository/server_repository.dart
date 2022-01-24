@@ -1,9 +1,10 @@
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
-import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/server.dart';
+import 'package:discord_replicate/repository/repository_interface.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -30,16 +31,17 @@ class ServerQuery {
   """;
 }
 
-class ServerRepository with ExceptionMapperMixin {
+class ServerRepository implements Repository<Server> {
   late Logger log = Logger();
 
   final GraphQLClientHelper _api;
-  final HiveDatabaseService _db;
+  final DatabaseService _db;
 
-  ServerRepository({required GraphQLClientHelper apiClient, required HiveDatabaseService database})
-      : _api = apiClient,
-        _db = database;
+  ServerRepository({GraphQLClientHelper? apiClient, HiveDatabaseService? database})
+      : _api = apiClient ?? GetIt.I.get<GraphQLClientHelper>(),
+        _db = database ?? GetIt.I.get<DatabaseService>();
 
+  @override
   Future<Server> load(String id) async {
     var query = ServerQuery.loadById;
     var variables = {
@@ -78,6 +80,7 @@ class ServerRepository with ExceptionMapperMixin {
     return source!;
   }
 
+  @override
   Future save(Server server) async {
     await _db.save<Server>(server.id, server);
   }

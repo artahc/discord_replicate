@@ -4,8 +4,10 @@ import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/repository/repository_interface.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -42,19 +44,19 @@ class UserQuery {
   """;
 }
 
-class UserRepository with ExceptionMapperMixin {
+class UserRepository implements Repository<User> {
   late Logger log = Logger();
 
   GraphQLClientHelper _api;
-  HiveDatabaseService _db;
+  DatabaseService _db;
 
   User? _currentUser;
 
   UserRepository({
-    required GraphQLClientHelper apiClient,
-    required HiveDatabaseService database,
-  })  : _api = apiClient,
-        _db = database;
+    GraphQLClientHelper? apiClient,
+    DatabaseService? database,
+  })  : _api = apiClient ?? GetIt.I.get<GraphQLClientHelper>(),
+        _db = database ?? GetIt.I.get<DatabaseService>();
 
   User? getCurrentUser() {
     return _currentUser;
@@ -67,6 +69,7 @@ class UserRepository with ExceptionMapperMixin {
   /// Load user by UID.
   ///
   /// Returns user's profile along with servers and channels basic info.
+  @override
   Future<User> load(String uid) async {
     var query = UserQuery.loadById;
     var varibales = {
@@ -102,10 +105,12 @@ class UserRepository with ExceptionMapperMixin {
     return result!;
   }
 
-  Future save(User user) async {
+  @override
+  Future<void> save(User user) async {
     await _db.save<User>(user.uid, user);
   }
 
+  @override
   Exception mapException(Exception e) {
     if (e is NotFoundException) return NotFoundException("User not found.", source: e);
     return e;

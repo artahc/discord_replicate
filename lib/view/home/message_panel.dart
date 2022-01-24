@@ -14,6 +14,7 @@ import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 final Logger log = Logger();
@@ -29,15 +30,10 @@ class ChannelMessagePanel extends StatefulWidget {
 }
 
 class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
-  late ChannelRepository _channelRepository = RepositoryProvider.of(context);
-  late UserRepository _userRepo = RepositoryProvider.of(context);
-  late MessageService _messagingService = RepositoryProvider.of(context);
-
   late MessageBloc _messageBloc = MessageBloc(
     channel: widget.channel,
-    channelRepo: _channelRepository,
-    service: _messagingService,
-    userRepo: _userRepo,
+    messageService: GetIt.I.get<MessageService>(),
+    userRepo: GetIt.I.get<UserRepository>(),
   );
 
   @override
@@ -56,7 +52,7 @@ class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
           child: Container(
             child: Column(
               children: [
-                // Header
+                // Message Panel Header
                 Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
@@ -134,7 +130,9 @@ class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
                     ],
                   ),
                 ),
-                MessagePanelBody(key: UniqueKey(), initialMessages: widget.channel.messages.toList()),
+                
+                MessagePanelBody(key: UniqueKey(), initialMessages: widget.channel.messages),
+
                 // Input
                 MessagePanelInput(key: UniqueKey()),
               ],
@@ -156,27 +154,33 @@ class MessagePanelBody extends StatefulWidget {
 }
 
 class _MessagePanelBodyState extends State<MessagePanelBody> {
-  late List<Message> _messages = widget.initialMessages;
   final ScrollController _scrollCtrl = ScrollController(keepScrollOffset: false, initialScrollOffset: 0);
 
-  bool _lockScrolling = true;
+  bool _pinScrollToBottom = false;
+
+  late List<Message> _messages = widget.initialMessages.toList();
 
   @override
   void initState() {
     super.initState();
-    _scrollCtrl.addListener(() {
+    _scrollCtrl.addListener(_onScroll);
+  }
+
+  _onScroll() {
+    if (!_pinScrollToBottom && _scrollCtrl.offset <= (_scrollCtrl.position.minScrollExtent * 0.1)) {
       setState(() {
-        if (_scrollCtrl.offset <= (_scrollCtrl.position.minScrollExtent * 0.1))
-          _lockScrolling = true;
-        else
-          _lockScrolling = false;
+        _pinScrollToBottom = true;
       });
-      log.i("$_lockScrolling");
-    });
+    } else if (_pinScrollToBottom && _scrollCtrl.offset > (_scrollCtrl.position.minScrollExtent * 0.1)) {
+      setState(() {
+        _pinScrollToBottom = false;
+      });
+    }
   }
 
   @override
   void dispose() {
+    _scrollCtrl.removeListener(_onScroll);
     _scrollCtrl.dispose();
     super.dispose();
   }
@@ -198,7 +202,7 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
       _messages.add(message);
     });
 
-    if (_lockScrolling) {
+    if (_pinScrollToBottom) {
       _scrollCtrl.animateTo(_scrollCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     }
   }

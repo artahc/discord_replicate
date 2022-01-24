@@ -16,6 +16,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -27,7 +28,28 @@ Future main() async {
   ));
   await Firebase.initializeApp();
   await initializeHive();
+  await initializeDependencyContainer();
+
   runApp(Main());
+}
+
+Future initializeDependencyContainer() async {
+  final String url = "http://localhost:4000/graphql";
+
+  GetIt.I.registerFactory<GraphQLClientHelper>(() => GraphQLClientHelper(url));
+  GetIt.I.registerLazySingleton<DatabaseService>(() {
+    var db = HiveDatabaseService();
+    db.initialize();
+    return db;
+  });
+
+  GetIt.I.registerLazySingleton<AuthService>(() => FirebaseAuthService());
+  GetIt.I.registerLazySingleton<MessageService>(() => MessageService());
+  GetIt.I.registerLazySingleton<UserRepository>(() => UserRepository());
+  GetIt.I.registerLazySingleton<ServerRepository>(() => ServerRepository());
+  GetIt.I.registerLazySingleton<ChannelRepository>(() => ChannelRepository());
+
+  GetIt.I.registerLazySingleton<AuthBloc>(() => AuthBloc());
 }
 
 Future initializeHive() async {
@@ -41,77 +63,30 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
-  // Constant
-  final String url = "http://localhost:4000/graphql";
   final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey();
-
-  late AuthService authService;
-
-  // Helper Class
-  late GraphQLClientHelper client;
-  late HiveDatabaseService db;
-
-  // Services
-  late MessageService messageService;
-
-  // Repository
-  late UserRepository userRepository;
-  late ServerRepository serverRepository;
-  late ChannelRepository channelRepository;
-  // late ActivityRepository activityRepository = ActivityRepository();
-
-  // Bloc
-  late AuthBloc authBloc;
-  late UserBloc userBloc;
-  late ServerBloc serverBloc;
-  late NavigationCubit navBloc;
-  late ChannelBloc channelBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    authService = FirebaseAuthService();
-
-    client = GraphQLClientHelper(url: url, tokenProvider: authService.getCredential);
-    db = HiveDatabaseService()..initialize();
-
-    userRepository = UserRepository(apiClient: client, database: db);
-    serverRepository = ServerRepository(apiClient: client, database: db);
-    channelRepository = ChannelRepository(apiClient: client, database: db);
-
-    authBloc = AuthBloc(authService: authService);
-    navBloc = NavigationCubit(navigator: rootNavigatorKey, authBloc: authBloc);
-    userBloc = UserBloc(userRepo: userRepository, authService: authService, serverRepo: serverRepository, authBloc: authBloc);
-    serverBloc = ServerBloc(serverRepository: serverRepository);
-    channelBloc = ChannelBloc(channelRepository: channelRepository, serverBloc: serverBloc, userBloc: userBloc);
-    messageService = MessageService(client);
-  }
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
+    final authBloc = GetIt.I.get<AuthBloc>();
+    final userBloc = UserBloc(authBloc: authBloc);
+    final serverBloc = ServerBloc();
+    final channelBloc = ChannelBloc(userBloc: userBloc, serverBloc: serverBloc);
+    final navBloc = NavigationCubit(navigator: rootNavigatorKey);
+
+    return MultiBlocProvider(
       providers: [
-        RepositoryProvider<UserRepository>(create: (c) => userRepository),
-        RepositoryProvider<ServerRepository>(create: (c) => serverRepository),
-        RepositoryProvider<ChannelRepository>(create: (c) => channelRepository),
-        RepositoryProvider<MessageService>(create: (c) => messageService),
-        RepositoryProvider<AuthService>(create: (c) => authService),
+        BlocProvider<AuthBloc>(create: (c) => authBloc),
+        BlocProvider<UserBloc>(create: (c) => userBloc),
+        BlocProvider<ServerBloc>(create: (c) => serverBloc),
+        BlocProvider<ChannelBloc>(create: (c) => channelBloc),
+        BlocProvider<NavigationCubit>(create: (c) => navBloc),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<ServerBloc>(create: (c) => serverBloc),
-          BlocProvider<AuthBloc>(create: (c) => authBloc),
-          BlocProvider<NavigationCubit>(create: (c) => navBloc),
-          BlocProvider<UserBloc>(create: (c) => userBloc),
-          BlocProvider<ChannelBloc>(create: (c) => channelBloc),
-        ],
-        child: MaterialApp(
-          navigatorKey: rootNavigatorKey,
-          theme: AppTheme.darkThemeData,
-          onGenerateRoute: Routes.generateRoutes,
-          initialRoute: Routes.initial,
-          debugShowCheckedModeBanner: false,
-        ),
+      child: MaterialApp(
+        navigatorKey: rootNavigatorKey,
+        theme: AppTheme.darkThemeData,
+        onGenerateRoute: Routes.generateRoutes,
+        initialRoute: Routes.initial,
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

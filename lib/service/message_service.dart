@@ -3,13 +3,14 @@ import 'dart:developer';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 class MessageService {
   final GraphQLClientHelper _api;
   late Logger log = Logger();
 
-  MessageService(GraphQLClientHelper api) : _api = api;
+  MessageService({GraphQLClientHelper? api}) : _api = api ?? GetIt.I.get<GraphQLClientHelper>();
 
   Future<Message> sendMessage(Message message, String channelId) async {
     String mutation = r"""

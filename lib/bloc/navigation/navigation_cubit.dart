@@ -5,13 +5,14 @@ import 'package:discord_replicate/bloc/navigation/navigation_state.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 class NavigationCubit extends Cubit<NavigationState> {
   AuthBloc _authBloc;
   late StreamSubscription _authStateSubscription;
 
-  NavigationCubit({required GlobalKey<NavigatorState> navigator, required AuthBloc authBloc})
-      : _authBloc = authBloc,
+  NavigationCubit({required GlobalKey<NavigatorState> navigator, AuthBloc? authBloc})
+      : _authBloc = authBloc ?? GetIt.I.get<AuthBloc>(),
         super(NavigationState.initialState()) {
     _authStateSubscription = _authBloc.stream.listen((event) {
       event.whenOrNull(
@@ -20,6 +21,12 @@ class NavigationCubit extends Cubit<NavigationState> {
         },
       );
     });
+  }
+
+  @override
+  Future<void> close() async {
+    _authStateSubscription.cancel();
+    super.close();
   }
 
   push(BuildContext context, Route<dynamic> route, bool useRoot) async {

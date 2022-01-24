@@ -15,7 +15,6 @@ export 'message_state.dart';
 
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final Channel _channel;
-  final ChannelRepository _channelRepo;
   final UserRepository _userRepo;
   final MessageService _service;
 
@@ -24,13 +23,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   MessageBloc({
     required Channel channel,
-    required ChannelRepository channelRepo,
-    required MessageService service,
+    required MessageService messageService,
     required UserRepository userRepo,
   })  : _channel = channel,
-        _channelRepo = channelRepo,
         _userRepo = userRepo,
-        _service = service,
+        _service = messageService,
         super(MessageState.initial()) {
     on<MessageEvent>((event, emit) => _handleEvent(event, emit));
 
@@ -48,16 +45,17 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   _sendMessage(String input, emit) async {
-    var date = DateTime.now();
-    var message = Message.pending(senderRef: _userRepo.getCurrentUser()!.uid, message: input, date: date);
-    emit(MessageState.sending(message));
-    await _service.sendMessage(message, _channel.id).then((message) {
+    var pendingMessage = Message.pending(senderRef: _userRepo.getCurrentUser()!.uid, message: input, date: DateTime.now());
+
+    emit(MessageState.sending(pendingMessage));
+
+    await _service.sendMessage(pendingMessage, _channel.id).then((message) {
+      _channel.messages.add(message);
       log.d("Message sent. ${message.toJson()}");
     });
   }
 
-  _onNewMessage(Message message, emit) {
-    _channel.messages.add(message);
+  _onReceivedNewMessage(Message message, emit) {
     log.d("Received new message. $message");
     emit(MessageState.receivedNewMessage(message));
   }
@@ -65,7 +63,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   _handleEvent(MessageEvent event, emit) async {
     return await event.when(
       sendMessage: (input) => _sendMessage(input, emit),
-      notifyNewMessage: (message) => _onNewMessage(message, emit),
+      notifyNewMessage: (message) => _onReceivedNewMessage(message, emit),
     );
   }
 }

@@ -8,7 +8,7 @@
     ],
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "Dart-Code.dart-code",
-    
+    "editor.guides.indentation": true
   },
   "editor.smoothScrolling": true,
   "editor.cursorSmoothCaretAnimation": true,

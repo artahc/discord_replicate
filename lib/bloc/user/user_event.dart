@@ -4,8 +4,6 @@ part 'user_event.freezed.dart';
 
 @freezed
 class UserEvent with _$UserEvent {
-
-  const factory UserEvent.loadUser(String uid) = UserEventLoadUser;
-  const factory UserEvent.loadLocalUser() = UserEventLoadLocalUser;
-  const factory UserEvent.deleteLocalUser() = UserEventDeleteLocalUser;
+  const factory UserEvent.loadUser() = UserEventLoadLocalUser;
+  const factory UserEvent.deleteUser() = UserEventDeleteLocalUser;
 }

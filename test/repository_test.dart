@@ -17,7 +17,7 @@ main() {
   var mockDb = MockDb();
   var api = GraphQLClientHelper(
     url: "http://localhost:4000/graphql",
-    tokenProvider: () => Future.value(Credential(email: "", token: "", uid: "")),
+    authService: () => Future.value(Credential(email: "", token: "", uid: "")),
     defaultHeader: {
       "allow-me-in": "artahc123",
     },

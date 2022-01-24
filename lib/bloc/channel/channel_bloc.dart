@@ -7,6 +7,7 @@ import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 export 'channel_event.dart';
@@ -26,10 +27,10 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   late Channel current;
 
   ChannelBloc({
-    required ChannelRepository channelRepository,
+    ChannelRepository? channelRepository,
     required ServerBloc serverBloc,
     required UserBloc userBloc,
-  })  : _channelRepository = channelRepository,
+  })  : _channelRepository = channelRepository ?? GetIt.I.get<ChannelRepository>(),
         _serverBloc = serverBloc,
         _userBloc = userBloc,
         super(ChannelState.initial()) {
