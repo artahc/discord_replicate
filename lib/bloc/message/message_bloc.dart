@@ -10,6 +10,7 @@ import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/message_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 export 'message_event.dart';
@@ -18,22 +19,22 @@ export 'message_state.dart';
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final Channel _channel;
   final UserRepository _userRepo;
-  final MessageService _service;
+  final ChannelRepository _channelRepo;
 
   late Logger log = Logger();
   late StreamSubscription _channelSubscription;
 
   MessageBloc({
     required Channel channel,
-    required MessageService messageService,
-    required UserRepository userRepo,
+    ChannelRepository? channelRepository,
+    UserRepository? userRepo,
   })  : _channel = channel,
-        _userRepo = userRepo,
-        _service = messageService,
+        _userRepo = userRepo ?? GetIt.I.get<UserRepository>(),
+        _channelRepo = channelRepository ?? GetIt.I.get<ChannelRepository>(),
         super(MessageState.initial()) {
     on<MessageEvent>((event, emit) => _handleEvent(event, emit));
 
-    _channelSubscription = _service.subscribe(_channel.id).handleError((e, st) {
+    _channelSubscription = _channelRepo.subscribeChannelMessage(_channel.id).handleError((e, st) {
       log.e("Error in channel subscription.", e, st);
     }).listen((message) {
       add(MessageEvent.notifyNewMessage(message));
@@ -49,11 +50,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   _sendMessage(String input, emit) async {
     var user = _userRepo.getCurrentUser()!;
     var date = DateTime.now();
-    var pendingMessage = Message(id:"",sender: user, message: input, date: date);
+    var pendingMessage = Message(id: "", sender: user, message: input, date: date);
 
     emit(MessageState.sending(pendingMessage));
 
-    await _service.sendMessage(pendingMessage, _channel.id).then((message) {
+    await _channelRepo.sendMessage(_channel.id, pendingMessage).then((message) {
       _channel.messages.add(message);
       log.d("Message sent. ${message.toJson()}");
     });

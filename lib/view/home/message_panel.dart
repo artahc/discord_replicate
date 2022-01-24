@@ -1,20 +1,11 @@
-import 'dart:async';
-import 'dart:developer';
-
 import 'package:discord_replicate/bloc/message/message_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
-import 'package:discord_replicate/repository/channel_repository.dart';
-import 'package:discord_replicate/repository/user_repository.dart';
-import 'package:discord_replicate/service/auth_service.dart';
-import 'package:discord_replicate/service/message_service.dart';
 import 'package:discord_replicate/view/home/message_tile.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 final Logger log = Logger();
@@ -32,8 +23,6 @@ class ChannelMessagePanel extends StatefulWidget {
 class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
   late MessageBloc _messageBloc = MessageBloc(
     channel: widget.channel,
-    messageService: GetIt.I.get<MessageService>(),
-    userRepo: GetIt.I.get<UserRepository>(),
   );
 
   @override
@@ -130,7 +119,7 @@ class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
                     ],
                   ),
                 ),
-                
+
                 MessagePanelBody(key: UniqueKey(), initialMessages: widget.channel.messages),
 
                 // Input

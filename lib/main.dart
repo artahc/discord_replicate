@@ -44,7 +44,6 @@ Future initializeDependencyContainer() async {
   });
 
   GetIt.I.registerLazySingleton<AuthService>(() => FirebaseAuthService());
-  GetIt.I.registerLazySingleton<MessageService>(() => MessageService());
   GetIt.I.registerLazySingleton<UserRepository>(() => UserRepository());
   GetIt.I.registerLazySingleton<ServerRepository>(() => ServerRepository());
   GetIt.I.registerLazySingleton<ChannelRepository>(() => ChannelRepository());
