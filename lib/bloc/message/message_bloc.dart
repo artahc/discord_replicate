@@ -49,10 +49,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   _sendMessage(String input, emit) async {
     var user = await _userService.getCurrentUser();
     var date = DateTime.now();
-    var pendingMessage = Message(id: "", sender: user, message: input, date: date);
+    var pendingMessage = Message.pending(sender: user, message: input, date: date);
 
+
+    
     emit(MessageState.sending(pendingMessage));
-
     await _channelService.sendMessage(pendingMessage, _channel.id).then((message) {
       log.d("Message sent. ${message.toJson()}");
     });

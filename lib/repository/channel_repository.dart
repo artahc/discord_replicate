@@ -1,15 +1,11 @@
-import 'dart:developer';
-
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
-import 'package:discord_replicate/exception/mixin_error_mapper.dart';
+import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/channel.dart';
-import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/repository/repository_interface.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -90,7 +86,20 @@ class ChannelRepository implements Repository<Channel> {
   }
 
   @override
-  Future<void> save(Channel channel) async {}
+  Future<List<Channel>> loadAll() async {
+    var result = await _db.loadAll<Channel>();
+    return result;
+  }
+
+  @override
+  Future<void> save(Channel channel) async {
+    await _db.save(channel.id, channel);
+  }
+
+  @override
+  Future<void> saveAll(List<Channel> items) async {
+    await _db.saveAll(items.toKeyValuePair((e) => e.id, (e) => e));
+  }
 
   @override
   Exception mapException(Exception e) {

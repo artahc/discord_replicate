@@ -12,6 +12,7 @@ import 'package:discord_replicate/external/app_theme.dart';
 import 'package:discord_replicate/service/channel_service.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
+import 'package:discord_replicate/service/server_service.dart';
 import 'package:discord_replicate/service/user_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ Future initializeDependencyContainer() async {
   GetIt.I.registerLazySingleton<AuthService>(() => FirebaseAuthService());
   GetIt.I.registerLazySingleton<UserService>(() => UserServiceImpl());
   GetIt.I.registerLazySingleton<ChannelService>(() => ChannelServiceImpl());
+  GetIt.I.registerLazySingleton<ServerService>(() => ServerServiceImpl());
   GetIt.I.registerLazySingleton<DatabaseService>(() {
     var db = HiveDatabaseService();
     db.initialize();

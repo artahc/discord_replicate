@@ -1,5 +1,6 @@
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
+import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
@@ -8,6 +9,7 @@ import 'package:get_it/get_it.dart';
 abstract class ChannelService {
   Future<Channel> getChannelById(String id);
   Future<List<Channel>> getAllRecentChannels();
+  Future<User> getMemberById(String channelId, String userId);
   Future<Message> sendMessage(Message message, String channelId);
   Stream<Message> subscribeChannelMessage(String channelId);
 }
@@ -80,7 +82,13 @@ class ChannelServiceImpl implements ChannelService {
 
   @override
   Future<List<Channel>> getAllRecentChannels() {
-    // TODO: implement getAllRecentChannels
+    
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<User> getMemberById(String channelId, String userId) {
+    // TODO: implement getMemberById
     throw UnimplementedError();
   }
 }

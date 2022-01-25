@@ -13,57 +13,74 @@ part 'message.g.dart';
 class Message with _$Message {
   const Message._();
 
-  @HiveType(typeId: HiveConstants.MESSAGE_TYPE, adapterName: "MessageAdapter")
-  const factory Message({
+  const factory Message.withUser({
     @HiveField(0) required String id,
     @HiveField(1) required User sender,
     @HiveField(2) @TimestampConverter() @JsonKey(name: 'timestamp') required DateTime date,
     @HiveField(3) required String message,
-  }) = _Message;
+  }) = MessageWithUser;
 
-  const factory Message.raw({required String id, required String senderRef, required int timestamp, required String message}) = RawMessage;
+  const factory Message.pending({
+    @HiveField(1) required User sender,
+    @HiveField(2) @TimestampConverter() @JsonKey(name: 'timestamp') required DateTime date,
+    @HiveField(3) required String message,
+  }) = PendingMessage;
+
+  @HiveType(typeId: HiveConstants.MESSAGE_TYPE, adapterName: "MessageAdapter")
+  const factory Message.raw({
+    @HiveField(0) required String id,
+    @HiveField(1) required String senderRef,
+    @HiveField(2) required int timestamp,
+    @HiveField(3) required String message,
+  }) = RawMessage;
 
   factory Message.fromJson(Map<String, dynamic> map) => RawMessage.fromJson(map);
 
   String get id {
     return this.when(
-      (id, sender, date, message) => id,
+      withUser: (id, sender, date, message) => id,
       raw: (id, senderRef, timestamp, message) => id,
+      pending: (User sender, DateTime date, String message) => "",
     );
   }
 
   String get senderRef {
     return this.when(
-      (id, sender, date, message) => sender.uid,
+      withUser: (id, sender, date, message) => sender.uid,
       raw: (id, senderRef, timestamp, message) => senderRef,
+      pending: (User sender, DateTime date, String message) => senderRef,
     );
   }
 
   User get user {
     return this.when(
-      (id, sender, date, message) => sender,
+      withUser: (id, sender, date, message) => sender,
       raw: (id, senderRef, timestamp, message) => throw Exception("Trying access user from raw message. Please construct into Message Model."),
+      pending: (User sender, DateTime date, String message) => sender,
     );
   }
 
   DateTime get date {
     return this.when(
-      (id, sender, date, message) => date,
+      withUser: (id, sender, date, message) => date,
       raw: (id, senderRef, timestamp, message) => DateTime.fromMillisecondsSinceEpoch(timestamp),
+      pending: (User sender, DateTime date, String message) => date,
     );
   }
 
   String get message {
     return this.when(
-      (id, sender, date, message) => message,
+      withUser: (id, sender, date, message) => message,
       raw: (id, senderRef, timestamp, message) => message,
+      pending: (User sender, DateTime date, String message) => message,
     );
   }
 
   String get contentHash {
     var encoded = this.when(
-      (id, sender, date, message) => utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message"),
+      withUser: (id, sender, date, message) => utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message"),
       raw: (id, senderRef, timestamp, message) => utf8.encode("$senderRef$timestamp$message"),
+      pending: (User sender, DateTime date, String message) => utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message"),
     );
     return md5.convert(encoded).toString();
   }

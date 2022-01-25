@@ -8,7 +8,6 @@ abstract class UserService {
   Future<User> getCurrentUser();
   Future<void> setCurrentUser();
   Future<User> getUserById(String id);
-  Future<User> getUserInChannelById(String channelId, String userId);
 }
 
 class UserServiceImpl implements UserService {
@@ -41,12 +40,4 @@ class UserServiceImpl implements UserService {
     return user;
   }
 
-  @override
-  Future<User> getUserInChannelById(String channelId, String userId) async {
-    var channel = await _channelRepo.load(channelId);
-    var user = channel.members.where((user) => user.uid == userId);
-
-    if (user.isEmpty) throw Exception("User with id $userId not found on ${channel.name}");
-    throw UnimplementedError();
-  }
 }

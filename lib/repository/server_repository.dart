@@ -1,5 +1,6 @@
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
+import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/repository/repository_interface.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
@@ -81,14 +82,20 @@ class ServerRepository implements Repository<Server> {
   }
 
   @override
+  Future<List<Server>> loadAll() async {
+    var result = await _db.loadAll<Server>();
+    return result;
+  }
+
+  @override
   Future save(Server server) async {
     await _db.save<Server>(server.id, server);
   }
 
+  @override
   Future saveAll(List<Server> servers) async {
-    for (int i = 0; i < servers.length; i++) {
-      await save(servers[i]);
-    }
+    var keyValue = servers.toKeyValuePair((e) => e.id, (e) => e);
+    await _db.saveAll(keyValue);
   }
 
   @override

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
-import 'package:discord_replicate/exception/mixin_error_mapper.dart';
+import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/repository/repository_interface.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
@@ -50,17 +50,12 @@ class UserRepository implements Repository<User> {
   GraphQLClientHelper _api;
   DatabaseService _db;
 
-  User? _currentUser;
-
   UserRepository({
     GraphQLClientHelper? apiClient,
     DatabaseService? database,
   })  : _api = apiClient ?? GetIt.I.get<GraphQLClientHelper>(),
         _db = database ?? GetIt.I.get<DatabaseService>();
 
-  /// Load user by UID.
-  ///
-  /// Returns user's profile along with servers and channels basic info.
   @override
   Future<User> load(String uid) async {
     var query = UserQuery.loadById;
@@ -98,8 +93,20 @@ class UserRepository implements Repository<User> {
   }
 
   @override
+  Future<List<User>> loadAll() async {
+    var result = await _db.loadAll<User>();
+    return result;
+  }
+
+  @override
   Future<void> save(User user) async {
     await _db.save<User>(user.uid, user);
+  }
+
+  @override
+  Future<void> saveAll(List<User> users) async {
+    var keyValue = users.toKeyValuePair((e) => e.uid, (e) => e);
+    await _db.saveAll(keyValue);
   }
 
   @override

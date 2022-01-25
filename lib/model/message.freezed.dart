@@ -15,8 +15,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 Message _$MessageFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
-    case 'default':
-      return _Message.fromJson(json);
+    case 'withUser':
+      return MessageWithUser.fromJson(json);
+    case 'pending':
+      return PendingMessage.fromJson(json);
     case 'raw':
       return RawMessage.fromJson(json);
 
@@ -30,7 +32,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 class _$MessageTearOff {
   const _$MessageTearOff();
 
-  _Message call(
+  MessageWithUser withUser(
       {@HiveField(0)
           required String id,
       @HiveField(1)
@@ -41,7 +43,7 @@ class _$MessageTearOff {
           required DateTime date,
       @HiveField(3)
           required String message}) {
-    return _Message(
+    return MessageWithUser(
       id: id,
       sender: sender,
       date: date,
@@ -49,11 +51,27 @@ class _$MessageTearOff {
     );
   }
 
+  PendingMessage pending(
+      {@HiveField(1)
+          required User sender,
+      @HiveField(2)
+      @TimestampConverter()
+      @JsonKey(name: 'timestamp')
+          required DateTime date,
+      @HiveField(3)
+          required String message}) {
+    return PendingMessage(
+      sender: sender,
+      date: date,
+      message: message,
+    );
+  }
+
   RawMessage raw(
-      {required String id,
-      required String senderRef,
-      required int timestamp,
-      required String message}) {
+      {@HiveField(0) required String id,
+      @HiveField(1) required String senderRef,
+      @HiveField(2) required int timestamp,
+      @HiveField(3) required String message}) {
     return RawMessage(
       id: id,
       senderRef: senderRef,
@@ -72,14 +90,12 @@ const $Message = _$MessageTearOff();
 
 /// @nodoc
 mixin _$Message {
-  @HiveField(0)
-  String get id => throw _privateConstructorUsedError;
   @HiveField(3)
   String get message => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(
+  TResult when<TResult extends Object?>({
+    required TResult Function(
             @HiveField(0)
                 String id,
             @HiveField(1)
@@ -90,14 +106,27 @@ mixin _$Message {
                 DateTime date,
             @HiveField(3)
                 String message)
-        $default, {
+        withUser,
     required TResult Function(
-            String id, String senderRef, int timestamp, String message)
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)
+        pending,
+    required TResult Function(
+            @HiveField(0) String id,
+            @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp,
+            @HiveField(3) String message)
         raw,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
+  TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
             @HiveField(0)
                 String id,
@@ -109,14 +138,24 @@ mixin _$Message {
                 DateTime date,
             @HiveField(3)
                 String message)?
-        $default, {
+        withUser,
     TResult Function(
-            String id, String senderRef, int timestamp, String message)?
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        pending,
+    TResult Function(@HiveField(0) String id, @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp, @HiveField(3) String message)?
         raw,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
+  TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             @HiveField(0)
                 String id,
@@ -128,28 +167,41 @@ mixin _$Message {
                 DateTime date,
             @HiveField(3)
                 String message)?
-        $default, {
+        withUser,
     TResult Function(
-            String id, String senderRef, int timestamp, String message)?
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        pending,
+    TResult Function(@HiveField(0) String id, @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp, @HiveField(3) String message)?
         raw,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_Message value) $default, {
+  TResult map<TResult extends Object?>({
+    required TResult Function(MessageWithUser value) withUser,
+    required TResult Function(PendingMessage value) pending,
     required TResult Function(RawMessage value) raw,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult Function(_Message value)? $default, {
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_Message value)? $default, {
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
     required TResult orElse(),
   }) =>
@@ -163,7 +215,7 @@ mixin _$Message {
 abstract class $MessageCopyWith<$Res> {
   factory $MessageCopyWith(Message value, $Res Function(Message) then) =
       _$MessageCopyWithImpl<$Res>;
-  $Res call({@HiveField(0) String id, @HiveField(3) String message});
+  $Res call({@HiveField(3) String message});
 }
 
 /// @nodoc
@@ -176,14 +228,9 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? id = freezed,
     Object? message = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
       message: message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -193,9 +240,11 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
-  factory _$MessageCopyWith(_Message value, $Res Function(_Message) then) =
-      __$MessageCopyWithImpl<$Res>;
+abstract class $MessageWithUserCopyWith<$Res>
+    implements $MessageCopyWith<$Res> {
+  factory $MessageWithUserCopyWith(
+          MessageWithUser value, $Res Function(MessageWithUser) then) =
+      _$MessageWithUserCopyWithImpl<$Res>;
   @override
   $Res call(
       {@HiveField(0)
@@ -213,13 +262,14 @@ abstract class _$MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
-    implements _$MessageCopyWith<$Res> {
-  __$MessageCopyWithImpl(_Message _value, $Res Function(_Message) _then)
-      : super(_value, (v) => _then(v as _Message));
+class _$MessageWithUserCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
+    implements $MessageWithUserCopyWith<$Res> {
+  _$MessageWithUserCopyWithImpl(
+      MessageWithUser _value, $Res Function(MessageWithUser) _then)
+      : super(_value, (v) => _then(v as MessageWithUser));
 
   @override
-  _Message get _value => super._value as _Message;
+  MessageWithUser get _value => super._value as MessageWithUser;
 
   @override
   $Res call({
@@ -228,7 +278,7 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
     Object? date = freezed,
     Object? message = freezed,
   }) {
-    return _then(_Message(
+    return _then(MessageWithUser(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -258,9 +308,8 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: HiveConstants.MESSAGE_TYPE, adapterName: "MessageAdapter")
-class _$_Message extends _Message {
-  const _$_Message(
+class _$MessageWithUser extends MessageWithUser {
+  const _$MessageWithUser(
       {@HiveField(0)
           required this.id,
       @HiveField(1)
@@ -272,11 +321,11 @@ class _$_Message extends _Message {
       @HiveField(3)
           required this.message,
       String? $type})
-      : $type = $type ?? 'default',
+      : $type = $type ?? 'withUser',
         super._();
 
-  factory _$_Message.fromJson(Map<String, dynamic> json) =>
-      _$$_MessageFromJson(json);
+  factory _$MessageWithUser.fromJson(Map<String, dynamic> json) =>
+      _$$MessageWithUserFromJson(json);
 
   @override
   @HiveField(0)
@@ -298,14 +347,14 @@ class _$_Message extends _Message {
 
   @override
   String toString() {
-    return 'Message(id: $id, sender: $sender, date: $date, message: $message)';
+    return 'Message.withUser(id: $id, sender: $sender, date: $date, message: $message)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Message &&
+            other is MessageWithUser &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.sender, sender) &&
             const DeepCollectionEquality().equals(other.date, date) &&
@@ -322,13 +371,13 @@ class _$_Message extends _Message {
 
   @JsonKey(ignore: true)
   @override
-  _$MessageCopyWith<_Message> get copyWith =>
-      __$MessageCopyWithImpl<_Message>(this, _$identity);
+  $MessageWithUserCopyWith<MessageWithUser> get copyWith =>
+      _$MessageWithUserCopyWithImpl<MessageWithUser>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(
+  TResult when<TResult extends Object?>({
+    required TResult Function(
             @HiveField(0)
                 String id,
             @HiveField(1)
@@ -339,17 +388,30 @@ class _$_Message extends _Message {
                 DateTime date,
             @HiveField(3)
                 String message)
-        $default, {
+        withUser,
     required TResult Function(
-            String id, String senderRef, int timestamp, String message)
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)
+        pending,
+    required TResult Function(
+            @HiveField(0) String id,
+            @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp,
+            @HiveField(3) String message)
         raw,
   }) {
-    return $default(id, sender, date, message);
+    return withUser(id, sender, date, message);
   }
 
   @override
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
+  TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
             @HiveField(0)
                 String id,
@@ -361,17 +423,27 @@ class _$_Message extends _Message {
                 DateTime date,
             @HiveField(3)
                 String message)?
-        $default, {
+        withUser,
     TResult Function(
-            String id, String senderRef, int timestamp, String message)?
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        pending,
+    TResult Function(@HiveField(0) String id, @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp, @HiveField(3) String message)?
         raw,
   }) {
-    return $default?.call(id, sender, date, message);
+    return withUser?.call(id, sender, date, message);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
+  TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             @HiveField(0)
                 String id,
@@ -383,57 +455,70 @@ class _$_Message extends _Message {
                 DateTime date,
             @HiveField(3)
                 String message)?
-        $default, {
+        withUser,
     TResult Function(
-            String id, String senderRef, int timestamp, String message)?
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        pending,
+    TResult Function(@HiveField(0) String id, @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp, @HiveField(3) String message)?
         raw,
     required TResult orElse(),
   }) {
-    if ($default != null) {
-      return $default(id, sender, date, message);
+    if (withUser != null) {
+      return withUser(id, sender, date, message);
     }
     return orElse();
   }
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_Message value) $default, {
+  TResult map<TResult extends Object?>({
+    required TResult Function(MessageWithUser value) withUser,
+    required TResult Function(PendingMessage value) pending,
     required TResult Function(RawMessage value) raw,
   }) {
-    return $default(this);
+    return withUser(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult Function(_Message value)? $default, {
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
   }) {
-    return $default?.call(this);
+    return withUser?.call(this);
   }
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_Message value)? $default, {
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
     required TResult orElse(),
   }) {
-    if ($default != null) {
-      return $default(this);
+    if (withUser != null) {
+      return withUser(this);
     }
     return orElse();
   }
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MessageToJson(this);
+    return _$$MessageWithUserToJson(this);
   }
 }
 
-abstract class _Message extends Message {
-  const factory _Message(
+abstract class MessageWithUser extends Message {
+  const factory MessageWithUser(
       {@HiveField(0)
           required String id,
       @HiveField(1)
@@ -443,12 +528,12 @@ abstract class _Message extends Message {
       @JsonKey(name: 'timestamp')
           required DateTime date,
       @HiveField(3)
-          required String message}) = _$_Message;
-  const _Message._() : super._();
+          required String message}) = _$MessageWithUser;
+  const MessageWithUser._() : super._();
 
-  factory _Message.fromJson(Map<String, dynamic> json) = _$_Message.fromJson;
+  factory MessageWithUser.fromJson(Map<String, dynamic> json) =
+      _$MessageWithUser.fromJson;
 
-  @override
   @HiveField(0)
   String get id;
   @HiveField(1)
@@ -462,7 +547,300 @@ abstract class _Message extends Message {
   String get message;
   @override
   @JsonKey(ignore: true)
-  _$MessageCopyWith<_Message> get copyWith =>
+  $MessageWithUserCopyWith<MessageWithUser> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PendingMessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
+  factory $PendingMessageCopyWith(
+          PendingMessage value, $Res Function(PendingMessage) then) =
+      _$PendingMessageCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {@HiveField(1)
+          User sender,
+      @HiveField(2)
+      @TimestampConverter()
+      @JsonKey(name: 'timestamp')
+          DateTime date,
+      @HiveField(3)
+          String message});
+
+  $UserCopyWith<$Res> get sender;
+}
+
+/// @nodoc
+class _$PendingMessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
+    implements $PendingMessageCopyWith<$Res> {
+  _$PendingMessageCopyWithImpl(
+      PendingMessage _value, $Res Function(PendingMessage) _then)
+      : super(_value, (v) => _then(v as PendingMessage));
+
+  @override
+  PendingMessage get _value => super._value as PendingMessage;
+
+  @override
+  $Res call({
+    Object? sender = freezed,
+    Object? date = freezed,
+    Object? message = freezed,
+  }) {
+    return _then(PendingMessage(
+      sender: sender == freezed
+          ? _value.sender
+          : sender // ignore: cast_nullable_to_non_nullable
+              as User,
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      message: message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+
+  @override
+  $UserCopyWith<$Res> get sender {
+    return $UserCopyWith<$Res>(_value.sender, (value) {
+      return _then(_value.copyWith(sender: value));
+    });
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$PendingMessage extends PendingMessage {
+  const _$PendingMessage(
+      {@HiveField(1)
+          required this.sender,
+      @HiveField(2)
+      @TimestampConverter()
+      @JsonKey(name: 'timestamp')
+          required this.date,
+      @HiveField(3)
+          required this.message,
+      String? $type})
+      : $type = $type ?? 'pending',
+        super._();
+
+  factory _$PendingMessage.fromJson(Map<String, dynamic> json) =>
+      _$$PendingMessageFromJson(json);
+
+  @override
+  @HiveField(1)
+  final User sender;
+  @override
+  @HiveField(2)
+  @TimestampConverter()
+  @JsonKey(name: 'timestamp')
+  final DateTime date;
+  @override
+  @HiveField(3)
+  final String message;
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
+
+  @override
+  String toString() {
+    return 'Message.pending(sender: $sender, date: $date, message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is PendingMessage &&
+            const DeepCollectionEquality().equals(other.sender, sender) &&
+            const DeepCollectionEquality().equals(other.date, date) &&
+            const DeepCollectionEquality().equals(other.message, message));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(sender),
+      const DeepCollectionEquality().hash(date),
+      const DeepCollectionEquality().hash(message));
+
+  @JsonKey(ignore: true)
+  @override
+  $PendingMessageCopyWith<PendingMessage> get copyWith =>
+      _$PendingMessageCopyWithImpl<PendingMessage>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            @HiveField(0)
+                String id,
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)
+        withUser,
+    required TResult Function(
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)
+        pending,
+    required TResult Function(
+            @HiveField(0) String id,
+            @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp,
+            @HiveField(3) String message)
+        raw,
+  }) {
+    return pending(sender, date, message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(
+            @HiveField(0)
+                String id,
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        withUser,
+    TResult Function(
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        pending,
+    TResult Function(@HiveField(0) String id, @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp, @HiveField(3) String message)?
+        raw,
+  }) {
+    return pending?.call(sender, date, message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            @HiveField(0)
+                String id,
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        withUser,
+    TResult Function(
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        pending,
+    TResult Function(@HiveField(0) String id, @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp, @HiveField(3) String message)?
+        raw,
+    required TResult orElse(),
+  }) {
+    if (pending != null) {
+      return pending(sender, date, message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(MessageWithUser value) withUser,
+    required TResult Function(PendingMessage value) pending,
+    required TResult Function(RawMessage value) raw,
+  }) {
+    return pending(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(PendingMessage value)? pending,
+    TResult Function(RawMessage value)? raw,
+  }) {
+    return pending?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(PendingMessage value)? pending,
+    TResult Function(RawMessage value)? raw,
+    required TResult orElse(),
+  }) {
+    if (pending != null) {
+      return pending(this);
+    }
+    return orElse();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$PendingMessageToJson(this);
+  }
+}
+
+abstract class PendingMessage extends Message {
+  const factory PendingMessage(
+      {@HiveField(1)
+          required User sender,
+      @HiveField(2)
+      @TimestampConverter()
+      @JsonKey(name: 'timestamp')
+          required DateTime date,
+      @HiveField(3)
+          required String message}) = _$PendingMessage;
+  const PendingMessage._() : super._();
+
+  factory PendingMessage.fromJson(Map<String, dynamic> json) =
+      _$PendingMessage.fromJson;
+
+  @HiveField(1)
+  User get sender;
+  @HiveField(2)
+  @TimestampConverter()
+  @JsonKey(name: 'timestamp')
+  DateTime get date;
+  @override
+  @HiveField(3)
+  String get message;
+  @override
+  @JsonKey(ignore: true)
+  $PendingMessageCopyWith<PendingMessage> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -472,7 +850,11 @@ abstract class $RawMessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
           RawMessage value, $Res Function(RawMessage) then) =
       _$RawMessageCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String senderRef, int timestamp, String message});
+  $Res call(
+      {@HiveField(0) String id,
+      @HiveField(1) String senderRef,
+      @HiveField(2) int timestamp,
+      @HiveField(3) String message});
 }
 
 /// @nodoc
@@ -514,12 +896,13 @@ class _$RawMessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
+@HiveType(typeId: HiveConstants.MESSAGE_TYPE, adapterName: "MessageAdapter")
 class _$RawMessage extends RawMessage {
   const _$RawMessage(
-      {required this.id,
-      required this.senderRef,
-      required this.timestamp,
-      required this.message,
+      {@HiveField(0) required this.id,
+      @HiveField(1) required this.senderRef,
+      @HiveField(2) required this.timestamp,
+      @HiveField(3) required this.message,
       String? $type})
       : $type = $type ?? 'raw',
         super._();
@@ -528,12 +911,16 @@ class _$RawMessage extends RawMessage {
       _$$RawMessageFromJson(json);
 
   @override
+  @HiveField(0)
   final String id;
   @override
+  @HiveField(1)
   final String senderRef;
   @override
+  @HiveField(2)
   final int timestamp;
   @override
+  @HiveField(3)
   final String message;
 
   @JsonKey(name: 'runtimeType')
@@ -570,8 +957,8 @@ class _$RawMessage extends RawMessage {
 
   @override
   @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(
+  TResult when<TResult extends Object?>({
+    required TResult Function(
             @HiveField(0)
                 String id,
             @HiveField(1)
@@ -582,9 +969,22 @@ class _$RawMessage extends RawMessage {
                 DateTime date,
             @HiveField(3)
                 String message)
-        $default, {
+        withUser,
     required TResult Function(
-            String id, String senderRef, int timestamp, String message)
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)
+        pending,
+    required TResult Function(
+            @HiveField(0) String id,
+            @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp,
+            @HiveField(3) String message)
         raw,
   }) {
     return raw(id, senderRef, timestamp, message);
@@ -592,7 +992,7 @@ class _$RawMessage extends RawMessage {
 
   @override
   @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
+  TResult? whenOrNull<TResult extends Object?>({
     TResult Function(
             @HiveField(0)
                 String id,
@@ -604,9 +1004,19 @@ class _$RawMessage extends RawMessage {
                 DateTime date,
             @HiveField(3)
                 String message)?
-        $default, {
+        withUser,
     TResult Function(
-            String id, String senderRef, int timestamp, String message)?
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        pending,
+    TResult Function(@HiveField(0) String id, @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp, @HiveField(3) String message)?
         raw,
   }) {
     return raw?.call(id, senderRef, timestamp, message);
@@ -614,7 +1024,7 @@ class _$RawMessage extends RawMessage {
 
   @override
   @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
+  TResult maybeWhen<TResult extends Object?>({
     TResult Function(
             @HiveField(0)
                 String id,
@@ -626,9 +1036,19 @@ class _$RawMessage extends RawMessage {
                 DateTime date,
             @HiveField(3)
                 String message)?
-        $default, {
+        withUser,
     TResult Function(
-            String id, String senderRef, int timestamp, String message)?
+            @HiveField(1)
+                User sender,
+            @HiveField(2)
+            @TimestampConverter()
+            @JsonKey(name: 'timestamp')
+                DateTime date,
+            @HiveField(3)
+                String message)?
+        pending,
+    TResult Function(@HiveField(0) String id, @HiveField(1) String senderRef,
+            @HiveField(2) int timestamp, @HiveField(3) String message)?
         raw,
     required TResult orElse(),
   }) {
@@ -640,8 +1060,9 @@ class _$RawMessage extends RawMessage {
 
   @override
   @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_Message value) $default, {
+  TResult map<TResult extends Object?>({
+    required TResult Function(MessageWithUser value) withUser,
+    required TResult Function(PendingMessage value) pending,
     required TResult Function(RawMessage value) raw,
   }) {
     return raw(this);
@@ -649,8 +1070,9 @@ class _$RawMessage extends RawMessage {
 
   @override
   @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult Function(_Message value)? $default, {
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
   }) {
     return raw?.call(this);
@@ -658,8 +1080,9 @@ class _$RawMessage extends RawMessage {
 
   @override
   @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_Message value)? $default, {
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
     required TResult orElse(),
   }) {
@@ -677,20 +1100,23 @@ class _$RawMessage extends RawMessage {
 
 abstract class RawMessage extends Message {
   const factory RawMessage(
-      {required String id,
-      required String senderRef,
-      required int timestamp,
-      required String message}) = _$RawMessage;
+      {@HiveField(0) required String id,
+      @HiveField(1) required String senderRef,
+      @HiveField(2) required int timestamp,
+      @HiveField(3) required String message}) = _$RawMessage;
   const RawMessage._() : super._();
 
   factory RawMessage.fromJson(Map<String, dynamic> json) =
       _$RawMessage.fromJson;
 
-  @override
+  @HiveField(0)
   String get id;
+  @HiveField(1)
   String get senderRef;
+  @HiveField(2)
   int get timestamp;
   @override
+  @HiveField(3)
   String get message;
   @override
   @JsonKey(ignore: true)

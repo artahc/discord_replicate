@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/model/server.dart';
@@ -24,6 +25,7 @@ abstract class DatabaseService {
   Future save<T>(dynamic key, T value);
   Future saveAll<T>(Map<dynamic, T> values);
   Future<T?> load<T>(dynamic key);
+  Future<List<T>> loadAll<T>();
 }
 
 class HiveDatabaseService implements DatabaseService {
@@ -52,19 +54,29 @@ class HiveDatabaseService implements DatabaseService {
       return Future.value(Hive.box(name));
   }
 
+  @override
   Future<void> save<T>(dynamic key, T value) async {
     Box<T> box = await _getBox();
     box.put(key, value);
   }
 
+  @override
+  Future<void> saveAll<T>(Map<dynamic, T> items) async {
+    Box<T> box = await _getBox<T>();
+    await box.putAll(items);
+  }
+
+  @override
   Future<T?> load<T>(dynamic key) async {
     Box<T> box = await _getBox<T>();
     var result = box.get(key);
     return result;
   }
 
-  Future<void> saveAll<T>(Map<dynamic, T> values) async {
+  @override
+  Future<List<T>> loadAll<T>() async {
     Box<T> box = await _getBox<T>();
-    await box.putAll(values);
+    var result = box.values.toList();
+    return result;
   }
 }

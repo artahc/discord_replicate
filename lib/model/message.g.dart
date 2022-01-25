@@ -6,34 +6,34 @@ part of 'message.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class MessageAdapter extends TypeAdapter<_$_Message> {
+class MessageAdapter extends TypeAdapter<_$RawMessage> {
   @override
   final int typeId = 10;
 
   @override
-  _$_Message read(BinaryReader reader) {
+  _$RawMessage read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return _$_Message(
+    return _$RawMessage(
       id: fields[0] as String,
-      sender: fields[1] as User,
-      date: fields[2] as DateTime,
+      senderRef: fields[1] as String,
+      timestamp: fields[2] as int,
       message: fields[3] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, _$_Message obj) {
+  void write(BinaryWriter writer, _$RawMessage obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.sender)
+      ..write(obj.senderRef)
       ..writeByte(2)
-      ..write(obj.date)
+      ..write(obj.timestamp)
       ..writeByte(3)
       ..write(obj.message);
   }
@@ -53,7 +53,8 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
+_$MessageWithUser _$$MessageWithUserFromJson(Map<String, dynamic> json) =>
+    _$MessageWithUser(
       id: json['id'] as String,
       sender: User.fromJson(json['sender'] as Map<String, dynamic>),
       date: const TimestampConverter().fromJson(json['timestamp'] as int),
@@ -61,9 +62,25 @@ _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
+Map<String, dynamic> _$$MessageWithUserToJson(_$MessageWithUser instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'sender': instance.sender,
+      'timestamp': const TimestampConverter().toJson(instance.date),
+      'message': instance.message,
+      'runtimeType': instance.$type,
+    };
+
+_$PendingMessage _$$PendingMessageFromJson(Map<String, dynamic> json) =>
+    _$PendingMessage(
+      sender: User.fromJson(json['sender'] as Map<String, dynamic>),
+      date: const TimestampConverter().fromJson(json['timestamp'] as int),
+      message: json['message'] as String,
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$$PendingMessageToJson(_$PendingMessage instance) =>
+    <String, dynamic>{
       'sender': instance.sender,
       'timestamp': const TimestampConverter().toJson(instance.date),
       'message': instance.message,
