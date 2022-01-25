@@ -11,7 +11,6 @@ import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_theme.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
-import 'package:discord_replicate/service/message_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -56,12 +55,7 @@ Future initializeHive() async {
   Hive.init(dir.path);
 }
 
-class Main extends StatefulWidget {
-  @override
-  State<Main> createState() => _MainState();
-}
-
-class _MainState extends State<Main> {
+class Main extends StatelessWidget {
   final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey();
 
   @override
