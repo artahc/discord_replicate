@@ -5,6 +5,7 @@ import 'package:discord_replicate/bloc/user/user_state.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
+import 'package:discord_replicate/service/user_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -13,9 +14,7 @@ export 'user_event.dart';
 export 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final AuthService _authService;
-  final UserRepository _userRepo;
-  final ServerRepository _serverRepo;
+  final UserService _userService;
 
   final AuthBloc _authBloc;
 
@@ -24,12 +23,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   UserBloc({
     required AuthBloc authBloc,
-    UserRepository? userRepo,
-    AuthService? authService,
-    ServerRepository? serverRepo,
-  })  : _authService = authService ?? GetIt.I.get<AuthService>(),
-        _userRepo = userRepo ?? GetIt.I.get<UserRepository>(),
-        _serverRepo = serverRepo ?? GetIt.I.get<ServerRepository>(),
+    UserService? userService,
+  })  : _userService = userService ?? GetIt.I.get<UserService>(),
         _authBloc = authBloc,
         super(UserState.initial()) {
     on<UserEvent>((event, emit) => _handleEvent(event, emit));
@@ -49,11 +44,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   @override
-  void onEvent(UserEvent event) {
-    return super.onEvent(event);
-  }
-
-  @override
   Future<void> close() {
     _authStateSubscription.cancel();
     return super.close();
@@ -61,22 +51,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   _loadLocalUser(emit) async {
     emit(UserState.loadUserInProgress());
-    var credential = await _authService.getCredential(forceRefresh: true);
-    if (credential == null)
+    await _userService.getCurrentUser().then((user) {
+      emit(UserState.loadUserSuccess(user));
+    }).catchError((error, stackTrace) {
+      log.e("Error when loading user after sign-in.", error, stackTrace);
       emit(UserState.loadUserFailed());
-    else {
-      await _userRepo.load(credential.uid).then((user) async {
-        user.servers.forEach((element) async {
-          await _serverRepo.save(element);
-        });
-        // if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
-        _userRepo.setCurrentUser(user);
-        emit(UserState.loadUserSuccess(user));
-      }).catchError((e, st) {
-        log.e("Error when loading user after sign-in.", e, st);
-        emit(UserState.loadUserFailed());
-      });
-    }
+    });
   }
 
   _deleteLocalUser(emit) async {

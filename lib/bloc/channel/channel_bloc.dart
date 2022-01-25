@@ -6,6 +6,7 @@ import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
+import 'package:discord_replicate/service/channel_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -19,8 +20,8 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
 
   final ServerBloc _serverBloc;
   final UserBloc _userBloc;
-  final ChannelRepository _channelRepository;
-
+  final ChannelService _channelService;
+  
   late Logger log = Logger();
   late StreamSubscription<ServerState> _serverStateSubscription;
   late StreamSubscription<UserState> _userStateSubscription;
@@ -30,7 +31,8 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
     ChannelRepository? channelRepository,
     required ServerBloc serverBloc,
     required UserBloc userBloc,
-  })  : _channelRepository = channelRepository ?? GetIt.I.get<ChannelRepository>(),
+    ChannelService? channelService,
+  })  : _channelService = channelService ?? GetIt.I.get<ChannelService>(),
         _serverBloc = serverBloc,
         _userBloc = userBloc,
         super(ChannelState.initial()) {
@@ -73,7 +75,8 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
 
   _load(String id, emit) async {
     emit(ChannelState.loadInProgress());
-    await _channelRepository.load(id).then((channel) {
+
+    await _channelService.getChannelById(id).then((channel) {
       this.current = channel;
       emit(ChannelState.loadSuccess(channel));
     });

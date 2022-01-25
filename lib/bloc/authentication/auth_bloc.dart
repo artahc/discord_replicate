@@ -16,10 +16,10 @@ export 'auth_state.dart';
 enum RegisterOptions { Phone, Email }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService _authRepo;
+  final AuthService _authService;
 
-  AuthBloc({AuthService? authRepo})
-      : _authRepo = authRepo ?? GetIt.I.get<AuthService>(),
+  AuthBloc({AuthService? authService})
+      : _authService = authService ?? GetIt.I.get<AuthService>(),
         super(AuthStateInitial()) {
     on<AuthEvent>((event, emit) => _handleEvent(event, emit));
   }
@@ -34,7 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _handleInitial(emit) async {
-    var credential = await _authRepo.getCredential();
+    var credential = await _authService.getCredential();
     if (credential == null)
       emit(AuthState.signedOut());
     else {
@@ -44,14 +44,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _signIn(id, password, emit) async {
     emit(AuthState.signingIn());
-    var credential = await _authRepo.signIn(id, password);
+    var credential = await _authService.signIn(id, password);
     emit(AuthState.signedIn(credential: credential));
   }
 
   _signUp(id, option, emit) async {
     switch (option) {
       case RegisterOptions.Email:
-        var credential = await _authRepo.signUpEmail(id);
+        var credential = await _authService.signUpEmail(id);
         emit(AuthState.signedIn(credential: credential));
         break;
       case RegisterOptions.Phone:
@@ -61,7 +61,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _signOut(emit) async {
-    await _authRepo.signOut();
+    await _authService.signOut();
     await Hive.deleteFromDisk();
     emit(AuthState.signedOut());
   }

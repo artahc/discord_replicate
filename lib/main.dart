@@ -9,8 +9,10 @@ import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_theme.dart';
+import 'package:discord_replicate/service/channel_service.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
+import 'package:discord_replicate/service/user_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,18 +37,25 @@ Future main() async {
 Future initializeDependencyContainer() async {
   final String url = "http://localhost:4000/graphql";
 
+  // GraphQL Client
   GetIt.I.registerFactory<GraphQLClientHelper>(() => GraphQLClientHelper(url));
+
+  // Service
+  GetIt.I.registerLazySingleton<AuthService>(() => FirebaseAuthService());
+  GetIt.I.registerLazySingleton<UserService>(() => UserServiceImpl());
+  GetIt.I.registerLazySingleton<ChannelService>(() => ChannelServiceImpl());
   GetIt.I.registerLazySingleton<DatabaseService>(() {
     var db = HiveDatabaseService();
     db.initialize();
     return db;
   });
 
-  GetIt.I.registerLazySingleton<AuthService>(() => FirebaseAuthService());
+  // Repository
   GetIt.I.registerLazySingleton<UserRepository>(() => UserRepository());
   GetIt.I.registerLazySingleton<ServerRepository>(() => ServerRepository());
   GetIt.I.registerLazySingleton<ChannelRepository>(() => ChannelRepository());
 
+  // Bloc
   GetIt.I.registerLazySingleton<AuthBloc>(() => AuthBloc());
 }
 

@@ -58,14 +58,6 @@ class UserRepository implements Repository<User> {
   })  : _api = apiClient ?? GetIt.I.get<GraphQLClientHelper>(),
         _db = database ?? GetIt.I.get<DatabaseService>();
 
-  User? getCurrentUser() {
-    return _currentUser;
-  }
-
-  Future<void> setCurrentUser(User user) async {
-    this._currentUser = user;
-  }
-
   /// Load user by UID.
   ///
   /// Returns user's profile along with servers and channels basic info.

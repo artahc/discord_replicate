@@ -55,56 +55,6 @@ class ChannelRepository implements Repository<Channel> {
   })  : _api = apiClient ?? GetIt.I.get<GraphQLClientHelper>(),
         _db = database ?? GetIt.I.get<DatabaseService>();
 
-  Future<Message> sendMessage(String channelId, Message message) async {
-    String mutation = r"""
-      mutation Mutation($input: MessageInput!) {
-        createMessage(input: $input) {
-          id
-          senderRef
-          timestamp
-          message
-        }
-      }
-    """;
-
-    var variables = {
-      "input": {
-        "channelRef": channelId,
-        "message": message.message,
-        "timestamp": message.date.millisecondsSinceEpoch,
-      }
-    };
-
-    return await _api.mutate(mutation, variables: variables).then((json) => Message.fromJson(json["createMessage"]));
-  }
-
-  Stream<Message> subscribeChannelMessage(String channelId) async* {
-    String s = r"""
-      subscription OnMessageCreated($channelRef: String!) {
-        onNewMessage(channelRef: $channelRef) {
-          topic
-          channelRef
-          payload {
-            id
-            senderRef
-            timestamp
-            message
-          }
-        }
-      }
-    """;
-
-    var v = {
-      "channelRef": channelId,
-    };
-
-    yield* _api
-        .subscribe(s, variables: v)
-        .map((result) => result["onNewMessage"])
-        .where((notification) => notification['topic'] == "OnMessageCreated")
-        .map((json) => Message.fromJson(json['payload']));
-  }
-
   @override
   Future<Channel> load(String id) async {
     var query = ChannelQuery.loadById;
