@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 Message _$MessageFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
     case 'withUser':
-      return MessageWithUser.fromJson(json);
+      return MessageWithMember.fromJson(json);
     case 'pending':
       return PendingMessage.fromJson(json);
     case 'raw':
@@ -32,18 +32,18 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 class _$MessageTearOff {
   const _$MessageTearOff();
 
-  MessageWithUser withUser(
+  MessageWithMember withUser(
       {@HiveField(0)
           required String id,
       @HiveField(1)
-          required User sender,
+          required Member sender,
       @HiveField(2)
       @TimestampConverter()
       @JsonKey(name: 'timestamp')
           required DateTime date,
       @HiveField(3)
           required String message}) {
-    return MessageWithUser(
+    return MessageWithMember(
       id: id,
       sender: sender,
       date: date,
@@ -53,7 +53,7 @@ class _$MessageTearOff {
 
   PendingMessage pending(
       {@HiveField(1)
-          required User sender,
+          required Member sender,
       @HiveField(2)
       @TimestampConverter()
       @JsonKey(name: 'timestamp')
@@ -99,7 +99,7 @@ mixin _$Message {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -109,7 +109,7 @@ mixin _$Message {
         withUser,
     required TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -131,7 +131,7 @@ mixin _$Message {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -141,7 +141,7 @@ mixin _$Message {
         withUser,
     TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -160,7 +160,7 @@ mixin _$Message {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -170,7 +170,7 @@ mixin _$Message {
         withUser,
     TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -186,21 +186,21 @@ mixin _$Message {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MessageWithUser value) withUser,
+    required TResult Function(MessageWithMember value) withUser,
     required TResult Function(PendingMessage value) pending,
     required TResult Function(RawMessage value) raw,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(MessageWithMember value)? withUser,
     TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(MessageWithMember value)? withUser,
     TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
     required TResult orElse(),
@@ -240,17 +240,17 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class $MessageWithUserCopyWith<$Res>
+abstract class $MessageWithMemberCopyWith<$Res>
     implements $MessageCopyWith<$Res> {
-  factory $MessageWithUserCopyWith(
-          MessageWithUser value, $Res Function(MessageWithUser) then) =
-      _$MessageWithUserCopyWithImpl<$Res>;
+  factory $MessageWithMemberCopyWith(
+          MessageWithMember value, $Res Function(MessageWithMember) then) =
+      _$MessageWithMemberCopyWithImpl<$Res>;
   @override
   $Res call(
       {@HiveField(0)
           String id,
       @HiveField(1)
-          User sender,
+          Member sender,
       @HiveField(2)
       @TimestampConverter()
       @JsonKey(name: 'timestamp')
@@ -258,18 +258,18 @@ abstract class $MessageWithUserCopyWith<$Res>
       @HiveField(3)
           String message});
 
-  $UserCopyWith<$Res> get sender;
+  $MemberCopyWith<$Res> get sender;
 }
 
 /// @nodoc
-class _$MessageWithUserCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
-    implements $MessageWithUserCopyWith<$Res> {
-  _$MessageWithUserCopyWithImpl(
-      MessageWithUser _value, $Res Function(MessageWithUser) _then)
-      : super(_value, (v) => _then(v as MessageWithUser));
+class _$MessageWithMemberCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
+    implements $MessageWithMemberCopyWith<$Res> {
+  _$MessageWithMemberCopyWithImpl(
+      MessageWithMember _value, $Res Function(MessageWithMember) _then)
+      : super(_value, (v) => _then(v as MessageWithMember));
 
   @override
-  MessageWithUser get _value => super._value as MessageWithUser;
+  MessageWithMember get _value => super._value as MessageWithMember;
 
   @override
   $Res call({
@@ -278,7 +278,7 @@ class _$MessageWithUserCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
     Object? date = freezed,
     Object? message = freezed,
   }) {
-    return _then(MessageWithUser(
+    return _then(MessageWithMember(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -286,7 +286,7 @@ class _$MessageWithUserCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
       sender: sender == freezed
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
-              as User,
+              as Member,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -299,8 +299,8 @@ class _$MessageWithUserCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
   }
 
   @override
-  $UserCopyWith<$Res> get sender {
-    return $UserCopyWith<$Res>(_value.sender, (value) {
+  $MemberCopyWith<$Res> get sender {
+    return $MemberCopyWith<$Res>(_value.sender, (value) {
       return _then(_value.copyWith(sender: value));
     });
   }
@@ -308,8 +308,8 @@ class _$MessageWithUserCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$MessageWithUser extends MessageWithUser {
-  const _$MessageWithUser(
+class _$MessageWithMember extends MessageWithMember {
+  const _$MessageWithMember(
       {@HiveField(0)
           required this.id,
       @HiveField(1)
@@ -324,15 +324,15 @@ class _$MessageWithUser extends MessageWithUser {
       : $type = $type ?? 'withUser',
         super._();
 
-  factory _$MessageWithUser.fromJson(Map<String, dynamic> json) =>
-      _$$MessageWithUserFromJson(json);
+  factory _$MessageWithMember.fromJson(Map<String, dynamic> json) =>
+      _$$MessageWithMemberFromJson(json);
 
   @override
   @HiveField(0)
   final String id;
   @override
   @HiveField(1)
-  final User sender;
+  final Member sender;
   @override
   @HiveField(2)
   @TimestampConverter()
@@ -354,7 +354,7 @@ class _$MessageWithUser extends MessageWithUser {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is MessageWithUser &&
+            other is MessageWithMember &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.sender, sender) &&
             const DeepCollectionEquality().equals(other.date, date) &&
@@ -371,8 +371,8 @@ class _$MessageWithUser extends MessageWithUser {
 
   @JsonKey(ignore: true)
   @override
-  $MessageWithUserCopyWith<MessageWithUser> get copyWith =>
-      _$MessageWithUserCopyWithImpl<MessageWithUser>(this, _$identity);
+  $MessageWithMemberCopyWith<MessageWithMember> get copyWith =>
+      _$MessageWithMemberCopyWithImpl<MessageWithMember>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -381,7 +381,7 @@ class _$MessageWithUser extends MessageWithUser {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -391,7 +391,7 @@ class _$MessageWithUser extends MessageWithUser {
         withUser,
     required TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -416,7 +416,7 @@ class _$MessageWithUser extends MessageWithUser {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -426,7 +426,7 @@ class _$MessageWithUser extends MessageWithUser {
         withUser,
     TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -448,7 +448,7 @@ class _$MessageWithUser extends MessageWithUser {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -458,7 +458,7 @@ class _$MessageWithUser extends MessageWithUser {
         withUser,
     TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -480,7 +480,7 @@ class _$MessageWithUser extends MessageWithUser {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MessageWithUser value) withUser,
+    required TResult Function(MessageWithMember value) withUser,
     required TResult Function(PendingMessage value) pending,
     required TResult Function(RawMessage value) raw,
   }) {
@@ -490,7 +490,7 @@ class _$MessageWithUser extends MessageWithUser {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(MessageWithMember value)? withUser,
     TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
   }) {
@@ -500,7 +500,7 @@ class _$MessageWithUser extends MessageWithUser {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(MessageWithMember value)? withUser,
     TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
     required TResult orElse(),
@@ -513,31 +513,31 @@ class _$MessageWithUser extends MessageWithUser {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$MessageWithUserToJson(this);
+    return _$$MessageWithMemberToJson(this);
   }
 }
 
-abstract class MessageWithUser extends Message {
-  const factory MessageWithUser(
+abstract class MessageWithMember extends Message {
+  const factory MessageWithMember(
       {@HiveField(0)
           required String id,
       @HiveField(1)
-          required User sender,
+          required Member sender,
       @HiveField(2)
       @TimestampConverter()
       @JsonKey(name: 'timestamp')
           required DateTime date,
       @HiveField(3)
-          required String message}) = _$MessageWithUser;
-  const MessageWithUser._() : super._();
+          required String message}) = _$MessageWithMember;
+  const MessageWithMember._() : super._();
 
-  factory MessageWithUser.fromJson(Map<String, dynamic> json) =
-      _$MessageWithUser.fromJson;
+  factory MessageWithMember.fromJson(Map<String, dynamic> json) =
+      _$MessageWithMember.fromJson;
 
   @HiveField(0)
   String get id;
   @HiveField(1)
-  User get sender;
+  Member get sender;
   @HiveField(2)
   @TimestampConverter()
   @JsonKey(name: 'timestamp')
@@ -547,7 +547,7 @@ abstract class MessageWithUser extends Message {
   String get message;
   @override
   @JsonKey(ignore: true)
-  $MessageWithUserCopyWith<MessageWithUser> get copyWith =>
+  $MessageWithMemberCopyWith<MessageWithMember> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -559,7 +559,7 @@ abstract class $PendingMessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
   @override
   $Res call(
       {@HiveField(1)
-          User sender,
+          Member sender,
       @HiveField(2)
       @TimestampConverter()
       @JsonKey(name: 'timestamp')
@@ -567,7 +567,7 @@ abstract class $PendingMessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
       @HiveField(3)
           String message});
 
-  $UserCopyWith<$Res> get sender;
+  $MemberCopyWith<$Res> get sender;
 }
 
 /// @nodoc
@@ -590,7 +590,7 @@ class _$PendingMessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
       sender: sender == freezed
           ? _value.sender
           : sender // ignore: cast_nullable_to_non_nullable
-              as User,
+              as Member,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -603,8 +603,8 @@ class _$PendingMessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
   }
 
   @override
-  $UserCopyWith<$Res> get sender {
-    return $UserCopyWith<$Res>(_value.sender, (value) {
+  $MemberCopyWith<$Res> get sender {
+    return $MemberCopyWith<$Res>(_value.sender, (value) {
       return _then(_value.copyWith(sender: value));
     });
   }
@@ -631,7 +631,7 @@ class _$PendingMessage extends PendingMessage {
 
   @override
   @HiveField(1)
-  final User sender;
+  final Member sender;
   @override
   @HiveField(2)
   @TimestampConverter()
@@ -678,7 +678,7 @@ class _$PendingMessage extends PendingMessage {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -688,7 +688,7 @@ class _$PendingMessage extends PendingMessage {
         withUser,
     required TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -713,7 +713,7 @@ class _$PendingMessage extends PendingMessage {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -723,7 +723,7 @@ class _$PendingMessage extends PendingMessage {
         withUser,
     TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -745,7 +745,7 @@ class _$PendingMessage extends PendingMessage {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -755,7 +755,7 @@ class _$PendingMessage extends PendingMessage {
         withUser,
     TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -777,7 +777,7 @@ class _$PendingMessage extends PendingMessage {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MessageWithUser value) withUser,
+    required TResult Function(MessageWithMember value) withUser,
     required TResult Function(PendingMessage value) pending,
     required TResult Function(RawMessage value) raw,
   }) {
@@ -787,7 +787,7 @@ class _$PendingMessage extends PendingMessage {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(MessageWithMember value)? withUser,
     TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
   }) {
@@ -797,7 +797,7 @@ class _$PendingMessage extends PendingMessage {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(MessageWithMember value)? withUser,
     TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
     required TResult orElse(),
@@ -817,7 +817,7 @@ class _$PendingMessage extends PendingMessage {
 abstract class PendingMessage extends Message {
   const factory PendingMessage(
       {@HiveField(1)
-          required User sender,
+          required Member sender,
       @HiveField(2)
       @TimestampConverter()
       @JsonKey(name: 'timestamp')
@@ -830,7 +830,7 @@ abstract class PendingMessage extends Message {
       _$PendingMessage.fromJson;
 
   @HiveField(1)
-  User get sender;
+  Member get sender;
   @HiveField(2)
   @TimestampConverter()
   @JsonKey(name: 'timestamp')
@@ -962,7 +962,7 @@ class _$RawMessage extends RawMessage {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -972,7 +972,7 @@ class _$RawMessage extends RawMessage {
         withUser,
     required TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -997,7 +997,7 @@ class _$RawMessage extends RawMessage {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -1007,7 +1007,7 @@ class _$RawMessage extends RawMessage {
         withUser,
     TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -1029,7 +1029,7 @@ class _$RawMessage extends RawMessage {
             @HiveField(0)
                 String id,
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -1039,7 +1039,7 @@ class _$RawMessage extends RawMessage {
         withUser,
     TResult Function(
             @HiveField(1)
-                User sender,
+                Member sender,
             @HiveField(2)
             @TimestampConverter()
             @JsonKey(name: 'timestamp')
@@ -1061,7 +1061,7 @@ class _$RawMessage extends RawMessage {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MessageWithUser value) withUser,
+    required TResult Function(MessageWithMember value) withUser,
     required TResult Function(PendingMessage value) pending,
     required TResult Function(RawMessage value) raw,
   }) {
@@ -1071,7 +1071,7 @@ class _$RawMessage extends RawMessage {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(MessageWithMember value)? withUser,
     TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
   }) {
@@ -1081,7 +1081,7 @@ class _$RawMessage extends RawMessage {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageWithUser value)? withUser,
+    TResult Function(MessageWithMember value)? withUser,
     TResult Function(PendingMessage value)? pending,
     TResult Function(RawMessage value)? raw,
     required TResult orElse(),

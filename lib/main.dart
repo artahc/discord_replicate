@@ -3,6 +3,7 @@ import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
+import 'package:discord_replicate/repository/user_group_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
@@ -56,9 +57,14 @@ Future initializeDependencyContainer() async {
   GetIt.I.registerLazySingleton<UserRepository>(() => UserRepository());
   GetIt.I.registerLazySingleton<ServerRepository>(() => ServerRepository());
   GetIt.I.registerLazySingleton<ChannelRepository>(() => ChannelRepository());
+  GetIt.I.registerLazySingleton<UserGroupRepository>(() => UserGroupRepository());
 
   // Bloc
   GetIt.I.registerLazySingleton<AuthBloc>(() => AuthBloc());
+  GetIt.I.registerFactory<ServerBloc>(() => ServerBloc());
+  GetIt.I.registerFactoryParam<ChannelBloc, ServerBloc, UserBloc>((serverBloc, userBloc) => ChannelBloc(serverBloc: serverBloc, userBloc: userBloc));
+  GetIt.I.registerFactoryParam<UserBloc, AuthBloc, void>((authBloc, _) => UserBloc(authBloc: authBloc));
+  GetIt.I.registerFactoryParam<NavigationCubit, GlobalKey<NavigatorState>, void>((key, _) => NavigationCubit(navigator: key));
 }
 
 Future initializeHive() async {
@@ -72,17 +78,13 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = GetIt.I.get<AuthBloc>();
-    final userBloc = UserBloc(authBloc: authBloc);
-    final serverBloc = ServerBloc();
-    final channelBloc = ChannelBloc(userBloc: userBloc, serverBloc: serverBloc);
-    final navBloc = NavigationCubit(navigator: rootNavigatorKey);
+    final userBloc = GetIt.I.get<UserBloc>(param1: authBloc);
+    final navBloc = GetIt.I.get<NavigationCubit>(param1: rootNavigatorKey);
 
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (c) => authBloc),
         BlocProvider<UserBloc>(create: (c) => userBloc),
-        BlocProvider<ServerBloc>(create: (c) => serverBloc),
-        BlocProvider<ChannelBloc>(create: (c) => channelBloc),
         BlocProvider<NavigationCubit>(create: (c) => navBloc),
       ],
       child: MaterialApp(

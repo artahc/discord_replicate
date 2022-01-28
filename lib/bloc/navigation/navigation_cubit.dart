@@ -14,18 +14,18 @@ class NavigationCubit extends Cubit<NavigationState> {
   NavigationCubit({required GlobalKey<NavigatorState> navigator, AuthBloc? authBloc})
       : _authBloc = authBloc ?? GetIt.I.get<AuthBloc>(),
         super(NavigationState.initialState()) {
-    _authStateSubscription = _authBloc.stream.listen((event) {
-      event.whenOrNull(
-        signedOut: () {
-          navigator.currentState?.pushNamed(Routes.welcome);
-        },
-      );
-    });
+    // _authStateSubscription = _authBloc.stream.listen((event) {
+    //   event.whenOrNull(
+    //     signedOut: () {
+    //       navigator.currentState?.pushNamed(Routes.welcome);
+    //     },
+    //   );
+    // });
   }
 
   @override
   Future<void> close() async {
-    _authStateSubscription.cancel();
+    // _authStateSubscription.cancel();
     super.close();
   }
 

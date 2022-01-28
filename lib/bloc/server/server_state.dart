@@ -7,8 +7,7 @@ part 'server_state.freezed.dart';
 
 @freezed
 abstract class ServerState with _$ServerState {
-  const factory ServerState.initial() = ServerStateInitial;
-
-  const factory ServerState.loadServerInProgress() = ServerStateLoadServerInProgress;
-  const factory ServerState.loadServerSuccess(Server server, Channel recentChannel) = ServerStateLoadSelectedSuccess;
+  const factory ServerState.error(Exception e) = ServerStateError;
+  const factory ServerState.loading() = ServerStateLoading;
+  const factory ServerState.loaded(Server server, Channel recentChannel) = ServerStateLoaded;
 }

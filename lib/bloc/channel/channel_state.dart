@@ -6,8 +6,7 @@ part 'channel_state.freezed.dart';
 
 @freezed
 abstract class ChannelState with _$ChannelState {
-  const factory ChannelState.initial() = ChannelStateInitial;
-  const factory ChannelState.loadInProgress() = ChannelStateLoadInProgress;
-  const factory ChannelState.loadFailed(Exception e) = ChannelStateLoadFailed;
-  const factory ChannelState.loadSuccess(Channel channel) = ChannelStateLoadSuccess;
+  const factory ChannelState.loading() = ChannelStateLoading;
+  const factory ChannelState.error(Exception e) = ChannelStateError;
+  const factory ChannelState.loaded(Channel channel) = ChannelStateLoaded;
 }

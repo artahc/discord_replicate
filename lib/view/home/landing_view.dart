@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/view/home/channel_list_panel.dart';
 import 'package:discord_replicate/view/home/direct_message_panel.dart';
 import 'package:discord_replicate/view/home/navigation_bar.dart';
@@ -13,6 +14,8 @@ import 'package:discord_replicate/view/home/server_list_panel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LandingView extends StatefulWidget {
@@ -23,34 +26,46 @@ class LandingView extends StatefulWidget {
 }
 
 class LandingViewState extends State<LandingView> with TickerProviderStateMixin {
-  late OverlapSwipeableStackController _roomViewController = OverlapSwipeableStackController(vsync: this);
-
-  late ServerBloc _serverBloc;
-  late ChannelBloc _channelBloc;
-
-  OverlapSwipeableStackController get controller => _roomViewController;
+  late OverlapSwipeableStackController _pageController = OverlapSwipeableStackController(vsync: this);
+  final Logger log = Logger();
 
   @override
   void initState() {
-    _serverBloc = BlocProvider.of<ServerBloc>(context);
-    _channelBloc = BlocProvider.of<ChannelBloc>(context);
     super.initState();
   }
 
   @override
   void dispose() {
-    _roomViewController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    var userBloc = BlocProvider.of<UserBloc>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: BlocBuilder<UserBloc, UserState>(
+      body: BlocConsumer<UserBloc, UserState>(
+        bloc: userBloc,
+        listener: (_, state) {
+          state.whenOrNull(
+            empty: () {},
+            error: (e) {},
+          );
+        },
         builder: (_, state) {
           return state.maybeWhen(
             orElse: () {
+              return Center(
+                child: Text("Something is wrong."),
+              );
+            },
+            error: (e) {
+              return Center(
+                child: Text("Error when loading user."),
+              );
+            },
+            loading: () {
               return Center(
                 child: Container(
                   child: CircularProgressIndicator(
@@ -59,43 +74,49 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                 ),
               );
             },
-            loadUserSuccess: (user) {
-              return WillPopScope(
-                onWillPop: () async {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("Haha cannot exit app."),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                  return Future.value(false);
-                },
+            loaded: (user) {
+              var serverBloc = GetIt.I.get<ServerBloc>();
+              var channelBloc = GetIt.I.get<ChannelBloc>(param1: serverBloc, param2: userBloc);
+              log.d("User Loaded");
+
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider<ServerBloc>(create: (_) => serverBloc),
+                  BlocProvider<ChannelBloc>(create: (_) => channelBloc),
+                ],
                 child: SafeArea(
                   child: Stack(
                     children: [
                       OverlapSwipeableStack(
-                        channelViewController: _roomViewController,
-
-                        // Server List, Direct Message Panel, and Channel List Panel.
+                        channelViewController: _pageController,
                         leftPage: Row(
                           children: [
+                            // Server list
                             ServerListPanel(servers: user.servers),
+
+                            // Direct Message Panel or Channel List Panel
                             StreamBuilder(
-                              stream: MergeStream(
-                                  [_serverBloc.eventStream, _channelBloc.eventStream.where((event) => event is ChannelEventLoadRecentPrivate)]),
+                              stream: MergeStream([
+                                serverBloc.eventStream,
+                              ]),
                               builder: (_, snapshot) {
                                 if (snapshot.data is ServerEvent) {
                                   return BlocBuilder<ServerBloc, ServerState>(
                                     builder: (_, serverState) {
-                                      return serverState.maybeWhen(
-                                        orElse: () {
+                                      return serverState.when(
+                                        error: (e) {
+                                          return Center(
+                                            child: Text("Something's wrong when retrieving server data."),
+                                          );
+                                        },
+                                        loading: () {
                                           return Center(
                                             child: Container(
                                               child: CircularProgressIndicator(color: Colors.white),
                                             ),
                                           );
                                         },
-                                        loadServerSuccess: (server, recentChannel) {
+                                        loaded: (server, recentChannel) {
                                           return ChannelListPanel(server: server);
                                         },
                                       );
@@ -112,41 +133,50 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                         // Message Panel
                         frontPage: BlocBuilder<ChannelBloc, ChannelState>(
                           builder: (_, state) {
-                            return state.maybeWhen(
-                              orElse: () {
-                                return ClipRRect(
-                                  clipBehavior: Clip.antiAlias,
-                                  borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                                  child: Container(
-                                    color: Theme.of(context).colorScheme.primary,
-                                    child: Center(
-                                      child: CircularProgressIndicator(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
+                            return state.when(
+                              loading: () {
+                                return Center(
+                                  child: Text("Loading message panel."),
                                 );
                               },
-                              loadSuccess: (channel) {
-                                return ChannelMessagePanel(key: UniqueKey(), channel: channel, pageController: controller);
+                              loaded: (channel) {
+                                return MessagePanel(
+                                  key: UniqueKey(),
+                                  pageController: _pageController,
+                                  channel: channel,
+                                );
+                              },
+                              error: (e) {
+                                return Container(
+                                  child: Center(
+                                    child: Text("Something's wrong when retrieving channel data."),
+                                  ),
+                                );
                               },
                             );
                           },
                         ),
 
-                        // Room or Channel Info Panel
+                        // Room Info Panel
                         rightPage: BlocBuilder<ChannelBloc, ChannelState>(
                           builder: (_, state) {
-                            return state.maybeWhen(
-                              orElse: () {
+                            return state.when(
+                              loading: () {
                                 return Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
+                                  child: Container(
+                                    child: CircularProgressIndicator(color: Colors.white),
                                   ),
                                 );
                               },
-                              loadSuccess: (channel) {
+                              loaded: (channel) {
                                 return ChannelInfoPanel(channel: channel);
+                              },
+                              error: (e) {
+                                return Container(
+                                  child: Center(
+                                    child: Text("Something's wrong when retrieving channel data."),
+                                  ),
+                                );
                               },
                             );
                           },
@@ -160,7 +190,7 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                         bottom: 0,
                         child: SlideTransition(
                           child: AppNavigationBar(),
-                          position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_roomViewController.navBarAnimController),
+                          position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_pageController.navBarAnimController),
                         ),
                       ),
                     ],

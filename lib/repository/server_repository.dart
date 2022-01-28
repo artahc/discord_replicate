@@ -18,9 +18,11 @@ class ServerQuery {
         id
         name
         imageUrl
+        userGroupRef
         channels {
           id
           name
+          userGroupRef
         }
         members(limit: $limitMember) {
           uid

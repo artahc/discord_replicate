@@ -4,6 +4,5 @@ part 'channel_event.freezed.dart';
 
 @freezed
 abstract class ChannelEvent with _$ChannelEvent {
-  const factory ChannelEvent.loadRecentPrivate() = ChannelEventLoadRecentPrivate;
-  const factory ChannelEvent.loadChannel(String id) = ChannelEventLoadChannel;
+  const factory ChannelEvent.load(String id) = ChannelEventLoad;
 }

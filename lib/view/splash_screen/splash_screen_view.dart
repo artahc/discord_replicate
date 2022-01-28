@@ -6,6 +6,7 @@ import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 
 class SplashScreenView extends StatefulWidget {
   const SplashScreenView({Key? key}) : super(key: key);
@@ -17,6 +18,7 @@ class SplashScreenView extends StatefulWidget {
 class _SplashScreenViewState extends State<SplashScreenView> {
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
   late AuthBloc _authBloc = BlocProvider.of(context);
+  final Logger log = Logger();
 
   @override
   void initState() {
@@ -28,12 +30,16 @@ class _SplashScreenViewState extends State<SplashScreenView> {
   Widget build(BuildContext context) {
     return BlocListener<UserBloc, UserState>(
       listener: (_, state) async {
-        state.maybeWhen(
-          loadUserSuccess: (user) {
+        state.whenOrNull(
+          empty: () {
+            _navBloc.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true);
+          },
+          loaded: (user) {
             _navBloc.pushNamedAndRemoveUntil(context, Routes.landing, (route) => false, true);
           },
-          orElse: () {
-            // _navBloc.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true);
+          error: (e) {
+            log.e("Error loading user in splash screen", e);
+            _navBloc.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true);
           },
         );
       },

@@ -22,7 +22,7 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
 
   ServerBloc({ServerRepository? serverRepository, ServerService? serverService})
       : _serverService = serverService ?? GetIt.I.get<ServerService>(),
-        super(ServerState.initial()) {
+        super(ServerState.loading()) {
     on<ServerEvent>((event, emit) => _handleEvent(event, emit));
   }
 
@@ -40,9 +40,9 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   }
 
   Future<void> _loadServer(String id, emit) async {
-    emit(ServerState.loadServerInProgress());
+    emit(ServerState.loading());
     await _serverService.getServerById(id).then((server) {
-      emit(ServerState.loadServerSuccess(server, server.channels.first));
+      emit(ServerState.loaded(server, server.channels.first));
     });
   }
 

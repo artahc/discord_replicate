@@ -36,23 +36,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   _handleInitial(emit) async {
     var credential = await _authService.getCredential();
     if (credential == null)
-      emit(AuthState.signedOut());
+      emit(AuthState.unauthenticated());
     else {
-      emit(AuthState.signedIn(credential: credential));
+      emit(AuthState.authenticated(credential: credential));
     }
   }
 
   _signIn(id, password, emit) async {
-    emit(AuthState.signingIn());
+    emit(AuthState.authenticating());
     var credential = await _authService.signIn(id, password);
-    emit(AuthState.signedIn(credential: credential));
+    emit(AuthState.authenticated(credential: credential));
   }
 
   _signUp(id, option, emit) async {
     switch (option) {
       case RegisterOptions.Email:
         var credential = await _authService.signUpEmail(id);
-        emit(AuthState.signedIn(credential: credential));
+        emit(AuthState.authenticated(credential: credential));
         break;
       case RegisterOptions.Phone:
         emit(AuthState.error(exception: Exception("Sign up with phone number is not supported yet.")));
@@ -63,6 +63,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   _signOut(emit) async {
     await _authService.signOut();
     await Hive.deleteFromDisk();
-    emit(AuthState.signedOut());
+    emit(AuthState.unauthenticated());
   }
 }

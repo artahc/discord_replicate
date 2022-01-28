@@ -1,5 +1,6 @@
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/model/member.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
@@ -136,10 +137,10 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                     ),
                     Expanded(
                       child: Container(
-                        child: CustomListView<User>(
+                        child: CustomListView<Member>(
                           elements: widget.channel.members,
                           builder: (_, user, index) {
-                            return ChannelMemberTile(user: user);
+                            return ChannelMemberTile(member: user);
                           },
                           before: [
                             AppButton(
@@ -185,9 +186,9 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
 }
 
 class ChannelMemberTile extends StatelessWidget {
-  final User user;
+  final Member member;
 
-  const ChannelMemberTile({Key? key, required this.user}) : super(key: key);
+  const ChannelMemberTile({Key? key, required this.member}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +210,7 @@ class ChannelMemberTile extends StatelessWidget {
             direction: Axis.vertical,
             children: [
               Text(
-                user.name,
+                member.name,
                 style: Theme.of(context).textTheme.bodyText2,
               ),
               Text(

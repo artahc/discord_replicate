@@ -58,142 +58,133 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<UserBloc, UserState>(
-          listener: (_, state) {
-            state.whenOrNull(
-              loadUserSuccess: (user) {
-                _onUserLoaded();
-              },
+    return BlocConsumer<UserBloc, UserState>(
+      bloc: _userBloc,
+      listener: (_, state) {
+        state.whenOrNull(
+          error: (e) {
+            // _signOut();
+            _userBloc.add(UserEvent.deleteUser());
+          },
+          loaded: (user) {
+            _onUserLoaded();
+          },
+        );
+      },
+      builder: (_, state) {
+        return state.maybeWhen(
+          orElse: () {
+            return Material(
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
             );
           },
-        ),
-      ],
-      child: BlocBuilder<UserBloc, UserState>(
-        bloc: _userBloc,
-        builder: (_, state) {
-          return state.maybeWhen(
-            loadUserInProgress: () {
-              return Material(
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
+          empty: () {
+            return Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: SizedBox(
+                  width: 45,
+                  height: 45,
+                  child: IconButton(
+                    splashRadius: 20,
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      _signOut();
+                    },
                   ),
                 ),
-              );
-            },
-            loadUserSuccess: (user) {
-              return Material(
-                child: Center(
-                  child: Text("Redirecting you to landing page."),
-                ),
-              );
-            },
-            orElse: () {
-              return Scaffold(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                appBar: AppBar(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  leading: SizedBox(
-                    width: 45,
-                    height: 45,
-                    child: IconButton(
-                      splashRadius: 20,
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () {
-                        _signOut();
-                      },
+              ),
+              body: Container(
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: Text(
+                        "Welcome back!",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline5!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
                     ),
-                  ),
-                ),
-                body: Container(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.only(bottom: 10),
+                    Container(
+                      width: double.infinity,
+                      child: Text(
+                        "We're so excited to see you again!",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.caption?.copyWith(
+                              letterSpacing: 0.5,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: AppInputField(
+                        controller: _identityCtrl,
+                        margin: const EdgeInsets.only(top: 28),
+                        labelText: "Email or Phone Number",
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: AppInputField(
+                        controller: _passwordCtrl,
+                        obscureText: true,
+                        margin: const EdgeInsets.only(top: 12),
+                        labelText: "Password",
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 15),
+                      child: Align(
                         child: Text(
-                          "Welcome back!",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headline5!.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                          "Forgot your password?",
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
                         ),
+                        alignment: Alignment.centerLeft,
                       ),
-                      Container(
-                        width: double.infinity,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: Align(
                         child: Text(
-                          "We're so excited to see you again!",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.caption?.copyWith(
-                                letterSpacing: 0.5,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                              ),
+                          "Use a password manager?",
+                          textAlign: TextAlign.start,
+                          style: Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
                         ),
+                        alignment: Alignment.centerLeft,
                       ),
-                      Flexible(
-                        flex: 1,
-                        child: AppInputField(
-                          controller: _identityCtrl,
-                          margin: const EdgeInsets.only(top: 28),
-                          labelText: "Email or Phone Number",
-                        ),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: AppInputField(
-                          controller: _passwordCtrl,
-                          obscureText: true,
-                          margin: const EdgeInsets.only(top: 12),
-                          labelText: "Password",
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 15),
-                        child: Align(
-                          child: Text(
-                            "Forgot your password?",
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
-                          ),
-                          alignment: Alignment.centerLeft,
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        child: Align(
-                          child: Text(
-                            "Use a password manager?",
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
-                          ),
-                          alignment: Alignment.centerLeft,
-                        ),
-                      ),
-                      AppButton(
-                        margin: const EdgeInsets.only(top: 15),
-                        onPressed: _signIn,
-                        child: Text("Login"),
-                      ),
-                    ],
-                  ),
+                    ),
+                    AppButton(
+                      margin: const EdgeInsets.only(top: 15),
+                      onPressed: _signIn,
+                      child: Text("Login"),
+                    ),
+                  ],
                 ),
-              );
-            },
-          );
-          // if (state is AuthStateSigningIn)
-          //   return Scaffold(
-          //     backgroundColor: Theme.of(context).colorScheme.secondary,
-          //     body: Center(
-          //       child: CircularProgressIndicator(),
-          //     ),
-          //   );
-          // else
-        },
-      ),
+              ),
+            );
+          },
+        );
+        // if (state is AuthStateSigningIn)
+        //   return Scaffold(
+        //     backgroundColor: Theme.of(context).colorScheme.secondary,
+        //     body: Center(
+        //       child: CircularProgressIndicator(),
+        //     ),
+        //   );
+        // else
+      },
     );
   }
 }

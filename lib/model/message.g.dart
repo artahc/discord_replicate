@@ -53,16 +53,16 @@ class MessageAdapter extends TypeAdapter<_$RawMessage> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$MessageWithUser _$$MessageWithUserFromJson(Map<String, dynamic> json) =>
-    _$MessageWithUser(
+_$MessageWithMember _$$MessageWithMemberFromJson(Map<String, dynamic> json) =>
+    _$MessageWithMember(
       id: json['id'] as String,
-      sender: User.fromJson(json['sender'] as Map<String, dynamic>),
+      sender: Member.fromJson(json['sender'] as Map<String, dynamic>),
       date: const TimestampConverter().fromJson(json['timestamp'] as int),
       message: json['message'] as String,
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$MessageWithUserToJson(_$MessageWithUser instance) =>
+Map<String, dynamic> _$$MessageWithMemberToJson(_$MessageWithMember instance) =>
     <String, dynamic>{
       'id': instance.id,
       'sender': instance.sender,
@@ -73,7 +73,7 @@ Map<String, dynamic> _$$MessageWithUserToJson(_$MessageWithUser instance) =>
 
 _$PendingMessage _$$PendingMessageFromJson(Map<String, dynamic> json) =>
     _$PendingMessage(
-      sender: User.fromJson(json['sender'] as Map<String, dynamic>),
+      sender: Member.fromJson(json['sender'] as Map<String, dynamic>),
       date: const TimestampConverter().fromJson(json['timestamp'] as int),
       message: json['message'] as String,
       $type: json['runtimeType'] as String?,

@@ -24,19 +24,17 @@ class UserQuery {
         privateChannels {
           id
           name
-          members {
-            uid
-            name
-            avatarUrl
-          }
+          userGroupRef
         }
         servers {
           id
           name
           imageUrl
+          userGroupRef
           channels {
             id
             name
+            userGroupRef
           }
         }
       }

@@ -28,6 +28,10 @@ main() {
   );
 
   group("Remote Source", () {
+    setUpAll(() {
+      when(() => mockAuthService.getCredential(forceRefresh: any(named: "forceRefresh")))
+          .thenAnswer((invocation) => Future.value(Credential(email: "", token: "", uid: "")));
+    });
     tearDown(() {
       reset(mockDb);
     });

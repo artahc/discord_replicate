@@ -35,7 +35,7 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
         orElse: () {
           return Container();
         },
-        loadUserSuccess: (user) {
+        loaded: (user) {
           return Flexible(
             child: Container(
               margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width * 0.125) + 5),
@@ -103,7 +103,7 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                             return DirectMessageTile(
                               channel: user.privateChannels[index],
                               onPressed: () {
-                                _channelBloc.add(ChannelEvent.loadChannel(user.privateChannels[index].id));
+                                _channelBloc.add(ChannelEvent.load(user.privateChannels[index].id));
                               },
                             );
                           },

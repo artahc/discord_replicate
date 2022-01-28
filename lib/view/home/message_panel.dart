@@ -1,3 +1,4 @@
+import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/message/message_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/model/channel.dart';
@@ -10,17 +11,17 @@ import 'package:logger/logger.dart';
 
 final Logger log = Logger();
 
-class ChannelMessagePanel extends StatefulWidget {
+class MessagePanel extends StatefulWidget {
   final Channel channel;
   final OverlapSwipeableStackController pageController;
 
-  const ChannelMessagePanel({Key? key, required this.pageController, required this.channel}) : super(key: key);
+  const MessagePanel({Key? key, required this.pageController, required this.channel}) : super(key: key);
 
   @override
-  _ChannelMessagePanelState createState() => _ChannelMessagePanelState();
+  _MessagePanelState createState() => _MessagePanelState();
 }
 
-class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
+class _MessagePanelState extends State<MessagePanel> {
   late MessageBloc _messageBloc = MessageBloc(
     channel: widget.channel,
   );
@@ -41,7 +42,6 @@ class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
           child: Container(
             child: Column(
               children: [
-                // Message Panel Header
                 Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
@@ -119,10 +119,7 @@ class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
                     ],
                   ),
                 ),
-
-                MessagePanelBody(key: UniqueKey(), initialMessages: widget.channel.messages),
-
-                // Input
+                MessagePanelBody(key: UniqueKey()),
                 MessagePanelInput(key: UniqueKey()),
               ],
             ),
@@ -134,9 +131,7 @@ class _ChannelMessagePanelState extends State<ChannelMessagePanel> {
 }
 
 class MessagePanelBody extends StatefulWidget {
-  final List<Message> initialMessages;
-
-  MessagePanelBody({Key? key, required this.initialMessages}) : super(key: key);
+  MessagePanelBody({Key? key}) : super(key: key);
 
   @override
   _MessagePanelBodyState createState() => _MessagePanelBodyState();
@@ -147,12 +142,13 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
 
   bool _pinScrollToBottom = false;
 
-  late List<Message> _messages = widget.initialMessages.toList();
+  late List<Message> _messages = [];
+  late MessageBloc _messageBloc = BlocProvider.of(context);
 
   @override
   void initState() {
-    super.initState();
     _scrollCtrl.addListener(_onScroll);
+    super.initState();
   }
 
   _onScroll() {
@@ -172,6 +168,12 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
     _scrollCtrl.removeListener(_onScroll);
     _scrollCtrl.dispose();
     super.dispose();
+  }
+
+  _onMessageFetched(List<Message> messages) {
+    setState(() {
+      _messages.addAll(messages);
+    });
   }
 
   _onSendingMessage(Message message) {
@@ -202,7 +204,8 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
     return BlocListener<MessageBloc, MessageState>(
       listener: (_, state) {
         state.whenOrNull(
-          sending: (message) => _onSendingMessage(message),
+          messageFetched: (messages) => _onMessageFetched(messages),
+          sendingMessage: (message) => _onSendingMessage(message),
           receivedNewMessage: (message) => _onReceiveNewMessage(message),
         );
       },

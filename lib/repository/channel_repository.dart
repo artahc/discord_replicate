@@ -12,31 +12,15 @@ import 'package:rxdart/rxdart.dart';
 class ChannelQuery {
   ChannelQuery._();
 
-  static final String loadById = r"""
-    query Channel($id: String!, $messageLimit: Int, $memberLimit: Int) {
+  static final String loadChannelById = r"""
+    query Channel($id: String!) {
       channel(id: $id) {
         id
         name
-        members(limit: $memberLimit) {
-          uid
-          avatarUrl
-          name
-        }
-        messages(limit: $messageLimit) {
-          id
-          senderRef
-          timestamp
-          message
-        }
+        userGroupRef
       }
     }
   """;
-}
-
-class ChannelMutation {
-  ChannelMutation._();
-
-  static String createMessage = "";
 }
 
 class ChannelRepository implements Repository<Channel> {
@@ -53,11 +37,10 @@ class ChannelRepository implements Repository<Channel> {
 
   @override
   Future<Channel> load(String id) async {
-    var query = ChannelQuery.loadById;
+    var query = ChannelQuery.loadChannelById;
     var variables = {
       "id": id,
-      "messageLimit": 30,
-      "memberLimit": 100,
+      "memberLimit": 30,
     };
 
     var local = LazyStream(() {

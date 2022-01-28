@@ -20,14 +20,16 @@ class ServerAdapter extends TypeAdapter<_$_Server> {
       id: fields[0] as String,
       name: fields[1] as String,
       imageUrl: fields[2] as String,
-      channels: (fields[3] as List).cast<Channel>(),
+      userGroupRef: fields[3] as String,
+      channels: (fields[4] as List).cast<Channel>(),
+      members: (fields[5] as List).cast<Member>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, _$_Server obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +37,11 @@ class ServerAdapter extends TypeAdapter<_$_Server> {
       ..writeByte(2)
       ..write(obj.imageUrl)
       ..writeByte(3)
-      ..write(obj.channels);
+      ..write(obj.userGroupRef)
+      ..writeByte(4)
+      ..write(obj.channels)
+      ..writeByte(5)
+      ..write(obj.members);
   }
 
   @override
@@ -57,15 +63,22 @@ _$_Server _$$_ServerFromJson(Map<String, dynamic> json) => _$_Server(
       id: json['id'] as String,
       name: json['name'] as String,
       imageUrl: json['imageUrl'] as String,
+      userGroupRef: json['userGroupRef'] as String,
       channels: (json['channels'] as List<dynamic>?)
               ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <Channel>[],
+      members: (json['members'] as List<dynamic>?)
+              ?.map((e) => Member.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <Member>[],
     );
 
 Map<String, dynamic> _$$_ServerToJson(_$_Server instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'imageUrl': instance.imageUrl,
+      'userGroupRef': instance.userGroupRef,
       'channels': instance.channels,
+      'members': instance.members,
     };

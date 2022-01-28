@@ -17,22 +17,18 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ChannelStateTearOff {
   const _$ChannelStateTearOff();
 
-  ChannelStateInitial initial() {
-    return const ChannelStateInitial();
+  ChannelStateLoading loading() {
+    return const ChannelStateLoading();
   }
 
-  ChannelStateLoadInProgress loadInProgress() {
-    return const ChannelStateLoadInProgress();
-  }
-
-  ChannelStateLoadFailed loadFailed(Exception e) {
-    return ChannelStateLoadFailed(
+  ChannelStateError error(Exception e) {
+    return ChannelStateError(
       e,
     );
   }
 
-  ChannelStateLoadSuccess loadSuccess(Channel channel) {
-    return ChannelStateLoadSuccess(
+  ChannelStateLoaded loaded(Channel channel) {
+    return ChannelStateLoaded(
       channel,
     );
   }
@@ -45,51 +41,45 @@ const $ChannelState = _$ChannelStateTearOff();
 mixin _$ChannelState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loadInProgress,
-    required TResult Function(Exception e) loadFailed,
-    required TResult Function(Channel channel) loadSuccess,
+    required TResult Function() loading,
+    required TResult Function(Exception e) error,
+    required TResult Function(Channel channel) loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
+    TResult Function()? loading,
+    TResult Function(Exception e)? error,
+    TResult Function(Channel channel)? loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
+    TResult Function()? loading,
+    TResult Function(Exception e)? error,
+    TResult Function(Channel channel)? loaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ChannelStateInitial value) initial,
-    required TResult Function(ChannelStateLoadInProgress value) loadInProgress,
-    required TResult Function(ChannelStateLoadFailed value) loadFailed,
-    required TResult Function(ChannelStateLoadSuccess value) loadSuccess,
+    required TResult Function(ChannelStateLoading value) loading,
+    required TResult Function(ChannelStateError value) error,
+    required TResult Function(ChannelStateLoaded value) loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
+    TResult Function(ChannelStateLoading value)? loading,
+    TResult Function(ChannelStateError value)? error,
+    TResult Function(ChannelStateLoaded value)? loaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
+    TResult Function(ChannelStateLoading value)? loading,
+    TResult Function(ChannelStateError value)? error,
+    TResult Function(ChannelStateLoaded value)? loaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -112,38 +102,38 @@ class _$ChannelStateCopyWithImpl<$Res> implements $ChannelStateCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class $ChannelStateInitialCopyWith<$Res> {
-  factory $ChannelStateInitialCopyWith(
-          ChannelStateInitial value, $Res Function(ChannelStateInitial) then) =
-      _$ChannelStateInitialCopyWithImpl<$Res>;
+abstract class $ChannelStateLoadingCopyWith<$Res> {
+  factory $ChannelStateLoadingCopyWith(
+          ChannelStateLoading value, $Res Function(ChannelStateLoading) then) =
+      _$ChannelStateLoadingCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$ChannelStateInitialCopyWithImpl<$Res>
+class _$ChannelStateLoadingCopyWithImpl<$Res>
     extends _$ChannelStateCopyWithImpl<$Res>
-    implements $ChannelStateInitialCopyWith<$Res> {
-  _$ChannelStateInitialCopyWithImpl(
-      ChannelStateInitial _value, $Res Function(ChannelStateInitial) _then)
-      : super(_value, (v) => _then(v as ChannelStateInitial));
+    implements $ChannelStateLoadingCopyWith<$Res> {
+  _$ChannelStateLoadingCopyWithImpl(
+      ChannelStateLoading _value, $Res Function(ChannelStateLoading) _then)
+      : super(_value, (v) => _then(v as ChannelStateLoading));
 
   @override
-  ChannelStateInitial get _value => super._value as ChannelStateInitial;
+  ChannelStateLoading get _value => super._value as ChannelStateLoading;
 }
 
 /// @nodoc
 
-class _$ChannelStateInitial implements ChannelStateInitial {
-  const _$ChannelStateInitial();
+class _$ChannelStateLoading implements ChannelStateLoading {
+  const _$ChannelStateLoading();
 
   @override
   String toString() {
-    return 'ChannelState.initial()';
+    return 'ChannelState.loading()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is ChannelStateInitial);
+        (other.runtimeType == runtimeType && other is ChannelStateLoading);
   }
 
   @override
@@ -152,36 +142,33 @@ class _$ChannelStateInitial implements ChannelStateInitial {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loadInProgress,
-    required TResult Function(Exception e) loadFailed,
-    required TResult Function(Channel channel) loadSuccess,
+    required TResult Function() loading,
+    required TResult Function(Exception e) error,
+    required TResult Function(Channel channel) loaded,
   }) {
-    return initial();
+    return loading();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
+    TResult Function()? loading,
+    TResult Function(Exception e)? error,
+    TResult Function(Channel channel)? loaded,
   }) {
-    return initial?.call();
+    return loading?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
+    TResult Function()? loading,
+    TResult Function(Exception e)? error,
+    TResult Function(Channel channel)? loaded,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial();
+    if (loading != null) {
+      return loading();
     }
     return orElse();
   }
@@ -189,188 +176,66 @@ class _$ChannelStateInitial implements ChannelStateInitial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ChannelStateInitial value) initial,
-    required TResult Function(ChannelStateLoadInProgress value) loadInProgress,
-    required TResult Function(ChannelStateLoadFailed value) loadFailed,
-    required TResult Function(ChannelStateLoadSuccess value) loadSuccess,
+    required TResult Function(ChannelStateLoading value) loading,
+    required TResult Function(ChannelStateError value) error,
+    required TResult Function(ChannelStateLoaded value) loaded,
   }) {
-    return initial(this);
+    return loading(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
+    TResult Function(ChannelStateLoading value)? loading,
+    TResult Function(ChannelStateError value)? error,
+    TResult Function(ChannelStateLoaded value)? loaded,
   }) {
-    return initial?.call(this);
+    return loading?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
+    TResult Function(ChannelStateLoading value)? loading,
+    TResult Function(ChannelStateError value)? error,
+    TResult Function(ChannelStateLoaded value)? loaded,
     required TResult orElse(),
   }) {
-    if (initial != null) {
-      return initial(this);
+    if (loading != null) {
+      return loading(this);
     }
     return orElse();
   }
 }
 
-abstract class ChannelStateInitial implements ChannelState {
-  const factory ChannelStateInitial() = _$ChannelStateInitial;
+abstract class ChannelStateLoading implements ChannelState {
+  const factory ChannelStateLoading() = _$ChannelStateLoading;
 }
 
 /// @nodoc
-abstract class $ChannelStateLoadInProgressCopyWith<$Res> {
-  factory $ChannelStateLoadInProgressCopyWith(ChannelStateLoadInProgress value,
-          $Res Function(ChannelStateLoadInProgress) then) =
-      _$ChannelStateLoadInProgressCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class _$ChannelStateLoadInProgressCopyWithImpl<$Res>
-    extends _$ChannelStateCopyWithImpl<$Res>
-    implements $ChannelStateLoadInProgressCopyWith<$Res> {
-  _$ChannelStateLoadInProgressCopyWithImpl(ChannelStateLoadInProgress _value,
-      $Res Function(ChannelStateLoadInProgress) _then)
-      : super(_value, (v) => _then(v as ChannelStateLoadInProgress));
-
-  @override
-  ChannelStateLoadInProgress get _value =>
-      super._value as ChannelStateLoadInProgress;
-}
-
-/// @nodoc
-
-class _$ChannelStateLoadInProgress implements ChannelStateLoadInProgress {
-  const _$ChannelStateLoadInProgress();
-
-  @override
-  String toString() {
-    return 'ChannelState.loadInProgress()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is ChannelStateLoadInProgress);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loadInProgress,
-    required TResult Function(Exception e) loadFailed,
-    required TResult Function(Channel channel) loadSuccess,
-  }) {
-    return loadInProgress();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
-  }) {
-    return loadInProgress?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
-    required TResult orElse(),
-  }) {
-    if (loadInProgress != null) {
-      return loadInProgress();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ChannelStateInitial value) initial,
-    required TResult Function(ChannelStateLoadInProgress value) loadInProgress,
-    required TResult Function(ChannelStateLoadFailed value) loadFailed,
-    required TResult Function(ChannelStateLoadSuccess value) loadSuccess,
-  }) {
-    return loadInProgress(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
-  }) {
-    return loadInProgress?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
-    required TResult orElse(),
-  }) {
-    if (loadInProgress != null) {
-      return loadInProgress(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class ChannelStateLoadInProgress implements ChannelState {
-  const factory ChannelStateLoadInProgress() = _$ChannelStateLoadInProgress;
-}
-
-/// @nodoc
-abstract class $ChannelStateLoadFailedCopyWith<$Res> {
-  factory $ChannelStateLoadFailedCopyWith(ChannelStateLoadFailed value,
-          $Res Function(ChannelStateLoadFailed) then) =
-      _$ChannelStateLoadFailedCopyWithImpl<$Res>;
+abstract class $ChannelStateErrorCopyWith<$Res> {
+  factory $ChannelStateErrorCopyWith(
+          ChannelStateError value, $Res Function(ChannelStateError) then) =
+      _$ChannelStateErrorCopyWithImpl<$Res>;
   $Res call({Exception e});
 }
 
 /// @nodoc
-class _$ChannelStateLoadFailedCopyWithImpl<$Res>
+class _$ChannelStateErrorCopyWithImpl<$Res>
     extends _$ChannelStateCopyWithImpl<$Res>
-    implements $ChannelStateLoadFailedCopyWith<$Res> {
-  _$ChannelStateLoadFailedCopyWithImpl(ChannelStateLoadFailed _value,
-      $Res Function(ChannelStateLoadFailed) _then)
-      : super(_value, (v) => _then(v as ChannelStateLoadFailed));
+    implements $ChannelStateErrorCopyWith<$Res> {
+  _$ChannelStateErrorCopyWithImpl(
+      ChannelStateError _value, $Res Function(ChannelStateError) _then)
+      : super(_value, (v) => _then(v as ChannelStateError));
 
   @override
-  ChannelStateLoadFailed get _value => super._value as ChannelStateLoadFailed;
+  ChannelStateError get _value => super._value as ChannelStateError;
 
   @override
   $Res call({
     Object? e = freezed,
   }) {
-    return _then(ChannelStateLoadFailed(
+    return _then(ChannelStateError(
       e == freezed
           ? _value.e
           : e // ignore: cast_nullable_to_non_nullable
@@ -381,22 +246,22 @@ class _$ChannelStateLoadFailedCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ChannelStateLoadFailed implements ChannelStateLoadFailed {
-  const _$ChannelStateLoadFailed(this.e);
+class _$ChannelStateError implements ChannelStateError {
+  const _$ChannelStateError(this.e);
 
   @override
   final Exception e;
 
   @override
   String toString() {
-    return 'ChannelState.loadFailed(e: $e)';
+    return 'ChannelState.error(e: $e)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ChannelStateLoadFailed &&
+            other is ChannelStateError &&
             const DeepCollectionEquality().equals(other.e, e));
   }
 
@@ -406,43 +271,39 @@ class _$ChannelStateLoadFailed implements ChannelStateLoadFailed {
 
   @JsonKey(ignore: true)
   @override
-  $ChannelStateLoadFailedCopyWith<ChannelStateLoadFailed> get copyWith =>
-      _$ChannelStateLoadFailedCopyWithImpl<ChannelStateLoadFailed>(
-          this, _$identity);
+  $ChannelStateErrorCopyWith<ChannelStateError> get copyWith =>
+      _$ChannelStateErrorCopyWithImpl<ChannelStateError>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loadInProgress,
-    required TResult Function(Exception e) loadFailed,
-    required TResult Function(Channel channel) loadSuccess,
+    required TResult Function() loading,
+    required TResult Function(Exception e) error,
+    required TResult Function(Channel channel) loaded,
   }) {
-    return loadFailed(e);
+    return error(e);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
+    TResult Function()? loading,
+    TResult Function(Exception e)? error,
+    TResult Function(Channel channel)? loaded,
   }) {
-    return loadFailed?.call(e);
+    return error?.call(e);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
+    TResult Function()? loading,
+    TResult Function(Exception e)? error,
+    TResult Function(Channel channel)? loaded,
     required TResult orElse(),
   }) {
-    if (loadFailed != null) {
-      return loadFailed(e);
+    if (error != null) {
+      return error(e);
     }
     return orElse();
   }
@@ -450,76 +311,73 @@ class _$ChannelStateLoadFailed implements ChannelStateLoadFailed {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ChannelStateInitial value) initial,
-    required TResult Function(ChannelStateLoadInProgress value) loadInProgress,
-    required TResult Function(ChannelStateLoadFailed value) loadFailed,
-    required TResult Function(ChannelStateLoadSuccess value) loadSuccess,
+    required TResult Function(ChannelStateLoading value) loading,
+    required TResult Function(ChannelStateError value) error,
+    required TResult Function(ChannelStateLoaded value) loaded,
   }) {
-    return loadFailed(this);
+    return error(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
+    TResult Function(ChannelStateLoading value)? loading,
+    TResult Function(ChannelStateError value)? error,
+    TResult Function(ChannelStateLoaded value)? loaded,
   }) {
-    return loadFailed?.call(this);
+    return error?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
+    TResult Function(ChannelStateLoading value)? loading,
+    TResult Function(ChannelStateError value)? error,
+    TResult Function(ChannelStateLoaded value)? loaded,
     required TResult orElse(),
   }) {
-    if (loadFailed != null) {
-      return loadFailed(this);
+    if (error != null) {
+      return error(this);
     }
     return orElse();
   }
 }
 
-abstract class ChannelStateLoadFailed implements ChannelState {
-  const factory ChannelStateLoadFailed(Exception e) = _$ChannelStateLoadFailed;
+abstract class ChannelStateError implements ChannelState {
+  const factory ChannelStateError(Exception e) = _$ChannelStateError;
 
   Exception get e;
   @JsonKey(ignore: true)
-  $ChannelStateLoadFailedCopyWith<ChannelStateLoadFailed> get copyWith =>
+  $ChannelStateErrorCopyWith<ChannelStateError> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ChannelStateLoadSuccessCopyWith<$Res> {
-  factory $ChannelStateLoadSuccessCopyWith(ChannelStateLoadSuccess value,
-          $Res Function(ChannelStateLoadSuccess) then) =
-      _$ChannelStateLoadSuccessCopyWithImpl<$Res>;
+abstract class $ChannelStateLoadedCopyWith<$Res> {
+  factory $ChannelStateLoadedCopyWith(
+          ChannelStateLoaded value, $Res Function(ChannelStateLoaded) then) =
+      _$ChannelStateLoadedCopyWithImpl<$Res>;
   $Res call({Channel channel});
 
   $ChannelCopyWith<$Res> get channel;
 }
 
 /// @nodoc
-class _$ChannelStateLoadSuccessCopyWithImpl<$Res>
+class _$ChannelStateLoadedCopyWithImpl<$Res>
     extends _$ChannelStateCopyWithImpl<$Res>
-    implements $ChannelStateLoadSuccessCopyWith<$Res> {
-  _$ChannelStateLoadSuccessCopyWithImpl(ChannelStateLoadSuccess _value,
-      $Res Function(ChannelStateLoadSuccess) _then)
-      : super(_value, (v) => _then(v as ChannelStateLoadSuccess));
+    implements $ChannelStateLoadedCopyWith<$Res> {
+  _$ChannelStateLoadedCopyWithImpl(
+      ChannelStateLoaded _value, $Res Function(ChannelStateLoaded) _then)
+      : super(_value, (v) => _then(v as ChannelStateLoaded));
 
   @override
-  ChannelStateLoadSuccess get _value => super._value as ChannelStateLoadSuccess;
+  ChannelStateLoaded get _value => super._value as ChannelStateLoaded;
 
   @override
   $Res call({
     Object? channel = freezed,
   }) {
-    return _then(ChannelStateLoadSuccess(
+    return _then(ChannelStateLoaded(
       channel == freezed
           ? _value.channel
           : channel // ignore: cast_nullable_to_non_nullable
@@ -537,22 +395,22 @@ class _$ChannelStateLoadSuccessCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ChannelStateLoadSuccess implements ChannelStateLoadSuccess {
-  const _$ChannelStateLoadSuccess(this.channel);
+class _$ChannelStateLoaded implements ChannelStateLoaded {
+  const _$ChannelStateLoaded(this.channel);
 
   @override
   final Channel channel;
 
   @override
   String toString() {
-    return 'ChannelState.loadSuccess(channel: $channel)';
+    return 'ChannelState.loaded(channel: $channel)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ChannelStateLoadSuccess &&
+            other is ChannelStateLoaded &&
             const DeepCollectionEquality().equals(other.channel, channel));
   }
 
@@ -562,43 +420,39 @@ class _$ChannelStateLoadSuccess implements ChannelStateLoadSuccess {
 
   @JsonKey(ignore: true)
   @override
-  $ChannelStateLoadSuccessCopyWith<ChannelStateLoadSuccess> get copyWith =>
-      _$ChannelStateLoadSuccessCopyWithImpl<ChannelStateLoadSuccess>(
-          this, _$identity);
+  $ChannelStateLoadedCopyWith<ChannelStateLoaded> get copyWith =>
+      _$ChannelStateLoadedCopyWithImpl<ChannelStateLoaded>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loadInProgress,
-    required TResult Function(Exception e) loadFailed,
-    required TResult Function(Channel channel) loadSuccess,
+    required TResult Function() loading,
+    required TResult Function(Exception e) error,
+    required TResult Function(Channel channel) loaded,
   }) {
-    return loadSuccess(channel);
+    return loaded(channel);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
+    TResult Function()? loading,
+    TResult Function(Exception e)? error,
+    TResult Function(Channel channel)? loaded,
   }) {
-    return loadSuccess?.call(channel);
+    return loaded?.call(channel);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loadInProgress,
-    TResult Function(Exception e)? loadFailed,
-    TResult Function(Channel channel)? loadSuccess,
+    TResult Function()? loading,
+    TResult Function(Exception e)? error,
+    TResult Function(Channel channel)? loaded,
     required TResult orElse(),
   }) {
-    if (loadSuccess != null) {
-      return loadSuccess(channel);
+    if (loaded != null) {
+      return loaded(channel);
     }
     return orElse();
   }
@@ -606,47 +460,43 @@ class _$ChannelStateLoadSuccess implements ChannelStateLoadSuccess {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ChannelStateInitial value) initial,
-    required TResult Function(ChannelStateLoadInProgress value) loadInProgress,
-    required TResult Function(ChannelStateLoadFailed value) loadFailed,
-    required TResult Function(ChannelStateLoadSuccess value) loadSuccess,
+    required TResult Function(ChannelStateLoading value) loading,
+    required TResult Function(ChannelStateError value) error,
+    required TResult Function(ChannelStateLoaded value) loaded,
   }) {
-    return loadSuccess(this);
+    return loaded(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
+    TResult Function(ChannelStateLoading value)? loading,
+    TResult Function(ChannelStateError value)? error,
+    TResult Function(ChannelStateLoaded value)? loaded,
   }) {
-    return loadSuccess?.call(this);
+    return loaded?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ChannelStateInitial value)? initial,
-    TResult Function(ChannelStateLoadInProgress value)? loadInProgress,
-    TResult Function(ChannelStateLoadFailed value)? loadFailed,
-    TResult Function(ChannelStateLoadSuccess value)? loadSuccess,
+    TResult Function(ChannelStateLoading value)? loading,
+    TResult Function(ChannelStateError value)? error,
+    TResult Function(ChannelStateLoaded value)? loaded,
     required TResult orElse(),
   }) {
-    if (loadSuccess != null) {
-      return loadSuccess(this);
+    if (loaded != null) {
+      return loaded(this);
     }
     return orElse();
   }
 }
 
-abstract class ChannelStateLoadSuccess implements ChannelState {
-  const factory ChannelStateLoadSuccess(Channel channel) =
-      _$ChannelStateLoadSuccess;
+abstract class ChannelStateLoaded implements ChannelState {
+  const factory ChannelStateLoaded(Channel channel) = _$ChannelStateLoaded;
 
   Channel get channel;
   @JsonKey(ignore: true)
-  $ChannelStateLoadSuccessCopyWith<ChannelStateLoadSuccess> get copyWith =>
+  $ChannelStateLoadedCopyWith<ChannelStateLoaded> get copyWith =>
       throw _privateConstructorUsedError;
 }

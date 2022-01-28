@@ -8,6 +8,7 @@ import 'package:discord_replicate/view/home/server_tile.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 
 class ServerListPanel extends StatefulWidget {
   final List<Server> servers;
@@ -19,23 +20,22 @@ class ServerListPanel extends StatefulWidget {
 }
 
 class _ServerListPanelState extends State<ServerListPanel> {
-  Server? _selectedServer;
-
+  final Logger log = Logger();
   late ServerBloc _serverBloc;
-  late ChannelBloc _channelBloc;
+
+  Server? _selectedServer;
 
   @override
   void initState() {
     super.initState();
     _serverBloc = BlocProvider.of<ServerBloc>(context);
-    _channelBloc = BlocProvider.of<ChannelBloc>(context);
   }
 
   void _select(Server? server) {
     if (server != null)
       _serverBloc.add(ServerEvent.loadServer(server.id));
     else {
-      _channelBloc.add(ChannelEvent.loadRecentPrivate());
+      log.e("Direct message not implemented yet.");
     }
 
     setState(() {

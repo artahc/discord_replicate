@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
+import 'package:discord_replicate/model/member.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -15,13 +16,13 @@ class Message with _$Message {
 
   const factory Message.withUser({
     @HiveField(0) required String id,
-    @HiveField(1) required User sender,
+    @HiveField(1) required Member sender,
     @HiveField(2) @TimestampConverter() @JsonKey(name: 'timestamp') required DateTime date,
     @HiveField(3) required String message,
-  }) = MessageWithUser;
+  }) = MessageWithMember;
 
   const factory Message.pending({
-    @HiveField(1) required User sender,
+    @HiveField(1) required Member sender,
     @HiveField(2) @TimestampConverter() @JsonKey(name: 'timestamp') required DateTime date,
     @HiveField(3) required String message,
   }) = PendingMessage;
@@ -40,7 +41,7 @@ class Message with _$Message {
     return this.when(
       withUser: (id, sender, date, message) => id,
       raw: (id, senderRef, timestamp, message) => id,
-      pending: (User sender, DateTime date, String message) => "",
+      pending: (sender, date, message) => "",
     );
   }
 
@@ -48,15 +49,15 @@ class Message with _$Message {
     return this.when(
       withUser: (id, sender, date, message) => sender.uid,
       raw: (id, senderRef, timestamp, message) => senderRef,
-      pending: (User sender, DateTime date, String message) => senderRef,
+      pending: (sender, date, message) => senderRef,
     );
   }
 
-  User get user {
+  Member get user {
     return this.when(
       withUser: (id, sender, date, message) => sender,
       raw: (id, senderRef, timestamp, message) => throw Exception("Trying access user from raw message. Please construct into Message Model."),
-      pending: (User sender, DateTime date, String message) => sender,
+      pending: (sender, date, message) => sender,
     );
   }
 
@@ -64,7 +65,7 @@ class Message with _$Message {
     return this.when(
       withUser: (id, sender, date, message) => date,
       raw: (id, senderRef, timestamp, message) => DateTime.fromMillisecondsSinceEpoch(timestamp),
-      pending: (User sender, DateTime date, String message) => date,
+      pending: (sender, date, message) => date,
     );
   }
 
@@ -72,7 +73,7 @@ class Message with _$Message {
     return this.when(
       withUser: (id, sender, date, message) => message,
       raw: (id, senderRef, timestamp, message) => message,
-      pending: (User sender, DateTime date, String message) => message,
+      pending: (sender, date, message) => message,
     );
   }
 
@@ -80,7 +81,7 @@ class Message with _$Message {
     var encoded = this.when(
       withUser: (id, sender, date, message) => utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message"),
       raw: (id, senderRef, timestamp, message) => utf8.encode("$senderRef$timestamp$message"),
-      pending: (User sender, DateTime date, String message) => utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message"),
+      pending: (sender, date, message) => utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message"),
     );
     return md5.convert(encoded).toString();
   }

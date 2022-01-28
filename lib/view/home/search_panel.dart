@@ -99,7 +99,7 @@ class _SearchPanelState extends State<SearchPanel> {
                                 ),
                           ),
                         ),
-                        _SearchChannelTile(data: Channel(id: "", name: "", messages: [], members: [])),
+                        _SearchChannelTile(data: Channel(id: "", name: "", userGroupRef: "", messages: [], members: [])),
                         Container(
                           margin: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
                           child: Text(

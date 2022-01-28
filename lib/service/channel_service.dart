@@ -1,26 +1,56 @@
 import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/model/member.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
-import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/repository/user_group_repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:get_it/get_it.dart';
 
 abstract class ChannelService {
   Future<Channel> getChannelById(String id);
-  Future<List<Channel>> getAllRecentChannels();
-  Future<User> getMemberById(String channelId, String userId);
+
+  Future<List<Member>> getAllMembers(String userGroupId);
+  Future<Member> getMemberById(String userGroupId, String userId);
+
+  Future<List<Message>> fetchMessages(String channelId);
   Future<Message> sendMessage(Message message, String channelId);
-  Stream<Message> subscribeChannelMessage(String channelId);
+  Stream<Message> subscribeMessage(String channelId);
 }
 
 class ChannelServiceImpl implements ChannelService {
   final GraphQLClientHelper _api;
   final ChannelRepository _channelRepo;
+  final UserGroupRepository _userGroupRepo;
 
-  ChannelServiceImpl({GraphQLClientHelper? client, ChannelRepository? channelRepo})
-      : _api = client ?? GetIt.I.get<GraphQLClientHelper>(),
-        _channelRepo = channelRepo ?? GetIt.I.get<ChannelRepository>();
+  ChannelServiceImpl({
+    GraphQLClientHelper? client,
+    ChannelRepository? channelRepo,
+    UserGroupRepository? userGroupRepo,
+  })  : _api = client ?? GetIt.I.get<GraphQLClientHelper>(),
+        _channelRepo = channelRepo ?? GetIt.I.get<ChannelRepository>(),
+        _userGroupRepo = userGroupRepo ?? GetIt.I.get<UserGroupRepository>();
+
+  @override
+  Future<Channel> getChannelById(String id) async {
+    var channel = await _channelRepo.load(id);
+    return channel;
+  }
+
+  @override
+  Future<List<Member>> getAllMembers(String userGroupId) async {
+    var userGroup = await _userGroupRepo.load(userGroupId);
+    return userGroup.members.values.toList();
+  }
+
+  @override
+  Future<Member> getMemberById(String userGroupId, String userId) async {
+    var userGroup = await _userGroupRepo.load(userGroupId);
+    if (!userGroup.members.containsKey(userId)) throw Exception("User not found in database.");
+
+    var member = userGroup.members[userId];
+    return member!;
+  }
 
   @override
   Future<Message> sendMessage(Message message, String channelId) async {
@@ -47,7 +77,7 @@ class ChannelServiceImpl implements ChannelService {
   }
 
   @override
-  Stream<Message> subscribeChannelMessage(String channelId) async* {
+  Stream<Message> subscribeMessage(String channelId) async* {
     String s = r"""
       subscription OnMessageCreated($channelRef: String!) {
         onNewMessage(channelRef: $channelRef) {
@@ -75,20 +105,7 @@ class ChannelServiceImpl implements ChannelService {
   }
 
   @override
-  Future<Channel> getChannelById(String id) async {
-    var channel = await _channelRepo.load(id);
-    return channel;
-  }
-
-  @override
-  Future<List<Channel>> getAllRecentChannels() {
-    
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<User> getMemberById(String channelId, String userId) {
-    // TODO: implement getMemberById
-    throw UnimplementedError();
+  Future<List<Message>> fetchMessages(String channelId) async {
+    return <Message>[];
   }
 }

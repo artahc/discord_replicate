@@ -6,22 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-class MessageTile extends StatefulWidget {
+class MessageTile extends StatelessWidget {
   final Message message;
 
-  MessageTile({required this.message});
-
-  @override
-  State<MessageTile> createState() => _MessageTileState();
-}
-
-class _MessageTileState extends State<MessageTile> {
-  late User user;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  const MessageTile({required this.message}) : assert(!(message is RawMessage));
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +18,7 @@ class _MessageTileState extends State<MessageTile> {
       child: InkWell(
         splashColor: Colors.transparent,
         highlightColor: Theme.of(context).colorScheme.primary,
-        onLongPress: () => print(widget.message.contentHash),
+        onLongPress: () => print(message.contentHash),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: Row(
@@ -54,10 +42,10 @@ class _MessageTileState extends State<MessageTile> {
                         children: [
                           Builder(
                             builder: (_) {
-                              return Text(widget.message.senderRef, style: Theme.of(context).textTheme.bodyText1);
+                              return Text(message.senderRef, style: Theme.of(context).textTheme.bodyText1);
                             },
                           ),
-                          Text(DateFormat.yMMMd().add_jm().format(widget.message.date),
+                          Text(DateFormat.yMMMd().add_jm().format(message.date),
                               style: Theme.of(context).textTheme.caption!.copyWith(
                                     color: Theme.of(context).colorScheme.onSecondary,
                                   )),
@@ -66,7 +54,7 @@ class _MessageTileState extends State<MessageTile> {
                       Container(
                         margin: EdgeInsets.only(top: 2),
                         child: Builder(builder: (_) {
-                          return Text(widget.message.message, style: Theme.of(_).textTheme.bodyText2);
+                          return Text(message.message, style: Theme.of(_).textTheme.bodyText2);
                         }),
                       ),
                     ],

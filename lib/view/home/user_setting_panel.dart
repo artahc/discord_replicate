@@ -26,7 +26,7 @@ class _UserSettingPanelState extends State<UserSettingPanel> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (c, state) {
         state.whenOrNull(
-          signedOut: () {
+          unauthenticated: () {
             log.d("State received $state");
             SchedulerBinding.instance?.addPostFrameCallback((_) {
               _navBloc.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true);

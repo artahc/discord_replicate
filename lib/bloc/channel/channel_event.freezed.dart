@@ -17,12 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ChannelEventTearOff {
   const _$ChannelEventTearOff();
 
-  ChannelEventLoadRecentPrivate loadRecentPrivate() {
-    return const ChannelEventLoadRecentPrivate();
-  }
-
-  ChannelEventLoadChannel loadChannel(String id) {
-    return ChannelEventLoadChannel(
+  ChannelEventLoad load(String id) {
+    return ChannelEventLoad(
       id,
     );
   }
@@ -33,44 +29,43 @@ const $ChannelEvent = _$ChannelEventTearOff();
 
 /// @nodoc
 mixin _$ChannelEvent {
+  String get id => throw _privateConstructorUsedError;
+
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadRecentPrivate,
-    required TResult Function(String id) loadChannel,
+    required TResult Function(String id) load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadRecentPrivate,
-    TResult Function(String id)? loadChannel,
+    TResult Function(String id)? load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadRecentPrivate,
-    TResult Function(String id)? loadChannel,
+    TResult Function(String id)? load,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ChannelEventLoadRecentPrivate value)
-        loadRecentPrivate,
-    required TResult Function(ChannelEventLoadChannel value) loadChannel,
+    required TResult Function(ChannelEventLoad value) load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ChannelEventLoadRecentPrivate value)? loadRecentPrivate,
-    TResult Function(ChannelEventLoadChannel value)? loadChannel,
+    TResult Function(ChannelEventLoad value)? load,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ChannelEventLoadRecentPrivate value)? loadRecentPrivate,
-    TResult Function(ChannelEventLoadChannel value)? loadChannel,
+    TResult Function(ChannelEventLoad value)? load,
     required TResult orElse(),
   }) =>
+      throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ChannelEventCopyWith<ChannelEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -79,6 +74,7 @@ abstract class $ChannelEventCopyWith<$Res> {
   factory $ChannelEventCopyWith(
           ChannelEvent value, $Res Function(ChannelEvent) then) =
       _$ChannelEventCopyWithImpl<$Res>;
+  $Res call({String id});
 }
 
 /// @nodoc
@@ -88,143 +84,46 @@ class _$ChannelEventCopyWithImpl<$Res> implements $ChannelEventCopyWith<$Res> {
   final ChannelEvent _value;
   // ignore: unused_field
   final $Res Function(ChannelEvent) _then;
-}
-
-/// @nodoc
-abstract class $ChannelEventLoadRecentPrivateCopyWith<$Res> {
-  factory $ChannelEventLoadRecentPrivateCopyWith(
-          ChannelEventLoadRecentPrivate value,
-          $Res Function(ChannelEventLoadRecentPrivate) then) =
-      _$ChannelEventLoadRecentPrivateCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class _$ChannelEventLoadRecentPrivateCopyWithImpl<$Res>
-    extends _$ChannelEventCopyWithImpl<$Res>
-    implements $ChannelEventLoadRecentPrivateCopyWith<$Res> {
-  _$ChannelEventLoadRecentPrivateCopyWithImpl(
-      ChannelEventLoadRecentPrivate _value,
-      $Res Function(ChannelEventLoadRecentPrivate) _then)
-      : super(_value, (v) => _then(v as ChannelEventLoadRecentPrivate));
-
-  @override
-  ChannelEventLoadRecentPrivate get _value =>
-      super._value as ChannelEventLoadRecentPrivate;
-}
-
-/// @nodoc
-
-class _$ChannelEventLoadRecentPrivate implements ChannelEventLoadRecentPrivate {
-  const _$ChannelEventLoadRecentPrivate();
-
-  @override
-  String toString() {
-    return 'ChannelEvent.loadRecentPrivate()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is ChannelEventLoadRecentPrivate);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadRecentPrivate,
-    required TResult Function(String id) loadChannel,
-  }) {
-    return loadRecentPrivate();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadRecentPrivate,
-    TResult Function(String id)? loadChannel,
-  }) {
-    return loadRecentPrivate?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadRecentPrivate,
-    TResult Function(String id)? loadChannel,
-    required TResult orElse(),
-  }) {
-    if (loadRecentPrivate != null) {
-      return loadRecentPrivate();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(ChannelEventLoadRecentPrivate value)
-        loadRecentPrivate,
-    required TResult Function(ChannelEventLoadChannel value) loadChannel,
-  }) {
-    return loadRecentPrivate(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ChannelEventLoadRecentPrivate value)? loadRecentPrivate,
-    TResult Function(ChannelEventLoadChannel value)? loadChannel,
-  }) {
-    return loadRecentPrivate?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(ChannelEventLoadRecentPrivate value)? loadRecentPrivate,
-    TResult Function(ChannelEventLoadChannel value)? loadChannel,
-    required TResult orElse(),
-  }) {
-    if (loadRecentPrivate != null) {
-      return loadRecentPrivate(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class ChannelEventLoadRecentPrivate implements ChannelEvent {
-  const factory ChannelEventLoadRecentPrivate() =
-      _$ChannelEventLoadRecentPrivate;
-}
-
-/// @nodoc
-abstract class $ChannelEventLoadChannelCopyWith<$Res> {
-  factory $ChannelEventLoadChannelCopyWith(ChannelEventLoadChannel value,
-          $Res Function(ChannelEventLoadChannel) then) =
-      _$ChannelEventLoadChannelCopyWithImpl<$Res>;
-  $Res call({String id});
-}
-
-/// @nodoc
-class _$ChannelEventLoadChannelCopyWithImpl<$Res>
-    extends _$ChannelEventCopyWithImpl<$Res>
-    implements $ChannelEventLoadChannelCopyWith<$Res> {
-  _$ChannelEventLoadChannelCopyWithImpl(ChannelEventLoadChannel _value,
-      $Res Function(ChannelEventLoadChannel) _then)
-      : super(_value, (v) => _then(v as ChannelEventLoadChannel));
-
-  @override
-  ChannelEventLoadChannel get _value => super._value as ChannelEventLoadChannel;
 
   @override
   $Res call({
     Object? id = freezed,
   }) {
-    return _then(ChannelEventLoadChannel(
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class $ChannelEventLoadCopyWith<$Res>
+    implements $ChannelEventCopyWith<$Res> {
+  factory $ChannelEventLoadCopyWith(
+          ChannelEventLoad value, $Res Function(ChannelEventLoad) then) =
+      _$ChannelEventLoadCopyWithImpl<$Res>;
+  @override
+  $Res call({String id});
+}
+
+/// @nodoc
+class _$ChannelEventLoadCopyWithImpl<$Res>
+    extends _$ChannelEventCopyWithImpl<$Res>
+    implements $ChannelEventLoadCopyWith<$Res> {
+  _$ChannelEventLoadCopyWithImpl(
+      ChannelEventLoad _value, $Res Function(ChannelEventLoad) _then)
+      : super(_value, (v) => _then(v as ChannelEventLoad));
+
+  @override
+  ChannelEventLoad get _value => super._value as ChannelEventLoad;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+  }) {
+    return _then(ChannelEventLoad(
       id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -235,22 +134,22 @@ class _$ChannelEventLoadChannelCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ChannelEventLoadChannel implements ChannelEventLoadChannel {
-  const _$ChannelEventLoadChannel(this.id);
+class _$ChannelEventLoad implements ChannelEventLoad {
+  const _$ChannelEventLoad(this.id);
 
   @override
   final String id;
 
   @override
   String toString() {
-    return 'ChannelEvent.loadChannel(id: $id)';
+    return 'ChannelEvent.load(id: $id)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ChannelEventLoadChannel &&
+            other is ChannelEventLoad &&
             const DeepCollectionEquality().equals(other.id, id));
   }
 
@@ -260,37 +159,33 @@ class _$ChannelEventLoadChannel implements ChannelEventLoadChannel {
 
   @JsonKey(ignore: true)
   @override
-  $ChannelEventLoadChannelCopyWith<ChannelEventLoadChannel> get copyWith =>
-      _$ChannelEventLoadChannelCopyWithImpl<ChannelEventLoadChannel>(
-          this, _$identity);
+  $ChannelEventLoadCopyWith<ChannelEventLoad> get copyWith =>
+      _$ChannelEventLoadCopyWithImpl<ChannelEventLoad>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadRecentPrivate,
-    required TResult Function(String id) loadChannel,
+    required TResult Function(String id) load,
   }) {
-    return loadChannel(id);
+    return load(id);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadRecentPrivate,
-    TResult Function(String id)? loadChannel,
+    TResult Function(String id)? load,
   }) {
-    return loadChannel?.call(id);
+    return load?.call(id);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadRecentPrivate,
-    TResult Function(String id)? loadChannel,
+    TResult Function(String id)? load,
     required TResult orElse(),
   }) {
-    if (loadChannel != null) {
-      return loadChannel(id);
+    if (load != null) {
+      return load(id);
     }
     return orElse();
   }
@@ -298,41 +193,39 @@ class _$ChannelEventLoadChannel implements ChannelEventLoadChannel {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(ChannelEventLoadRecentPrivate value)
-        loadRecentPrivate,
-    required TResult Function(ChannelEventLoadChannel value) loadChannel,
+    required TResult Function(ChannelEventLoad value) load,
   }) {
-    return loadChannel(this);
+    return load(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(ChannelEventLoadRecentPrivate value)? loadRecentPrivate,
-    TResult Function(ChannelEventLoadChannel value)? loadChannel,
+    TResult Function(ChannelEventLoad value)? load,
   }) {
-    return loadChannel?.call(this);
+    return load?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(ChannelEventLoadRecentPrivate value)? loadRecentPrivate,
-    TResult Function(ChannelEventLoadChannel value)? loadChannel,
+    TResult Function(ChannelEventLoad value)? load,
     required TResult orElse(),
   }) {
-    if (loadChannel != null) {
-      return loadChannel(this);
+    if (load != null) {
+      return load(this);
     }
     return orElse();
   }
 }
 
-abstract class ChannelEventLoadChannel implements ChannelEvent {
-  const factory ChannelEventLoadChannel(String id) = _$ChannelEventLoadChannel;
+abstract class ChannelEventLoad implements ChannelEvent {
+  const factory ChannelEventLoad(String id) = _$ChannelEventLoad;
 
+  @override
   String get id;
+  @override
   @JsonKey(ignore: true)
-  $ChannelEventLoadChannelCopyWith<ChannelEventLoadChannel> get copyWith =>
+  $ChannelEventLoadCopyWith<ChannelEventLoad> get copyWith =>
       throw _privateConstructorUsedError;
 }

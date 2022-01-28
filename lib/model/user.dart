@@ -1,4 +1,5 @@
 import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/model/member.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
@@ -20,4 +21,10 @@ class User with _$User {
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> map) => _$UserFromJson(map);
+}
+
+extension UserToMember on User {
+  Member toMember() {
+    return Member(uid: this.uid, name: this.name, avatarUrl: this.avatarUrl);
+  }
 }

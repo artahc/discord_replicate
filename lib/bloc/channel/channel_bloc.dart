@@ -5,6 +5,7 @@ import 'package:discord_replicate/bloc/channel/channel_state.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/service/channel_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,41 +16,46 @@ export 'channel_event.dart';
 export 'channel_state.dart';
 
 class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
-  StreamController<ChannelEvent> _eventStream = StreamController.broadcast();
+  final StreamController<ChannelEvent> _eventStream = StreamController.broadcast();
   Stream<ChannelEvent> get eventStream => _eventStream.stream;
 
   final ServerBloc _serverBloc;
   final UserBloc _userBloc;
   final ChannelService _channelService;
-  
+
   late Logger log = Logger();
   late StreamSubscription<ServerState> _serverStateSubscription;
   late StreamSubscription<UserState> _userStateSubscription;
-  late Channel current;
 
   ChannelBloc({
-    ChannelRepository? channelRepository,
     required ServerBloc serverBloc,
     required UserBloc userBloc,
     ChannelService? channelService,
-  })  : _channelService = channelService ?? GetIt.I.get<ChannelService>(),
-        _serverBloc = serverBloc,
+  })  : _serverBloc = serverBloc,
         _userBloc = userBloc,
-        super(ChannelState.initial()) {
+        _channelService = channelService ?? GetIt.I.get<ChannelService>(),
+        super(ChannelState.loading()) {
     on<ChannelEvent>((event, emit) => _handleEvent(event, emit));
 
+    _userBloc.state.whenOrNull(loaded: (user) {
+      log.d("loading channel from user loaded");
+      add(ChannelEvent.load(user.privateChannels.first.id));
+    });
+
     _userStateSubscription = _userBloc.stream.listen((state) {
+      log.d("User state in channel bloc: $state");
       state.whenOrNull(
-        loadUserSuccess: (user) {
-          add(ChannelEvent.loadRecentPrivate());
+        loaded: (user) {
+          add(ChannelEvent.load(user.privateChannels.first.id));
         },
       );
     });
 
     _serverStateSubscription = _serverBloc.stream.listen((state) {
+      log.d("Server state in channel bloc: $state");
       state.whenOrNull(
-        loadServerSuccess: (server, recentChannel) {
-          add(ChannelEvent.loadChannel(recentChannel.id));
+        loaded: (server, recentChannel) {
+          add(ChannelEvent.load(recentChannel.id));
         },
       );
     });
@@ -69,23 +75,17 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
     super.close();
   }
 
-  _loadRecentPrivate(emit) async {
-    await _load("PkM6m7lhnvIORIRuoVJv", emit);
-  }
-
   _load(String id, emit) async {
-    emit(ChannelState.loadInProgress());
+    emit(ChannelState.loading());
 
     await _channelService.getChannelById(id).then((channel) {
-      this.current = channel;
-      emit(ChannelState.loadSuccess(channel));
+      emit(ChannelState.loaded(channel));
     });
   }
 
   _handleEvent(ChannelEvent event, emit) async {
     return await event.when(
-      loadRecentPrivate: () => _loadRecentPrivate(emit),
-      loadChannel: (id) => _load(id, emit),
+      load: (id) => _load(id, emit),
     );
   }
 }
