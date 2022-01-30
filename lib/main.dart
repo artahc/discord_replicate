@@ -1,4 +1,5 @@
 import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
+import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
@@ -62,9 +63,15 @@ Future initializeDependencyContainer() async {
   // Bloc
   GetIt.I.registerLazySingleton<AuthBloc>(() => AuthBloc());
   GetIt.I.registerFactory<ServerBloc>(() => ServerBloc());
-  GetIt.I.registerFactoryParam<ChannelBloc, ServerBloc, UserBloc>((serverBloc, userBloc) => ChannelBloc(serverBloc: serverBloc, userBloc: userBloc));
+  GetIt.I.registerFactoryParam<ChannelBloc, ServerBloc, DirectMessageBloc>(
+    (serverBloc, dmBloc) => ChannelBloc(
+      serverBloc: serverBloc,
+      dmBloc: dmBloc,
+    ),
+  );
   GetIt.I.registerFactoryParam<UserBloc, AuthBloc, void>((authBloc, _) => UserBloc(authBloc: authBloc));
   GetIt.I.registerFactoryParam<NavigationCubit, GlobalKey<NavigatorState>, void>((key, _) => NavigationCubit(navigator: key));
+  GetIt.I.registerFactoryParam<DirectMessageBloc, UserBloc, void>((userBloc, _) => DirectMessageBloc(userBloc: userBloc));
 }
 
 Future initializeHive() async {

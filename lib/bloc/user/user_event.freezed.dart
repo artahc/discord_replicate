@@ -17,10 +17,6 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$UserEventTearOff {
   const _$UserEventTearOff();
 
-  UserEventLoadPrivateChannels loadPrivateChannels() {
-    return const UserEventLoadPrivateChannels();
-  }
-
   UserEventLoadLocalUser loadUser() {
     return const UserEventLoadLocalUser();
   }
@@ -37,21 +33,18 @@ const $UserEvent = _$UserEventTearOff();
 mixin _$UserEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadPrivateChannels,
     required TResult Function() loadUser,
     required TResult Function() deleteUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadPrivateChannels,
     TResult Function()? loadUser,
     TResult Function()? deleteUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPrivateChannels,
     TResult Function()? loadUser,
     TResult Function()? deleteUser,
     required TResult orElse(),
@@ -59,22 +52,18 @@ mixin _$UserEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadPrivateChannels value)
-        loadPrivateChannels,
     required TResult Function(UserEventLoadLocalUser value) loadUser,
     required TResult Function(UserEventDeleteLocalUser value) deleteUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateChannels value)? loadPrivateChannels,
     TResult Function(UserEventLoadLocalUser value)? loadUser,
     TResult Function(UserEventDeleteLocalUser value)? deleteUser,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateChannels value)? loadPrivateChannels,
     TResult Function(UserEventLoadLocalUser value)? loadUser,
     TResult Function(UserEventDeleteLocalUser value)? deleteUser,
     required TResult orElse(),
@@ -95,122 +84,6 @@ class _$UserEventCopyWithImpl<$Res> implements $UserEventCopyWith<$Res> {
   final UserEvent _value;
   // ignore: unused_field
   final $Res Function(UserEvent) _then;
-}
-
-/// @nodoc
-abstract class $UserEventLoadPrivateChannelsCopyWith<$Res> {
-  factory $UserEventLoadPrivateChannelsCopyWith(
-          UserEventLoadPrivateChannels value,
-          $Res Function(UserEventLoadPrivateChannels) then) =
-      _$UserEventLoadPrivateChannelsCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class _$UserEventLoadPrivateChannelsCopyWithImpl<$Res>
-    extends _$UserEventCopyWithImpl<$Res>
-    implements $UserEventLoadPrivateChannelsCopyWith<$Res> {
-  _$UserEventLoadPrivateChannelsCopyWithImpl(
-      UserEventLoadPrivateChannels _value,
-      $Res Function(UserEventLoadPrivateChannels) _then)
-      : super(_value, (v) => _then(v as UserEventLoadPrivateChannels));
-
-  @override
-  UserEventLoadPrivateChannels get _value =>
-      super._value as UserEventLoadPrivateChannels;
-}
-
-/// @nodoc
-
-class _$UserEventLoadPrivateChannels implements UserEventLoadPrivateChannels {
-  const _$UserEventLoadPrivateChannels();
-
-  @override
-  String toString() {
-    return 'UserEvent.loadPrivateChannels()';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is UserEventLoadPrivateChannels);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loadPrivateChannels,
-    required TResult Function() loadUser,
-    required TResult Function() deleteUser,
-  }) {
-    return loadPrivateChannels();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadPrivateChannels,
-    TResult Function()? loadUser,
-    TResult Function()? deleteUser,
-  }) {
-    return loadPrivateChannels?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPrivateChannels,
-    TResult Function()? loadUser,
-    TResult Function()? deleteUser,
-    required TResult orElse(),
-  }) {
-    if (loadPrivateChannels != null) {
-      return loadPrivateChannels();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadPrivateChannels value)
-        loadPrivateChannels,
-    required TResult Function(UserEventLoadLocalUser value) loadUser,
-    required TResult Function(UserEventDeleteLocalUser value) deleteUser,
-  }) {
-    return loadPrivateChannels(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateChannels value)? loadPrivateChannels,
-    TResult Function(UserEventLoadLocalUser value)? loadUser,
-    TResult Function(UserEventDeleteLocalUser value)? deleteUser,
-  }) {
-    return loadPrivateChannels?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateChannels value)? loadPrivateChannels,
-    TResult Function(UserEventLoadLocalUser value)? loadUser,
-    TResult Function(UserEventDeleteLocalUser value)? deleteUser,
-    required TResult orElse(),
-  }) {
-    if (loadPrivateChannels != null) {
-      return loadPrivateChannels(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class UserEventLoadPrivateChannels implements UserEvent {
-  const factory UserEventLoadPrivateChannels() = _$UserEventLoadPrivateChannels;
 }
 
 /// @nodoc
@@ -254,7 +127,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadPrivateChannels,
     required TResult Function() loadUser,
     required TResult Function() deleteUser,
   }) {
@@ -264,7 +136,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadPrivateChannels,
     TResult Function()? loadUser,
     TResult Function()? deleteUser,
   }) {
@@ -274,7 +145,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPrivateChannels,
     TResult Function()? loadUser,
     TResult Function()? deleteUser,
     required TResult orElse(),
@@ -288,8 +158,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadPrivateChannels value)
-        loadPrivateChannels,
     required TResult Function(UserEventLoadLocalUser value) loadUser,
     required TResult Function(UserEventDeleteLocalUser value) deleteUser,
   }) {
@@ -299,7 +167,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateChannels value)? loadPrivateChannels,
     TResult Function(UserEventLoadLocalUser value)? loadUser,
     TResult Function(UserEventDeleteLocalUser value)? deleteUser,
   }) {
@@ -309,7 +176,6 @@ class _$UserEventLoadLocalUser implements UserEventLoadLocalUser {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateChannels value)? loadPrivateChannels,
     TResult Function(UserEventLoadLocalUser value)? loadUser,
     TResult Function(UserEventDeleteLocalUser value)? deleteUser,
     required TResult orElse(),
@@ -367,7 +233,6 @@ class _$UserEventDeleteLocalUser implements UserEventDeleteLocalUser {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loadPrivateChannels,
     required TResult Function() loadUser,
     required TResult Function() deleteUser,
   }) {
@@ -377,7 +242,6 @@ class _$UserEventDeleteLocalUser implements UserEventDeleteLocalUser {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? loadPrivateChannels,
     TResult Function()? loadUser,
     TResult Function()? deleteUser,
   }) {
@@ -387,7 +251,6 @@ class _$UserEventDeleteLocalUser implements UserEventDeleteLocalUser {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loadPrivateChannels,
     TResult Function()? loadUser,
     TResult Function()? deleteUser,
     required TResult orElse(),
@@ -401,8 +264,6 @@ class _$UserEventDeleteLocalUser implements UserEventDeleteLocalUser {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(UserEventLoadPrivateChannels value)
-        loadPrivateChannels,
     required TResult Function(UserEventLoadLocalUser value) loadUser,
     required TResult Function(UserEventDeleteLocalUser value) deleteUser,
   }) {
@@ -412,7 +273,6 @@ class _$UserEventDeleteLocalUser implements UserEventDeleteLocalUser {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateChannels value)? loadPrivateChannels,
     TResult Function(UserEventLoadLocalUser value)? loadUser,
     TResult Function(UserEventDeleteLocalUser value)? deleteUser,
   }) {
@@ -422,7 +282,6 @@ class _$UserEventDeleteLocalUser implements UserEventDeleteLocalUser {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(UserEventLoadPrivateChannels value)? loadPrivateChannels,
     TResult Function(UserEventLoadLocalUser value)? loadUser,
     TResult Function(UserEventDeleteLocalUser value)? deleteUser,
     required TResult orElse(),

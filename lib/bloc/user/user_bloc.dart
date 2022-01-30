@@ -32,11 +32,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     _authStateSubscription = _authBloc.stream.listen((state) {
       state.whenOrNull(
         authenticated: (credential) {
-          log.d("Load local user after sign-in.");
           add(UserEvent.loadUser());
         },
         unauthenticated: () {
-          log.d("Delete local user after sign-out.");
           add(UserEvent.deleteUser());
         },
       );
@@ -66,19 +64,13 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
   }
 
-  _loadPrivateChannels(emit) async {
-    await _userService.getCurrentUser().then((user) {
-      emit(UserState.loaded(user));
-    });
-  }
-
   _deleteUser(emit) async {
     emit(UserState.empty());
   }
 
   _handleEvent(UserEvent event, emit) async {
     return await event.when(
-      loadPrivateChannels: () => _loadPrivateChannels(emit),
+      // loadPrivateChannels: () => _loadPrivateChannels(emit),
       loadUser: () => _loadUser(emit),
       deleteUser: () => _deleteUser(emit),
     );

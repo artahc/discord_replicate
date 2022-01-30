@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/external/app_extension.dart';
@@ -39,6 +41,7 @@ class ServerRepository implements Repository<Server> {
 
   final GraphQLClientHelper _api;
   final DatabaseService _db;
+  final HashMap<String, Server> _cache = new HashMap();
 
   ServerRepository({GraphQLClientHelper? apiClient, HiveDatabaseService? database})
       : _api = apiClient ?? GetIt.I.get<GraphQLClientHelper>(),
@@ -52,15 +55,27 @@ class ServerRepository implements Repository<Server> {
       "limitMember": 20,
     };
 
+    var memory = LazyStream(() {
+      Server? cachedServer;
+      if (_cache.containsKey(id)) cachedServer = _cache[id];
+
+      return Stream.value(cachedServer).where((event) => event != null).doOnData((event) {
+        log.d("Server found on memory cache.");
+      });
+    });
+
     var local = LazyStream(
       () async => _db
           .load<Server>(id)
           .then((server) {
-            if (server != null) log.d("Server found on local database. $server");
+            if (server != null) _cache[server.id] = server;
             return server;
           })
           .asStream()
-          .where((server) => server != null),
+          .where((server) => server != null)
+          .doOnData((event) {
+            log.d("Server found on local database.");
+          }),
     );
 
     var remote = LazyStream(
@@ -69,17 +84,18 @@ class ServerRepository implements Repository<Server> {
             .query(query, variables: variables)
             .then((json) async {
               var server = Server.fromJson(json['server']);
-              log.d("Server retrieved from remote API. $server");
-
-              await _db.save<Server>(server.id, server);
+              await save(server);
               return server;
             })
             .onError((Exception error, stackTrace) => Future.error(mapException(error)))
-            .asStream();
+            .asStream()
+            .doOnData((event) {
+              log.d("Server retrieved from remote API.");
+            });
       },
     );
 
-    var source = await ConcatStream([local, remote]).firstWhere((element) => element != null);
+    var source = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
     return source!;
   }
 

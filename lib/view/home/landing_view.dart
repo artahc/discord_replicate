@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
+import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/model/channel.dart';
@@ -77,13 +78,14 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
             },
             loaded: (user) {
               var serverBloc = GetIt.I.get<ServerBloc>();
-              var channelBloc = GetIt.I.get<ChannelBloc>(param1: serverBloc, param2: userBloc);
-              log.d("User Loaded");
+              var dmBloc = GetIt.I.get<DirectMessageBloc>(param1: userBloc);
+              var channelBloc = GetIt.I.get<ChannelBloc>(param1: serverBloc, param2: dmBloc);
 
               return MultiBlocProvider(
                 providers: [
                   BlocProvider<ServerBloc>(create: (_) => serverBloc),
                   BlocProvider<ChannelBloc>(create: (_) => channelBloc),
+                  BlocProvider<DirectMessageBloc>(create: (_) => dmBloc),
                 ],
                 child: SafeArea(
                   child: Stack(
@@ -97,8 +99,13 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
 
                             // Direct Message Panel or Channel List Panel
                             StreamBuilder(
-                              stream: MergeStream([serverBloc.eventStream, userBloc.eventStream.whereType<UserEventLoadPrivateChannels>()]),
+                              stream: MergeStream([
+                                serverBloc.eventStream.whereType<ServerEventLoadServer>(),
+                                dmBloc.eventStream.whereType<DirectMessageLoadRecent>(),
+                              ]),
                               builder: (_, snapshot) {
+                                log.d(snapshot.data);
+
                                 if (snapshot.data is ServerEvent) {
                                   return BlocBuilder<ServerBloc, ServerState>(
                                     builder: (_, serverState) {

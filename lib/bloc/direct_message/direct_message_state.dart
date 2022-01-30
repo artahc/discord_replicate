@@ -1,10 +1,11 @@
-// import 'package:discord_replicate/model/channel.dart';
-// import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:discord_replicate/model/channel.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-// part 'direct_message_state.freezed.dart';
+part 'direct_message_state.freezed.dart';
 
-// @freezed
-// class DirectMessageState with _$DirectMessageState {
-//   const factory DirectMessageState.loading()
-//   const factory DirectMessageState.loaded(Channel channel) = DirectMessageStateLoaded;
-// }
+@freezed
+class DirectMessageState with _$DirectMessageState {
+  const factory DirectMessageState.empty() = DirectMessageStateEmpty;
+  const factory DirectMessageState.loading() = DirectMessageLoading;
+  const factory DirectMessageState.loaded(Channel channel) = DirectMessageStateLoaded;
+}

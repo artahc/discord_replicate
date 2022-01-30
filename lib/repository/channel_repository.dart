@@ -69,7 +69,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
       if (_cache.containsKey(id)) cachedChannel = _cache[id];
 
       return Stream.value(cachedChannel).where((user) => user != null).doOnData((user) {
-        log.d("Channel found on memory cache");
+        //log.d("Channel found on memory cache");
       });
     });
 
@@ -84,7 +84,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
           .asStream()
           .where((event) => event != null)
           .doOnData((event) {
-            log.d("Channel found on local database.");
+            //log.d("Channel found on local database.");
           });
     });
 
@@ -99,7 +99,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
           .asStream()
           .doOnData((channel) {
-            log.d("Channel retrieved from remote API.");
+            //log.d("Channel retrieved from remote API.");
           });
     });
 

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:discord_replicate/bloc/channel/channel_event.dart';
 import 'package:discord_replicate/bloc/channel/channel_state.dart';
+import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/model/channel.dart';
@@ -21,42 +22,35 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   Stream<ChannelEvent> get eventStream => _eventStream.stream;
 
   final ServerBloc _serverBloc;
-  final UserBloc _userBloc;
+  final DirectMessageBloc _dmBloc;
   final UserService _userService;
   final ChannelService _channelService;
 
   late Logger log = Logger();
   late StreamSubscription<ServerState> _serverStateSubscription;
-  late StreamSubscription<UserState> _userStateSubscription;
+  late StreamSubscription<DirectMessageState> _dmStateSubscription;
 
   ChannelBloc({
     required ServerBloc serverBloc,
-    required UserBloc userBloc,
+    required DirectMessageBloc dmBloc,
     ChannelService? channelService,
     UserService? userService,
   })  : _serverBloc = serverBloc,
-        _userBloc = userBloc,
+        _dmBloc = dmBloc,
         _userService = userService ?? GetIt.I.get<UserService>(),
         _channelService = channelService ?? GetIt.I.get<ChannelService>(),
         super(ChannelState.loading()) {
     on<ChannelEvent>((event, emit) => _handleEvent(event, emit));
 
-    _userBloc.state.whenOrNull(loaded: (user) {
-      log.d("loading channel from user loaded");
-      add(ChannelEvent.load(user.privateChannels.first.id));
-    });
-
-    _userStateSubscription = _userBloc.stream.listen((state) {
-      log.d("User state in channel bloc: $state");
-      state.whenOrNull(
-        loaded: (user) {
-          add(ChannelEvent.load(user.privateChannels.first.id));
+    _dmStateSubscription = dmBloc.stream.listen((event) {
+      event.whenOrNull(
+        loaded: (channel) {
+          add(ChannelEvent.load(channel.id));
         },
       );
     });
 
     _serverStateSubscription = _serverBloc.stream.listen((state) {
-      log.d("Server state in channel bloc: $state");
       state.whenOrNull(
         loaded: (server, recentChannel) {
           add(ChannelEvent.load(recentChannel.id));
@@ -75,7 +69,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   Future<void> close() async {
     _eventStream.close();
     _serverStateSubscription.cancel();
-    _userStateSubscription.cancel();
+    _dmStateSubscription.cancel();
     super.close();
   }
 

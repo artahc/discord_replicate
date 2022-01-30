@@ -1,4 +1,5 @@
 import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
+import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
@@ -24,7 +25,7 @@ class ServerListPanel extends StatefulWidget {
 class _ServerListPanelState extends State<ServerListPanel> {
   final Logger log = Logger();
   late ServerBloc _serverBloc;
-  late UserBloc _userBloc;
+  late DirectMessageBloc _directMessageBloc;
 
   Server? _selectedServer;
 
@@ -32,14 +33,14 @@ class _ServerListPanelState extends State<ServerListPanel> {
   void initState() {
     super.initState();
     _serverBloc = BlocProvider.of<ServerBloc>(context);
-    _userBloc = BlocProvider.of<UserBloc>(context);
+    _directMessageBloc = BlocProvider.of<DirectMessageBloc>(context);
   }
 
   void _select(Server? server) {
     if (server != null)
       _serverBloc.add(ServerEvent.loadServer(server.id));
     else {
-      _userBloc.add(UserEvent.loadPrivateChannels());
+      _directMessageBloc.add(DirectMessageEvent.loadRecent());
     }
 
     setState(() {

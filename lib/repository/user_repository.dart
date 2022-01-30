@@ -68,7 +68,7 @@ class UserRepository implements Repository<User> {
       if (_cache.containsKey(uid)) cachedUser = _cache[uid];
 
       return Stream.value(cachedUser).where((user) => user != null).doOnData((user) {
-        log.d("User found on memory cache");
+        // log.d("User found on memory cache");
       });
     });
 
@@ -83,7 +83,7 @@ class UserRepository implements Repository<User> {
           .asStream()
           .where((user) => user != null)
           .doOnData((event) {
-            log.d("User found on local database.");
+            // log.d("User found on local database.");
           });
     });
 
@@ -98,7 +98,7 @@ class UserRepository implements Repository<User> {
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
           .asStream()
           .doOnData((user) {
-            log.d("User retrieved from remote API. $user");
+            // log.d("User retrieved from remote API. $user");
           });
     });
 

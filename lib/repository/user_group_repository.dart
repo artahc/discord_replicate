@@ -42,7 +42,7 @@ class UserGroupRepository extends Repository<UserGroup> {
       if (_cache.containsKey(id)) cachedUserGroup = _cache[id];
 
       return Stream.value(cachedUserGroup).where((event) => event != null).doOnData((event) {
-        log.d("User group found on cache memory");
+        // log.d("User group found on cache memory");
       });
     });
 
@@ -56,7 +56,7 @@ class UserGroupRepository extends Repository<UserGroup> {
           })
           .asStream()
           .doOnData((event) {
-            log.d("User group found on local database.");
+            // log.d("User group found on local database.");
           });
     });
 
@@ -81,7 +81,10 @@ class UserGroupRepository extends Repository<UserGroup> {
             return userGroup;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
-          .asStream();
+          .asStream()
+          .doOnData((event) {
+            // log.d("User group retrieved from remote API.");
+          });
     });
 
     var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
