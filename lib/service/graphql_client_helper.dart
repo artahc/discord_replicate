@@ -47,11 +47,11 @@ class GraphQLClientHelper with ExceptionMapperMixin {
     var options = QueryOptions(document: gql(query), variables: variables);
     var result = await _client.query(options);
 
-    log.d("Query => ${query.trim()}");
+    log.d("Query => ${query.trim()} \nVariables: $variables");
     if (result.hasException) {
       return Future.error(mapException(result.exception!));
     } else {
-      log.d("Response <= $result");
+      log.i("Response <= $result");
       return result.data!;
     }
   }
@@ -60,12 +60,12 @@ class GraphQLClientHelper with ExceptionMapperMixin {
     var options = MutationOptions(document: gql(mutation), variables: variables);
     var result = await _client.mutate(options);
 
-    log.d("Mutation => ${mutation.trim()}");
+    log.i("Mutation => ${mutation.trim()} \nVariables: $variables");
 
     if (result.hasException) {
       return Future.error(mapException(result.exception!));
     } else {
-      log.d("Response <= $result");
+      log.i("Response <= $result");
       return result.data!;
     }
   }
@@ -74,13 +74,13 @@ class GraphQLClientHelper with ExceptionMapperMixin {
     var options = SubscriptionOptions(document: gql(subscription), variables: variables);
     var stream = _client.subscribe(options);
 
-    log.d("Subscription => ${subscription.trim()}");
+    log.i("Subscription => ${subscription.trim()} \nVariables: $variables");
 
     yield* stream.map((result) {
       if (result.hasException) {
         throw mapException(result.exception!);
       } else {
-        log.d("Response <= ${result.data}");
+        log.i("Response <= ${result.data}");
         return result.data!;
       }
     });
