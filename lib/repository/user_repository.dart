@@ -76,9 +76,7 @@ class UserRepository implements Repository<User> {
       return _db
           .load<User>(uid)
           .then((user) {
-            if (user != null) {
-              _cache[user.uid] = user;
-            }
+            if (user != null) _cache[user.uid] = user;
             return user;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
@@ -116,6 +114,7 @@ class UserRepository implements Repository<User> {
 
   @override
   Future<void> save(User user) async {
+    _cache[user.uid] = user;
     await _db.save<User>(user.uid, user);
   }
 

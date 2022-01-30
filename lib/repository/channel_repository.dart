@@ -68,7 +68,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
       Channel? cachedChannel;
       if (_cache.containsKey(id)) cachedChannel = _cache[id];
 
-      return Stream.value(cachedChannel).doOnData((event) {
+      return Stream.value(cachedChannel).where((user) => user != null).doOnData((user) {
         log.d("Channel found on memory cache");
       });
     });
@@ -77,15 +77,15 @@ class ChannelRepositoryImpl implements ChannelRepository {
       return _db
           .load<Channel>(id)
           .then((channel) {
-            if (channel != null) {
-              log.d("Channel found on local database. $channel");
-              _cache[channel.id] = channel;
-            }
-
+            if (channel != null) _cache[channel.id] = channel;
             return channel;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
-          .asStream();
+          .asStream()
+          .where((event) => event != null)
+          .doOnData((event) {
+            log.d("Channel found on local database.");
+          });
     });
 
     var remote = LazyStream(() {
@@ -94,11 +94,13 @@ class ChannelRepositoryImpl implements ChannelRepository {
           .then((json) async {
             var channel = Channel.fromJson(json['channel']);
             await save(channel);
-            log.d("Channel retrieved from remote API. $json");
             return channel;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
-          .asStream();
+          .asStream()
+          .doOnData((channel) {
+            log.d("Channel retrieved from remote API.");
+          });
     });
 
     var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
@@ -113,6 +115,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
 
   @override
   Future<void> save(Channel channel) async {
+    _cache[channel.id] = channel;
     await _db.save(channel.id, channel);
   }
 
