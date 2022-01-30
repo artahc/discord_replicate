@@ -14,7 +14,7 @@ abstract class ChannelService {
   Future<Member> getMemberById(String userGroupId, String userId);
 
   Future<List<MessageWithMember>> fetchMessages(String channelId);
-  Future<MessageWithMember> sendMessage(Message message, String channelId);
+  Future<MessageWithMember> sendMessage(String channelId, Message message);
   Stream<MessageWithMember> subscribeMessage(String channelId);
 }
 
@@ -60,7 +60,7 @@ class ChannelServiceImpl implements ChannelService {
   }
 
   @override
-  Future<MessageWithMember> sendMessage(Message message, String channelId) async {
+  Future<MessageWithMember> sendMessage(String channelId, Message message) async {
     var raw = await _channelRepo.sendMessage(channelId, message);
     var member = await getMemberById(channelId, raw.senderRef);
     var messageWithMember = Message.withUser(id: raw.id, sender: member, date: raw.date, message: raw.message) as MessageWithMember;

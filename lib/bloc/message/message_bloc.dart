@@ -32,7 +32,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     on<MessageEvent>((event, emit) => _handleEvent(event, emit));
 
     add(MessageEvent.fetchInitialMessage());
-    
+
     _messageSubscription = _channelService.subscribeMessage(_channel.id).handleError((e, st) {
       log.e("Error in channel subscription.", e, st);
     }).listen((message) {
@@ -61,7 +61,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     emit(MessageState.sendingMessage(pendingMessage as PendingMessage));
 
-    await _channelService.sendMessage(pendingMessage, _channel.id).then((message) {
+    await _channelService.sendMessage(_channel.id, pendingMessage).then((message) {
       log.d("Message sent. ${message.toJson()}");
     });
   }
