@@ -3,6 +3,7 @@ import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
+import 'package:discord_replicate/repository/server_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:get_it/get_it.dart';
@@ -19,10 +20,12 @@ abstract class UserService {
 class UserServiceImpl implements UserService {
   final AuthService _authService;
   final UserRepository _userRepo;
+  final ServerRepository _serverRepo;
   final ChannelRepository _channelRepo;
 
-  UserServiceImpl({AuthService? authService, UserRepository? userRepo, ChannelRepository? channelRepo})
+  UserServiceImpl({AuthService? authService, UserRepository? userRepo, ChannelRepository? channelRepo, ServerRepository? serverRepo})
       : _userRepo = userRepo ?? GetIt.I.get<UserRepository>(),
+        _serverRepo = serverRepo ?? GetIt.I.get<ServerRepository>(),
         _channelRepo = channelRepo ?? GetIt.I.get<ChannelRepository>(),
         _authService = authService ?? GetIt.I.get<AuthService>();
 
@@ -33,6 +36,9 @@ class UserServiceImpl implements UserService {
 
     var user = await _userRepo.load(credential.uid);
     if (user == null) throw NotFoundException("User not found.");
+
+    if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
+    if (user.privateChannels.isNotEmpty) await _channelRepo.saveAll(user.privateChannels);
 
     return user;
   }

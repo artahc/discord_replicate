@@ -36,6 +36,7 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
 
   Future<void> _loadServer(String id, emit) async {
     emit(ServerState.loading());
+    
     await _serverService.getServerById(id).then((server) {
       emit(ServerState.loaded(server, server.channels.first));
     });

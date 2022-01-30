@@ -112,8 +112,9 @@ class ServerRepository implements Repository<Server> {
 
   @override
   Future saveAll(List<Server> servers) async {
-    var keyValue = servers.toKeyValuePair(keyConverter: (e) => e.id, valueConverter: (e) => e);
-    await _db.saveAll(keyValue);
+    var keyValuePair = servers.toKeyValuePair<String, Server>(keyConverter: (e) => e.id, valueConverter: (e) => e);
+    _cache.addAll(keyValuePair);
+    await _db.saveAll<Server>(keyValuePair);
   }
 
   @override

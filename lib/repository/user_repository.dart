@@ -120,8 +120,9 @@ class UserRepository implements Repository<User> {
 
   @override
   Future<void> saveAll(List<User> users) async {
-    var keyValue = users.toKeyValuePair(keyConverter: (e) => e.uid, valueConverter: (e) => e);
-    await _db.saveAll(keyValue);
+    var keyValuePair = users.toKeyValuePair<String, User>(keyConverter: (e) => e.uid, valueConverter: (e) => e);
+    _cache.addAll(keyValuePair);
+    await _db.saveAll<User>(keyValuePair);
   }
 
   @override

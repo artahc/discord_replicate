@@ -104,8 +104,6 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
                                 dmBloc.eventStream.whereType<DirectMessageLoadRecent>(),
                               ]),
                               builder: (_, snapshot) {
-                                log.d(snapshot.data);
-
                                 if (snapshot.data is ServerEvent) {
                                   return BlocBuilder<ServerBloc, ServerState>(
                                     builder: (_, serverState) {

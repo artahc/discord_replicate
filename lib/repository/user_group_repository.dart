@@ -108,7 +108,9 @@ class UserGroupRepository extends Repository<UserGroup> {
   }
 
   @override
-  Future<void> saveAll(List<UserGroup> items) {
-    throw UnimplementedError();
+  Future<void> saveAll(List<UserGroup> userGroups) async {
+    var keyValuePair = userGroups.toKeyValuePair<String, UserGroup>(keyConverter: (e) => e.id, valueConverter: (e) => e);
+    _cache.addAll(keyValuePair);
+    await _db.saveAll<UserGroup>(keyValuePair);
   }
 }
