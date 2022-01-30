@@ -102,7 +102,7 @@ class UserRepository implements Repository<User> {
           });
     });
 
-    var result = await ConcatStream([memory, local, remote]).first;
+    var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
     return result!;
   }
 

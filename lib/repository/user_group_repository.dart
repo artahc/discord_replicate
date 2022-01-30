@@ -84,7 +84,7 @@ class UserGroupRepository extends Repository<UserGroup> {
           .asStream();
     });
 
-    var result = await ConcatStream([memory, local, remote]).where((event) => event != null).first;
+    var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
     return result;
   }
 
