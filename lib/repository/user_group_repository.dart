@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:async/async.dart';
-import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/member.dart';
 import 'package:discord_replicate/model/user_group.dart';
@@ -39,11 +38,8 @@ class UserGroupRepository extends Repository<UserGroup> {
   @override
   Future<UserGroup?> load(String id) async {
     var memory = LazyStream(() {
-      late UserGroup? cachedUserGroup;
-      if (_cache.containsKey(id))
-        cachedUserGroup = _cache[id];
-      else
-        cachedUserGroup = null;
+      UserGroup? cachedUserGroup;
+      if (_cache.containsKey(id)) cachedUserGroup = _cache[id];
 
       return Stream.value(cachedUserGroup).where((event) => event != null).doOnData((event) {
         log.d("User group found on cache memory");
@@ -59,7 +55,6 @@ class UserGroupRepository extends Repository<UserGroup> {
             }
           })
           .asStream()
-          .where((event) => event != null)
           .doOnData((event) {
             log.d("User group found on local database.");
           });
@@ -71,17 +66,18 @@ class UserGroupRepository extends Repository<UserGroup> {
       };
       return _api
           .query(UserGroupQuery.loadUserGroupById, variables: variables)
-          .then((json) {
+          .then((json) async {
             var raw = json['userGroup'] as List<Object?>;
             var members = raw.map((e) => Member.fromJson(e as Map<String, dynamic>)).toList();
             var userGroup = UserGroup(
-                id: id,
-                members: members.toKeyValuePair(
-                  keyConverter: (e) => e.uid,
-                  valueConverter: (member) => member,
-                ));
+              id: id,
+              members: members.toKeyValuePair(
+                keyConverter: (e) => e.uid,
+                valueConverter: (member) => member,
+              ),
+            );
 
-            _db.save<UserGroup>(userGroup.id, userGroup);
+            await save(userGroup);
             return userGroup;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
@@ -104,7 +100,8 @@ class UserGroupRepository extends Repository<UserGroup> {
 
   @override
   Future<void> save(UserGroup userGroup) async {
-    throw UnimplementedError();
+    _cache[userGroup.id] = userGroup;
+    await _db.save(userGroup.id, userGroup);
   }
 
   @override

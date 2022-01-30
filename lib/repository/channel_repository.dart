@@ -65,11 +65,9 @@ class ChannelRepositoryImpl implements ChannelRepository {
     };
 
     var memory = LazyStream(() {
-      late Channel? cachedChannel;
-      if (_cache.containsKey(id))
-        cachedChannel = _cache[id];
-      else
-        cachedChannel = null;
+      Channel? cachedChannel;
+      if (_cache.containsKey(id)) cachedChannel = _cache[id];
+
       return Stream.value(cachedChannel).doOnData((event) {
         log.d("Channel found on memory cache");
       });
@@ -87,16 +85,15 @@ class ChannelRepositoryImpl implements ChannelRepository {
             return channel;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
-          .asStream()
-          .where((channel) => channel != null);
+          .asStream();
     });
 
     var remote = LazyStream(() {
       return _api
           .query(query, variables: variables)
-          .then((json) {
+          .then((json) async {
             var channel = Channel.fromJson(json['channel']);
-            _db.save<Channel>(channel.id, channel);
+            await save(channel);
             log.d("Channel retrieved from remote API. $json");
             return channel;
           })

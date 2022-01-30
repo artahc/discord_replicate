@@ -2,12 +2,10 @@ import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/member.dart';
 import 'package:discord_replicate/model/message.dart';
-import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/user_group_repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:get_it/get_it.dart';
-import 'package:rxdart/rxdart.dart';
 
 abstract class ChannelService {
   Future<Channel> getChannelById(String id);

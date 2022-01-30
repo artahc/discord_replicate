@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
@@ -47,6 +48,7 @@ class UserRepository implements Repository<User> {
 
   GraphQLClientHelper _api;
   DatabaseService _db;
+  HashMap<String, User> _cache = new HashMap();
 
   UserRepository({
     GraphQLClientHelper? apiClient,
@@ -61,16 +63,30 @@ class UserRepository implements Repository<User> {
       'uid': uid,
     };
 
+    var memory = LazyStream(() {
+      User? cachedUser;
+      if (_cache.containsKey(uid)) cachedUser = _cache[uid];
+
+      return Stream.value(cachedUser).where((user) => user != null).doOnData((user) {
+        log.d("User found on memory cache");
+      });
+    });
+
     var local = LazyStream(() {
       return _db
           .load<User>(uid)
           .then((user) {
-            if (user != null) log.d("User found on local database. $user");
+            if (user != null) {
+              _cache[user.uid] = user;
+            }
             return user;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
           .asStream()
-          .where((user) => user != null);
+          .where((user) => user != null)
+          .doOnData((event) {
+            log.d("User found on local database.");
+          });
     });
 
     var remote = LazyStream(() {
@@ -79,14 +95,16 @@ class UserRepository implements Repository<User> {
           .then((json) async {
             var user = User.fromJson(json['user']);
             await save(user);
-            log.d("User retrieved from remote API. $user");
             return user;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
-          .asStream();
+          .asStream()
+          .doOnData((user) {
+            log.d("User retrieved from remote API. $user");
+          });
     });
 
-    var result = await ConcatStream([local, remote]).first;
+    var result = await ConcatStream([memory, local, remote]).first;
     return result!;
   }
 
