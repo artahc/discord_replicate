@@ -61,7 +61,7 @@ main() {
     });
 
     test('Load channel from remote API, should be able to parse result to Channel model.', () async {
-      var channelRepo = ChannelRepository(apiClient: api, database: mockDb);
+      var channelRepo = ChannelRepositoryImpl(apiClient: api, database: mockDb);
 
       when(() => mockDb.save(any(), any())).thenAnswer((invocation) => Future.value(null));
       when(() => mockDb.load<Channel?>(any())).thenAnswer((invocation) => Future.value(null));

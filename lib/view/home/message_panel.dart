@@ -142,7 +142,7 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
 
   bool _pinScrollToBottom = false;
 
-  late List<Message> _messages = [];
+  late List<MessageWithMember> _messages = [];
   late MessageBloc _messageBloc = BlocProvider.of(context);
 
   @override
@@ -170,21 +170,21 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
     super.dispose();
   }
 
-  _onMessageFetched(List<Message> messages) {
+  _onMessageFetched(List<MessageWithMember> messages) {
     setState(() {
       _messages.addAll(messages);
     });
   }
 
-  _onSendingMessage(Message message) {
+  _onSendingMessage(PendingMessage message) {
     log.d("Sending message. ${message.toJson()}");
     setState(() {
-      _messages.add(message);
+      // _messages.add(message);
       _scrollCtrl.animateTo(_scrollCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     });
   }
 
-  _onReceiveNewMessage(Message message) async {
+  _onReceiveNewMessage(MessageWithMember message) async {
     setState(() {
       var pending = _messages.where((element) => element.contentHash == message.contentHash);
       if (pending.isNotEmpty) {

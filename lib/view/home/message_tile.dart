@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class MessageTile extends StatelessWidget {
-  final Message message;
+  final MessageWithMember message;
 
   const MessageTile({required this.message}) : assert(!(message is RawMessage));
 
@@ -42,7 +42,7 @@ class MessageTile extends StatelessWidget {
                         children: [
                           Builder(
                             builder: (_) {
-                              return Text(message.senderRef, style: Theme.of(context).textTheme.bodyText1);
+                              return Text(message.sender.name, style: Theme.of(context).textTheme.bodyText1);
                             },
                           ),
                           Text(DateFormat.yMMMd().add_jm().format(message.date),

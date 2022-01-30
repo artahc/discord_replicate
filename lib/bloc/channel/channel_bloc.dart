@@ -8,6 +8,7 @@ import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/service/channel_service.dart';
+import 'package:discord_replicate/service/user_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -21,6 +22,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
 
   final ServerBloc _serverBloc;
   final UserBloc _userBloc;
+  final UserService _userService;
   final ChannelService _channelService;
 
   late Logger log = Logger();
@@ -31,8 +33,10 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
     required ServerBloc serverBloc,
     required UserBloc userBloc,
     ChannelService? channelService,
+    UserService? userService,
   })  : _serverBloc = serverBloc,
         _userBloc = userBloc,
+        _userService = userService ?? GetIt.I.get<UserService>(),
         _channelService = channelService ?? GetIt.I.get<ChannelService>(),
         super(ChannelState.loading()) {
     on<ChannelEvent>((event, emit) => _handleEvent(event, emit));

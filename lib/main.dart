@@ -56,7 +56,7 @@ Future initializeDependencyContainer() async {
   // Repository
   GetIt.I.registerLazySingleton<UserRepository>(() => UserRepository());
   GetIt.I.registerLazySingleton<ServerRepository>(() => ServerRepository());
-  GetIt.I.registerLazySingleton<ChannelRepository>(() => ChannelRepository());
+  GetIt.I.registerLazySingleton<ChannelRepository>(() => ChannelRepositoryImpl());
   GetIt.I.registerLazySingleton<UserGroupRepository>(() => UserGroupRepository());
 
   // Bloc

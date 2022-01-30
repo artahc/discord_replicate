@@ -11,15 +11,15 @@ void main() {
   });
 
   test("Map list of T to Key Value Pair", () {
-    var list = List.generate(
+    List<RawMessage> list = List.generate(
       3,
       (index) {
         var random = Random().nextInt(1000);
-        return Message.raw(id: random.toString(), message: "Messag#$random", senderRef: "User#$random", timestamp: random);
+        return Message.raw(id: random.toString(), message: "Messag#$random", senderRef: "User#$random", timestamp: random) as RawMessage;
       },
     );
 
-    print(list.toKeyValuePair((element) => element.id, (element) => element));
+    print(list.toKeyValuePair(keyConverter: (element) => element.id, valueConverter: (element) => element));
     print(list.expand((element) => {element.id, element}));
     print(list.toSet());
   });

@@ -1,24 +1,95 @@
+import 'dart:collection';
+
+import 'package:async/async.dart';
+import 'package:discord_replicate/exception/custom_exception.dart';
+import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/member.dart';
 import 'package:discord_replicate/model/user_group.dart';
 import 'package:discord_replicate/repository/repository_interface.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
+import 'package:rxdart/rxdart.dart';
+
+class UserGroupQuery {
+  UserGroupQuery._();
+
+  static const loadUserGroupById = r"""
+    query ExampleQuery($userGroupRef: String!) {
+      userGroup(userGroupRef: $userGroupRef) {
+        uid
+        name
+        avatarUrl
+      }
+    }
+  """;
+}
 
 class UserGroupRepository extends Repository<UserGroup> {
+  final Logger log = Logger();
   GraphQLClientHelper _api;
   DatabaseService _db;
+  HashMap<String, UserGroup> _cache = new HashMap();
 
   UserGroupRepository({GraphQLClientHelper? client, DatabaseService? database})
       : _api = client ?? GetIt.I.get<GraphQLClientHelper>(),
         _db = database ?? GetIt.I.get<DatabaseService>();
 
   @override
-  Future<UserGroup> load(String id) async {
-    var userGroup = await _db.load<UserGroup>(id);
-    if (userGroup == null) throw Exception("User group with id $id not found.");
+  Future<UserGroup?> load(String id) async {
+    var memory = LazyStream(() {
+      late UserGroup? cachedUserGroup;
+      if (_cache.containsKey(id))
+        cachedUserGroup = _cache[id];
+      else
+        cachedUserGroup = null;
 
-    return userGroup;
+      return Stream.value(cachedUserGroup).where((event) => event != null).doOnData((event) {
+        log.d("User group found on cache memory");
+      });
+    });
+
+    var local = LazyStream(() {
+      return _db
+          .load<UserGroup>(id)
+          .then((userGroup) {
+            if (userGroup != null) {
+              _cache[userGroup.id] = userGroup;
+            }
+          })
+          .asStream()
+          .where((event) => event != null)
+          .doOnData((event) {
+            log.d("User group found on local database.");
+          });
+    });
+
+    var remote = LazyStream(() {
+      var variables = {
+        "userGroupRef": id,
+      };
+      return _api
+          .query(UserGroupQuery.loadUserGroupById, variables: variables)
+          .then((json) {
+            var raw = json['userGroup'] as List<Object?>;
+            var members = raw.map((e) => Member.fromJson(e as Map<String, dynamic>)).toList();
+            var userGroup = UserGroup(
+                id: id,
+                members: members.toKeyValuePair(
+                  keyConverter: (e) => e.uid,
+                  valueConverter: (member) => member,
+                ));
+
+            _db.save<UserGroup>(userGroup.id, userGroup);
+            return userGroup;
+          })
+          .onError((Exception error, stackTrace) => Future.error(mapException(error)))
+          .asStream();
+    });
+
+    var result = await ConcatStream([memory, local, remote]).where((event) => event != null).first;
+    return result;
   }
 
   @override
@@ -32,15 +103,8 @@ class UserGroupRepository extends Repository<UserGroup> {
   }
 
   @override
-  Future<void> save(UserGroup item) async {
-    var exist = await _db.exist<UserGroup>(item.id);
-    if (exist) {
-      var userGroup = await _db.load<UserGroup>(item.id);
-      userGroup!.members.addAll(item.members);
-      await _db.save(userGroup.id, userGroup);
-    } else {
-      await _db.save(item.id, item);
-    }
+  Future<void> save(UserGroup userGroup) async {
+    throw UnimplementedError();
   }
 
   @override

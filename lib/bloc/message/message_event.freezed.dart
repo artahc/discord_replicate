@@ -27,7 +27,7 @@ class _$MessageEventTearOff {
     );
   }
 
-  MessageEventNotifyNewMessage notifyNewMessage(Message message) {
+  MessageEventNotifyNewMessage notifyNewMessage(MessageWithMember message) {
     return MessageEventNotifyNewMessage(
       message,
     );
@@ -43,21 +43,21 @@ mixin _$MessageEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() fetchInitialMessage,
     required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
+    required TResult Function(MessageWithMember message) notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? fetchInitialMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
+    TResult Function(MessageWithMember message)? notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchInitialMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
+    TResult Function(MessageWithMember message)? notifyNewMessage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -153,7 +153,7 @@ class _$MessageEventFetchInitialMessages
   TResult when<TResult extends Object?>({
     required TResult Function() fetchInitialMessage,
     required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
+    required TResult Function(MessageWithMember message) notifyNewMessage,
   }) {
     return fetchInitialMessage();
   }
@@ -163,7 +163,7 @@ class _$MessageEventFetchInitialMessages
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? fetchInitialMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
+    TResult Function(MessageWithMember message)? notifyNewMessage,
   }) {
     return fetchInitialMessage?.call();
   }
@@ -173,7 +173,7 @@ class _$MessageEventFetchInitialMessages
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchInitialMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
+    TResult Function(MessageWithMember message)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (fetchInitialMessage != null) {
@@ -294,7 +294,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   TResult when<TResult extends Object?>({
     required TResult Function() fetchInitialMessage,
     required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
+    required TResult Function(MessageWithMember message) notifyNewMessage,
   }) {
     return sendMessage(message);
   }
@@ -304,7 +304,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? fetchInitialMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
+    TResult Function(MessageWithMember message)? notifyNewMessage,
   }) {
     return sendMessage?.call(message);
   }
@@ -314,7 +314,7 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchInitialMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
+    TResult Function(MessageWithMember message)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -378,9 +378,7 @@ abstract class $MessageEventNotifyNewMessageCopyWith<$Res> {
           MessageEventNotifyNewMessage value,
           $Res Function(MessageEventNotifyNewMessage) then) =
       _$MessageEventNotifyNewMessageCopyWithImpl<$Res>;
-  $Res call({Message message});
-
-  $MessageCopyWith<$Res> get message;
+  $Res call({MessageWithMember message});
 }
 
 /// @nodoc
@@ -404,15 +402,8 @@ class _$MessageEventNotifyNewMessageCopyWithImpl<$Res>
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as Message,
+              as MessageWithMember,
     ));
-  }
-
-  @override
-  $MessageCopyWith<$Res> get message {
-    return $MessageCopyWith<$Res>(_value.message, (value) {
-      return _then(_value.copyWith(message: value));
-    });
   }
 }
 
@@ -422,7 +413,7 @@ class _$MessageEventNotifyNewMessage implements MessageEventNotifyNewMessage {
   const _$MessageEventNotifyNewMessage(this.message);
 
   @override
-  final Message message;
+  final MessageWithMember message;
 
   @override
   String toString() {
@@ -452,7 +443,7 @@ class _$MessageEventNotifyNewMessage implements MessageEventNotifyNewMessage {
   TResult when<TResult extends Object?>({
     required TResult Function() fetchInitialMessage,
     required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
+    required TResult Function(MessageWithMember message) notifyNewMessage,
   }) {
     return notifyNewMessage(message);
   }
@@ -462,7 +453,7 @@ class _$MessageEventNotifyNewMessage implements MessageEventNotifyNewMessage {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? fetchInitialMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
+    TResult Function(MessageWithMember message)? notifyNewMessage,
   }) {
     return notifyNewMessage?.call(message);
   }
@@ -472,7 +463,7 @@ class _$MessageEventNotifyNewMessage implements MessageEventNotifyNewMessage {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? fetchInitialMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
+    TResult Function(MessageWithMember message)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (notifyNewMessage != null) {
@@ -521,10 +512,10 @@ class _$MessageEventNotifyNewMessage implements MessageEventNotifyNewMessage {
 }
 
 abstract class MessageEventNotifyNewMessage implements MessageEvent {
-  const factory MessageEventNotifyNewMessage(Message message) =
+  const factory MessageEventNotifyNewMessage(MessageWithMember message) =
       _$MessageEventNotifyNewMessage;
 
-  Message get message;
+  MessageWithMember get message;
   @JsonKey(ignore: true)
   $MessageEventNotifyNewMessageCopyWith<MessageEventNotifyNewMessage>
       get copyWith => throw _privateConstructorUsedError;

@@ -55,7 +55,7 @@ class UserRepository implements Repository<User> {
         _db = database ?? GetIt.I.get<DatabaseService>();
 
   @override
-  Future<User> load(String uid) async {
+  Future<User?> load(String uid) async {
     var query = UserQuery.loadById;
     var varibales = {
       'uid': uid,
@@ -103,7 +103,7 @@ class UserRepository implements Repository<User> {
 
   @override
   Future<void> saveAll(List<User> users) async {
-    var keyValue = users.toKeyValuePair((e) => e.uid, (e) => e);
+    var keyValue = users.toKeyValuePair(keyConverter: (e) => e.uid, valueConverter: (e) => e);
     await _db.saveAll(keyValue);
   }
 

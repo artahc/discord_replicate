@@ -49,15 +49,16 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
         bloc: userBloc,
         listener: (_, state) {
           state.whenOrNull(
-            empty: () {},
-            error: (e) {},
+            error: (e) {
+              log.e("There's something wrong with internal state.", e);
+            },
           );
         },
         builder: (_, state) {
           return state.maybeWhen(
             orElse: () {
               return Center(
-                child: Text("Something is wrong."),
+                child: Text("There's something wrong with internal state."),
               );
             },
             error: (e) {
@@ -96,9 +97,7 @@ class LandingViewState extends State<LandingView> with TickerProviderStateMixin 
 
                             // Direct Message Panel or Channel List Panel
                             StreamBuilder(
-                              stream: MergeStream([
-                                serverBloc.eventStream,
-                              ]),
+                              stream: MergeStream([serverBloc.eventStream, userBloc.eventStream.whereType<UserEventLoadPrivateChannels>()]),
                               builder: (_, snapshot) {
                                 if (snapshot.data is ServerEvent) {
                                   return BlocBuilder<ServerBloc, ServerState>(

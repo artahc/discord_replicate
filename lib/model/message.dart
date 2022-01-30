@@ -37,13 +37,13 @@ class Message with _$Message {
 
   factory Message.fromJson(Map<String, dynamic> map) => RawMessage.fromJson(map);
 
-  String get id {
-    return this.when(
-      withUser: (id, sender, date, message) => id,
-      raw: (id, senderRef, timestamp, message) => id,
-      pending: (sender, date, message) => "",
-    );
-  }
+  // String get id {
+  //   return this.when(
+  //     withUser: (id, sender, date, message) => id,
+  //     raw: (id, senderRef, timestamp, message) => id,
+  //     pending: (sender, date, message) => "",
+  //   );
+  // }
 
   String get senderRef {
     return this.when(
@@ -53,13 +53,13 @@ class Message with _$Message {
     );
   }
 
-  Member get user {
-    return this.when(
-      withUser: (id, sender, date, message) => sender,
-      raw: (id, senderRef, timestamp, message) => throw Exception("Trying access user from raw message. Please construct into Message Model."),
-      pending: (sender, date, message) => sender,
-    );
-  }
+  // Member get user {
+  //   return this.when(
+  //     withUser: (id, sender, date, message) => sender,
+  //     raw: (id, senderRef, timestamp, message) => throw Exception("Trying access user from raw message. Please construct into Message Model."),
+  //     pending: (sender, date, message) => sender,
+  //   );
+  // }
 
   DateTime get date {
     return this.when(
@@ -69,13 +69,13 @@ class Message with _$Message {
     );
   }
 
-  String get message {
-    return this.when(
-      withUser: (id, sender, date, message) => message,
-      raw: (id, senderRef, timestamp, message) => message,
-      pending: (sender, date, message) => message,
-    );
-  }
+  // String get message {
+  //   return this.when(
+  //     withUser: (id, sender, date, message) => message,
+  //     raw: (id, senderRef, timestamp, message) => message,
+  //     pending: (sender, date, message) => message,
+  //   );
+  // }
 
   String get contentHash {
     var encoded = this.when(

@@ -32,7 +32,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     on<MessageEvent>((event, emit) => _handleEvent(event, emit));
 
     add(MessageEvent.fetchInitialMessage());
-
+    
     _messageSubscription = _channelService.subscribeMessage(_channel.id).handleError((e, st) {
       log.e("Error in channel subscription.", e, st);
     }).listen((message) {
@@ -47,10 +47,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   _fetchInitialMessage(emit) async {
-    // todo: Read recent message from local database. Check if there's new message on server
-    //       And then lock scroll on recent message, and add 'n unread message' label on UI
     await _channelService.fetchMessages(_channel.id).then((messages) {
-      log.d("Message fetched: ${messages.join(",")}");
       emit(MessageState.messageFetched(messages));
     });
   }
@@ -61,18 +58,16 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     var date = DateTime.now();
     var pendingMessage = Message.pending(sender: member, message: input, date: date);
-    emit(MessageState.sendingMessage(pendingMessage));
+
+    emit(MessageState.sendingMessage(pendingMessage as PendingMessage));
 
     await _channelService.sendMessage(pendingMessage, _channel.id).then((message) {
       log.d("Message sent. ${message.toJson()}");
     });
   }
 
-  _onReceivedNewMessage(Message raw, emit) async {
-    log.d("Received new message. $raw");
-    var user = await _channelService.getMemberById(_channel.id, raw.senderRef);
-    var message = Message.withUser(id: raw.id, sender: user, date: raw.date, message: raw.message);
-
+  _onReceivedNewMessage(MessageWithMember message, emit) async {
+    log.d("Received new message. $message");
     emit(MessageState.receivedNewMessage(message));
   }
 

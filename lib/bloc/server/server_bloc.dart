@@ -15,8 +15,6 @@ export 'server_state.dart';
 class ServerBloc extends Bloc<ServerEvent, ServerState> {
   final ServerService _serverService;
 
-  late StreamSubscription _userStateSubscription;
-
   StreamController<ServerEvent> _eventStream = StreamController.broadcast();
   Stream<ServerEvent> get eventStream => _eventStream.stream;
 
@@ -34,7 +32,6 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
 
   @override
   Future<void> close() async {
-    _userStateSubscription.cancel();
     _eventStream.close();
     return super.close();
   }

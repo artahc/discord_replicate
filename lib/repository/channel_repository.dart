@@ -1,7 +1,10 @@
+import 'dart:collection';
+
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/repository/repository_interface.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
@@ -21,33 +24,66 @@ class ChannelQuery {
       }
     }
   """;
+
+  static final String loadChannelMessages = r"""
+    query ChannelMessages ($channelRef: String!) {
+      messages(channelRef: $channelRef) {
+        id
+        senderRef
+        timestamp
+        message
+      }
+    }
+  """;
 }
 
-class ChannelRepository implements Repository<Channel> {
+abstract class ChannelRepository extends Repository<Channel> {
+  Future<RawMessage> sendMessage(String channelId, Message message);
+  Future<List<RawMessage>> fetchMessages(String channelId);
+  Stream<RawMessage> subscribeChannelMessages(String channelId);
+}
+
+class ChannelRepositoryImpl implements ChannelRepository {
   late Logger log = Logger();
 
   GraphQLClientHelper _api;
   DatabaseService _db;
+  HashMap<String, Channel> _cache = new HashMap();
 
-  ChannelRepository({
+  ChannelRepositoryImpl({
     GraphQLClientHelper? apiClient,
     DatabaseService? database,
   })  : _api = apiClient ?? GetIt.I.get<GraphQLClientHelper>(),
         _db = database ?? GetIt.I.get<DatabaseService>();
 
   @override
-  Future<Channel> load(String id) async {
+  Future<Channel?> load(String id) async {
     var query = ChannelQuery.loadChannelById;
     var variables = {
       "id": id,
       "memberLimit": 30,
     };
 
+    var memory = LazyStream(() {
+      late Channel? cachedChannel;
+      if (_cache.containsKey(id))
+        cachedChannel = _cache[id];
+      else
+        cachedChannel = null;
+      return Stream.value(cachedChannel).doOnData((event) {
+        log.d("Channel found on memory cache");
+      });
+    });
+
     var local = LazyStream(() {
       return _db
           .load<Channel>(id)
           .then((channel) {
-            if (channel != null) log.d("Channel found on local database. $channel");
+            if (channel != null) {
+              log.d("Channel found on local database. $channel");
+              _cache[channel.id] = channel;
+            }
+
             return channel;
           })
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
@@ -56,15 +92,19 @@ class ChannelRepository implements Repository<Channel> {
     });
 
     var remote = LazyStream(() {
-      return _api.query(query, variables: variables).then((json) {
-        var channel = Channel.fromJson(json['channel']);
-        _db.save<Channel>(channel.id, channel);
-        log.d("Channel retrieved from remote API. $json");
-        return channel;
-      }).asStream();
+      return _api
+          .query(query, variables: variables)
+          .then((json) {
+            var channel = Channel.fromJson(json['channel']);
+            _db.save<Channel>(channel.id, channel);
+            log.d("Channel retrieved from remote API. $json");
+            return channel;
+          })
+          .onError((Exception error, stackTrace) => Future.error(mapException(error)))
+          .asStream();
     });
 
-    var result = await ConcatStream([local, remote]).firstWhere((element) => element != null);
+    var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
     return result!;
   }
 
@@ -81,7 +121,74 @@ class ChannelRepository implements Repository<Channel> {
 
   @override
   Future<void> saveAll(List<Channel> items) async {
-    await _db.saveAll(items.toKeyValuePair((e) => e.id, (e) => e));
+    await _db.saveAll(items.toKeyValuePair(keyConverter: (e) => e.id, valueConverter: (e) => e));
+  }
+
+  @override
+  Future<RawMessage> sendMessage(String channelId, Message message) async {
+    String mutation = r"""
+      mutation Mutation($input: MessageInput!) {
+        createMessage(input: $input) {
+          id
+          senderRef
+          timestamp
+          message
+        }
+      }
+    """;
+
+    var variables = {
+      "input": {
+        "channelRef": channelId,
+        "message": message.message,
+        "timestamp": message.date.millisecondsSinceEpoch,
+      }
+    };
+
+    return await _api.mutate(mutation, variables: variables).then((json) => RawMessage.fromJson(json["createMessage"]));
+  }
+
+  @override
+  Stream<RawMessage> subscribeChannelMessages(String channelId) async* {
+    String s = r"""
+      subscription OnMessageCreated($channelRef: String!) {
+        onNewMessage(channelRef: $channelRef) {
+          topic
+          channelRef
+          payload {
+            id
+            senderRef
+            timestamp
+            message
+          }
+        }
+      }
+    """;
+
+    var v = {
+      "channelRef": channelId,
+    };
+
+    yield* _api
+        .subscribe(s, variables: v)
+        .map((result) => result["onNewMessage"])
+        .where((notification) => notification['topic'] == "OnMessageCreated")
+        .map((json) => RawMessage.fromJson(json['payload']));
+  }
+
+  @override
+  Future<List<RawMessage>> fetchMessages(String channelId) async {
+    var variables = {
+      "channelRef": channelId,
+    };
+
+    var messages = await _api.query(ChannelQuery.loadChannelMessages, variables: variables).then((json) {
+      var rawList = json['messages'] as List<Object?>;
+      var rawMessages = rawList.map((element) => RawMessage.fromJson(element as Map<String, dynamic>));
+      return rawMessages.toList();
+    });
+
+    return messages;
   }
 
   @override

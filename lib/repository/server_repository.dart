@@ -45,7 +45,7 @@ class ServerRepository implements Repository<Server> {
         _db = database ?? GetIt.I.get<DatabaseService>();
 
   @override
-  Future<Server> load(String id) async {
+  Future<Server?> load(String id) async {
     var query = ServerQuery.loadById;
     var variables = {
       "id": id,
@@ -96,7 +96,7 @@ class ServerRepository implements Repository<Server> {
 
   @override
   Future saveAll(List<Server> servers) async {
-    var keyValue = servers.toKeyValuePair((e) => e.id, (e) => e);
+    var keyValue = servers.toKeyValuePair(keyConverter: (e) => e.id, valueConverter: (e) => e);
     await _db.saveAll(keyValue);
   }
 

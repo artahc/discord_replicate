@@ -2,9 +2,6 @@ import 'dart:async';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
-import 'package:discord_replicate/service/auth_service.dart';
-import 'package:discord_replicate/repository/server_repository.dart';
-import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/user_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -14,6 +11,9 @@ export 'user_event.dart';
 export 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
+  StreamController<UserEvent> _eventStream = StreamController.broadcast();
+  Stream<UserEvent> get eventStream => _eventStream.stream;
+
   final UserService _userService;
 
   final AuthBloc _authBloc;
@@ -44,8 +44,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   @override
+  void onEvent(UserEvent event) {
+    _eventStream.sink.add(event);
+    super.onEvent(event);
+  }
+
+  @override
   Future<void> close() {
     _authStateSubscription.cancel();
+    _eventStream.close();
     return super.close();
   }
 
@@ -60,15 +67,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   _loadPrivateChannels(emit) async {
-    var privateChannels = await _userService.getCurrentUser().then((user) => user.privateChannels);
-    state.maybeWhen(
-      orElse: () {
-        emit(UserState.error(Exception("Couldn't user data.")));
-      },
-      loaded: (user) {
-        emit(UserState.loaded(user.copyWith(privateChannels: privateChannels)));
-      },
-    );
+    await _userService.getCurrentUser().then((user) {
+      emit(UserState.loaded(user));
+    });
   }
 
   _deleteUser(emit) async {
