@@ -5,132 +5,105 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libsignal_protocol_dart/libsignal_protocol_dart.dart' as signal;
 import 'package:tuple/tuple.dart';
 
+class User {
+  late signal.IdentityKeyPair identityKeyPair;
+  late int registrationId;
+  late List<signal.PreKeyRecord> preKeys;
+  late signal.SignedPreKeyRecord signedPreKey;
+  late signal.SignalProtocolAddress signalProtocolAddress;
+
+  User() {
+    identityKeyPair = signal.generateIdentityKeyPair();
+    registrationId = signal.generateRegistrationId(false);
+    preKeys = signal.generatePreKeys(0, 100);
+    signedPreKey = signal.generateSignedPreKey(identityKeyPair, 0);
+    signalProtocolAddress = signal.SignalProtocolAddress("my_id", 0);
+  }
+}
+
 Future main() async {
   test("Test signal encryption", () async {
-    await install();
-  });
+    // Setup local user
+    var localUser = User();
+    var remoteUser = User();
 
-  test("Example", () async {
-    await example();
+    final localUserSignalProtocolStore = await initializeSignalProtocolStore(localUser);
+    final remoteUserSignalProtocolStore = await initializeSignalProtocolStore(remoteUser);
+
+    final localCipher = await createSession(localUserSignalProtocolStore, remoteUser);
+    final remoteCipher = await createSession(remoteUserSignalProtocolStore, localUser);
+
+    // Encrypt
+    final cipherMessage = await localCipher.encrypt(Uint8List.fromList(utf8.encode("Hello!")));
+    print("My cipherText sent to remote user : ${cipherMessage.serialize()}");
+
+    // Decrypt
+    var plainMessage = await remoteCipher.decrypt(cipherMessage as signal.PreKeySignalMessage).then((value) => value.toPlainString());
+    print("My cipherText decrypted by remote user: $plainMessage");
+
+    assert(plainMessage == "Hello!");
+
+    // Encrypt more
+    final cipherMessageByRemoteUser = await remoteCipher.encrypt("Hello nice to meet you!".toUint8List());
+    print("Remote user cipherText sent to me : ${cipherMessageByRemoteUser.serialize()}");
+
+    final plainMessageByRemoteUser =
+        await localCipher.decryptFromSignal(cipherMessageByRemoteUser as signal.SignalMessage).then((value) => value.toPlainString());
+    print("Remote user cipherText decrypted by me: $plainMessageByRemoteUser");
+
+    assert(plainMessageByRemoteUser == "Hello nice to meet you!");
   });
 }
 
-Future<void> install() async {
-  // Generate key bundles
-  final identityKeyPair = signal.generateIdentityKeyPair();
-  final registrationId = signal.generateRegistrationId(false);
-  final preKeys = signal.generatePreKeys(0, 100);
-  final signedPreKey = signal.generateSignedPreKey(identityKeyPair, 0);
-
-  final sessionStore = signal.InMemorySessionStore();
-  final preKeyStore = signal.InMemoryPreKeyStore();
-  final signedPreKeyStore = signal.InMemorySignedPreKeyStore();
-  final identityKeyStore = signal.InMemoryIdentityKeyStore(identityKeyPair, registrationId);
-
-  // Store Keys
-  for (var key in preKeys) {
-    await preKeyStore.storePreKey(key.id, key);
+extension ConvertStringToByteArrayUTF8 on String {
+  Uint8List toUint8List() {
+    return utf8.encode(this).toUint8List();
   }
-  await signedPreKeyStore.storeSignedPreKey(signedPreKey.id, signedPreKey);
 
-  // Me as client
-  final remoteAddress = signal.SignalProtocolAddress("remote_address", 0);
-  final sessionBuilder = signal.SessionBuilder(sessionStore, preKeyStore, signedPreKeyStore, identityKeyStore, remoteAddress);
-
-  var remoteResource = await getRemoteUserPrequisiteResource();
-  await sessionBuilder.processPreKeyBundle(remoteResource.item5);
-
-  final sessionCipher = signal.SessionCipher(sessionStore, preKeyStore, signedPreKeyStore, identityKeyStore, remoteAddress);
-  final cipherText = await sessionCipher.encrypt(Uint8List.fromList(utf8.encode("Hello!")));
-  print(cipherText.serialize());
-
-  // Receiver
-  final signalProtocolStore = signal.InMemorySignalProtocolStore(remoteResource.item2, remoteResource.item1);
-  final myAddress = signal.SignalProtocolAddress("my_address", 0);
-  final remoteSessionCipher = signal.SessionCipher.fromStore(signalProtocolStore, myAddress);
-  for (var key in remoteResource.item3) {
-    signalProtocolStore.storePreKey(key.id, key);
+  List<int> encodeToUtf8() {
+    return utf8.encode(this);
   }
-  await signalProtocolStore.storeSignedPreKey(remoteResource.item4.id, remoteResource.item4);
-
-  var plainText = await remoteSessionCipher.decrypt(cipherText as signal.PreKeySignalMessage);
-  print(utf8.decode(plainText));
 }
 
-Future<Tuple5<int, signal.IdentityKeyPair, List<signal.PreKeyRecord>, signal.SignedPreKeyRecord, signal.PreKeyBundle>>
-    getRemoteUserPrequisiteResource() async {
-  final registrationId = signal.generateRegistrationId(false);
-  final identityKeyPair = signal.generateIdentityKeyPair();
-  final preKeys = signal.generatePreKeys(0, 100);
-  final signedPreKey = signal.generateSignedPreKey(identityKeyPair, 0);
+extension ConvertByteArrayToUint8 on List<int> {
+  String toPlainString() {
+    return utf8.decode(this);
+  }
 
+  Uint8List toUint8List() {
+    return Uint8List.fromList(this);
+  }
+}
+
+Future<signal.PreKeyBundle> getUserPreKeyBundle(User user) async {
   final preKeyBundle = signal.PreKeyBundle(
-    registrationId,
-    5,
-    preKeys.first.id,
-    preKeys.first.getKeyPair().publicKey,
-    signedPreKey.id,
-    signedPreKey.getKeyPair().publicKey,
-    signedPreKey.signature,
-    identityKeyPair.getPublicKey(),
+    user.registrationId,
+    0,
+    user.preKeys.first.id,
+    user.preKeys.first.getKeyPair().publicKey,
+    user.signedPreKey.id,
+    user.signedPreKey.getKeyPair().publicKey,
+    user.signedPreKey.signature,
+    user.identityKeyPair.getPublicKey(),
   );
 
-  return Tuple5(registrationId, identityKeyPair, preKeys, signedPreKey, preKeyBundle);
+  return preKeyBundle;
 }
 
-Future<void> example() async {
-  final identityKeyPair = signal.generateIdentityKeyPair();
-  final registrationId = signal.generateRegistrationId(false);
+Future<signal.SessionCipher> createSession(signal.SignalProtocolStore store, User remoteUser) async {
+  final preKeyBundle = await getUserPreKeyBundle(remoteUser);
+  final sessionBuilder = signal.SessionBuilder.fromSignalStore(store, remoteUser.signalProtocolAddress);
+  await sessionBuilder.processPreKeyBundle(preKeyBundle);
 
-  final preKeys = signal.generatePreKeys(0, 110);
+  return signal.SessionCipher.fromStore(store, remoteUser.signalProtocolAddress);
+}
 
-  final signedPreKey = signal.generateSignedPreKey(identityKeyPair, 0);
-
-  final sessionStore = signal.InMemorySessionStore();
-  final preKeyStore = signal.InMemoryPreKeyStore();
-  final signedPreKeyStore = signal.InMemorySignedPreKeyStore();
-  final identityStore = signal.InMemoryIdentityKeyStore(identityKeyPair, registrationId);
-
-  for (final p in preKeys) {
-    await preKeyStore.storePreKey(p.id, p);
+Future<signal.SignalProtocolStore> initializeSignalProtocolStore(User user) async {
+  var store = signal.InMemorySignalProtocolStore(user.identityKeyPair, user.registrationId);
+  for (var key in user.preKeys) {
+    await store.storePreKey(key.id, key);
   }
-  await signedPreKeyStore.storeSignedPreKey(signedPreKey.id, signedPreKey);
+  await store.storeSignedPreKey(user.signedPreKey.id, user.signedPreKey);
 
-  const bobAddress = signal.SignalProtocolAddress('bob', 1);
-  final sessionBuilder = signal.SessionBuilder(sessionStore, preKeyStore, signedPreKeyStore, identityStore, bobAddress);
-
-  // Should get remote from the server
-  final remoteRegId = signal.generateRegistrationId(false);
-  final remoteIdentityKeyPair = signal.generateIdentityKeyPair();
-  final remotePreKeys = signal.generatePreKeys(0, 110);
-  final remoteSignedPreKey = signal.generateSignedPreKey(remoteIdentityKeyPair, 0);
-
-  final retrievedPreKey = signal.PreKeyBundle(remoteRegId, 1, remotePreKeys[0].id, remotePreKeys[0].getKeyPair().publicKey, remoteSignedPreKey.id,
-      remoteSignedPreKey.getKeyPair().publicKey, remoteSignedPreKey.signature, remoteIdentityKeyPair.getPublicKey());
-
-  await sessionBuilder.processPreKeyBundle(retrievedPreKey);
-
-  final sessionCipher = signal.SessionCipher(sessionStore, preKeyStore, signedPreKeyStore, identityStore, bobAddress);
-  final ciphertext = await sessionCipher.encrypt(Uint8List.fromList(utf8.encode('Hello Mixin🤣')));
-  // ignore: avoid_print
-  print(ciphertext);
-  // ignore: avoid_print
-  print(ciphertext.serialize());
-  //deliver(ciphertext);
-
-  final signalProtocolStore = signal.InMemorySignalProtocolStore(remoteIdentityKeyPair, 1);
-  const aliceAddress = signal.SignalProtocolAddress('alice', 1);
-  final remoteSessionCipher = signal.SessionCipher.fromStore(signalProtocolStore, aliceAddress);
-
-  for (final p in remotePreKeys) {
-    await signalProtocolStore.storePreKey(p.id, p);
-  }
-  await signalProtocolStore.storeSignedPreKey(remoteSignedPreKey.id, remoteSignedPreKey);
-
-  if (ciphertext.getType() == signal.CiphertextMessage.prekeyType) {
-    await remoteSessionCipher.decryptWithCallback(ciphertext as signal.PreKeySignalMessage, (plaintext) {
-      // ignore: avoid_print
-      print(utf8.decode(plaintext));
-    });
-  }
+  return store;
 }
