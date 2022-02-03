@@ -13,6 +13,7 @@ class WelcomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _navBloc = BlocProvider.of<NavigationCubit>(context);
+    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: SafeArea(

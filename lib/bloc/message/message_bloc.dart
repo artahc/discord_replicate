@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:discord_replicate/bloc/message/message_event.dart';
 import 'package:discord_replicate/bloc/message/message_state.dart';
+import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:discord_replicate/service/channel_service.dart';
@@ -36,6 +37,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     _messageSubscription = _channelService.subscribeMessage(_channel.id).handleError((e, st) {
       log.e("Error in channel subscription.", e, st);
     }).listen((message) {
+      log.i("Message received: $message");
       add(MessageEvent.notifyNewMessage(message));
     });
   }
@@ -54,7 +56,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   _sendMessage(String input, emit) async {
     var user = await _userService.getCurrentUser();
-    var member = await _channelService.getMemberById(_channel.userGroupRef, user.uid);
+    var member = await _channelService.getMemberById(_channel.id, user.uid);
 
     var date = DateTime.now();
     var pendingMessage = Message.pending(sender: member, message: input, date: date);
@@ -63,6 +65,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     await _channelService.sendMessage(_channel.id, pendingMessage).then((message) {
       log.d("Message sent. ${message.toJson()}");
+    }, onError: (e, st) {
+      log.e(e, st);
+    }).onError((error, stackTrace) {
+      var e = error as NotFoundException;
+      log.e(e.message, stackTrace);
     });
   }
 

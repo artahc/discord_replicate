@@ -147,6 +147,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
       }
     };
 
+    log.d("Sending message");
     return await _api.mutate(mutation, variables: variables).then((json) => RawMessage.fromJson(json["createMessage"]));
   }
 
@@ -199,5 +200,10 @@ class ChannelRepositoryImpl implements ChannelRepository {
       return NotFoundException("Room not found in remote API.", source: e);
     }
     return e;
+  }
+
+  @override
+  Future<void> dispose() async {
+    this._cache.clear();
   }
 }

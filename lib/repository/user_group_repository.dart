@@ -113,4 +113,9 @@ class UserGroupRepository extends Repository<UserGroup> {
     _cache.addAll(keyValuePair);
     await _db.saveAll<UserGroup>(keyValuePair);
   }
+
+  @override
+  Future<void> dispose() async {
+    this._cache.clear();
+  }
 }

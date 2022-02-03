@@ -45,15 +45,18 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
-  Future<Credential> signUpEmail(String email) {
-    return _auth.createUserWithEmailAndPassword(email: email, password: "password").then((credential) async {
-      var user = credential.user!;
+  Future<Credential> signUpEmail(String email) async {
+    var credential = await _auth.createUserWithEmailAndPassword(email: email, password: "password").then((firebaseCredential) async {
+      var user = firebaseCredential.user!;
       var token = await user.getIdToken(false);
+      log.i("Register successful with email $email");
       return Credential(uid: user.uid, email: user.email!, token: token);
     }).onError((error, stackTrace) {
       log.e("Couldn't signup to Firebase", error, stackTrace);
       return Future.error(error!, stackTrace);
     });
+
+    return credential;
   }
 
   @override

@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'dart:developer' as dev;
 
 import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 
 export 'auth_event.dart';
 export 'auth_state.dart';
@@ -16,6 +17,7 @@ export 'auth_state.dart';
 enum RegisterOptions { Phone, Email }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final Logger log = Logger();
   final AuthService _authService;
 
   AuthBloc({AuthService? authService})
@@ -28,7 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     return event.when(
       initialEvent: () => _handleInitial(emit),
       signInEvent: (id, password) => _signIn(id, password, emit),
-      signUpEvent: (id, option) => _signUp(id, option, emit),
+      signUpEvent: (option, id) => _signUp(id, option, emit),
       signOutEvent: () => _signOut(emit),
     );
   }
@@ -42,17 +44,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _signIn(id, password, emit) async {
+  _signIn(String id, String password, emit) async {
     emit(AuthState.authenticating());
     var credential = await _authService.signIn(id, password);
     emit(AuthState.authenticated(credential: credential));
   }
 
-  _signUp(id, option, emit) async {
+  _signUp(String id, RegisterOptions option, emit) async {
+    log.d("Signup in auth bloc $id $option");
+
+    emit(AuthState.authenticating());
     switch (option) {
       case RegisterOptions.Email:
-        var credential = await _authService.signUpEmail(id);
-        emit(AuthState.authenticated(credential: credential));
+        log.d("Sign up with email $id");
+        await _authService.signUpEmail(id).then((credential) {
+          log.i("Successfully signing up");
+          emit(AuthState.authenticated(credential: credential));
+        }).onError((error, stackTrace) {
+          log.e("Error when signin up", error, stackTrace);
+          emit(AuthState.error(exception: error as Exception));
+        });
         break;
       case RegisterOptions.Phone:
         emit(AuthState.error(exception: Exception("Sign up with phone number is not supported yet.")));

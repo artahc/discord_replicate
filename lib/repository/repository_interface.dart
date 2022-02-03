@@ -5,4 +5,6 @@ abstract class Repository<T> with ExceptionMapperMixin {
   Future<List<T>> loadAll();
   Future<void> save(T item);
   Future<void> saveAll(List<T> items);
+
+  Future<void> dispose();
 }

@@ -65,6 +65,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   _deleteUser(emit) async {
+    await _userService.dispose();
     emit(UserState.empty());
   }
 

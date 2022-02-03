@@ -53,6 +53,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
     _serverStateSubscription = _serverBloc.stream.listen((state) {
       state.whenOrNull(
         loaded: (server, recentChannel) {
+          log.d("Loading channel $recentChannel");
           add(ChannelEvent.load(recentChannel.id));
         },
       );

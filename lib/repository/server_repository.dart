@@ -124,4 +124,9 @@ class ServerRepository implements Repository<Server> {
     }
     return e;
   }
+
+  @override
+  Future<void> dispose() async {
+    this._cache.clear();
+  }
 }

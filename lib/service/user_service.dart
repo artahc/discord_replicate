@@ -13,8 +13,8 @@ abstract class UserService {
   Future<User> getCurrentUser();
   Future<Channel?> getCurrentUserRecentPrivateChannel();
   Future<Server?> getCurrentUserRecentServer();
-
   Future<User> getUserById(String id);
+  Future<void> dispose();
 }
 
 class UserServiceImpl implements UserService {
@@ -69,5 +69,10 @@ class UserServiceImpl implements UserService {
     if (user == null) throw NotFoundException("User not found.");
 
     return user;
+  }
+
+  @override
+  Future<void> dispose() async {
+    await _userRepo.dispose();
   }
 }

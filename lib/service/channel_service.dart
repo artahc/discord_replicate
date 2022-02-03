@@ -6,6 +6,7 @@ import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/user_group_repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 
 abstract class ChannelService {
   Future<Channel> getChannelById(String id);
@@ -19,6 +20,7 @@ abstract class ChannelService {
 }
 
 class ChannelServiceImpl implements ChannelService {
+  final Logger log = Logger();
   final ChannelRepository _channelRepo;
   final UserGroupRepository _userGroupRepo;
 
@@ -53,7 +55,8 @@ class ChannelServiceImpl implements ChannelService {
 
     if (userGroup == null) throw NotFoundException("User group not found when trying to fetch member.");
 
-    if (!userGroup.members.containsKey(userId)) throw NotFoundException("User not found in user group ${userGroup.id}");
+    // todo: fetch batch of member from server based on this userId
+    if (!userGroup.members.containsKey(userId)) throw UnimplementedError();
     var member = userGroup.members[userId];
 
     return member!;
@@ -63,21 +66,21 @@ class ChannelServiceImpl implements ChannelService {
   Future<MessageWithMember> sendMessage(String channelId, Message message) async {
     var raw = await _channelRepo.sendMessage(channelId, message);
     var member = await getMemberById(channelId, raw.senderRef);
-    var messageWithMember = Message.withUser(id: raw.id, sender: member, date: raw.date, message: raw.message) as MessageWithMember;
+    var messageWithUser = Message.withUser(id: raw.id, sender: member, date: raw.date, message: raw.message);
 
-    return messageWithMember;
+    return messageWithUser as MessageWithMember;
   }
 
   @override
   Future<List<MessageWithMember>> fetchMessages(String channelId) async {
     var rawMessages = await _channelRepo.fetchMessages(channelId);
-    var messagesWithUser = await Stream.fromIterable(rawMessages).asyncMap((raw) async {
+    var messages = await Stream.fromIterable(rawMessages).asyncMap((raw) async {
       var member = await getMemberById(channelId, raw.senderRef);
       var message = Message.withUser(id: raw.id, sender: member, date: raw.date, message: raw.message);
       return message as MessageWithMember;
     }).toList();
 
-    return messagesWithUser;
+    return messages;
   }
 
   @override

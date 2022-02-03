@@ -1,12 +1,7 @@
-import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
-import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/model/user.dart';
-import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/view/home/server_tile.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
