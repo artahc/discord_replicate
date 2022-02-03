@@ -21,6 +21,7 @@ main() {
   var mockAuthService = MockAuthService();
   var api = GraphQLClientHelper(
     "http://localhost:4000/graphql",
+    "ws://localhost:4000/graphql",
     authService: mockAuthService,
     defaultHeader: {
       "allow-me-in": "artahc123",

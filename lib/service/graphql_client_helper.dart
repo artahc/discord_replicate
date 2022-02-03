@@ -7,6 +7,7 @@ import 'package:discord_replicate/service/auth_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
+import 'package:rxdart/src/transformers/do.dart';
 
 class GraphQLClientHelper with ExceptionMapperMixin {
   late GraphQLClient _client;
@@ -14,7 +15,8 @@ class GraphQLClientHelper with ExceptionMapperMixin {
   late Logger log = Logger();
 
   GraphQLClientHelper(
-    String url, {
+    String url,
+    String wsUrl, {
     AuthService? authService,
     GraphQLCache? cache,
     Map<String, String>? defaultHeader,
@@ -26,7 +28,7 @@ class GraphQLClientHelper with ExceptionMapperMixin {
       var bearer = 'Bearer $token';
       return bearer;
     });
-    var wsLink = WebSocketLink("ws://localhost:4000/graphql");
+    var wsLink = WebSocketLink(wsUrl);
 
     var link = authLink.concat(httpLink);
     link = Link.split((request) => request.isSubscription, wsLink, link);
@@ -76,7 +78,9 @@ class GraphQLClientHelper with ExceptionMapperMixin {
 
     log.i("Subscription => ${subscription.trim()} \nVariables: $variables");
 
-    yield* stream.map((result) {
+    yield* stream.doOnData((data) {
+      log.i("Received new data from subscription. $data");
+    }).map((result) {
       if (result.hasException) {
         throw mapException(result.exception!);
       } else {

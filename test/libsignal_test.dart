@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:discord_replicate/external/app_extension.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libsignal_protocol_dart/libsignal_protocol_dart.dart' as signal;
-import 'package:tuple/tuple.dart';
 
 class User {
   late signal.IdentityKeyPair identityKeyPair;
@@ -25,9 +25,10 @@ Future main() async {
   test("Test signal encryption", () async {
     // Setup local user
     var localUser = User();
-    var remoteUser = User();
-
     final localUserSignalProtocolStore = await initializeSignalProtocolStore(localUser);
+
+    // Simulate remote user
+    var remoteUser = User();
     final remoteUserSignalProtocolStore = await initializeSignalProtocolStore(remoteUser);
 
     final localCipher = await createSession(localUserSignalProtocolStore, remoteUser);
@@ -47,32 +48,11 @@ Future main() async {
     final cipherMessageByRemoteUser = await remoteCipher.encrypt("Hello nice to meet you!".toUint8List());
     print("Remote user cipherText sent to me : ${cipherMessageByRemoteUser.serialize()}");
 
-    final plainMessageByRemoteUser =
-        await localCipher.decryptFromSignal(cipherMessageByRemoteUser as signal.SignalMessage).then((value) => value.toPlainString());
+    final plainMessageByRemoteUser = await localCipher.decryptFromSignal(cipherMessageByRemoteUser as signal.SignalMessage).then((value) => value.toPlainString());
     print("Remote user cipherText decrypted by me: $plainMessageByRemoteUser");
 
     assert(plainMessageByRemoteUser == "Hello nice to meet you!");
   });
-}
-
-extension ConvertStringToByteArrayUTF8 on String {
-  Uint8List toUint8List() {
-    return utf8.encode(this).toUint8List();
-  }
-
-  List<int> encodeToUtf8() {
-    return utf8.encode(this);
-  }
-}
-
-extension ConvertByteArrayToUint8 on List<int> {
-  String toPlainString() {
-    return utf8.decode(this);
-  }
-
-  Uint8List toUint8List() {
-    return Uint8List.fromList(this);
-  }
 }
 
 Future<signal.PreKeyBundle> getUserPreKeyBundle(User user) async {

@@ -38,10 +38,14 @@ Future main() async {
 }
 
 Future initializeDependencyContainer() async {
+  // final String url = "https://discord-replicate-backend-1029.herokuapp.com/graphql";
+  // final String wsUrl = "ws://discord-replicate-backend-1029.herokuapp.com/graphql";
+
   final String url = "http://localhost:4000/graphql";
+  final String wsUrl = "ws://localhost:4000/graphql";
 
   // GraphQL Client
-  GetIt.I.registerFactory<GraphQLClientHelper>(() => GraphQLClientHelper(url));
+  GetIt.I.registerFactory<GraphQLClientHelper>(() => GraphQLClientHelper(url, wsUrl));
 
   // Service
   GetIt.I.registerLazySingleton<AuthService>(() => FirebaseAuthService());
