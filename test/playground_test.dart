@@ -19,7 +19,7 @@ void main() {
       },
     );
 
-    print(list.toKeyValuePair(keyConverter: (element) => element.id, valueConverter: (element) => element));
+    print(list.toMap(keyConverter: (element) => element.id, valueConverter: (element) => element));
     print(list.expand((element) => {element.id, element}));
     print(list.toSet());
   });

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:discord_replicate/model/member.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

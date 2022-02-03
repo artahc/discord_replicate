@@ -62,7 +62,7 @@ Future initializeDependencyContainer() async {
   GetIt.I.registerLazySingleton<UserRepository>(() => UserRepository());
   GetIt.I.registerLazySingleton<ServerRepository>(() => ServerRepository());
   GetIt.I.registerLazySingleton<ChannelRepository>(() => ChannelRepositoryImpl());
-  GetIt.I.registerLazySingleton<UserGroupRepository>(() => UserGroupRepository());
+  GetIt.I.registerLazySingleton<UserGroupRepository>(() => UserGroupRepositoryImpl());
 
   // Bloc
   GetIt.I.registerLazySingleton<AuthBloc>(() => AuthBloc());

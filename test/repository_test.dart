@@ -2,8 +2,10 @@ import 'package:discord_replicate/model/channel.dart';
 import 'package:discord_replicate/model/credential.dart';
 import 'package:discord_replicate/model/server.dart';
 import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/model/user_group.dart';
 import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/repository/server_repository.dart';
+import 'package:discord_replicate/repository/user_group_repository.dart';
 import 'package:discord_replicate/repository/user_repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
@@ -70,6 +72,28 @@ main() {
       var channel = await channelRepo.load("65l2SQFgkqYRXXJyRfWT");
 
       expect(channel, isA<Channel>());
+    });
+
+    test('Load user group from remote API, should be able to parse result to UserGroup model', () async {
+      var userGroupRepo = UserGroupRepositoryImpl(client: api, database: mockDb);
+
+      when(() => mockDb.save(any(), any())).thenAnswer((invocation) => Future.value(null));
+      when(() => mockDb.load<UserGroup?>(any())).thenAnswer((invocation) => Future.value(null));
+
+      var userGroup = await userGroupRepo.load('Xs6WqQiH2JuwPJrAZvB9');
+
+      expect(userGroup, isA<UserGroup>());
+    });
+
+    test('Load user group from remote API, should be able to parse result to UserGroup model', () async {
+      var userGroupRepo = UserGroupRepositoryImpl(client: api, database: mockDb);
+
+      when(() => mockDb.save(any(), any())).thenAnswer((invocation) => Future.value(null));
+      when(() => mockDb.load<UserGroup?>(any())).thenAnswer((invocation) => Future.value(null));
+
+      var userGroup = await userGroupRepo.load('Xs6WqQiH2JuwPJrAZvB9');
+      print("$userGroup");
+      expect(userGroup, isA<UserGroup>());
     });
   });
 }

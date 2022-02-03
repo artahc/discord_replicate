@@ -15,23 +15,37 @@ class UserGroupQuery {
   UserGroupQuery._();
 
   static const loadUserGroupById = r"""
-    query ExampleQuery($userGroupRef: String!) {
-      userGroup(userGroupRef: $userGroupRef) {
-        uid
-        name
-        avatarUrl
+    query UserGroup($userGroupRef: ID!, $limit: Int!, $cursor: String) {
+      userGroup(userGroupRef: $userGroupRef, limit: $limit, cursor: $cursor) {
+        items {
+          uid
+          name
+          avatarUrl
+        }
+        hasMore
       }
     }
   """;
 }
 
-class UserGroupRepository extends Repository<UserGroup> {
+class PaginationResponse<T> {
+  final List<T> items;
+  final bool hasMore;
+
+  const PaginationResponse({required this.items, required this.hasMore});
+}
+
+abstract class UserGroupRepository extends Repository<UserGroup> {
+  Future<PaginationResponse<Member>> loadBatch(String id, int limit, String? lastMemberId);
+}
+
+class UserGroupRepositoryImpl extends UserGroupRepository {
   final Logger log = Logger();
   GraphQLClientHelper _api;
   DatabaseService _db;
-  HashMap<String, UserGroup> _cache = new HashMap();
+  SplayTreeMap<String, UserGroup> _cache = new SplayTreeMap();
 
-  UserGroupRepository({GraphQLClientHelper? client, DatabaseService? database})
+  UserGroupRepositoryImpl({GraphQLClientHelper? client, DatabaseService? database})
       : _api = client ?? GetIt.I.get<GraphQLClientHelper>(),
         _db = database ?? GetIt.I.get<DatabaseService>();
 
@@ -42,7 +56,7 @@ class UserGroupRepository extends Repository<UserGroup> {
       if (_cache.containsKey(id)) cachedUserGroup = _cache[id];
 
       return Stream.value(cachedUserGroup).where((event) => event != null).doOnData((event) {
-        // log.d("User group found on cache memory");
+        log.d("User group found on cache memory");
       });
     });
 
@@ -51,27 +65,29 @@ class UserGroupRepository extends Repository<UserGroup> {
           .load<UserGroup>(id)
           .then((userGroup) {
             if (userGroup != null) {
-              _cache[userGroup.id] = userGroup;
+              cache(userGroup);
             }
           })
           .asStream()
           .doOnData((event) {
-            // log.d("User group found on local database.");
+            log.d("User group found on local database.");
           });
     });
 
     var remote = LazyStream(() {
       var variables = {
         "userGroupRef": id,
+        "limit": 50,
+        "cursor": null,
       };
       return _api
           .query(UserGroupQuery.loadUserGroupById, variables: variables)
           .then((json) async {
-            var raw = json['userGroup'] as List<Object?>;
+            var raw = json['userGroup']['items'] as List<Object?>;
             var members = raw.map((e) => Member.fromJson(e as Map<String, dynamic>)).toList();
             var userGroup = UserGroup(
               id: id,
-              members: members.toKeyValuePair(
+              members: members.toMap(
                 keyConverter: (e) => e.uid,
                 valueConverter: (member) => member,
               ),
@@ -83,7 +99,7 @@ class UserGroupRepository extends Repository<UserGroup> {
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
           .asStream()
           .doOnData((event) {
-            // log.d("User group retrieved from remote API.");
+            log.d("User group retrieved from remote API.");
           });
     });
 
@@ -96,22 +112,62 @@ class UserGroupRepository extends Repository<UserGroup> {
     throw UnimplementedError();
   }
 
-  @override
-  Exception mapException(Exception e) {
-    throw UnimplementedError();
+  void cache(UserGroup userGroup) {
+    if (_cache.containsKey(userGroup)) {
+      _cache[userGroup.id]!.members.addAll(userGroup.members);
+    } else {
+      _cache[userGroup.id] = userGroup;
+    }
   }
 
   @override
   Future<void> save(UserGroup userGroup) async {
-    _cache[userGroup.id] = userGroup;
-    await _db.save(userGroup.id, userGroup);
+    cache(userGroup);
+
+    var existingEntry = await _db.load<UserGroup>(userGroup.id);
+    if (existingEntry != null) {
+      existingEntry.members.addAll(userGroup.members);
+      await _db.save(userGroup.id, existingEntry);
+    } else {
+      await _db.save(userGroup.id, userGroup);
+    }
   }
 
   @override
   Future<void> saveAll(List<UserGroup> userGroups) async {
-    var keyValuePair = userGroups.toKeyValuePair<String, UserGroup>(keyConverter: (e) => e.id, valueConverter: (e) => e);
-    _cache.addAll(keyValuePair);
-    await _db.saveAll<UserGroup>(keyValuePair);
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<PaginationResponse<Member>> loadBatch(String id, int limit, String? lastMemberId) async {
+    var variables = {
+      "userGroupRef": id,
+      "limit": limit,
+      "cursor": lastMemberId,
+    };
+    var response = _api.query(UserGroupQuery.loadUserGroupById, variables: variables).then((json) async {
+      var raw = json['userGroup']['items'] as List<Object?>;
+      var members = raw.map((e) => Member.fromJson(e as Map<String, dynamic>)).toList();
+      var hasMore = json['hasMore'] as bool;
+      var userGroup = UserGroup(
+        id: id,
+        members: members.toSplayTreeMap(
+          keyConverter: (e) => e.uid,
+          valueConverter: (member) => member,
+        ),
+      );
+
+      await save(userGroup);
+
+      return PaginationResponse<Member>(items: members, hasMore: hasMore);
+    });
+
+    return response;
+  }
+
+  @override
+  Exception mapException(Exception e) {
+    throw UnimplementedError();
   }
 
   @override

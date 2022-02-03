@@ -15,7 +15,7 @@ class ServerQuery {
   ServerQuery._();
 
   static final loadById = r"""
-    query Server($id: String!, $limitMember: Int!) {
+    query Server($id: String!) {
       server(id: $id) {
         id
         name
@@ -25,11 +25,6 @@ class ServerQuery {
           id
           name
           userGroupRef
-        }
-        members(limit: $limitMember) {
-          uid
-          avatarUrl
-          name
         }
       }
     }
@@ -52,7 +47,6 @@ class ServerRepository implements Repository<Server> {
     var query = ServerQuery.loadById;
     var variables = {
       "id": id,
-      "limitMember": 20,
     };
 
     var memory = LazyStream(() {
@@ -112,7 +106,7 @@ class ServerRepository implements Repository<Server> {
 
   @override
   Future saveAll(List<Server> servers) async {
-    var keyValuePair = servers.toKeyValuePair<String, Server>(keyConverter: (e) => e.id, valueConverter: (e) => e);
+    var keyValuePair = servers.toMap<String, Server>(keyConverter: (e) => e.id, valueConverter: (e) => e);
     _cache.addAll(keyValuePair);
     await _db.saveAll<Server>(keyValuePair);
   }
