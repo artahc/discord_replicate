@@ -76,7 +76,6 @@ class LandingView extends StatelessWidget {
                         );
                       },
                       loaded: (user) {
-                        log.d("User loaded, $user");
                         if (user.privateChannels.isEmpty && user.servers.isEmpty) {
                           return EmptyLandingPanel();
                         } else {

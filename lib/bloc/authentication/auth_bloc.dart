@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:discord_replicate/repository/user_repository.dart';
+import 'package:discord_replicate/repository/user_repository/user_repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
 import 'package:discord_replicate/bloc/authentication/auth_state.dart';
@@ -51,12 +51,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _signUp(String id, RegisterOptions option, emit) async {
-    log.d("Signup in auth bloc $id $option");
 
     emit(AuthState.authenticating());
     switch (option) {
       case RegisterOptions.Email:
-        log.d("Sign up with email $id");
         await _authService.signUpEmail(id).then((credential) {
           log.i("Successfully signing up");
           emit(AuthState.authenticated(credential: credential));
@@ -73,7 +71,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _signOut(emit) async {
     await _authService.signOut();
-    await Hive.deleteFromDisk();
     emit(AuthState.unauthenticated());
   }
 }

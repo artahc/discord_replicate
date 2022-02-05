@@ -3,45 +3,14 @@ import 'dart:collection';
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/external/app_extension.dart';
-import 'package:discord_replicate/model/channel.dart';
-import 'package:discord_replicate/model/message.dart';
-import 'package:discord_replicate/repository/repository_interface.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
+import 'package:discord_replicate/model/message/message.dart';
+import 'package:discord_replicate/repository/repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
-
-class ChannelQuery {
-  ChannelQuery._();
-
-  static final String loadChannelById = r"""
-    query Channel($id: String!) {
-      channel(id: $id) {
-        id
-        name
-        userGroupRef
-      }
-    }
-  """;
-
-  static final String loadChannelMessages = r"""
-    query ChannelMessages ($channelRef: String!) {
-      messages(channelRef: $channelRef) {
-        id
-        senderRef
-        timestamp
-        message
-      }
-    }
-  """;
-}
-
-abstract class ChannelRepository extends Repository<Channel> {
-  Future<RawMessage> sendMessage(String channelId, Message message);
-  Future<List<RawMessage>> fetchMessages(String channelId);
-  Stream<RawMessage> subscribeChannelMessages(String channelId);
-}
 
 class ChannelRepositoryImpl implements ChannelRepository {
   late Logger log = Logger();
@@ -69,7 +38,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
       if (_cache.containsKey(id)) cachedChannel = _cache[id];
 
       return Stream.value(cachedChannel).where((user) => user != null).doOnData((user) {
-        //log.d("Channel found on memory cache");
+        //log.i("Channel found on memory cache");
       });
     });
 
@@ -84,7 +53,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
           .asStream()
           .where((event) => event != null)
           .doOnData((event) {
-            //log.d("Channel found on local database.");
+            //log.i("Channel found on local database.");
           });
     });
 
@@ -99,7 +68,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
           .asStream()
           .doOnData((channel) {
-            //log.d("Channel retrieved from remote API.");
+            //log.i("Channel retrieved from remote API.");
           });
     });
 
@@ -147,7 +116,6 @@ class ChannelRepositoryImpl implements ChannelRepository {
       }
     };
 
-    log.d("Sending message");
     return await _api.mutate(mutation, variables: variables).then((json) => RawMessage.fromJson(json["createMessage"]));
   }
 

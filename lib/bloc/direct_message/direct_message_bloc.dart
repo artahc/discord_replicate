@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:discord_replicate/bloc/direct_message/direct_message_event.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_state.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/service/user_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';

@@ -1,4 +1,4 @@
-import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';

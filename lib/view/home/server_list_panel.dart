@@ -1,5 +1,5 @@
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
-import 'package:discord_replicate/model/server.dart';
+import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/view/home/server_tile.dart';

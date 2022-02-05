@@ -1,5 +1,5 @@
-import 'package:discord_replicate/model/channel.dart';
-import 'package:discord_replicate/model/server.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
+import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';

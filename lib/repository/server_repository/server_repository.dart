@@ -3,8 +3,8 @@ import 'dart:collection';
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/external/app_extension.dart';
-import 'package:discord_replicate/model/server.dart';
-import 'package:discord_replicate/repository/repository_interface.dart';
+import 'package:discord_replicate/model/server/server.dart';
+import 'package:discord_replicate/repository/repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:get_it/get_it.dart';
@@ -54,7 +54,7 @@ class ServerRepository implements Repository<Server> {
       if (_cache.containsKey(id)) cachedServer = _cache[id];
 
       return Stream.value(cachedServer).where((event) => event != null).doOnData((event) {
-        log.d("Server found on memory cache.");
+        log.i("Server found on memory cache.");
       });
     });
 
@@ -68,7 +68,7 @@ class ServerRepository implements Repository<Server> {
           .asStream()
           .where((server) => server != null)
           .doOnData((event) {
-            log.d("Server found on local database.");
+            log.i("Server found on local database.");
           }),
     );
 
@@ -84,7 +84,7 @@ class ServerRepository implements Repository<Server> {
             .onError((Exception error, stackTrace) => Future.error(mapException(error)))
             .asStream()
             .doOnData((event) {
-              log.d("Server retrieved from remote API.");
+              log.i("Server retrieved from remote API.");
             });
       },
     );

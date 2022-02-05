@@ -25,13 +25,11 @@ class _$ChannelTearOff {
       {@HiveField(0) required String id,
       @HiveField(1) required String name,
       @HiveField(2) required String userGroupRef,
-      @HiveField(3) List<Member> members = const <Member>[],
       @HiveField(4) List<Message> messages = const <Message>[]}) {
     return _Channel(
       id: id,
       name: name,
       userGroupRef: userGroupRef,
-      members: members,
       messages: messages,
     );
   }
@@ -51,9 +49,8 @@ mixin _$Channel {
   @HiveField(1)
   String get name => throw _privateConstructorUsedError;
   @HiveField(2)
-  String get userGroupRef => throw _privateConstructorUsedError;
-  @HiveField(3)
-  List<Member> get members => throw _privateConstructorUsedError;
+  String get userGroupRef =>
+      throw _privateConstructorUsedError; // @HiveField(3) @Default(const <Member>[]) List<Member> members,
   @HiveField(4)
   List<Message> get messages => throw _privateConstructorUsedError;
 
@@ -70,7 +67,6 @@ abstract class $ChannelCopyWith<$Res> {
       {@HiveField(0) String id,
       @HiveField(1) String name,
       @HiveField(2) String userGroupRef,
-      @HiveField(3) List<Member> members,
       @HiveField(4) List<Message> messages});
 }
 
@@ -87,7 +83,6 @@ class _$ChannelCopyWithImpl<$Res> implements $ChannelCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? userGroupRef = freezed,
-    Object? members = freezed,
     Object? messages = freezed,
   }) {
     return _then(_value.copyWith(
@@ -103,10 +98,6 @@ class _$ChannelCopyWithImpl<$Res> implements $ChannelCopyWith<$Res> {
           ? _value.userGroupRef
           : userGroupRef // ignore: cast_nullable_to_non_nullable
               as String,
-      members: members == freezed
-          ? _value.members
-          : members // ignore: cast_nullable_to_non_nullable
-              as List<Member>,
       messages: messages == freezed
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
@@ -124,7 +115,6 @@ abstract class _$ChannelCopyWith<$Res> implements $ChannelCopyWith<$Res> {
       {@HiveField(0) String id,
       @HiveField(1) String name,
       @HiveField(2) String userGroupRef,
-      @HiveField(3) List<Member> members,
       @HiveField(4) List<Message> messages});
 }
 
@@ -142,7 +132,6 @@ class __$ChannelCopyWithImpl<$Res> extends _$ChannelCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? userGroupRef = freezed,
-    Object? members = freezed,
     Object? messages = freezed,
   }) {
     return _then(_Channel(
@@ -158,10 +147,6 @@ class __$ChannelCopyWithImpl<$Res> extends _$ChannelCopyWithImpl<$Res>
           ? _value.userGroupRef
           : userGroupRef // ignore: cast_nullable_to_non_nullable
               as String,
-      members: members == freezed
-          ? _value.members
-          : members // ignore: cast_nullable_to_non_nullable
-              as List<Member>,
       messages: messages == freezed
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
@@ -178,7 +163,6 @@ class _$_Channel implements _Channel {
       {@HiveField(0) required this.id,
       @HiveField(1) required this.name,
       @HiveField(2) required this.userGroupRef,
-      @HiveField(3) this.members = const <Member>[],
       @HiveField(4) this.messages = const <Message>[]});
 
   factory _$_Channel.fromJson(Map<String, dynamic> json) =>
@@ -194,17 +178,13 @@ class _$_Channel implements _Channel {
   @HiveField(2)
   final String userGroupRef;
   @JsonKey()
-  @override
-  @HiveField(3)
-  final List<Member> members;
-  @JsonKey()
-  @override
+  @override // @HiveField(3) @Default(const <Member>[]) List<Member> members,
   @HiveField(4)
   final List<Message> messages;
 
   @override
   String toString() {
-    return 'Channel(id: $id, name: $name, userGroupRef: $userGroupRef, members: $members, messages: $messages)';
+    return 'Channel(id: $id, name: $name, userGroupRef: $userGroupRef, messages: $messages)';
   }
 
   @override
@@ -216,7 +196,6 @@ class _$_Channel implements _Channel {
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.userGroupRef, userGroupRef) &&
-            const DeepCollectionEquality().equals(other.members, members) &&
             const DeepCollectionEquality().equals(other.messages, messages));
   }
 
@@ -226,7 +205,6 @@ class _$_Channel implements _Channel {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(userGroupRef),
-      const DeepCollectionEquality().hash(members),
       const DeepCollectionEquality().hash(messages));
 
   @JsonKey(ignore: true)
@@ -245,7 +223,6 @@ abstract class _Channel implements Channel {
       {@HiveField(0) required String id,
       @HiveField(1) required String name,
       @HiveField(2) required String userGroupRef,
-      @HiveField(3) List<Member> members,
       @HiveField(4) List<Message> messages}) = _$_Channel;
 
   factory _Channel.fromJson(Map<String, dynamic> json) = _$_Channel.fromJson;
@@ -259,14 +236,202 @@ abstract class _Channel implements Channel {
   @override
   @HiveField(2)
   String get userGroupRef;
-  @override
-  @HiveField(3)
-  List<Member> get members;
-  @override
+  @override // @HiveField(3) @Default(const <Member>[]) List<Member> members,
   @HiveField(4)
   List<Message> get messages;
   @override
   @JsonKey(ignore: true)
   _$ChannelCopyWith<_Channel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+RawChannel _$RawChannelFromJson(Map<String, dynamic> json) {
+  return _RawChannel.fromJson(json);
+}
+
+/// @nodoc
+class _$RawChannelTearOff {
+  const _$RawChannelTearOff();
+
+  _RawChannel call(
+      {required String id,
+      required String name,
+      required String userGroupRef}) {
+    return _RawChannel(
+      id: id,
+      name: name,
+      userGroupRef: userGroupRef,
+    );
+  }
+
+  RawChannel fromJson(Map<String, Object?> json) {
+    return RawChannel.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $RawChannel = _$RawChannelTearOff();
+
+/// @nodoc
+mixin _$RawChannel {
+  String get id => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get userGroupRef => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $RawChannelCopyWith<RawChannel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RawChannelCopyWith<$Res> {
+  factory $RawChannelCopyWith(
+          RawChannel value, $Res Function(RawChannel) then) =
+      _$RawChannelCopyWithImpl<$Res>;
+  $Res call({String id, String name, String userGroupRef});
+}
+
+/// @nodoc
+class _$RawChannelCopyWithImpl<$Res> implements $RawChannelCopyWith<$Res> {
+  _$RawChannelCopyWithImpl(this._value, this._then);
+
+  final RawChannel _value;
+  // ignore: unused_field
+  final $Res Function(RawChannel) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? userGroupRef = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      userGroupRef: userGroupRef == freezed
+          ? _value.userGroupRef
+          : userGroupRef // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$RawChannelCopyWith<$Res> implements $RawChannelCopyWith<$Res> {
+  factory _$RawChannelCopyWith(
+          _RawChannel value, $Res Function(_RawChannel) then) =
+      __$RawChannelCopyWithImpl<$Res>;
+  @override
+  $Res call({String id, String name, String userGroupRef});
+}
+
+/// @nodoc
+class __$RawChannelCopyWithImpl<$Res> extends _$RawChannelCopyWithImpl<$Res>
+    implements _$RawChannelCopyWith<$Res> {
+  __$RawChannelCopyWithImpl(
+      _RawChannel _value, $Res Function(_RawChannel) _then)
+      : super(_value, (v) => _then(v as _RawChannel));
+
+  @override
+  _RawChannel get _value => super._value as _RawChannel;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? name = freezed,
+    Object? userGroupRef = freezed,
+  }) {
+    return _then(_RawChannel(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String,
+      userGroupRef: userGroupRef == freezed
+          ? _value.userGroupRef
+          : userGroupRef // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_RawChannel implements _RawChannel {
+  const _$_RawChannel(
+      {required this.id, required this.name, required this.userGroupRef});
+
+  factory _$_RawChannel.fromJson(Map<String, dynamic> json) =>
+      _$$_RawChannelFromJson(json);
+
+  @override
+  final String id;
+  @override
+  final String name;
+  @override
+  final String userGroupRef;
+
+  @override
+  String toString() {
+    return 'RawChannel(id: $id, name: $name, userGroupRef: $userGroupRef)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _RawChannel &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.userGroupRef, userGroupRef));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(userGroupRef));
+
+  @JsonKey(ignore: true)
+  @override
+  _$RawChannelCopyWith<_RawChannel> get copyWith =>
+      __$RawChannelCopyWithImpl<_RawChannel>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_RawChannelToJson(this);
+  }
+}
+
+abstract class _RawChannel implements RawChannel {
+  const factory _RawChannel(
+      {required String id,
+      required String name,
+      required String userGroupRef}) = _$_RawChannel;
+
+  factory _RawChannel.fromJson(Map<String, dynamic> json) =
+      _$_RawChannel.fromJson;
+
+  @override
+  String get id;
+  @override
+  String get name;
+  @override
+  String get userGroupRef;
+  @override
+  @JsonKey(ignore: true)
+  _$RawChannelCopyWith<_RawChannel> get copyWith =>
       throw _privateConstructorUsedError;
 }

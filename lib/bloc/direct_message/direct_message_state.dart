@@ -1,4 +1,4 @@
-import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'direct_message_state.freezed.dart';

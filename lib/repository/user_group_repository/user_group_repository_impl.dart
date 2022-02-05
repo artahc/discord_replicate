@@ -2,42 +2,15 @@ import 'dart:collection';
 
 import 'package:async/async.dart';
 import 'package:discord_replicate/external/app_extension.dart';
-import 'package:discord_replicate/model/member.dart';
-import 'package:discord_replicate/model/user_group.dart';
-import 'package:discord_replicate/repository/repository_interface.dart';
+import 'package:discord_replicate/model/member/member.dart';
+import 'package:discord_replicate/model/paginated_response.dart';
+import 'package:discord_replicate/model/user_group/user_group.dart';
+import 'package:discord_replicate/repository/repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
-
-class UserGroupQuery {
-  UserGroupQuery._();
-
-  static const loadUserGroupById = r"""
-    query UserGroup($userGroupRef: ID!, $limit: Int!, $cursor: String) {
-      userGroup(userGroupRef: $userGroupRef, limit: $limit, cursor: $cursor) {
-        items {
-          uid
-          name
-          avatarUrl
-        }
-        hasMore
-      }
-    }
-  """;
-}
-
-class PaginationResponse<T> {
-  final List<T> items;
-  final bool hasMore;
-
-  const PaginationResponse({required this.items, required this.hasMore});
-}
-
-abstract class UserGroupRepository extends Repository<UserGroup> {
-  Future<PaginationResponse<Member>> loadBatch(String id, int limit, String? lastMemberId);
-}
 
 class UserGroupRepositoryImpl extends UserGroupRepository {
   final Logger log = Logger();
@@ -56,7 +29,7 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
       if (_cache.containsKey(id)) cachedUserGroup = _cache[id];
 
       return Stream.value(cachedUserGroup).where((event) => event != null).doOnData((event) {
-        log.d("User group found on cache memory");
+        // log.i("User group found on cache memory");
       });
     });
 
@@ -70,7 +43,7 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
           })
           .asStream()
           .doOnData((event) {
-            log.d("User group found on local database.");
+            // log.i("User group found on local database.");
           });
     });
 
@@ -99,7 +72,7 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
           .asStream()
           .doOnData((event) {
-            log.d("User group retrieved from remote API.");
+            // log.i("User group retrieved from remote API.");
           });
     });
 

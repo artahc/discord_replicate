@@ -4,10 +4,6 @@ import 'package:discord_replicate/bloc/channel/channel_event.dart';
 import 'package:discord_replicate/bloc/channel/channel_state.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/model/channel.dart';
-import 'package:discord_replicate/model/server.dart';
-import 'package:discord_replicate/repository/channel_repository.dart';
 import 'package:discord_replicate/service/channel_service.dart';
 import 'package:discord_replicate/service/user_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +49,6 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
     _serverStateSubscription = _serverBloc.stream.listen((state) {
       state.whenOrNull(
         loaded: (server, recentChannel) {
-          log.d("Loading channel $recentChannel");
           add(ChannelEvent.load(recentChannel.id));
         },
       );

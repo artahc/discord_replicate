@@ -1,7 +1,7 @@
 import 'package:discord_replicate/bloc/message/message_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/model/channel.dart';
-import 'package:discord_replicate/model/message.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
+import 'package:discord_replicate/model/message/message.dart';
 import 'package:discord_replicate/view/home/message_tile.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
@@ -176,7 +176,6 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
   }
 
   _onSendingMessage(Message message) {
-    log.d("Sending message. ${message.toJson()}");
     setState(() {
       _pendingMessage.add(message);
     });

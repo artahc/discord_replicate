@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
-import 'package:discord_replicate/model/credential.dart';
+import 'package:discord_replicate/model/credential/credential.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -49,7 +49,7 @@ class GraphQLClientHelper with ExceptionMapperMixin {
     var options = QueryOptions(document: gql(query), variables: variables);
     var result = await _client.query(options);
 
-    log.d("Query => ${query.trim()} \nVariables: $variables");
+    log.i("Query => ${query.trim()} \nVariables: $variables");
     if (result.hasException) {
       return Future.error(mapException(result.exception!));
     } else {

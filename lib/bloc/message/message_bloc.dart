@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:discord_replicate/bloc/message/message_event.dart';
 import 'package:discord_replicate/bloc/message/message_state.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
-import 'package:discord_replicate/model/channel.dart';
-import 'package:discord_replicate/model/message.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
+import 'package:discord_replicate/model/message/message.dart';
 import 'package:discord_replicate/service/channel_service.dart';
 import 'package:discord_replicate/service/user_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,7 +65,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     emit(MessageState.sendingMessage(message));
 
     await _channelService.sendMessage(_channel.id, message).then((message) {
-      log.d("Message sent. ${message.toJson()}");
     }, onError: (e, st) {
       log.e(e, st);
     }).onError((error, stackTrace) {
@@ -75,7 +74,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   _onReceivedNewMessage(Message message, emit) async {
-    log.d("Received new message. $message");
     emit(MessageState.receivedNewMessage(message));
   }
 

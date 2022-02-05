@@ -1,13 +1,10 @@
 import 'package:discord_replicate/exception/custom_exception.dart';
-import 'package:discord_replicate/model/channel.dart';
-import 'package:discord_replicate/model/server.dart';
-import 'package:discord_replicate/model/user.dart';
-import 'package:discord_replicate/repository/channel_repository.dart';
-import 'package:discord_replicate/repository/server_repository.dart';
-import 'package:discord_replicate/repository/user_repository.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
+import 'package:discord_replicate/model/server/server.dart';
+import 'package:discord_replicate/model/user/user.dart';
+import 'package:discord_replicate/repository/repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tuple/tuple.dart';
 
 abstract class UserService {
   Future<User> getCurrentUser();

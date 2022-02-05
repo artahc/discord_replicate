@@ -27,7 +27,6 @@ class _UserSettingPanelState extends State<UserSettingPanel> {
       listener: (c, state) {
         state.whenOrNull(
           unauthenticated: () {
-            log.d("State received $state");
             SchedulerBinding.instance?.addPostFrameCallback((_) {
               _navBloc.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true);
             });

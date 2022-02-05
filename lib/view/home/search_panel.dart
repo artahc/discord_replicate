@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
-import 'package:discord_replicate/model/channel.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,14 +20,6 @@ class SearchPanel extends StatefulWidget {
 
 class _SearchPanelState extends State<SearchPanel> {
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
-
-  // Channel _getLastChannel() {
-  //   return Channel.dummy();
-  // }
-
-  // List<Channel> _getSuggestionChannels() {
-  //   return List.generate(20, (index) => Channel.dummy());
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +91,13 @@ class _SearchPanelState extends State<SearchPanel> {
                                 ),
                           ),
                         ),
-                        _SearchChannelTile(data: Channel(id: "", name: "", userGroupRef: "", messages: [], members: [])),
+                        _SearchChannelTile(
+                            data: Channel(
+                          id: "",
+                          name: "",
+                          userGroupRef: "",
+                          messages: [],
+                        )),
                         Container(
                           margin: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
                           child: Text(

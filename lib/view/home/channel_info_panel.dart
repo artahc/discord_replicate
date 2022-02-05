@@ -1,7 +1,7 @@
 import 'package:discord_replicate/external/app_icon.dart';
-import 'package:discord_replicate/model/channel.dart';
-import 'package:discord_replicate/model/member.dart';
-import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
+import 'package:discord_replicate/model/member/member.dart';
+import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/widgets/custom_list_view.dart';
 import 'package:flutter/material.dart';
@@ -138,7 +138,7 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                     Expanded(
                       child: Container(
                         child: CustomListView<Member>(
-                          elements: widget.channel.members,
+                          elements: [],
                           builder: (_, user, index) {
                             return ChannelMemberTile(member: user);
                           },

@@ -1,7 +1,7 @@
 import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/model/user.dart';
+import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/view/home/channel_info_panel.dart';
 import 'package:discord_replicate/view/home/channel_list_panel.dart';
 import 'package:discord_replicate/view/home/direct_message_panel.dart';
@@ -94,7 +94,6 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
                     );
                   },
                   loaded: (channel) {
-                    log.d("Loaded channel");
                     return MessagePanel(
                       key: UniqueKey(),
                       channel: channel,

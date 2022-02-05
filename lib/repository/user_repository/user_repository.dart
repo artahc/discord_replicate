@@ -4,8 +4,8 @@ import 'dart:collection';
 import 'package:async/async.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/external/app_extension.dart';
-import 'package:discord_replicate/model/user.dart';
-import 'package:discord_replicate/repository/repository_interface.dart';
+import 'package:discord_replicate/model/user/user.dart';
+import 'package:discord_replicate/repository/repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:get_it/get_it.dart';
@@ -68,7 +68,7 @@ class UserRepository implements Repository<User> {
       if (_cache.containsKey(uid)) cachedUser = _cache[uid];
 
       return Stream.value(cachedUser).where((user) => user != null).doOnData((user) {
-        log.d("User found on memory cache");
+        log.i("User found on memory cache");
       });
     });
 
@@ -83,7 +83,7 @@ class UserRepository implements Repository<User> {
           .asStream()
           .where((user) => user != null)
           .doOnData((event) {
-            log.d("User found on local database.");
+            log.i("User found on local database.");
           });
     });
 
@@ -98,7 +98,7 @@ class UserRepository implements Repository<User> {
           .onError((Exception error, stackTrace) => Future.error(mapException(error)))
           .asStream()
           .doOnData((user) {
-            log.d("User retrieved from remote API. $user");
+            log.i("User retrieved from remote API. $user");
           });
     });
 

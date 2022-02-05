@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:discord_replicate/model/credential.dart';
+import 'package:discord_replicate/model/credential/credential.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 
 abstract class AuthService {
@@ -31,13 +32,12 @@ class FirebaseAuthService implements AuthService {
   }
 
   Future<Credential> signIn(String email, String password) {
-    log.d("Signing in to Firebase.");
     return _auth.signInWithEmailAndPassword(email: email, password: password).then((credential) async {
       var user = credential.user!;
       var token = await user.getIdToken(false);
       return Credential(uid: user.uid, email: user.email!, token: token);
     }).whenComplete(() {
-      log.d("Signed in to Firebase");
+      log.i("Signed in to Firebase");
     }).onError((e, st) {
       log.e("Couldn't signing in to Firebase", e, st);
       return Future.error(e!, st);
@@ -61,8 +61,9 @@ class FirebaseAuthService implements AuthService {
 
   @override
   Future<void> signOut() async {
+    await Hive.deleteFromDisk();
     await _auth.signOut().whenComplete(() {
-      log.d("Signed out from Firebase.");
+      log.i("Signed out from Firebase.");
     });
   }
 }

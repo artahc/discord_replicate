@@ -1,6 +1,6 @@
 import 'package:discord_replicate/exception/custom_exception.dart';
-import 'package:discord_replicate/model/server.dart';
-import 'package:discord_replicate/repository/server_repository.dart';
+import 'package:discord_replicate/model/server/server.dart';
+import 'package:discord_replicate/repository/server_repository/server_repository.dart';
 import 'package:get_it/get_it.dart';
 
 abstract class ServerService {

@@ -1,9 +1,9 @@
-import 'package:discord_replicate/model/channel.dart';
-import 'package:discord_replicate/model/member.dart';
-import 'package:discord_replicate/model/message.dart';
-import 'package:discord_replicate/model/server.dart';
-import 'package:discord_replicate/model/user.dart';
-import 'package:discord_replicate/model/user_group.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
+import 'package:discord_replicate/model/member/member.dart';
+import 'package:discord_replicate/model/message/message.dart';
+import 'package:discord_replicate/model/server/server.dart';
+import 'package:discord_replicate/model/user/user.dart';
+import 'package:discord_replicate/model/user_group/user_group.dart';
 import 'package:hive/hive.dart';
 
 class HiveConstants {
