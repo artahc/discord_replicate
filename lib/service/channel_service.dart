@@ -14,9 +14,9 @@ abstract class ChannelService {
   Future<List<Member>> getAllMembers(String userGroupId);
   Future<Member> getMemberById(String userGroupId, String userId);
 
-  Future<List<MessageWithMember>> fetchMessages(String channelId);
-  Future<MessageWithMember> sendMessage(String channelId, Message message);
-  Stream<MessageWithMember> subscribeMessage(String channelId);
+  Future<List<Message>> fetchMessages(String channelId);
+  Future<Message> sendMessage(String channelId, Message message);
+  Stream<Message> subscribeMessage(String channelId);
 }
 
 class ChannelServiceImpl implements ChannelService {
@@ -63,33 +63,33 @@ class ChannelServiceImpl implements ChannelService {
   }
 
   @override
-  Future<MessageWithMember> sendMessage(String channelId, Message message) async {
+  Future<Message> sendMessage(String channelId, Message message) async {
     var raw = await _channelRepo.sendMessage(channelId, message);
     var member = await getMemberById(channelId, raw.senderRef);
-    var messageWithUser = Message.withUser(id: raw.id, sender: member, date: raw.date, message: raw.message);
+    var messageWithUser = Message(id: raw.id, sender: member, date: raw.date, message: raw.message);
 
-    return messageWithUser as MessageWithMember;
+    return messageWithUser;
   }
 
   @override
-  Future<List<MessageWithMember>> fetchMessages(String channelId) async {
+  Future<List<Message>> fetchMessages(String channelId) async {
     var rawMessages = await _channelRepo.fetchMessages(channelId);
     var messages = await Stream.fromIterable(rawMessages).asyncMap((raw) async {
       var member = await getMemberById(channelId, raw.senderRef);
-      var message = Message.withUser(id: raw.id, sender: member, date: raw.date, message: raw.message);
-      return message as MessageWithMember;
+      var message = Message(id: raw.id, sender: member, date: raw.date, message: raw.message);
+      return message;
     }).toList();
 
     return messages;
   }
 
   @override
-  Stream<MessageWithMember> subscribeMessage(String channelId) async* {
+  Stream<Message> subscribeMessage(String channelId) async* {
     var rawMessageStream = _channelRepo.subscribeChannelMessages(channelId);
     var messageWithUserStream = rawMessageStream.asyncMap((raw) async {
       var member = await getMemberById(channelId, raw.senderRef);
-      var message = Message.withUser(id: raw.id, sender: member, date: raw.date, message: raw.message);
-      return message as MessageWithMember;
+      var message = Message(id: raw.id, sender: member, date: raw.date, message: raw.message);
+      return message;
     });
 
     yield* messageWithUserStream;

@@ -21,19 +21,19 @@ class _$MessageStateTearOff {
     return const MessageStateInitial();
   }
 
-  MessageStateSending sendingMessage(PendingMessage message) {
+  MessageStateSending sendingMessage(Message message) {
     return MessageStateSending(
       message,
     );
   }
 
-  MessageStateNewMessage receivedNewMessage(MessageWithMember message) {
+  MessageStateNewMessage receivedNewMessage(Message message) {
     return MessageStateNewMessage(
       message,
     );
   }
 
-  MessageStateMessageFetched messageFetched(List<MessageWithMember> messages) {
+  MessageStateMessageFetched messageFetched(List<Message> messages) {
     return MessageStateMessageFetched(
       messages,
     );
@@ -48,25 +48,25 @@ mixin _$MessageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(PendingMessage message) sendingMessage,
-    required TResult Function(MessageWithMember message) receivedNewMessage,
-    required TResult Function(List<MessageWithMember> messages) messageFetched,
+    required TResult Function(Message message) sendingMessage,
+    required TResult Function(Message message) receivedNewMessage,
+    required TResult Function(List<Message> messages) messageFetched,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -155,9 +155,9 @@ class _$MessageStateInitial implements MessageStateInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(PendingMessage message) sendingMessage,
-    required TResult Function(MessageWithMember message) receivedNewMessage,
-    required TResult Function(List<MessageWithMember> messages) messageFetched,
+    required TResult Function(Message message) sendingMessage,
+    required TResult Function(Message message) receivedNewMessage,
+    required TResult Function(List<Message> messages) messageFetched,
   }) {
     return initial();
   }
@@ -166,9 +166,9 @@ class _$MessageStateInitial implements MessageStateInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
   }) {
     return initial?.call();
   }
@@ -177,9 +177,9 @@ class _$MessageStateInitial implements MessageStateInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -235,7 +235,9 @@ abstract class $MessageStateSendingCopyWith<$Res> {
   factory $MessageStateSendingCopyWith(
           MessageStateSending value, $Res Function(MessageStateSending) then) =
       _$MessageStateSendingCopyWithImpl<$Res>;
-  $Res call({PendingMessage message});
+  $Res call({Message message});
+
+  $MessageCopyWith<$Res> get message;
 }
 
 /// @nodoc
@@ -257,8 +259,15 @@ class _$MessageStateSendingCopyWithImpl<$Res>
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as PendingMessage,
+              as Message,
     ));
+  }
+
+  @override
+  $MessageCopyWith<$Res> get message {
+    return $MessageCopyWith<$Res>(_value.message, (value) {
+      return _then(_value.copyWith(message: value));
+    });
   }
 }
 
@@ -268,7 +277,7 @@ class _$MessageStateSending implements MessageStateSending {
   const _$MessageStateSending(this.message);
 
   @override
-  final PendingMessage message;
+  final Message message;
 
   @override
   String toString() {
@@ -296,9 +305,9 @@ class _$MessageStateSending implements MessageStateSending {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(PendingMessage message) sendingMessage,
-    required TResult Function(MessageWithMember message) receivedNewMessage,
-    required TResult Function(List<MessageWithMember> messages) messageFetched,
+    required TResult Function(Message message) sendingMessage,
+    required TResult Function(Message message) receivedNewMessage,
+    required TResult Function(List<Message> messages) messageFetched,
   }) {
     return sendingMessage(message);
   }
@@ -307,9 +316,9 @@ class _$MessageStateSending implements MessageStateSending {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
   }) {
     return sendingMessage?.call(message);
   }
@@ -318,9 +327,9 @@ class _$MessageStateSending implements MessageStateSending {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
     required TResult orElse(),
   }) {
     if (sendingMessage != null) {
@@ -368,10 +377,9 @@ class _$MessageStateSending implements MessageStateSending {
 }
 
 abstract class MessageStateSending implements MessageState {
-  const factory MessageStateSending(PendingMessage message) =
-      _$MessageStateSending;
+  const factory MessageStateSending(Message message) = _$MessageStateSending;
 
-  PendingMessage get message;
+  Message get message;
   @JsonKey(ignore: true)
   $MessageStateSendingCopyWith<MessageStateSending> get copyWith =>
       throw _privateConstructorUsedError;
@@ -382,7 +390,9 @@ abstract class $MessageStateNewMessageCopyWith<$Res> {
   factory $MessageStateNewMessageCopyWith(MessageStateNewMessage value,
           $Res Function(MessageStateNewMessage) then) =
       _$MessageStateNewMessageCopyWithImpl<$Res>;
-  $Res call({MessageWithMember message});
+  $Res call({Message message});
+
+  $MessageCopyWith<$Res> get message;
 }
 
 /// @nodoc
@@ -404,8 +414,15 @@ class _$MessageStateNewMessageCopyWithImpl<$Res>
       message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
-              as MessageWithMember,
+              as Message,
     ));
+  }
+
+  @override
+  $MessageCopyWith<$Res> get message {
+    return $MessageCopyWith<$Res>(_value.message, (value) {
+      return _then(_value.copyWith(message: value));
+    });
   }
 }
 
@@ -415,7 +432,7 @@ class _$MessageStateNewMessage implements MessageStateNewMessage {
   const _$MessageStateNewMessage(this.message);
 
   @override
-  final MessageWithMember message;
+  final Message message;
 
   @override
   String toString() {
@@ -444,9 +461,9 @@ class _$MessageStateNewMessage implements MessageStateNewMessage {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(PendingMessage message) sendingMessage,
-    required TResult Function(MessageWithMember message) receivedNewMessage,
-    required TResult Function(List<MessageWithMember> messages) messageFetched,
+    required TResult Function(Message message) sendingMessage,
+    required TResult Function(Message message) receivedNewMessage,
+    required TResult Function(List<Message> messages) messageFetched,
   }) {
     return receivedNewMessage(message);
   }
@@ -455,9 +472,9 @@ class _$MessageStateNewMessage implements MessageStateNewMessage {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
   }) {
     return receivedNewMessage?.call(message);
   }
@@ -466,9 +483,9 @@ class _$MessageStateNewMessage implements MessageStateNewMessage {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
     required TResult orElse(),
   }) {
     if (receivedNewMessage != null) {
@@ -516,10 +533,10 @@ class _$MessageStateNewMessage implements MessageStateNewMessage {
 }
 
 abstract class MessageStateNewMessage implements MessageState {
-  const factory MessageStateNewMessage(MessageWithMember message) =
+  const factory MessageStateNewMessage(Message message) =
       _$MessageStateNewMessage;
 
-  MessageWithMember get message;
+  Message get message;
   @JsonKey(ignore: true)
   $MessageStateNewMessageCopyWith<MessageStateNewMessage> get copyWith =>
       throw _privateConstructorUsedError;
@@ -530,7 +547,7 @@ abstract class $MessageStateMessageFetchedCopyWith<$Res> {
   factory $MessageStateMessageFetchedCopyWith(MessageStateMessageFetched value,
           $Res Function(MessageStateMessageFetched) then) =
       _$MessageStateMessageFetchedCopyWithImpl<$Res>;
-  $Res call({List<MessageWithMember> messages});
+  $Res call({List<Message> messages});
 }
 
 /// @nodoc
@@ -553,7 +570,7 @@ class _$MessageStateMessageFetchedCopyWithImpl<$Res>
       messages == freezed
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
-              as List<MessageWithMember>,
+              as List<Message>,
     ));
   }
 }
@@ -564,7 +581,7 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
   const _$MessageStateMessageFetched(this.messages);
 
   @override
-  final List<MessageWithMember> messages;
+  final List<Message> messages;
 
   @override
   String toString() {
@@ -594,9 +611,9 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function(PendingMessage message) sendingMessage,
-    required TResult Function(MessageWithMember message) receivedNewMessage,
-    required TResult Function(List<MessageWithMember> messages) messageFetched,
+    required TResult Function(Message message) sendingMessage,
+    required TResult Function(Message message) receivedNewMessage,
+    required TResult Function(List<Message> messages) messageFetched,
   }) {
     return messageFetched(messages);
   }
@@ -605,9 +622,9 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
   }) {
     return messageFetched?.call(messages);
   }
@@ -616,9 +633,9 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function(PendingMessage message)? sendingMessage,
-    TResult Function(MessageWithMember message)? receivedNewMessage,
-    TResult Function(List<MessageWithMember> messages)? messageFetched,
+    TResult Function(Message message)? sendingMessage,
+    TResult Function(Message message)? receivedNewMessage,
+    TResult Function(List<Message> messages)? messageFetched,
     required TResult orElse(),
   }) {
     if (messageFetched != null) {
@@ -666,10 +683,10 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
 }
 
 abstract class MessageStateMessageFetched implements MessageState {
-  const factory MessageStateMessageFetched(List<MessageWithMember> messages) =
+  const factory MessageStateMessageFetched(List<Message> messages) =
       _$MessageStateMessageFetched;
 
-  List<MessageWithMember> get messages;
+  List<Message> get messages;
   @JsonKey(ignore: true)
   $MessageStateMessageFetchedCopyWith<MessageStateMessageFetched>
       get copyWith => throw _privateConstructorUsedError;

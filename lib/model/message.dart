@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:discord_replicate/model/member.dart';
-import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
@@ -14,77 +13,32 @@ part 'message.g.dart';
 class Message with _$Message {
   const Message._();
 
-  const factory Message.withUser({
-    @HiveField(0) required String id,
-    @HiveField(1) required Member sender,
-    @HiveField(2) @TimestampConverter() @JsonKey(name: 'timestamp') required DateTime date,
-    @HiveField(3) required String message,
-  }) = MessageWithMember;
-
-  const factory Message.pending({
-    @HiveField(1) required Member sender,
-    @HiveField(2) @TimestampConverter() @JsonKey(name: 'timestamp') required DateTime date,
-    @HiveField(3) required String message,
-  }) = PendingMessage;
-
   @HiveType(typeId: HiveConstants.MESSAGE_TYPE, adapterName: "MessageAdapter")
-  const factory Message.raw({
+  const factory Message({
     @HiveField(0) required String id,
-    @HiveField(1) required String senderRef,
-    @HiveField(2) required int timestamp,
+    @HiveField(1) required Member sender,
+    @HiveField(2) @TimestampConverter() @JsonKey(name: 'timestamp') required DateTime date,
     @HiveField(3) required String message,
-  }) = RawMessage;
-
-  factory Message.fromJson(Map<String, dynamic> map) => RawMessage.fromJson(map);
-
-  // String get id {
-  //   return this.when(
-  //     withUser: (id, sender, date, message) => id,
-  //     raw: (id, senderRef, timestamp, message) => id,
-  //     pending: (sender, date, message) => "",
-  //   );
-  // }
-
-  String get senderRef {
-    return this.when(
-      withUser: (id, sender, date, message) => sender.uid,
-      raw: (id, senderRef, timestamp, message) => senderRef,
-      pending: (sender, date, message) => senderRef,
-    );
-  }
-
-  // Member get user {
-  //   return this.when(
-  //     withUser: (id, sender, date, message) => sender,
-  //     raw: (id, senderRef, timestamp, message) => throw Exception("Trying access user from raw message. Please construct into Message Model."),
-  //     pending: (sender, date, message) => sender,
-  //   );
-  // }
-
-  DateTime get date {
-    return this.when(
-      withUser: (id, sender, date, message) => date,
-      raw: (id, senderRef, timestamp, message) => DateTime.fromMillisecondsSinceEpoch(timestamp),
-      pending: (sender, date, message) => date,
-    );
-  }
-
-  // String get message {
-  //   return this.when(
-  //     withUser: (id, sender, date, message) => message,
-  //     raw: (id, senderRef, timestamp, message) => message,
-  //     pending: (sender, date, message) => message,
-  //   );
-  // }
+  }) = _Message;
 
   String get contentHash {
-    var encoded = this.when(
-      withUser: (id, sender, date, message) => utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message"),
-      raw: (id, senderRef, timestamp, message) => utf8.encode("$senderRef$timestamp$message"),
-      pending: (sender, date, message) => utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message"),
-    );
+    var encoded = utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message");
     return md5.convert(encoded).toString();
   }
+  
+  factory Message.fromJson(Map<String, dynamic> map) => _Message.fromJson(map);
+}
+
+@freezed
+class RawMessage with _$RawMessage {
+  const factory RawMessage({
+    required String id,
+    required String senderRef,
+    @TimestampConverter() @JsonKey(name: 'timestamp') required DateTime date,
+    required String message,
+  }) = _RawMessage;
+
+  factory RawMessage.fromJson(Map<String, dynamic> map) => _RawMessage.fromJson(map);
 }
 
 class TimestampConverter implements JsonConverter<DateTime, int> {

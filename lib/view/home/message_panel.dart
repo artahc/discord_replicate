@@ -1,4 +1,3 @@
-import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/message/message_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/model/channel.dart';
@@ -142,13 +141,19 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
 
   bool _pinScrollToBottom = false;
 
-  late List<MessageWithMember> _messages = [];
-  late MessageBloc _messageBloc = BlocProvider.of(context);
+  late List<Message> _messages = [];
 
   @override
   void initState() {
     _scrollCtrl.addListener(_onScroll);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollCtrl.removeListener(_onScroll);
+    _scrollCtrl.dispose();
+    super.dispose();
   }
 
   _onScroll() {
@@ -163,28 +168,20 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
     }
   }
 
-  @override
-  void dispose() {
-    _scrollCtrl.removeListener(_onScroll);
-    _scrollCtrl.dispose();
-    super.dispose();
-  }
-
-  _onMessageFetched(List<MessageWithMember> messages) {
+  _onMessageFetched(List<Message> messages) {
     setState(() {
       _messages.addAll(messages);
     });
   }
 
-  _onSendingMessage(PendingMessage message) {
-    log.d("Sending message. ${message.toJson()}");
+  _onSendingMessage(Message pendingMessage) {
+    log.d("Sending message. ${pendingMessage.toJson()}");
     setState(() {
-      // _messages.add(message);
       _scrollCtrl.animateTo(_scrollCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     });
   }
 
-  _onReceiveNewMessage(MessageWithMember message) async {
+  _onReceiveNewMessage(Message message) async {
     setState(() {
       var pending = _messages.where((element) => element.contentHash == message.contentHash);
       if (pending.isNotEmpty) {

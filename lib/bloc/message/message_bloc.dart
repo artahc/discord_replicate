@@ -59,11 +59,11 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     var member = await _channelService.getMemberById(_channel.id, user.uid);
 
     var date = DateTime.now();
-    var pendingMessage = Message.pending(sender: member, message: input, date: date);
+    var message = Message(id: "", sender: member, message: input, date: date);
 
-    emit(MessageState.sendingMessage(pendingMessage as PendingMessage));
+    emit(MessageState.sendingMessage(message));
 
-    await _channelService.sendMessage(_channel.id, pendingMessage).then((message) {
+    await _channelService.sendMessage(_channel.id, message).then((message) {
       log.d("Message sent. ${message.toJson()}");
     }, onError: (e, st) {
       log.e(e, st);
@@ -73,7 +73,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     });
   }
 
-  _onReceivedNewMessage(MessageWithMember message, emit) async {
+  _onReceivedNewMessage(Message message, emit) async {
     log.d("Received new message. $message");
     emit(MessageState.receivedNewMessage(message));
   }

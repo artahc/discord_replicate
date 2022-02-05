@@ -1,13 +1,10 @@
-import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/model/message.dart';
-import 'package:discord_replicate/model/user.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class MessageTile extends StatelessWidget {
-  final MessageWithMember message;
+  final Message message;
 
   const MessageTile({required this.message}) : assert(!(message is RawMessage));
 

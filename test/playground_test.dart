@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:discord_replicate/external/app_extension.dart';
+import 'package:discord_replicate/model/member.dart';
 import 'package:discord_replicate/model/message.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -11,11 +12,17 @@ void main() {
   });
 
   test("Map list of T to Key Value Pair", () {
-    List<RawMessage> list = List.generate(
+    List<Message> list = List.generate(
       3,
       (index) {
         var random = Random().nextInt(1000);
-        return Message.raw(id: random.toString(), message: "Messag#$random", senderRef: "User#$random", timestamp: random) as RawMessage;
+        var message = Message(
+          id: "id$random",
+          date: DateTime.now(),
+          message: "message$random",
+          sender: Member(name: "user$random", uid: "uid$random", avatarUrl: "ava$random"),
+        );
+        return message;
       },
     );
 
