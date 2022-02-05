@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/message/message.dart';
+import 'package:discord_replicate/model/paginated_response.dart';
 import 'package:discord_replicate/repository/repository.dart';
 
 export 'channel_repositor_impl.dart';
@@ -33,6 +34,6 @@ class ChannelQuery {
 
 abstract class ChannelRepository extends Repository<Channel> {
   Future<RawMessage> sendMessage(String channelId, Message message);
-  Future<List<RawMessage>> fetchMessages(String channelId);
+  Future<PaginationResponse<RawMessage>> fetchMessages(String channelId);
   Stream<RawMessage> subscribeChannelMessages(String channelId);
 }

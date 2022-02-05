@@ -6,6 +6,7 @@ import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/model/message/message.dart';
 import 'package:discord_replicate/repository/repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
@@ -74,8 +75,8 @@ class ChannelServiceImpl implements ChannelService {
 
   @override
   Future<List<Message>> fetchMessages(String channelId) async {
-    var rawMessages = await _channelRepo.fetchMessages(channelId);
-    var messages = await Stream.fromIterable(rawMessages).asyncMap((raw) async {
+    var paginationResponse = await _channelRepo.fetchMessages(channelId);
+    var messages = await Stream.fromIterable(paginationResponse.items).asyncMap((raw) async {
       var member = await getMemberById(channelId, raw.senderRef);
       var message = Message(id: raw.id, sender: member, date: raw.date, message: raw.message);
       return message;

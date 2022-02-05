@@ -6,6 +6,7 @@ import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/message/message.dart';
+import 'package:discord_replicate/model/paginated_response.dart';
 import 'package:discord_replicate/repository/repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:discord_replicate/service/hive_database_service.dart';
@@ -149,18 +150,44 @@ class ChannelRepositoryImpl implements ChannelRepository {
   }
 
   @override
-  Future<List<RawMessage>> fetchMessages(String channelId) async {
+  Future<PaginationResponse<RawMessage>> fetchMessages(String channelId) async {
+    var query = r"""
+      query Messages($channelRef: String!, $cursor: String, $limit: Int!) {
+        messages(channelRef: $channelRef, cursor: $cursor, limit: $limit) {
+          items {
+            id
+            senderRef
+            timestamp
+            message
+          }
+          hasMore
+          previousCursor
+        }
+      }
+    """;
+
     var variables = {
-      "channelRef": channelId,
+      "channelRef": "PkM6m7lhnvIORIRuoVJv",
+      "cursor": null,
+      "limit": 5,
     };
 
-    var messages = await _api.query(ChannelQuery.loadChannelMessages, variables: variables).then((json) {
-      var rawList = json['messages'] as List<Object?>;
-      var rawMessages = rawList.map((element) => RawMessage.fromJson(element as Map<String, dynamic>));
-      return rawMessages.toList();
+    var paginationResult = await _api.query(query, variables: variables).then((json) {
+      var rawList = json['messages']['items'] as List<dynamic>;
+      var rawMessages = rawList.map((element) => RawMessage.fromJson(element as Map<String, dynamic>)).toList();
+      var hasMore = json['messages']['hasMore'] as bool;
+      var previousCursor = json['messages']['previousCursor'] as String?;
+
+      var response = PaginationResponse<RawMessage>(
+        items: rawMessages,
+        hasMore: hasMore,
+        previousCursor: previousCursor,
+      );
+
+      return response;
     });
 
-    return messages;
+    return paginationResult;
   }
 
   @override
