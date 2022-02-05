@@ -23,6 +23,8 @@ class UserServiceImpl implements UserService {
   final ServerRepository _serverRepo;
   final ChannelRepository _channelRepo;
 
+  User? _currentUser;
+
   UserServiceImpl({AuthService? authService, UserRepository? userRepo, ChannelRepository? channelRepo, ServerRepository? serverRepo})
       : _userRepo = userRepo ?? GetIt.I.get<UserRepository>(),
         _serverRepo = serverRepo ?? GetIt.I.get<ServerRepository>(),
@@ -31,6 +33,8 @@ class UserServiceImpl implements UserService {
 
   @override
   Future<User> getCurrentUser() async {
+    if (_currentUser != null) return _currentUser!;
+
     var credential = await _authService.getCredential(forceRefresh: true);
     if (credential == null) throw Exception("Credential not found. User is not currently logged in.");
 
@@ -39,6 +43,8 @@ class UserServiceImpl implements UserService {
 
     if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
     if (user.privateChannels.isNotEmpty) await _channelRepo.saveAll(user.privateChannels);
+
+    _currentUser = user;
 
     return user;
   }
