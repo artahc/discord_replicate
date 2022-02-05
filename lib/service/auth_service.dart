@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:discord_replicate/model/credential/credential.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 
 abstract class AuthService implements Disposable {

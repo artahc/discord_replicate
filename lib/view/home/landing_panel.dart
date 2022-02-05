@@ -10,7 +10,6 @@ import 'package:discord_replicate/view/home/navigation_bar.dart';
 import 'package:discord_replicate/view/home/server_list_panel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
