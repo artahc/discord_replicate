@@ -142,6 +142,7 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
   bool _pinScrollToBottom = false;
 
   late List<Message> _messages = [];
+  late List<Message> _pendingMessage = [];
 
   @override
   void initState() {
@@ -174,21 +175,20 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
     });
   }
 
-  _onSendingMessage(Message pendingMessage) {
-    log.d("Sending message. ${pendingMessage.toJson()}");
+  _onSendingMessage(Message message) {
+    log.d("Sending message. ${message.toJson()}");
     setState(() {
-      _scrollCtrl.animateTo(_scrollCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+      _pendingMessage.add(message);
     });
+    _scrollCtrl.animateTo(_scrollCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
   _onReceiveNewMessage(Message message) async {
-    setState(() {
-      var pending = _messages.where((element) => element.contentHash == message.contentHash);
-      if (pending.isNotEmpty) {
-        _messages.remove(pending.first);
-      }
-      _messages.add(message);
-    });
+    if (_pendingMessage.where((element) => element.contentHash == message.contentHash).isNotEmpty)
+      setState(() {
+        _pendingMessage.removeWhere((element) => element.contentHash == message.contentHash);
+        _messages.add(message);
+      });
 
     if (_pinScrollToBottom) {
       _scrollCtrl.animateTo(_scrollCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
@@ -197,7 +197,7 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
 
   @override
   Widget build(BuildContext context) {
-    var messages = _messages.reversed.toList();
+    var messages = _messages.reversed.toList()..insertAll(0, _pendingMessage.reversed);
     return BlocListener<MessageBloc, MessageState>(
       listener: (_, state) {
         state.whenOrNull(

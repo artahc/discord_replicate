@@ -31,12 +31,15 @@ class _$MessageTearOff {
       @JsonKey(name: 'timestamp')
           required DateTime date,
       @HiveField(3)
-          required String message}) {
+          required String message,
+      @HiveField(4)
+          String status = "Sent"}) {
     return _Message(
       id: id,
       sender: sender,
       date: date,
       message: message,
+      status: status,
     );
   }
 
@@ -60,6 +63,8 @@ mixin _$Message {
   DateTime get date => throw _privateConstructorUsedError;
   @HiveField(3)
   String get message => throw _privateConstructorUsedError;
+  @HiveField(4)
+  String get status => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -80,7 +85,9 @@ abstract class $MessageCopyWith<$Res> {
       @JsonKey(name: 'timestamp')
           DateTime date,
       @HiveField(3)
-          String message});
+          String message,
+      @HiveField(4)
+          String status});
 
   $MemberCopyWith<$Res> get sender;
 }
@@ -99,6 +106,7 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
     Object? sender = freezed,
     Object? date = freezed,
     Object? message = freezed,
+    Object? status = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -116,6 +124,10 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
       message: message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -143,7 +155,9 @@ abstract class _$MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
       @JsonKey(name: 'timestamp')
           DateTime date,
       @HiveField(3)
-          String message});
+          String message,
+      @HiveField(4)
+          String status});
 
   @override
   $MemberCopyWith<$Res> get sender;
@@ -164,6 +178,7 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
     Object? sender = freezed,
     Object? date = freezed,
     Object? message = freezed,
+    Object? status = freezed,
   }) {
     return _then(_Message(
       id: id == freezed
@@ -181,6 +196,10 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
       message: message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: status == freezed
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -200,7 +219,9 @@ class _$_Message extends _Message {
       @JsonKey(name: 'timestamp')
           required this.date,
       @HiveField(3)
-          required this.message})
+          required this.message,
+      @HiveField(4)
+          this.status = "Sent"})
       : super._();
 
   factory _$_Message.fromJson(Map<String, dynamic> json) =>
@@ -220,10 +241,14 @@ class _$_Message extends _Message {
   @override
   @HiveField(3)
   final String message;
+  @JsonKey()
+  @override
+  @HiveField(4)
+  final String status;
 
   @override
   String toString() {
-    return 'Message(id: $id, sender: $sender, date: $date, message: $message)';
+    return 'Message(id: $id, sender: $sender, date: $date, message: $message, status: $status)';
   }
 
   @override
@@ -234,7 +259,8 @@ class _$_Message extends _Message {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.sender, sender) &&
             const DeepCollectionEquality().equals(other.date, date) &&
-            const DeepCollectionEquality().equals(other.message, message));
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
@@ -243,7 +269,8 @@ class _$_Message extends _Message {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(sender),
       const DeepCollectionEquality().hash(date),
-      const DeepCollectionEquality().hash(message));
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override
@@ -267,7 +294,9 @@ abstract class _Message extends Message {
       @JsonKey(name: 'timestamp')
           required DateTime date,
       @HiveField(3)
-          required String message}) = _$_Message;
+          required String message,
+      @HiveField(4)
+          String status}) = _$_Message;
   const _Message._() : super._();
 
   factory _Message.fromJson(Map<String, dynamic> json) = _$_Message.fromJson;
@@ -286,6 +315,9 @@ abstract class _Message extends Message {
   @override
   @HiveField(3)
   String get message;
+  @override
+  @HiveField(4)
+  String get status;
   @override
   @JsonKey(ignore: true)
   _$MessageCopyWith<_Message> get copyWith =>

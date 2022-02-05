@@ -21,13 +21,14 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
       sender: fields[1] as Member,
       date: fields[2] as DateTime,
       message: fields[3] as String,
+      status: fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, _$_Message obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
       ..writeByte(2)
       ..write(obj.date)
       ..writeByte(3)
-      ..write(obj.message);
+      ..write(obj.message)
+      ..writeByte(4)
+      ..write(obj.status);
   }
 
   @override
@@ -58,6 +61,7 @@ _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
       sender: Member.fromJson(json['sender'] as Map<String, dynamic>),
       date: const TimestampConverter().fromJson(json['timestamp'] as int),
       message: json['message'] as String,
+      status: json['status'] as String? ?? "Sent",
     );
 
 Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
@@ -66,6 +70,7 @@ Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
       'sender': instance.sender,
       'timestamp': const TimestampConverter().toJson(instance.date),
       'message': instance.message,
+      'status': instance.status,
     };
 
 _$_RawMessage _$$_RawMessageFromJson(Map<String, dynamic> json) =>

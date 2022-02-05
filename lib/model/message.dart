@@ -19,13 +19,14 @@ class Message with _$Message {
     @HiveField(1) required Member sender,
     @HiveField(2) @TimestampConverter() @JsonKey(name: 'timestamp') required DateTime date,
     @HiveField(3) required String message,
+    @HiveField(4) @Default("Sent") String status,
   }) = _Message;
 
   String get contentHash {
     var encoded = utf8.encode("${sender.uid}${date.millisecondsSinceEpoch}$message");
     return md5.convert(encoded).toString();
   }
-  
+
   factory Message.fromJson(Map<String, dynamic> map) => _Message.fromJson(map);
 }
 

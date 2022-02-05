@@ -23,7 +23,7 @@ class MessageTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleContainer(
-                color: Theme.of(context).buttonTheme.colorScheme?.primary,
+                color: message.status == "Sent" ? Colors.green : Colors.yellow,
                 size: Size(40, 40),
                 child: null,
               ),
