@@ -31,13 +31,15 @@ Future main() async {
     statusBarColor: Colors.transparent,
   ));
   await Firebase.initializeApp();
-  await initializeHive();
-  await initializeDependencyContainer();
+  await initializeDependency();
 
   runApp(Main());
 }
 
-Future initializeDependencyContainer() async {
+Future initializeDependency() async {
+  var dir = await getApplicationDocumentsDirectory();
+  Hive.init(dir.path);
+
   // final String url = "https://discord-replicate-backend-1029.herokuapp.com/graphql";
   // final String wsUrl = "ws://discord-replicate-backend-1029.herokuapp.com/graphql";
 
@@ -76,11 +78,6 @@ Future initializeDependencyContainer() async {
   GetIt.I.registerFactoryParam<UserBloc, AuthBloc, void>((authBloc, _) => UserBloc(authBloc: authBloc));
   GetIt.I.registerFactoryParam<NavigationCubit, GlobalKey<NavigatorState>, void>((key, _) => NavigationCubit(navigator: key));
   GetIt.I.registerFactoryParam<DirectMessageBloc, UserBloc, void>((userBloc, _) => DirectMessageBloc(userBloc: userBloc));
-}
-
-Future initializeHive() async {
-  var dir = await getApplicationDocumentsDirectory();
-  Hive.init(dir.path);
 }
 
 class Main extends StatelessWidget {
