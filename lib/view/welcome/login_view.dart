@@ -21,7 +21,6 @@ class _LoginViewState extends State<LoginView> {
 
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
-  late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
 
   late Logger log = Logger();
 
@@ -45,7 +44,7 @@ class _LoginViewState extends State<LoginView> {
     _authBloc.add(AuthEvent.signInEvent(id: id, password: password));
   }
 
-  void _onUserLoaded() {
+  void _onAuthenticated() {
     SchedulerBinding.instance?.addPostFrameCallback((_) {
       _navBloc.pushNamedAndRemoveUntil(context, Routes.landing, (route) => false, true);
     });
@@ -58,22 +57,25 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserBloc, UserState>(
-      bloc: _userBloc,
+    return BlocConsumer<AuthBloc, AuthState>(
       listener: (_, state) {
         state.whenOrNull(
           error: (e) {
-            // _signOut();
-            _userBloc.add(UserEvent.deleteUser());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                content: Text("$e"),
+              ),
+            );
           },
-          loaded: (user) {
-            _onUserLoaded();
+          authenticated: (credential) {
+            _onAuthenticated();
           },
         );
       },
       builder: (_, state) {
         return state.maybeWhen(
-          orElse: () {
+          authenticating: () {
             return Material(
               child: Center(
                 child: CircularProgressIndicator(
@@ -82,7 +84,7 @@ class _LoginViewState extends State<LoginView> {
               ),
             );
           },
-          empty: () {
+          orElse: () {
             return Scaffold(
               backgroundColor: Theme.of(context).colorScheme.secondary,
               appBar: AppBar(
@@ -176,14 +178,6 @@ class _LoginViewState extends State<LoginView> {
             );
           },
         );
-        // if (state is AuthStateSigningIn)
-        //   return Scaffold(
-        //     backgroundColor: Theme.of(context).colorScheme.secondary,
-        //     body: Center(
-        //       child: CircularProgressIndicator(),
-        //     ),
-        //   );
-        // else
       },
     );
   }

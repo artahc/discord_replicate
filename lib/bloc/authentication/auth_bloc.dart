@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:discord_replicate/main.dart';
 import 'package:discord_replicate/repository/user_repository/user_repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
@@ -46,12 +47,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _signIn(String id, String password, emit) async {
     emit(AuthState.authenticating());
-    var credential = await _authService.signIn(id, password);
-    emit(AuthState.authenticated(credential: credential));
+    await _authService.signIn(id, password).then((credential) {
+      emit(AuthState.authenticated(credential: credential));
+    }).onError((error, stackTrace) {
+      emit(AuthState.error(exception: error as Exception));
+    });
   }
 
   _signUp(String id, RegisterOptions option, emit) async {
-
     emit(AuthState.authenticating());
     switch (option) {
       case RegisterOptions.Email:
@@ -71,6 +74,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _signOut(emit) async {
     await _authService.signOut();
+    await GetIt.I.reset();
+    await initializeDependency();
     emit(AuthState.unauthenticated());
   }
 }

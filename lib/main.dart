@@ -30,6 +30,8 @@ Future main() async {
   await Firebase.initializeApp();
   await initializeDependency();
 
+  HiveDatabaseService.initialize();
+
   runApp(Main());
 }
 
@@ -51,11 +53,7 @@ Future initializeDependency() async {
   GetIt.I.registerLazySingleton<UserService>(() => UserServiceImpl());
   GetIt.I.registerLazySingleton<ChannelService>(() => ChannelServiceImpl());
   GetIt.I.registerLazySingleton<ServerService>(() => ServerServiceImpl());
-  GetIt.I.registerLazySingleton<DatabaseService>(() {
-    var db = HiveDatabaseService();
-    db.initialize();
-    return db;
-  });
+  GetIt.I.registerLazySingleton<DatabaseService>(() => HiveDatabaseService());
 
   // Repository
   GetIt.I.registerLazySingleton<UserRepository>(() => UserRepository());
@@ -83,13 +81,11 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = GetIt.I.get<AuthBloc>();
-    final userBloc = GetIt.I.get<UserBloc>(param1: authBloc);
     final navBloc = GetIt.I.get<NavigationCubit>(param1: rootNavigatorKey);
 
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (c) => authBloc),
-        BlocProvider<UserBloc>(create: (c) => userBloc),
         BlocProvider<NavigationCubit>(create: (c) => navBloc),
       ],
       child: MaterialApp(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/server/server.dart';
@@ -5,13 +7,13 @@ import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/repository/repository.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 
-abstract class UserService {
+abstract class UserService implements Disposable {
   Future<User> getCurrentUser();
   Future<Channel?> getCurrentUserRecentPrivateChannel();
   Future<Server?> getCurrentUserRecentServer();
   Future<User> getUserById(String id);
-  Future<void> dispose();
 }
 
 class UserServiceImpl implements UserService {
@@ -19,6 +21,7 @@ class UserServiceImpl implements UserService {
   final UserRepository _userRepo;
   final ServerRepository _serverRepo;
   final ChannelRepository _channelRepo;
+  final Logger log = Logger();
 
   User? _currentUser;
 
@@ -30,7 +33,10 @@ class UserServiceImpl implements UserService {
 
   @override
   Future<User> getCurrentUser() async {
-    if (_currentUser != null) return _currentUser!;
+    if (_currentUser != null) {
+      log.d("Returning user from cache in user service. $_currentUser");
+      return _currentUser!;
+    }
 
     var credential = await _authService.getCredential(forceRefresh: true);
     if (credential == null) throw Exception("Credential not found. User is not currently logged in.");
@@ -42,6 +48,7 @@ class UserServiceImpl implements UserService {
     if (user.privateChannels.isNotEmpty) await _channelRepo.saveAll(user.privateChannels);
 
     _currentUser = user;
+    log.d("Current user: $user");
 
     return user;
   }
@@ -75,7 +82,9 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<void> dispose() async {
-    await _userRepo.dispose();
+  FutureOr onDispose() {
+    log.d("Dispose user service");
+    _currentUser = null;
+    log.d("Current user $_currentUser");
   }
 }

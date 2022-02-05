@@ -2,17 +2,23 @@ import 'dart:async';
 
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
-import 'package:discord_replicate/model/credential/credential.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
-import 'package:rxdart/src/transformers/do.dart';
+import 'package:rxdart/rxdart.dart';
 
-class GraphQLClientHelper with ExceptionMapperMixin {
+class DisableLogFilter extends LogFilter {
+  @override
+  bool shouldLog(LogEvent event) {
+    return false;
+  }
+}
+
+class GraphQLClientHelper with ExceptionMapperMixin, Disposable {
   late GraphQLClient _client;
   late AuthService _authService;
-  late Logger log = Logger();
+  late Logger log = Logger(filter: DisableLogFilter());
 
   GraphQLClientHelper(
     String url,
@@ -111,5 +117,10 @@ class GraphQLClientHelper with ExceptionMapperMixin {
       }
     }
     return e;
+  }
+
+  @override
+  FutureOr onDispose() {
+    this._client.resetStore();
   }
 }

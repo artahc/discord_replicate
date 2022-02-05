@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/member/member.dart';
@@ -7,7 +9,7 @@ import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
-abstract class ChannelService {
+abstract class ChannelService implements Disposable {
   Future<Channel> getChannelById(String id);
 
   Future<List<Member>> getAllMembers(String userGroupId);
@@ -93,4 +95,7 @@ class ChannelServiceImpl implements ChannelService {
 
     yield* messageWithUserStream;
   }
+
+  @override
+  FutureOr onDispose() {}
 }

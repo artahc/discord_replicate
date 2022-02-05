@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/model/message/message.dart';
 import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/model/user_group/user_group.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 
 class HiveConstants {
@@ -31,7 +34,7 @@ abstract class DatabaseService {
   Future<bool> exist<T>(dynamic key);
 }
 
-class HiveDatabaseService implements DatabaseService {
+class HiveDatabaseService implements DatabaseService, Disposable {
   Map<Type, String> _boxName = {
     User: HiveConstants.USER_BOX,
     Server: HiveConstants.SERVER_BOX,
@@ -39,14 +42,14 @@ class HiveDatabaseService implements DatabaseService {
     UserGroup: HiveConstants.USER_GROUP_BOX,
   };
 
-  void initialize() {
+  static void initialize() {
     Hive
-      ..registerAdapter(UserAdapter())
-      ..registerAdapter(ServerAdapter())
-      ..registerAdapter(ChannelAdapter())
-      ..registerAdapter(MessageAdapter())
-      ..registerAdapter(MemberAdapter())
-      ..registerAdapter(UserGroupAdapter());
+      ..registerAdapter(UserAdapter(), override: true)
+      ..registerAdapter(ServerAdapter(), override: true)
+      ..registerAdapter(ChannelAdapter(), override: true)
+      ..registerAdapter(MessageAdapter(), override: true)
+      ..registerAdapter(MemberAdapter(), override: true)
+      ..registerAdapter(UserGroupAdapter(), override: true);
   }
 
   Future<Box<T>> _getBox<T>() async {
@@ -90,5 +93,10 @@ class HiveDatabaseService implements DatabaseService {
   Future<bool> exist<T>(dynamic key) async {
     Box<T> box = await _getBox<T>();
     return box.containsKey(key);
+  }
+
+  @override
+  FutureOr onDispose() async {
+    await Hive.deleteFromDisk();
   }
 }

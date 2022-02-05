@@ -1,4 +1,6 @@
+import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
+import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/view/welcome/login_view.dart';
 import 'package:discord_replicate/view/welcome/register_view.dart';
@@ -6,14 +8,15 @@ import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:discord_replicate/route_transition/app_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 class WelcomeView extends StatelessWidget {
   const WelcomeView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var _navBloc = BlocProvider.of<NavigationCubit>(context);
-    
+    final navBloc = BlocProvider.of<NavigationCubit>(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.secondary,
       body: SafeArea(
@@ -53,7 +56,7 @@ class WelcomeView extends StatelessWidget {
                 child: Text("Register"),
                 onPressed: () {
                   var route = CustomSlideTransition(currentPage: this, nextPage: const RegisterView());
-                  _navBloc.push(context, route, true);
+                  navBloc.push(context, route, true);
                 },
               ),
               SizedBox(
@@ -64,7 +67,7 @@ class WelcomeView extends StatelessWidget {
                 child: Text("Login"),
                 onPressed: () {
                   var route = CustomSlideTransition(currentPage: this, nextPage: const LoginView());
-                  _navBloc.push(context, route, true);
+                  navBloc.push(context, route, true);
                 },
               ),
               SizedBox(height: 25),

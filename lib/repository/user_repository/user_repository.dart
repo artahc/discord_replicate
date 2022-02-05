@@ -48,7 +48,7 @@ class UserRepository implements Repository<User> {
 
   GraphQLClientHelper _api;
   DatabaseService _db;
-  HashMap<String, User> _cache = new HashMap();
+  SplayTreeMap<String, User> _cache = new SplayTreeMap();
 
   UserRepository({
     GraphQLClientHelper? apiClient,
@@ -132,7 +132,7 @@ class UserRepository implements Repository<User> {
   }
 
   @override
-  Future<void> dispose() async {
-    this._cache.clear();
+  FutureOr onDispose() {
+    _cache.clear();
   }
 }

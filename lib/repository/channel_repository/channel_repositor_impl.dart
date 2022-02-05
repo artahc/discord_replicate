@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:async/async.dart';
@@ -171,7 +172,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
   }
 
   @override
-  Future<void> dispose() async {
-    this._cache.clear();
+  FutureOr onDispose() {
+    _cache.clear();
   }
 }

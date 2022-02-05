@@ -1,7 +1,5 @@
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/bloc/user/user_state.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:flutter/material.dart';
@@ -28,13 +26,13 @@ class _SplashScreenViewState extends State<SplashScreenView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserBloc, UserState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (_, state) async {
         state.whenOrNull(
-          empty: () {
+          unauthenticated: () {
             _navBloc.pushNamedAndRemoveUntil(context, Routes.welcome, (route) => false, true);
           },
-          loaded: (user) {
+          authenticated: (user) {
             _navBloc.pushNamedAndRemoveUntil(context, Routes.landing, (route) => false, true);
           },
           error: (e) {

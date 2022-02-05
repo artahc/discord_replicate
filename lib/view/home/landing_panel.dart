@@ -45,7 +45,7 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
             leftPage: Row(
               children: [
                 // Server list
-                ServerListPanel(servers: widget.user.servers),
+                ServerListPanel(key: UniqueKey(), servers: widget.user.servers),
 
                 // Direct Message Panel or Channel List Panel
                 StreamBuilder(
@@ -71,13 +71,13 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
                               );
                             },
                             loaded: (server, recentChannel) {
-                              return ChannelListPanel(server: server);
+                              return ChannelListPanel(key: UniqueKey(), server: server);
                             },
                           );
                         },
                       );
                     } else {
-                      return DirectMessageListPanel(channels: widget.user.privateChannels);
+                      return DirectMessageListPanel(key: UniqueKey(), channels: widget.user.privateChannels);
                     }
                   },
                 ),

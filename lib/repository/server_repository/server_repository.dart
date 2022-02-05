@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:async/async.dart';
@@ -120,7 +121,7 @@ class ServerRepository implements Repository<Server> {
   }
 
   @override
-  Future<void> dispose() async {
-    this._cache.clear();
+  FutureOr onDispose() {
+    _cache.clear();
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:async/async.dart';
@@ -144,7 +145,7 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
   }
 
   @override
-  Future<void> dispose() async {
-    this._cache.clear();
+  FutureOr onDispose() {
+    _cache.clear();
   }
 }
