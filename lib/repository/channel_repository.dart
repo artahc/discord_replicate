@@ -48,7 +48,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
 
   GraphQLClientHelper _api;
   DatabaseService _db;
-  HashMap<String, Channel> _cache = new HashMap();
+  SplayTreeMap<String, Channel> _cache = new SplayTreeMap();
 
   ChannelRepositoryImpl({
     GraphQLClientHelper? apiClient,
