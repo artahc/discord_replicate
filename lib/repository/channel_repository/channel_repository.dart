@@ -34,6 +34,6 @@ class ChannelQuery {
 
 abstract class ChannelRepository extends Repository<Channel> {
   Future<RawMessage> sendMessage(String channelId, Message message);
-  Future<PaginationResponse<RawMessage>> fetchMessages(String channelId);
+  Future<PaginationResponse<RawMessage>> fetchMessages(String channelId, int limit, String? lastMessageId);
   Stream<RawMessage> subscribeChannelMessages(String channelId);
 }

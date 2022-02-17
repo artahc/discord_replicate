@@ -33,9 +33,12 @@ class _$MessageStateTearOff {
     );
   }
 
-  MessageStateMessageFetched messageFetched(List<Message> messages) {
+  MessageStateMessageFetched messageFetched(
+      List<Message> messages, bool hasMore, String? cursor) {
     return MessageStateMessageFetched(
       messages,
+      hasMore,
+      cursor,
     );
   }
 }
@@ -50,7 +53,9 @@ mixin _$MessageState {
     required TResult Function() initial,
     required TResult Function(Message message) sendingMessage,
     required TResult Function(Message message) receivedNewMessage,
-    required TResult Function(List<Message> messages) messageFetched,
+    required TResult Function(
+            List<Message> messages, bool hasMore, String? cursor)
+        messageFetched,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -58,7 +63,8 @@ mixin _$MessageState {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -66,7 +72,8 @@ mixin _$MessageState {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -157,7 +164,9 @@ class _$MessageStateInitial implements MessageStateInitial {
     required TResult Function() initial,
     required TResult Function(Message message) sendingMessage,
     required TResult Function(Message message) receivedNewMessage,
-    required TResult Function(List<Message> messages) messageFetched,
+    required TResult Function(
+            List<Message> messages, bool hasMore, String? cursor)
+        messageFetched,
   }) {
     return initial();
   }
@@ -168,7 +177,8 @@ class _$MessageStateInitial implements MessageStateInitial {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
   }) {
     return initial?.call();
   }
@@ -179,7 +189,8 @@ class _$MessageStateInitial implements MessageStateInitial {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -307,7 +318,9 @@ class _$MessageStateSending implements MessageStateSending {
     required TResult Function() initial,
     required TResult Function(Message message) sendingMessage,
     required TResult Function(Message message) receivedNewMessage,
-    required TResult Function(List<Message> messages) messageFetched,
+    required TResult Function(
+            List<Message> messages, bool hasMore, String? cursor)
+        messageFetched,
   }) {
     return sendingMessage(message);
   }
@@ -318,7 +331,8 @@ class _$MessageStateSending implements MessageStateSending {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
   }) {
     return sendingMessage?.call(message);
   }
@@ -329,7 +343,8 @@ class _$MessageStateSending implements MessageStateSending {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
     required TResult orElse(),
   }) {
     if (sendingMessage != null) {
@@ -463,7 +478,9 @@ class _$MessageStateNewMessage implements MessageStateNewMessage {
     required TResult Function() initial,
     required TResult Function(Message message) sendingMessage,
     required TResult Function(Message message) receivedNewMessage,
-    required TResult Function(List<Message> messages) messageFetched,
+    required TResult Function(
+            List<Message> messages, bool hasMore, String? cursor)
+        messageFetched,
   }) {
     return receivedNewMessage(message);
   }
@@ -474,7 +491,8 @@ class _$MessageStateNewMessage implements MessageStateNewMessage {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
   }) {
     return receivedNewMessage?.call(message);
   }
@@ -485,7 +503,8 @@ class _$MessageStateNewMessage implements MessageStateNewMessage {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
     required TResult orElse(),
   }) {
     if (receivedNewMessage != null) {
@@ -547,7 +566,7 @@ abstract class $MessageStateMessageFetchedCopyWith<$Res> {
   factory $MessageStateMessageFetchedCopyWith(MessageStateMessageFetched value,
           $Res Function(MessageStateMessageFetched) then) =
       _$MessageStateMessageFetchedCopyWithImpl<$Res>;
-  $Res call({List<Message> messages});
+  $Res call({List<Message> messages, bool hasMore, String? cursor});
 }
 
 /// @nodoc
@@ -565,12 +584,22 @@ class _$MessageStateMessageFetchedCopyWithImpl<$Res>
   @override
   $Res call({
     Object? messages = freezed,
+    Object? hasMore = freezed,
+    Object? cursor = freezed,
   }) {
     return _then(MessageStateMessageFetched(
       messages == freezed
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
               as List<Message>,
+      hasMore == freezed
+          ? _value.hasMore
+          : hasMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      cursor == freezed
+          ? _value.cursor
+          : cursor // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -578,14 +607,18 @@ class _$MessageStateMessageFetchedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MessageStateMessageFetched implements MessageStateMessageFetched {
-  const _$MessageStateMessageFetched(this.messages);
+  const _$MessageStateMessageFetched(this.messages, this.hasMore, this.cursor);
 
   @override
   final List<Message> messages;
+  @override
+  final bool hasMore;
+  @override
+  final String? cursor;
 
   @override
   String toString() {
-    return 'MessageState.messageFetched(messages: $messages)';
+    return 'MessageState.messageFetched(messages: $messages, hasMore: $hasMore, cursor: $cursor)';
   }
 
   @override
@@ -593,12 +626,17 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is MessageStateMessageFetched &&
-            const DeepCollectionEquality().equals(other.messages, messages));
+            const DeepCollectionEquality().equals(other.messages, messages) &&
+            const DeepCollectionEquality().equals(other.hasMore, hasMore) &&
+            const DeepCollectionEquality().equals(other.cursor, cursor));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(messages));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(messages),
+      const DeepCollectionEquality().hash(hasMore),
+      const DeepCollectionEquality().hash(cursor));
 
   @JsonKey(ignore: true)
   @override
@@ -613,9 +651,11 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
     required TResult Function() initial,
     required TResult Function(Message message) sendingMessage,
     required TResult Function(Message message) receivedNewMessage,
-    required TResult Function(List<Message> messages) messageFetched,
+    required TResult Function(
+            List<Message> messages, bool hasMore, String? cursor)
+        messageFetched,
   }) {
-    return messageFetched(messages);
+    return messageFetched(messages, hasMore, cursor);
   }
 
   @override
@@ -624,9 +664,10 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
   }) {
-    return messageFetched?.call(messages);
+    return messageFetched?.call(messages, hasMore, cursor);
   }
 
   @override
@@ -635,11 +676,12 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
     TResult Function()? initial,
     TResult Function(Message message)? sendingMessage,
     TResult Function(Message message)? receivedNewMessage,
-    TResult Function(List<Message> messages)? messageFetched,
+    TResult Function(List<Message> messages, bool hasMore, String? cursor)?
+        messageFetched,
     required TResult orElse(),
   }) {
     if (messageFetched != null) {
-      return messageFetched(messages);
+      return messageFetched(messages, hasMore, cursor);
     }
     return orElse();
   }
@@ -683,10 +725,13 @@ class _$MessageStateMessageFetched implements MessageStateMessageFetched {
 }
 
 abstract class MessageStateMessageFetched implements MessageState {
-  const factory MessageStateMessageFetched(List<Message> messages) =
+  const factory MessageStateMessageFetched(
+          List<Message> messages, bool hasMore, String? cursor) =
       _$MessageStateMessageFetched;
 
   List<Message> get messages;
+  bool get hasMore;
+  String? get cursor;
   @JsonKey(ignore: true)
   $MessageStateMessageFetchedCopyWith<MessageStateMessageFetched>
       get copyWith => throw _privateConstructorUsedError;

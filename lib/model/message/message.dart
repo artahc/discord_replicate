@@ -30,6 +30,34 @@ class Message with _$Message {
   factory Message.fromJson(Map<String, dynamic> map) => _Message.fromJson(map);
 }
 
+class PlaceholderMessage implements Message{
+  @override
+  String get contentHash => throw UnimplementedError();
+
+  @override
+  $MessageCopyWith<Message> get copyWith => throw UnimplementedError();
+
+  @override
+  DateTime get date => throw UnimplementedError();
+
+  @override
+  String get id => throw UnimplementedError();
+
+  @override
+  String get message => throw UnimplementedError();
+
+  @override
+  Member get sender => throw UnimplementedError();
+
+  @override
+  String get status => throw UnimplementedError();
+
+  @override
+  Map<String, dynamic> toJson() {
+    throw UnimplementedError();
+  }
+}
+
 @freezed
 class RawMessage with _$RawMessage {
   const factory RawMessage({

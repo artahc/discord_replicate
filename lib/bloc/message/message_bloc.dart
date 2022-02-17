@@ -49,27 +49,33 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   _fetchInitialMessage(emit) async {
-    await _channelService.fetchMessages(_channel.id).then((messages) {
-      emit(MessageState.messageFetched(messages));
+    await _channelService.fetchMessages(_channel.id, 5, null).then((response) {
+      emit(MessageState.messageFetched(response.items, response.hasMore, response.previousCursor));
     });
   }
+
+  _fetchPreviousMessage(String lastMessageId, int limit, emit) async {
+    await _channelService.fetchMessages(_channel.id, limit, lastMessageId).then((response) {
+      emit(MessageState.messageFetched(response.items, response.hasMore, response.previousCursor));
+    });
+  }
+
+  _fetchLatestMessage(emit) async {}
+  
 
   _sendMessage(String input, emit) async {
     var user = await _userService.getCurrentUser();
     var member = await _channelService.getMemberById(_channel.id, user.uid);
-    // var member = Member(name: "", uid: "uid", avatarUrl: "");
 
     var date = DateTime.now();
     var message = Message(id: "", sender: member, message: input, date: date, status: "Pending");
 
     emit(MessageState.sendingMessage(message));
 
-    await _channelService.sendMessage(_channel.id, message).then((message) {
-    }, onError: (e, st) {
+    await _channelService.sendMessage(_channel.id, message).then((message) {}, onError: (e, st) {
       log.e(e, st);
-    }).onError((error, stackTrace) {
-      var e = error as NotFoundException;
-      log.e(e.message, stackTrace);
+    }).onError((Exception error, stackTrace) {
+      log.e("Error when send message.", error, stackTrace);
     });
   }
 
@@ -80,6 +86,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   _handleEvent(MessageEvent event, emit) async {
     return await event.when(
       fetchInitialMessage: () => _fetchInitialMessage(emit),
+      fetchPreviousMessage: (lastMessageId, limit) => _fetchPreviousMessage(lastMessageId, limit, emit),
+      fetchLatestMessage: () => _fetchLatestMessage(emit),
       sendMessage: (input) => _sendMessage(input, emit),
       notifyNewMessage: (message) => _onReceivedNewMessage(message, emit),
     );

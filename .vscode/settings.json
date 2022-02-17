@@ -16,7 +16,7 @@
   "editor.foldingStrategy": "indentation",
   "todohighlight.isCaseSensitive": false,
   "debug.console.fontSize": 11,
-  "debug.console.wordWrap": false,
+  "debug.console.wordWrap": true,
   "editor.foldingImportsByDefault": true,
   "workbench.colorCustomizations": {
     "debugConsole.infoForeground": "#2991c5"

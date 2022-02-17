@@ -150,7 +150,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
   }
 
   @override
-  Future<PaginationResponse<RawMessage>> fetchMessages(String channelId) async {
+  Future<PaginationResponse<RawMessage>> fetchMessages(String channelId, int limit, String? lastMessageId) async {
     var query = r"""
       query Messages($channelRef: String!, $cursor: String, $limit: Int!) {
         messages(channelRef: $channelRef, cursor: $cursor, limit: $limit) {
@@ -168,8 +168,8 @@ class ChannelRepositoryImpl implements ChannelRepository {
 
     var variables = {
       "channelRef": "PkM6m7lhnvIORIRuoVJv",
-      "cursor": null,
-      "limit": 5,
+      "cursor": lastMessageId,
+      "limit": limit,
     };
 
     var paginationResult = await _api.query(query, variables: variables).then((json) {

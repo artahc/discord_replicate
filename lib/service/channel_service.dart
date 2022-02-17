@@ -4,6 +4,7 @@ import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/model/message/message.dart';
+import 'package:discord_replicate/model/paginated_response.dart';
 import 'package:discord_replicate/repository/repository.dart';
 import 'package:discord_replicate/service/graphql_client_helper.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -16,7 +17,7 @@ abstract class ChannelService implements Disposable {
   Future<List<Member>> getAllMembers(String userGroupId);
   Future<Member> getMemberById(String userGroupId, String userId);
 
-  Future<List<Message>> fetchMessages(String channelId);
+  Future<PaginationResponse<Message>> fetchMessages(String channelId, int limit, String? lastMessageId);
   Future<Message> sendMessage(String channelId, Message message);
   Stream<Message> subscribeMessage(String channelId);
 }
@@ -74,15 +75,17 @@ class ChannelServiceImpl implements ChannelService {
   }
 
   @override
-  Future<List<Message>> fetchMessages(String channelId) async {
-    var paginationResponse = await _channelRepo.fetchMessages(channelId);
-    var messages = await Stream.fromIterable(paginationResponse.items).asyncMap((raw) async {
+  Future<PaginationResponse<Message>> fetchMessages(String channelId, int limit, String? lastMessageId) async {
+    var raw = await _channelRepo.fetchMessages(channelId, limit, lastMessageId);
+    var messages = await Stream.fromIterable(raw.items).asyncMap((raw) async {
       var member = await getMemberById(channelId, raw.senderRef);
       var message = Message(id: raw.id, sender: member, date: raw.date, message: raw.message);
       return message;
     }).toList();
 
-    return messages;
+    var paginatedResponse = PaginationResponse(items: messages, hasMore: raw.hasMore, previousCursor: raw.previousCursor);
+
+    return paginatedResponse;
   }
 
   @override

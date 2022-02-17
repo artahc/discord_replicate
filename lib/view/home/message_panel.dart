@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:discord_replicate/bloc/message/message_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
@@ -138,9 +140,13 @@ class MessagePanelBody extends StatefulWidget {
 
 class _MessagePanelBodyState extends State<MessagePanelBody> {
   final ScrollController _scrollCtrl = ScrollController(keepScrollOffset: false, initialScrollOffset: 0);
+  late MessageBloc _messageBloc = BlocProvider.of<MessageBloc>(context);
 
-  bool _pinScrollToBottom = false;
+  bool _pinScroll = false;
+  bool _hasMore = true;
+  Timer? _debouncer;
 
+  late List<Message> _loadingMessages = [];
   late List<Message> _messages = [];
   late List<Message> _pendingMessage = [];
 
@@ -154,25 +160,67 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
   void dispose() {
     _scrollCtrl.removeListener(_onScroll);
     _scrollCtrl.dispose();
+    _debouncer?.cancel();
     super.dispose();
   }
 
-  _onScroll() {
-    if (!_pinScrollToBottom && _scrollCtrl.offset <= (_scrollCtrl.position.minScrollExtent * 0.1)) {
+  _pinScrollToBottom() {
+    if (!_pinScroll && _scrollCtrl.offset <= (_scrollCtrl.position.minScrollExtent * 0.1)) {
       setState(() {
-        _pinScrollToBottom = true;
+        _pinScroll = true;
       });
-    } else if (_pinScrollToBottom && _scrollCtrl.offset > (_scrollCtrl.position.minScrollExtent * 0.1)) {
+    } else if (_pinScroll && _scrollCtrl.offset > (_scrollCtrl.position.minScrollExtent * 0.1)) {
       setState(() {
-        _pinScrollToBottom = false;
+        _pinScroll = false;
       });
     }
   }
 
-  _onMessageFetched(List<Message> messages) {
-    setState(() {
-      _messages.addAll(messages);
+  _onScroll() {
+    _pinScrollToBottom();
+    _fetchPreviousMessage();
+  }
+
+  _debounce(VoidCallback callback) {
+    if (_debouncer != null && _debouncer!.isActive) _debouncer!.cancel();
+    _debouncer = Timer(Duration(seconds: 1), () {
+      callback.call();
     });
+  }
+
+  _fetchPreviousMessage() {
+    if (_scrollCtrl.offset == _scrollCtrl.position.maxScrollExtent) {
+      var loadingMessages = List.generate(
+        5,
+        (index) => PlaceholderMessage(),
+      ).toList();
+
+      setState(() {
+        _loadingMessages.addAll(loadingMessages);
+      });
+
+      _debounce(() {
+        if (_loadingMessages.isNotEmpty) {
+          log.d("Fetch previous messages ${_loadingMessages.length}");
+          _messageBloc.add(MessageEvent.fetchPreviousMessage(this._messages.first.id, _loadingMessages.length));
+        }
+      });
+    }
+  }
+
+  _onMessageFetched(List<Message> messages, bool hasMore, String? previousCursor) {
+    if (previousCursor == null)
+      setState(() {
+        _messages.addAll(messages);
+      });
+    else {
+      var index = _messages.indexWhere((e) => e.id == previousCursor);
+      setState(() {
+        _loadingMessages.removeRange(index, index + messages.length);
+        _hasMore = hasMore;
+        _messages.insertAll(index, messages);
+      });
+    }
   }
 
   _onSendingMessage(Message message) {
@@ -189,18 +237,20 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
         _messages.add(message);
       });
 
-    if (_pinScrollToBottom) {
+    if (_pinScroll) {
       _scrollCtrl.animateTo(_scrollCtrl.position.minScrollExtent, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    var messages = _messages.reversed.toList()..insertAll(0, _pendingMessage.reversed);
+    var messages = _messages.reversed.toList()
+      ..insertAll(0, _pendingMessage.reversed)
+      ..insertAll(_messages.length, _loadingMessages.reversed);
     return BlocListener<MessageBloc, MessageState>(
       listener: (_, state) {
         state.whenOrNull(
-          messageFetched: (messages) => _onMessageFetched(messages),
+          messageFetched: (messages, hasMore, previousCursor) => _onMessageFetched(messages, hasMore, previousCursor),
           sendingMessage: (message) => _onSendingMessage(message),
           receivedNewMessage: (message) => _onReceiveNewMessage(message),
         );
@@ -215,6 +265,7 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
             reverse: true,
             itemCount: messages.length,
             itemBuilder: (_, index) {
+              if (messages[index] is PlaceholderMessage) return SkeletonMessageTile();
               return MessageTile(message: messages[index]);
             },
             scrollDirection: Axis.vertical,
