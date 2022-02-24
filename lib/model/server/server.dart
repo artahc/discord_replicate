@@ -1,7 +1,7 @@
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:discord_replicate/service/hive_database_service.dart';
+import 'package:discord_replicate/external/hive_constants.dart';
 import 'package:hive/hive.dart';
 
 part 'server.freezed.dart';

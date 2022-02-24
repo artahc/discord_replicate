@@ -5,8 +5,6 @@ import 'package:discord_replicate/view/welcome/register_view.dart';
 import 'package:discord_replicate/view/welcome/welcome_view.dart';
 import 'package:flutter/material.dart';
 
-export 'package:discord_replicate/route_transition/app_transition.dart' show CustomSlideTransition;
-
 class Routes {
   static const String initial = '/';
   static const String welcome = 'welcome';

@@ -4,7 +4,7 @@ import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/model/user/user.dart';
-import 'package:discord_replicate/repository/repository.dart';
+import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -41,11 +41,11 @@ class UserServiceImpl implements UserService {
     var credential = await _authService.getCredential(forceRefresh: true);
     if (credential == null) throw Exception("Credential not found. User is not currently logged in.");
 
-    var user = await _userRepo.load(credential.uid);
+    var user = await _userRepo.getUser(credential.uid);
     if (user == null) throw NotFoundException("User not found.");
 
-    if (user.servers.isNotEmpty) await _serverRepo.saveAll(user.servers);
-    if (user.privateChannels.isNotEmpty) await _channelRepo.saveAll(user.privateChannels);
+    if (user.servers.isNotEmpty) await _serverRepo.saveServers(user.servers);
+    if (user.privateChannels.isNotEmpty) await _channelRepo.saveChannels(user.privateChannels);
 
     _currentUser = user;
     log.d("Current user: $user");
@@ -75,7 +75,7 @@ class UserServiceImpl implements UserService {
 
   @override
   Future<User> getUserById(String id) async {
-    var user = await _userRepo.load(id);
+    var user = await _userRepo.getUser(id);
     if (user == null) throw NotFoundException("User not found.");
 
     return user;

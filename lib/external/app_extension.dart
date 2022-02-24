@@ -1,5 +1,3 @@
-export 'package:discord_replicate/external/math_extension.dart';
-
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -24,6 +22,12 @@ extension ListToKeyValuePair<T> on List<T> {
     var entries = this.map((e) => MapEntry<K, V>(keyConverter(e), valueConverter(e)));
     map.addEntries(entries);
     return map;
+  }
+}
+
+extension Mathf on double {
+  double remap(double fromMin, double toMin, double fromMax, double toMax) {
+    return (this - fromMin) / (toMin - fromMin) * (toMax - fromMax) + fromMax;
   }
 }
 

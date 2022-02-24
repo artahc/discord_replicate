@@ -19,7 +19,6 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
 
   final ServerBloc _serverBloc;
   final DirectMessageBloc _dmBloc;
-  final UserService _userService;
   final ChannelService _channelService;
 
   late Logger log = Logger();
@@ -30,15 +29,13 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
     required ServerBloc serverBloc,
     required DirectMessageBloc dmBloc,
     ChannelService? channelService,
-    UserService? userService,
   })  : _serverBloc = serverBloc,
         _dmBloc = dmBloc,
-        _userService = userService ?? GetIt.I.get<UserService>(),
         _channelService = channelService ?? GetIt.I.get<ChannelService>(),
         super(ChannelState.loading()) {
     on<ChannelEvent>((event, emit) => _handleEvent(event, emit));
 
-    _dmStateSubscription = dmBloc.stream.listen((event) {
+    _dmStateSubscription = _dmBloc.stream.listen((event) {
       event.whenOrNull(
         loaded: (channel) {
           add(ChannelEvent.load(channel.id));

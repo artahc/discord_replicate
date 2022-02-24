@@ -2,17 +2,16 @@ import 'dart:async';
 
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
+import 'package:discord_replicate/external/app_log_filter.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
-class DisableLogFilter extends LogFilter {
-  @override
-  bool shouldLog(LogEvent event) {
-    return false;
-  }
+abstract class GraphQLOperation {
+  String get operation;
+  Map<String, dynamic> get variables;
 }
 
 class GraphQLClientHelper with ExceptionMapperMixin, Disposable {
@@ -51,11 +50,11 @@ class GraphQLClientHelper with ExceptionMapperMixin, Disposable {
     );
   }
 
-  Future<Map<String, dynamic>> query(String query, {Map<String, dynamic> variables = const {}}) async {
-    var options = QueryOptions(document: gql(query), variables: variables);
+  Future<Map<String, dynamic>> query(GraphQLOperation operation) async {
+    var options = QueryOptions(document: gql(operation.operation), variables: operation.variables);
     var result = await _client.query(options);
 
-    log.i("Query => ${query.trim()} \nVariables: $variables");
+    log.i("Query => ${operation.operation.trim()} \nVariables: ${operation.variables}");
     if (result.hasException) {
       return Future.error(mapException(result.exception!));
     } else {
@@ -64,11 +63,11 @@ class GraphQLClientHelper with ExceptionMapperMixin, Disposable {
     }
   }
 
-  Future<Map<String, dynamic>> mutate(String mutation, {Map<String, dynamic> variables = const {}}) async {
-    var options = MutationOptions(document: gql(mutation), variables: variables);
+  Future<Map<String, dynamic>> mutate(GraphQLOperation operation) async {
+    var options = MutationOptions(document: gql(operation.operation), variables: operation.variables);
     var result = await _client.mutate(options);
 
-    log.i("Mutation => ${mutation.trim()} \nVariables: $variables");
+    log.i("Mutation => ${operation.operation.trim()} \nVariables: ${operation.variables}");
 
     if (result.hasException) {
       return Future.error(mapException(result.exception!));
@@ -78,11 +77,11 @@ class GraphQLClientHelper with ExceptionMapperMixin, Disposable {
     }
   }
 
-  Stream<Map<String, dynamic>> subscribe(String subscription, {Map<String, dynamic> variables = const {}}) async* {
-    var options = SubscriptionOptions(document: gql(subscription), variables: variables);
+  Stream<Map<String, dynamic>> subscribe(GraphQLOperation operation) async* {
+    var options = SubscriptionOptions(document: gql(operation.operation), variables: operation.variables);
     var stream = _client.subscribe(options);
 
-    log.i("Subscription => ${subscription.trim()} \nVariables: $variables");
+    log.i("Subscription => ${operation.operation.trim()} \nVariables: ${operation.variables}");
 
     yield* stream.doOnData((data) {
       log.i("Received new data from subscription. $data");

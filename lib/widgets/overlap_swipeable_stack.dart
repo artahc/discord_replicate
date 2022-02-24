@@ -1,7 +1,6 @@
-import 'package:discord_replicate/external/math_extension.dart';
+import 'package:discord_replicate/external/app_extension.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as dev;
 import 'package:rxdart/rxdart.dart';
 
 enum PageState { OnLeft, OnCenter, OnRight }

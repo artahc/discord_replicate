@@ -1,39 +1,17 @@
-import 'dart:collection';
-
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/message/message.dart';
 import 'package:discord_replicate/model/paginated_response.dart';
-import 'package:discord_replicate/repository/repository.dart';
 
 export 'channel_repositor_impl.dart';
 
-class ChannelQuery {
-  ChannelQuery._();
+abstract class ChannelRepository {
+  Future<Channel> getChannel(String id);
+  Future<List<Channel>> getChannels();
 
-  static final String loadChannelById = r"""
-    query Channel($id: String!) {
-      channel(id: $id) {
-        id
-        name
-        userGroupRef
-      }
-    }
-  """;
+  Future<void> saveChannel(Channel channel);
+  Future<void> saveChannels(List<Channel> channels);
 
-  static final String loadChannelMessages = r"""
-    query ChannelMessages ($channelRef: String!) {
-      messages(channelRef: $channelRef) {
-        id
-        senderRef
-        timestamp
-        message
-      }
-    }
-  """;
-}
-
-abstract class ChannelRepository extends Repository<Channel> {
-  Future<RawMessage> sendMessage(String channelId, Message message);
-  Future<PaginationResponse<RawMessage>> fetchMessages(String channelId, int limit, String? lastMessageId);
+  Future<RawMessage> createMessage(String channelId, String message, int timestamp);
+  Future<PaginationResponse<RawMessage>> getChannelMessages(String channelId, int limit, String? lastMessageId);
   Stream<RawMessage> subscribeChannelMessages(String channelId);
 }

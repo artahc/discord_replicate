@@ -16,7 +16,7 @@ class ServerServiceImpl implements ServerService {
 
   @override
   Future<Server> getServerById(String id) async {
-    var server = await _serverRepo.load(id);
+    var server = await _serverRepo.getServer(id);
     if (server == null) throw NotFoundException("Server not found");
 
     return server;

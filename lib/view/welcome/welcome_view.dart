@@ -1,14 +1,11 @@
-import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/external/app_icon.dart';
 import 'package:discord_replicate/view/welcome/login_view.dart';
 import 'package:discord_replicate/view/welcome/register_view.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
-import 'package:discord_replicate/route_transition/app_transition.dart';
+import 'package:discord_replicate/widgets/route_transition/app_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 class WelcomeView extends StatelessWidget {
   const WelcomeView({Key? key}) : super(key: key);

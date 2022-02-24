@@ -1,7 +1,7 @@
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/model/paginated_response.dart';
 import 'package:discord_replicate/model/user_group/user_group.dart';
-import 'package:discord_replicate/repository/repository.dart';
+import 'package:discord_replicate/repository/store.dart';
 
 export 'user_group_repository_impl.dart';
 
@@ -22,6 +22,7 @@ class UserGroupQuery {
   """;
 }
 
-abstract class UserGroupRepository extends Repository<UserGroup> {
-  Future<PaginationResponse<Member>> loadBatch(String id, int limit, String? lastMemberId);
+abstract class UserGroupRepository {
+  Future<UserGroup> getUserGroup(String id, {int limitMember = 50, String? cursor});
+  // Future<PaginationResponse<Member>> loadBatch(String id, int limit, String? lastMemberId);
 }

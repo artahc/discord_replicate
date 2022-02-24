@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:discord_replicate/main.dart';
-import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
 import 'package:discord_replicate/bloc/authentication/auth_state.dart';
+import 'package:discord_replicate/service/auth_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 

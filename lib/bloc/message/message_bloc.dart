@@ -34,7 +34,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     add(MessageEvent.fetchInitialMessage());
 
-    _messageSubscription = _channelService.subscribeMessage(_channel.id).handleError((e, st) {
+    _messageSubscription = _channelService.subscribeChannelMessage(_channel.id).handleError((e, st) {
       log.e("Error in channel subscription.", e, st);
     }).listen((message) {
       log.i("Message received: $message");
@@ -49,19 +49,18 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   _fetchInitialMessage(emit) async {
-    await _channelService.fetchMessages(_channel.id, 5, null).then((response) {
+    await _channelService.getMessages(_channel.id, 5, null).then((response) {
       emit(MessageState.messageFetched(response.items, response.hasMore, response.previousCursor));
     });
   }
 
   _fetchPreviousMessage(String lastMessageId, int limit, emit) async {
-    await _channelService.fetchMessages(_channel.id, limit, lastMessageId).then((response) {
+    await _channelService.getMessages(_channel.id, limit, lastMessageId).then((response) {
       emit(MessageState.messageFetched(response.items, response.hasMore, response.previousCursor));
     });
   }
 
   _fetchLatestMessage(emit) async {}
-  
 
   _sendMessage(String input, emit) async {
     var user = await _userService.getCurrentUser();
@@ -72,7 +71,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     emit(MessageState.sendingMessage(message));
 
-    await _channelService.sendMessage(_channel.id, message).then((message) {}, onError: (e, st) {
+    await _channelService.sendMessage(_channel.id, input, date.millisecondsSinceEpoch).then((message) {
+      log.i("Message sent. $message");
+    }, onError: (e, st) {
       log.e(e, st);
     }).onError((Exception error, stackTrace) {
       log.e("Error when send message.", error, stackTrace);
