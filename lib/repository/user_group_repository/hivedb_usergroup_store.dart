@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:discord_replicate/external/app_extension.dart';
-import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/model/user_group/user_group.dart';
 import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/external/hive_constants.dart';

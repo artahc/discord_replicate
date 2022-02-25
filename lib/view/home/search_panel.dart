@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';

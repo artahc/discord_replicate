@@ -2,13 +2,12 @@ import 'dart:async';
 
 import 'package:discord_replicate/bloc/message/message_event.dart';
 import 'package:discord_replicate/bloc/message/message_state.dart';
-import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/message/message.dart';
-import 'package:discord_replicate/service/channel_service.dart';
+import 'package:discord_replicate/interactor/channel_interactor.dart';
 import 'package:discord_replicate/service/user_service.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 export 'message_event.dart';
@@ -16,25 +15,25 @@ export 'message_state.dart';
 
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final Channel _channel;
-  final UserService _userService;
-  final ChannelService _channelService;
+  final UserInteractor _userService;
+  final ChannelInteractor _channelInteractor;
 
   late Logger log = Logger();
   late StreamSubscription _messageSubscription;
 
   MessageBloc({
     required Channel channel,
-    UserService? userService,
-    ChannelService? channelService,
+    UserInteractor? userService,
+    ChannelInteractor? channelInteractor,
   })  : _channel = channel,
-        _userService = userService ?? GetIt.I.get<UserService>(),
-        _channelService = channelService ?? GetIt.I.get<ChannelService>(),
+        _userService = userService ?? sl.get(),
+        _channelInteractor = channelInteractor ?? sl.get(),
         super(MessageState.initial()) {
     on<MessageEvent>((event, emit) => _handleEvent(event, emit));
 
     add(MessageEvent.fetchInitialMessage());
 
-    _messageSubscription = _channelService.subscribeChannelMessage(_channel.id).handleError((e, st) {
+    _messageSubscription = _channelInteractor.subscribeChannelMessage(channelId: _channel.id).handleError((e, st) {
       log.e("Error in channel subscription.", e, st);
     }).listen((message) {
       log.i("Message received: $message");
@@ -49,35 +48,35 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   _fetchInitialMessage(emit) async {
-    await _channelService.getMessages(_channel.id, 5, null).then((response) {
+    await _channelInteractor.getChannelMessages(channelId: _channel.id).then((response) {
       emit(MessageState.messageFetched(response.items, response.hasMore, response.previousCursor));
     });
   }
 
   _fetchPreviousMessage(String lastMessageId, int limit, emit) async {
-    await _channelService.getMessages(_channel.id, limit, lastMessageId).then((response) {
+    await _channelInteractor.getChannelMessages(channelId: _channel.id, limit: limit, lastMessageId: lastMessageId).then((response) {
       emit(MessageState.messageFetched(response.items, response.hasMore, response.previousCursor));
     });
   }
 
   _fetchLatestMessage(emit) async {}
 
-  _sendMessage(String input, emit) async {
+  _sendMessage(String messageText, emit) async {
     var user = await _userService.getCurrentUser();
-    var member = await _channelService.getMemberById(_channel.id, user.uid);
+    var member = await _channelInteractor.getMemberById(channelId: _channel.id, userId: user.uid);
 
     var date = DateTime.now();
-    var message = Message(id: "", sender: member, message: input, date: date, status: "Pending");
+    var message = Message(id: "", sender: member, message: messageText, date: date, status: "Pending");
 
     emit(MessageState.sendingMessage(message));
 
-    await _channelService.sendMessage(_channel.id, input, date.millisecondsSinceEpoch).then((message) {
-      log.i("Message sent. $message");
-    }, onError: (e, st) {
-      log.e(e, st);
-    }).onError((Exception error, stackTrace) {
-      log.e("Error when send message.", error, stackTrace);
-    });
+    await _channelInteractor
+        .sendChannelMessage(channelId: _channel.id, messageText: messageText, timestamp: date.millisecondsSinceEpoch)
+        .then((message) {
+          log.i("Message sent. $message");
+        }).onError((Exception error, stackTrace) {
+          log.e("Error when send message.", error, stackTrace);
+        });
   }
 
   _onReceivedNewMessage(Message message, emit) async {

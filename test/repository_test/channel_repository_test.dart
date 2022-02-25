@@ -31,7 +31,7 @@ void main() {
         "allow-me-in": "artahc123",
       },
     );
-    var remoteApi = RemoteApiImpl(client: client);
+    var remoteApi = GraphQLApiImpl(client: client);
 
     var channelRepo = ChannelRepositoryImpl(api: remoteApi, database: mockDb, cache: mockCache);
 

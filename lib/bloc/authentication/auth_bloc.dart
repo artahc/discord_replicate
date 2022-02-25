@@ -1,9 +1,8 @@
-import 'package:discord_replicate/main.dart';
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
 import 'package:discord_replicate/bloc/authentication/auth_state.dart';
 import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:logger/logger.dart';
 
@@ -17,7 +16,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthService _authService;
 
   AuthBloc({AuthService? authService})
-      : _authService = authService ?? GetIt.I.get<AuthService>(),
+      : _authService = authService ?? sl.get<AuthService>(),
         super(AuthStateInitial()) {
     on<AuthEvent>((event, emit) => _handleEvent(event, emit));
   }
@@ -69,8 +68,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _signOut(emit) async {
     await _authService.signOut();
-    await GetIt.I.reset();
-    await initializeDependency();
+    await sl.reset();
+    await AppConfiguration.initServiceLocator();
     emit(AuthState.unauthenticated());
   }
 }

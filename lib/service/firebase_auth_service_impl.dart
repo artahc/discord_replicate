@@ -4,11 +4,11 @@ import 'package:discord_replicate/service/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 
-class FirebaseAuthService implements AuthService {
+class FirebaseAuthServiceImpl implements AuthService {
   late Logger log = Logger();
   final _auth = FirebaseAuth.instance;
 
-  FirebaseAuthService();
+  FirebaseAuthServiceImpl();
 
   @override
   Future<Credential?> getCredential({bool forceRefresh = false}) async {

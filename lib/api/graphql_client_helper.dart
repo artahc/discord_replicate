@@ -4,6 +4,7 @@ import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/external/app_log_filter.dart';
 import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
@@ -25,7 +26,7 @@ class GraphQLClientHelper with ExceptionMapperMixin, Disposable {
     AuthService? authService,
     GraphQLCache? cache,
     Map<String, String>? defaultHeader,
-  }) : _authService = authService ?? GetIt.I.get<AuthService>() {
+  }) : _authService = authService ?? sl.get<AuthService>() {
     var httpLink = HttpLink(url, defaultHeaders: defaultHeader ?? {});
     var authLink = AuthLink(getToken: () async {
       var credential = await _authService.getCredential(forceRefresh: true);

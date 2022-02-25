@@ -1,6 +1,5 @@
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/bloc/navigation/navigation_event.dart';
 import 'package:discord_replicate/routes/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';

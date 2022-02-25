@@ -3,12 +3,12 @@ import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:discord_replicate/view/home/empty_landing_panel.dart';
 import 'package:discord_replicate/view/home/landing_panel.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 final Logger log = Logger();
@@ -21,10 +21,10 @@ class LandingView extends StatefulWidget {
 }
 
 class _LandingViewState extends State<LandingView> {
-  late var userBloc = GetIt.I.get<UserBloc>(param1: BlocProvider.of<AuthBloc>(context));
-  late var serverBloc = GetIt.I.get<ServerBloc>();
-  late var dmBloc = GetIt.I.get<DirectMessageBloc>(param1: userBloc);
-  late var channelBloc = GetIt.I.get<ChannelBloc>(param1: serverBloc, param2: dmBloc);
+  late var userBloc = sl.get<UserBloc>(param1: BlocProvider.of<AuthBloc>(context));
+  late var serverBloc = sl.get<ServerBloc>();
+  late var dmBloc = sl.get<DirectMessageBloc>(param1: userBloc);
+  late var channelBloc = sl.get<ChannelBloc>(param1: serverBloc, param2: dmBloc);
 
   @override
   void initState() {

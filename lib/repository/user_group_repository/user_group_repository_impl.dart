@@ -1,19 +1,14 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:async/async.dart';
 import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/member/member.dart';
-import 'package:discord_replicate/model/paginated_response.dart';
-import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/model/user_group/user_group.dart';
 import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/repository/user_group_repository/hivedb_usergroup_store.dart';
 import 'package:discord_replicate/repository/user_group_repository/inmemory_usergroup_store.dart';
-import 'package:discord_replicate/api/graphql_client_helper.dart';
-import 'package:discord_replicate/external/hive_constants.dart';
 import 'package:discord_replicate/api/remote_api.dart';
-import 'package:get_it/get_it.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -28,9 +23,9 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
     RemoteApi? api,
     Store<UserGroup>? database,
     Store<UserGroup>? cache,
-  })  : _api = api ?? GetIt.I.get<RemoteApi>(),
-        _db = database ?? GetIt.I.get<HiveUserGroupStore>(),
-        _cache = cache ?? GetIt.I.get<InMemoryUserGroupStore>();
+  })  : _api = api ?? sl<RemoteApi>(),
+        _db = database ?? sl<HiveUserGroupStore>(),
+        _cache = cache ?? sl<InMemoryUserGroupStore>();
 
   @override
   Future<UserGroup> getUserGroup(String id, {int limitMember = 50, String? cursor}) async {
@@ -49,7 +44,7 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
 
     var remote = LazyStream(() {
       return _api.getUserGroup(id, limitMember, cursor).asStream().asyncMap((paginatedResponse) async {
-        var userGroup = UserGroup(id: id, members: paginatedResponse.items.toMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
+        var userGroup = UserGroup(id: id, members: paginatedResponse.items.toSplayTreeMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
 
         await _cache.save(userGroup);
         await _db.save(userGroup);
@@ -62,5 +57,25 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
 
     var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
     return result!;
+  }
+
+  @override
+  Future<Member> getMemberByUID(String userGroupId, String uid) async {
+    var memory = LazyStream(() {
+      return _cache.load(userGroupId).asStream().map((userGroup) => userGroup?.members[uid]);
+    });
+
+    var disk = LazyStream(() {
+      return _db.load(userGroupId).asStream().map((userGroup) => userGroup?.members[uid]);
+    });
+
+    var result = await ConcatStream([memory, disk]).firstWhere((element) => element != null);
+
+    return result!;
+  }
+
+  @override
+  Future<List<Member>> getAllMember(String userGroupId) async {
+    return [];
   }
 }

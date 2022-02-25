@@ -1,60 +1,52 @@
 import 'dart:async';
 
-import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/model/message/message.dart';
 import 'package:discord_replicate/model/paginated_response.dart';
 import 'package:discord_replicate/repository/store.dart';
-import 'package:get_it/get_it.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:logger/logger.dart';
 
-abstract class UseCase<R, P> {
-  R invoke(P param);
+abstract class ChannelInteractor {
+  Future<Channel> getChannelById({required String id});
+  Future<Member> getMemberById({required String channelId, required String userId});
+  Future<List<Member>> getAllMembers({required String channelId});
+  Future<PaginationResponse<Message>> getChannelMessages({required String channelId, int limit, String? lastMessageId});
+  Future<Message> sendChannelMessage({required String channelId, required String messageText, required int timestamp});
+  Stream<Message> subscribeChannelMessage({required String channelId});
 }
 
-abstract class ChannelService implements Disposable {
-  Future<Channel> getChannelById(String id);
-  Future<Member> getMemberById(String userGroupId, String userId);
-  Future<List<Member>> getAllMembers(String channelId);
-  Future<PaginationResponse<Message>> getMessages(String channelId, int limit, String? lastMessageId);
-  Future<Message> sendMessage(String channelId, String message, int timestamp);
-  Stream<Message> subscribeChannelMessage(String channelId);
-}
-
-class ChannelServiceImpl implements ChannelService {
+class ChannelInteractorImpl implements ChannelInteractor {
   final Logger log = Logger();
 
   final ChannelRepository _channelRepo;
   final UserGroupRepository _userGroupRepo;
 
-  ChannelServiceImpl({
+  ChannelInteractorImpl({
     ChannelRepository? channelRepo,
     UserGroupRepository? userGroupRepo,
-  })  : _channelRepo = channelRepo ?? GetIt.I.get<ChannelRepository>(),
-        _userGroupRepo = userGroupRepo ?? GetIt.I.get<UserGroupRepository>();
+  })  : _channelRepo = channelRepo ?? sl<ChannelRepository>(),
+        _userGroupRepo = userGroupRepo ?? sl<UserGroupRepository>();
 
   @override
-  Future<Channel> getChannelById(String id) async {
+  Future<Channel> getChannelById({required String id}) async {
     var channel = await _channelRepo.getChannel(id);
     return channel;
   }
 
   @override
-  Future<List<Member>> getAllMembers(String channelId) async {
-    var channel = await getChannelById(channelId);
+  Future<List<Member>> getAllMembers({required String channelId}) async {
+    var channel = await this.getChannelById(id: channelId);
     var userGroup = await _userGroupRepo.getUserGroup(channel.userGroupRef);
-    if (userGroup == null) throw NotFoundException("User group not found when trying to fetch all members.");
 
     return userGroup.members.values.toList();
   }
 
   @override
-  Future<Member> getMemberById(String channelId, String userId) async {
-    var channel = await getChannelById(channelId);
+  Future<Member> getMemberById({required String channelId, required String userId}) async {
+    var channel = await this.getChannelById(id: channelId);
     var userGroup = await _userGroupRepo.getUserGroup(channel.userGroupRef);
-
-    if (userGroup == null) throw NotFoundException("User group not found when trying to fetch member.");
 
     // todo: fetch batch of member from server based on this userId
     if (!userGroup.members.containsKey(userId)) throw UnimplementedError();
@@ -64,19 +56,19 @@ class ChannelServiceImpl implements ChannelService {
   }
 
   @override
-  Future<Message> sendMessage(String channelId, String message, int timestamp) async {
-    var raw = await _channelRepo.createMessage(channelId, message, timestamp);
-    var member = await getMemberById(channelId, raw.senderRef);
+  Future<Message> sendChannelMessage({required String channelId, required String messageText, required int timestamp}) async {
+    var raw = await _channelRepo.createMessage(channelId, messageText, timestamp);
+    var member = await this.getMemberById(channelId: channelId, userId: raw.senderRef);
     var messageWithUser = Message(id: raw.id, sender: member, date: raw.date, message: raw.message);
 
     return messageWithUser;
   }
 
   @override
-  Future<PaginationResponse<Message>> getMessages(String channelId, int limit, String? lastMessageId) async {
+  Future<PaginationResponse<Message>> getChannelMessages({required String channelId, int limit = 30, String? lastMessageId}) async {
     var raw = await _channelRepo.getChannelMessages(channelId, limit, lastMessageId);
     var messages = await Stream.fromIterable(raw.items).asyncMap((raw) async {
-      var member = await getMemberById(channelId, raw.senderRef);
+      var member = await this.getMemberById(channelId: channelId, userId: raw.senderRef);
       var message = Message(id: raw.id, sender: member, date: raw.date, message: raw.message);
       return message;
     }).toList();
@@ -87,17 +79,14 @@ class ChannelServiceImpl implements ChannelService {
   }
 
   @override
-  Stream<Message> subscribeChannelMessage(String channelId) async* {
+  Stream<Message> subscribeChannelMessage({required String channelId}) async* {
     var rawMessageStream = _channelRepo.subscribeChannelMessages(channelId);
     var messageWithUserStream = rawMessageStream.asyncMap((raw) async {
-      var member = await getMemberById(channelId, raw.senderRef);
+      var member = await this.getMemberById(channelId: channelId, userId: raw.senderRef);
       var message = Message(id: raw.id, sender: member, date: raw.date, message: raw.message);
       return message;
     });
 
     yield* messageWithUserStream;
   }
-
-  @override
-  FutureOr onDispose() {}
 }

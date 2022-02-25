@@ -1,8 +1,6 @@
-import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DirectMessageTile extends StatelessWidget {
   final Channel channel;

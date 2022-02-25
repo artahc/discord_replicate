@@ -1,4 +1,3 @@
-import 'dart:collection';
 
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/external/hive_constants.dart';

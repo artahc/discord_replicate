@@ -3,8 +3,8 @@ import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
 import 'package:discord_replicate/service/user_service.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 export 'user_event.dart';
@@ -14,7 +14,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   StreamController<UserEvent> _eventStream = StreamController.broadcast();
   Stream<UserEvent> get eventStream => _eventStream.stream;
 
-  final UserService _userService;
+  final UserInteractor _userService;
 
   final AuthBloc _authBloc;
 
@@ -23,8 +23,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   UserBloc({
     required AuthBloc authBloc,
-    UserService? userService,
-  })  : _userService = userService ?? GetIt.I.get<UserService>(),
+    UserInteractor? userService,
+  })  : _userService = userService ?? sl<UserInteractor>(),
         _authBloc = authBloc,
         super(UserState.empty()) {
     on<UserEvent>((event, emit) => _handleEvent(event, emit));

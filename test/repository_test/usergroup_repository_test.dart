@@ -5,7 +5,6 @@ import 'package:discord_replicate/api/graphql_client_helper.dart';
 import 'package:discord_replicate/repository/user_group_repository/hivedb_usergroup_store.dart';
 import 'package:discord_replicate/repository/user_group_repository/inmemory_usergroup_store.dart';
 import 'package:discord_replicate/service/auth_service.dart';
-import 'package:discord_replicate/external/hive_constants.dart';
 import 'package:discord_replicate/api/remote_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -32,7 +31,7 @@ void main() {
         "allow-me-in": "artahc123",
       },
     );
-    var remoteApi = RemoteApiImpl(client: client);
+    var remoteApi = GraphQLApiImpl(client: client);
 
     var userRepo = UserGroupRepositoryImpl(api: remoteApi, database: mockDb, cache: mockCache);
 

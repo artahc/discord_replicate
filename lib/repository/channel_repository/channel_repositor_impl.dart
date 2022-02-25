@@ -8,7 +8,7 @@ import 'package:discord_replicate/repository/channel_repository/hivedb_channel_s
 import 'package:discord_replicate/repository/channel_repository/inmemory_channel_store.dart';
 import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/api/remote_api.dart';
-import 'package:get_it/get_it.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -23,9 +23,9 @@ class ChannelRepositoryImpl implements ChannelRepository {
     RemoteApi? api,
     Store<Channel>? database,
     Store<Channel>? cache,
-  })  : _api = api ?? GetIt.I.get<RemoteApi>(),
-        _db = database ?? GetIt.I.get<HiveChannelStore>(),
-        _cache = cache ?? GetIt.I.get<InMemoryChannelStore>();
+  })  : _api = api ?? sl<RemoteApi>(),
+        _db = database ?? sl<HiveChannelStore>(),
+        _cache = cache ?? sl<InMemoryChannelStore>();
 
   @override
   Future<Channel> getChannel(String id) async {

@@ -1,3 +1,4 @@
+import 'package:discord_replicate/api/graphql_operation.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/model/message/message.dart';
@@ -5,8 +6,7 @@ import 'package:discord_replicate/model/paginated_response.dart';
 import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/api/graphql_client_helper.dart';
-import 'package:get_it/get_it.dart';
-import 'graphql_operation.dart';
+import 'package:discord_replicate/app_config.dart';
 
 abstract class RemoteApi {
   Future<User> getUser(String id);
@@ -18,10 +18,10 @@ abstract class RemoteApi {
   Stream<RawMessage> subscribeChannelMessage(String channelId);
 }
 
-class RemoteApiImpl implements RemoteApi {
+class GraphQLApiImpl implements RemoteApi {
   final GraphQLClientHelper _client;
 
-  RemoteApiImpl({GraphQLClientHelper? client}) : _client = client ?? GetIt.I.get<GraphQLClientHelper>();
+  GraphQLApiImpl({GraphQLClientHelper? client}) : _client = client ?? sl.get<GraphQLClientHelper>();
 
   @override
   Future<Channel> getChannel(String id) {

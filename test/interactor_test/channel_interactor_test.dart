@@ -6,7 +6,7 @@ import 'package:discord_replicate/repository/channel_repository/hivedb_channel_s
 import 'package:discord_replicate/repository/channel_repository/inmemory_channel_store.dart';
 import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/service/auth_service.dart';
-import 'package:discord_replicate/service/channel_service.dart';
+import 'package:discord_replicate/interactor/channel_interactor.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -34,9 +34,10 @@ void main() {
       "allow-me-in": "artahc123",
     },
   );
-  var api = RemoteApiImpl(client: client);
+  var api = GraphQLApiImpl(client: client);
   var channelRepo = ChannelRepositoryImpl(api: api, cache: mockCache, database: mockDb);
-  var channelService = ChannelServiceImpl(channelRepo: channelRepo, userGroupRepo: mockUserGroupRepo);
+  var channelInteractor = ChannelInteractorImpl();
+  // var channelService = ChannelServiceImpl(channelRepo: channelRepo, userGroupRepo: mockUserGroupRepo);
 
   setUpAll(() {
     when(() => mockAuthService.getCredential(forceRefresh: any(named: "forceRefresh")))
@@ -51,9 +52,8 @@ void main() {
       when(() => mockDb.save(any())).thenAnswer((invocation) => Future.value(null));
       when(() => mockCache.load(any())).thenAnswer((invocation) => Future.value(null));
       when(() => mockCache.save(any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockUserGroupRepo.getUserGroup(any())).thenAnswer((invocation) => Future.value());
-      
-      var rawMessages = await channelService.getMessages("PkM6m7lhnvIORIRuoVJv", 15, null);
+
+      var rawMessages = await channelInteractor.getChannelMessages(channelId: "PkM6m7lhnvIORIRuoVJv", limit: 15, lastMessageId: null);
 
       print(rawMessages);
     },

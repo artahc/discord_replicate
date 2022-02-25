@@ -1,7 +1,5 @@
 import 'package:discord_replicate/model/credential/credential.dart';
 import 'package:discord_replicate/model/user/user.dart';
-import 'package:discord_replicate/repository/channel_repository/inmemory_channel_store.dart';
-import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/repository/user_repository/hivedb_user_store.dart';
 import 'package:discord_replicate/repository/user_repository/inmemory_user_store.dart';
 import 'package:discord_replicate/repository/user_repository/user_repository_impl.dart';
@@ -33,7 +31,7 @@ void main() {
         "allow-me-in": "artahc123",
       },
     );
-    var remoteApi = RemoteApiImpl(client: client);
+    var remoteApi = GraphQLApiImpl(client: client);
 
     var userRepo = UserRepositoryImpl(api: remoteApi, database: mockDb, cache: mockCache);
 

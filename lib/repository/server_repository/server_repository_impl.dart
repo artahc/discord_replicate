@@ -6,7 +6,7 @@ import 'package:discord_replicate/repository/server_repository/hivedb_server_sto
 import 'package:discord_replicate/repository/server_repository/inmemory_server_store.dart';
 import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/api/remote_api.dart';
-import 'package:get_it/get_it.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -21,9 +21,9 @@ class ServerRepositoryImpl implements ServerRepository {
     RemoteApi? api,
     Store<Server>? database,
     Store<Server>? cache,
-  })  : _api = api ?? GetIt.I.get<RemoteApi>(),
-        _db = database ?? GetIt.I.get<HiveServerStore>(),
-        _cache = cache ?? GetIt.I.get<InMemoryServerStore>();
+  })  : _api = api ?? sl<RemoteApi>(),
+        _db = database ?? sl<HiveServerStore>(),
+        _cache = cache ?? sl<InMemoryServerStore>();
 
   @override
   Future<Server> getServer(String id) async {

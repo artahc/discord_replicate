@@ -5,9 +5,8 @@ import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/repository/user_repository/hivedb_user_store.dart';
 import 'package:discord_replicate/repository/user_repository/inmemory_user_store.dart';
-import 'package:discord_replicate/external/hive_constants.dart';
 import 'package:discord_replicate/api/remote_api.dart';
-import 'package:get_it/get_it.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -22,9 +21,9 @@ class UserRepositoryImpl implements UserRepository {
     RemoteApi? api,
     Store<User>? database,
     Store<User>? cache,
-  })  : _api = api ?? GetIt.I.get<RemoteApi>(),
-        _db = database ?? GetIt.I.get<HiveUserStore>(),
-        _cache = cache ?? GetIt.I.get<InMemoryUserStore>();
+  })  : _api = api ?? sl<RemoteApi>(),
+        _db = database ?? sl<HiveUserStore>(),
+        _cache = cache ?? sl<InMemoryUserStore>();
 
   @override
   Future<User> getUser(String uid) async {

@@ -6,17 +6,18 @@ import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
-abstract class UserService implements Disposable {
+abstract class UserInteractor implements Disposable {
   Future<User> getCurrentUser();
   Future<Channel?> getCurrentUserRecentPrivateChannel();
   Future<Server?> getCurrentUserRecentServer();
   Future<User> getUserById(String id);
 }
 
-class UserServiceImpl implements UserService {
+class UserInteractorImpl implements UserInteractor {
   final AuthService _authService;
   final UserRepository _userRepo;
   final ServerRepository _serverRepo;
@@ -25,11 +26,11 @@ class UserServiceImpl implements UserService {
 
   User? _currentUser;
 
-  UserServiceImpl({AuthService? authService, UserRepository? userRepo, ChannelRepository? channelRepo, ServerRepository? serverRepo})
-      : _userRepo = userRepo ?? GetIt.I.get<UserRepository>(),
-        _serverRepo = serverRepo ?? GetIt.I.get<ServerRepository>(),
-        _channelRepo = channelRepo ?? GetIt.I.get<ChannelRepository>(),
-        _authService = authService ?? GetIt.I.get<AuthService>();
+  UserInteractorImpl({AuthService? authService, UserRepository? userRepo, ChannelRepository? channelRepo, ServerRepository? serverRepo})
+      : _userRepo = userRepo ?? sl.get<UserRepository>(),
+        _serverRepo = serverRepo ?? sl.get<ServerRepository>(),
+        _channelRepo = channelRepo ?? sl.get<ChannelRepository>(),
+        _authService = authService ?? sl.get<AuthService>();
 
   @override
   Future<User> getCurrentUser() async {

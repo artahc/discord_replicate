@@ -4,20 +4,20 @@ import 'package:discord_replicate/bloc/server/server_event.dart';
 import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/repository/server_repository/server_repository.dart';
 import 'package:discord_replicate/service/server_service.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 export 'server_event.dart';
 export 'server_state.dart';
 
 class ServerBloc extends Bloc<ServerEvent, ServerState> {
-  final ServerService _serverService;
+  final ServerInteractor _serverService;
 
   StreamController<ServerEvent> _eventStream = StreamController.broadcast();
   Stream<ServerEvent> get eventStream => _eventStream.stream;
 
-  ServerBloc({ServerRepository? serverRepository, ServerService? serverService})
-      : _serverService = serverService ?? GetIt.I.get<ServerService>(),
+  ServerBloc({ServerRepository? serverRepository, ServerInteractor? serverService})
+      : _serverService = serverService ?? sl.get<ServerInteractor>(),
         super(ServerState.loading()) {
     on<ServerEvent>((event, emit) => _handleEvent(event, emit));
   }
@@ -36,7 +36,7 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
 
   Future<void> _loadServer(String id, emit) async {
     emit(ServerState.loading());
-    
+
     await _serverService.getServerById(id).then((server) {
       emit(ServerState.loaded(server, server.channels.first));
     });

@@ -3,25 +3,24 @@ import 'dart:async';
 import 'package:discord_replicate/bloc/direct_message/direct_message_event.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_state.dart';
 import 'package:discord_replicate/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/service/user_service.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 export 'direct_message_event.dart';
 export 'direct_message_state.dart';
 
 class DirectMessageBloc extends Bloc<DirectMessageEvent, DirectMessageState> {
   final UserBloc _userBloc;
-  final UserService _userService;
+  final UserInteractor _userService;
 
   final StreamController<DirectMessageEvent> _eventStream = StreamController.broadcast();
   Stream<DirectMessageEvent> get eventStream => _eventStream.stream;
 
   late StreamSubscription _userStateSubscription;
 
-  DirectMessageBloc({required UserBloc userBloc, UserService? userService})
-      : _userService = userService ?? GetIt.I.get<UserService>(),
+  DirectMessageBloc({required UserBloc userBloc, UserInteractor? userService})
+      : _userService = userService ?? sl<UserInteractor>(),
         _userBloc = userBloc,
         super(DirectMessageState.empty()) {
     on<DirectMessageEvent>((event, emit) => _handleEvent(event, emit));

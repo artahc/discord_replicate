@@ -4,34 +4,34 @@ import 'package:discord_replicate/bloc/channel/channel_event.dart';
 import 'package:discord_replicate/bloc/channel/channel_state.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/service/channel_service.dart';
-import 'package:discord_replicate/service/user_service.dart';
+import 'package:discord_replicate/interactor/channel_interactor.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 
 export 'channel_event.dart';
 export 'channel_state.dart';
 
 class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
-  final StreamController<ChannelEvent> _eventStream = StreamController.broadcast();
-  Stream<ChannelEvent> get eventStream => _eventStream.stream;
+  final Logger log = Logger();
 
   final ServerBloc _serverBloc;
   final DirectMessageBloc _dmBloc;
-  final ChannelService _channelService;
+  final ChannelInteractor _channelInteractor;
 
-  late Logger log = Logger();
+  final StreamController<ChannelEvent> _eventStream = StreamController.broadcast();
+  Stream<ChannelEvent> get eventStream => _eventStream.stream;
+
   late StreamSubscription<ServerState> _serverStateSubscription;
   late StreamSubscription<DirectMessageState> _dmStateSubscription;
 
   ChannelBloc({
     required ServerBloc serverBloc,
     required DirectMessageBloc dmBloc,
-    ChannelService? channelService,
+    ChannelInteractor? channelInteractor,
   })  : _serverBloc = serverBloc,
         _dmBloc = dmBloc,
-        _channelService = channelService ?? GetIt.I.get<ChannelService>(),
+        _channelInteractor = channelInteractor ?? sl.get(),
         super(ChannelState.loading()) {
     on<ChannelEvent>((event, emit) => _handleEvent(event, emit));
 
@@ -69,8 +69,8 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   _load(String id, emit) async {
     emit(ChannelState.loading());
 
-    await _channelService.getChannelById(id).then((channel) {
-      emit(ChannelState.loaded(channel));
+    await _channelInteractor.getChannelById(id: id).then((value) {
+      emit(ChannelState.loaded(value));
     });
   }
 

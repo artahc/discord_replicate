@@ -3,10 +3,8 @@ import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/repository/server_repository/hivedb_server_store.dart';
 import 'package:discord_replicate/repository/server_repository/inmemory_server_store.dart';
 import 'package:discord_replicate/repository/server_repository/server_repository_impl.dart';
-import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/service/auth_service.dart';
 import 'package:discord_replicate/api/graphql_client_helper.dart';
-import 'package:discord_replicate/external/hive_constants.dart';
 import 'package:discord_replicate/api/remote_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
@@ -36,7 +34,7 @@ main() {
         "allow-me-in": "artahc123",
       },
     );
-    var serverApi = RemoteApiImpl(client: client);
+    var serverApi = GraphQLApiImpl(client: client);
     var serverRepo = ServerRepositoryImpl(api: serverApi, database: mockDb, cache: mockCache);
 
     setUpAll(() {
