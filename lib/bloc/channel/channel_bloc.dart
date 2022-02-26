@@ -6,6 +6,8 @@ import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/interactor/channel_interactor.dart';
 import 'package:discord_replicate/app_config.dart';
+import 'package:discord_replicate/model/channel/channel.dart';
+import 'package:discord_replicate/model/message/message.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
@@ -69,9 +71,10 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   _load(String id, emit) async {
     emit(ChannelState.loading());
 
-    await _channelInteractor.getChannelById(id: id).then((value) {
-      emit(ChannelState.loaded(value));
+    await _channelInteractor.getChannelById(id: id).then((channel) {
+      emit(ChannelState.loaded(channel: channel));
     });
+
   }
 
   _handleEvent(ChannelEvent event, emit) async {

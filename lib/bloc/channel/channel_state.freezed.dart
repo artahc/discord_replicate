@@ -18,7 +18,7 @@ class _$ChannelStateTearOff {
   const _$ChannelStateTearOff();
 
   ChannelStateLoading loading() {
-    return const ChannelStateLoading();
+    return ChannelStateLoading();
   }
 
   ChannelStateError error(Exception e) {
@@ -27,9 +27,9 @@ class _$ChannelStateTearOff {
     );
   }
 
-  ChannelStateLoaded loaded(Channel channel) {
+  ChannelStateLoaded loaded({required Channel channel}) {
     return ChannelStateLoaded(
-      channel,
+      channel: channel,
     );
   }
 }
@@ -123,7 +123,7 @@ class _$ChannelStateLoadingCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ChannelStateLoading implements ChannelStateLoading {
-  const _$ChannelStateLoading();
+  _$ChannelStateLoading();
 
   @override
   String toString() {
@@ -209,7 +209,7 @@ class _$ChannelStateLoading implements ChannelStateLoading {
 }
 
 abstract class ChannelStateLoading implements ChannelState {
-  const factory ChannelStateLoading() = _$ChannelStateLoading;
+  factory ChannelStateLoading() = _$ChannelStateLoading;
 }
 
 /// @nodoc
@@ -247,7 +247,7 @@ class _$ChannelStateErrorCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ChannelStateError implements ChannelStateError {
-  const _$ChannelStateError(this.e);
+  _$ChannelStateError(this.e);
 
   @override
   final Exception e;
@@ -344,7 +344,7 @@ class _$ChannelStateError implements ChannelStateError {
 }
 
 abstract class ChannelStateError implements ChannelState {
-  const factory ChannelStateError(Exception e) = _$ChannelStateError;
+  factory ChannelStateError(Exception e) = _$ChannelStateError;
 
   Exception get e;
   @JsonKey(ignore: true)
@@ -378,7 +378,7 @@ class _$ChannelStateLoadedCopyWithImpl<$Res>
     Object? channel = freezed,
   }) {
     return _then(ChannelStateLoaded(
-      channel == freezed
+      channel: channel == freezed
           ? _value.channel
           : channel // ignore: cast_nullable_to_non_nullable
               as Channel,
@@ -396,7 +396,7 @@ class _$ChannelStateLoadedCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ChannelStateLoaded implements ChannelStateLoaded {
-  const _$ChannelStateLoaded(this.channel);
+  _$ChannelStateLoaded({required this.channel});
 
   @override
   final Channel channel;
@@ -493,7 +493,7 @@ class _$ChannelStateLoaded implements ChannelStateLoaded {
 }
 
 abstract class ChannelStateLoaded implements ChannelState {
-  const factory ChannelStateLoaded(Channel channel) = _$ChannelStateLoaded;
+  factory ChannelStateLoaded({required Channel channel}) = _$ChannelStateLoaded;
 
   Channel get channel;
   @JsonKey(ignore: true)

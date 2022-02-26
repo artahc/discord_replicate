@@ -1,5 +1,4 @@
 import 'package:discord_replicate/model/credential/credential.dart';
-import 'package:discord_replicate/model/user/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auth_state.freezed.dart';
