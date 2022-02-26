@@ -21,9 +21,9 @@ class ServerRepositoryImpl implements ServerRepository {
     RemoteApi? api,
     Store<Server>? database,
     Store<Server>? cache,
-  })  : _api = api ?? sl<RemoteApi>(),
-        _db = database ?? sl<HiveServerStore>(),
-        _cache = cache ?? sl<InMemoryServerStore>();
+  })  : _api = api ?? sl.get<RemoteApi>(),
+        _db = database ?? sl.get<HiveServerStore>(),
+        _cache = cache ?? sl.get<InMemoryServerStore>();
 
   @override
   Future<Server> getServer(String id) async {

@@ -21,9 +21,9 @@ class UserRepositoryImpl implements UserRepository {
     RemoteApi? api,
     Store<User>? database,
     Store<User>? cache,
-  })  : _api = api ?? sl<RemoteApi>(),
-        _db = database ?? sl<HiveUserStore>(),
-        _cache = cache ?? sl<InMemoryUserStore>();
+  })  : _api = api ?? sl.get<RemoteApi>(),
+        _db = database ?? sl.get<HiveUserStore>(),
+        _cache = cache ?? sl.get<InMemoryUserStore>();
 
   @override
   Future<User> getUser(String uid) async {

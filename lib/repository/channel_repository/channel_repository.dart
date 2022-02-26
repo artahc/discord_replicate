@@ -1,6 +1,6 @@
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/message/message.dart';
-import 'package:discord_replicate/model/paginated_response.dart';
+import 'package:discord_replicate/api/paginated_response.dart';
 
 export 'channel_repositor_impl.dart';
 

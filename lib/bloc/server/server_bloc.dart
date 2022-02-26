@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:discord_replicate/bloc/server/server_event.dart';
 import 'package:discord_replicate/bloc/server/server_state.dart';
 import 'package:discord_replicate/repository/server_repository/server_repository.dart';
-import 'package:discord_replicate/service/server_service.dart';
+import 'package:discord_replicate/interactor/server/server_interactor.dart';
 import 'package:discord_replicate/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

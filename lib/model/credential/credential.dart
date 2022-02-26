@@ -3,7 +3,9 @@ class Credential {
   final String email;
   final String token;
 
-  Credential({required this.uid, required this.email, required this.token});
+  const Credential({required this.uid, required this.email, required this.token});
+
+  factory Credential.empty() => const Credential(uid: "", email: "", token: "");
 
   Map<String, dynamic> toJson() {
     return {"uid": uid, "email": email, "token": token};

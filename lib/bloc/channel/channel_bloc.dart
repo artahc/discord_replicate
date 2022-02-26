@@ -4,7 +4,7 @@ import 'package:discord_replicate/bloc/channel/channel_event.dart';
 import 'package:discord_replicate/bloc/channel/channel_state.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
-import 'package:discord_replicate/interactor/channel_interactor.dart';
+import 'package:discord_replicate/interactor/channel/channel_interactor.dart';
 import 'package:discord_replicate/app_config.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/message/message.dart';

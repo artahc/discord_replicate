@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/user/user_event.dart';
 import 'package:discord_replicate/bloc/user/user_state.dart';
-import 'package:discord_replicate/service/user_service.dart';
+import 'package:discord_replicate/interactor/user/user_interactor.dart';
 import 'package:discord_replicate/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
@@ -24,7 +24,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc({
     required AuthBloc authBloc,
     UserInteractor? userService,
-  })  : _userService = userService ?? sl<UserInteractor>(),
+  })  : _userService = userService ?? sl.get<UserInteractor>(),
         _authBloc = authBloc,
         super(UserState.empty()) {
     on<UserEvent>((event, emit) => _handleEvent(event, emit));

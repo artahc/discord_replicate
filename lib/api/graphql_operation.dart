@@ -84,7 +84,7 @@ class GetUserGroupQuery extends GraphQLOperation {
       "userGroupRef": userGroupId,
       "limit": 50,
       "cursor": null,
-    };
+    };!
   }
 }
 

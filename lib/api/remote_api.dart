@@ -2,7 +2,7 @@ import 'package:discord_replicate/api/graphql_operation.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/model/message/message.dart';
-import 'package:discord_replicate/model/paginated_response.dart';
+import 'package:discord_replicate/api/paginated_response.dart';
 import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/api/graphql_client_helper.dart';

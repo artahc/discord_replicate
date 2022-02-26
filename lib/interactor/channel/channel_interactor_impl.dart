@@ -1,21 +1,11 @@
-import 'dart:async';
-
+import 'package:discord_replicate/interactor/channel/channel_interactor.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/model/message/message.dart';
-import 'package:discord_replicate/model/paginated_response.dart';
+import 'package:discord_replicate/api/paginated_response.dart';
 import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/app_config.dart';
 import 'package:logger/logger.dart';
-
-abstract class ChannelInteractor {
-  Future<Channel> getChannelById({required String id});
-  Future<Member> getMemberById({required String channelId, required String userId});
-  Future<List<Member>> getAllMembers({required String channelId});
-  Future<PaginationResponse<Message>> getChannelMessages({required String channelId, int limit, String? lastMessageId});
-  Future<Message> sendChannelMessage({required String channelId, required String messageText, required int timestamp});
-  Stream<Message> subscribeChannelMessage({required String channelId});
-}
 
 class ChannelInteractorImpl implements ChannelInteractor {
   final Logger log = Logger();
@@ -26,8 +16,8 @@ class ChannelInteractorImpl implements ChannelInteractor {
   ChannelInteractorImpl({
     ChannelRepository? channelRepo,
     UserGroupRepository? userGroupRepo,
-  })  : _channelRepo = channelRepo ?? sl<ChannelRepository>(),
-        _userGroupRepo = userGroupRepo ?? sl<UserGroupRepository>();
+  })  : _channelRepo = channelRepo ?? sl.get<ChannelRepository>(),
+        _userGroupRepo = userGroupRepo ?? sl.get<UserGroupRepository>();
 
   @override
   Future<Channel> getChannelById({required String id}) async {

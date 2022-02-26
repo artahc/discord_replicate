@@ -23,9 +23,9 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
     RemoteApi? api,
     Store<UserGroup>? database,
     Store<UserGroup>? cache,
-  })  : _api = api ?? sl<RemoteApi>(),
-        _db = database ?? sl<HiveUserGroupStore>(),
-        _cache = cache ?? sl<InMemoryUserGroupStore>();
+  })  : _api = api ?? sl.get<RemoteApi>(),
+        _db = database ?? sl.get<HiveUserGroupStore>(),
+        _cache = cache ?? sl.get<InMemoryUserGroupStore>();
 
   @override
   Future<UserGroup> getUserGroup(String id, {int limitMember = 50, String? cursor}) async {

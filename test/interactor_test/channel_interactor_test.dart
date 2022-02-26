@@ -1,12 +1,12 @@
 import 'package:discord_replicate/api/graphql_client_helper.dart';
 import 'package:discord_replicate/api/remote_api.dart';
+import 'package:discord_replicate/interactor/channel/channel_interactor_impl.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/credential/credential.dart';
 import 'package:discord_replicate/repository/channel_repository/hivedb_channel_store.dart';
 import 'package:discord_replicate/repository/channel_repository/inmemory_channel_store.dart';
 import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/service/auth_service.dart';
-import 'package:discord_replicate/interactor/channel_interactor.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -36,7 +36,7 @@ void main() {
   );
   var api = GraphQLApiImpl(client: client);
   var channelRepo = ChannelRepositoryImpl(api: api, cache: mockCache, database: mockDb);
-  var channelInteractor = ChannelInteractorImpl();
+  var channelInteractor = ChannelInteractorImpl(channelRepo: channelRepo, userGroupRepo: mockUserGroupRepo);
   // var channelService = ChannelServiceImpl(channelRepo: channelRepo, userGroupRepo: mockUserGroupRepo);
 
   setUpAll(() {

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:async/async.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/message/message.dart';
-import 'package:discord_replicate/model/paginated_response.dart';
+import 'package:discord_replicate/api/paginated_response.dart';
 import 'package:discord_replicate/repository/channel_repository/hivedb_channel_store.dart';
 import 'package:discord_replicate/repository/channel_repository/inmemory_channel_store.dart';
 import 'package:discord_replicate/repository/store.dart';
@@ -23,9 +23,9 @@ class ChannelRepositoryImpl implements ChannelRepository {
     RemoteApi? api,
     Store<Channel>? database,
     Store<Channel>? cache,
-  })  : _api = api ?? sl<RemoteApi>(),
-        _db = database ?? sl<HiveChannelStore>(),
-        _cache = cache ?? sl<InMemoryChannelStore>();
+  })  : _api = api ?? sl.get<RemoteApi>(),
+        _db = database ?? sl.get<HiveChannelStore>(),
+        _cache = cache ?? sl.get<InMemoryChannelStore>();
 
   @override
   Future<Channel> getChannel(String id) async {
