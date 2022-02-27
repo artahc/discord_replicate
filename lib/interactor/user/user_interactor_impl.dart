@@ -57,7 +57,6 @@ class UserInteractorImpl implements UserInteractor {
   @override
   Future<User> getUserById(String id) async {
     var user = await _userRepo.getUser(id);
-    if (user == null) throw NotFoundException("User not found.");
 
     return user;
   }

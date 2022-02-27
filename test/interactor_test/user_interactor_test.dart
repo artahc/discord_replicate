@@ -1,6 +1,9 @@
 import 'package:discord_replicate/api/graphql_client_helper.dart';
 import 'package:discord_replicate/api/remote_api.dart';
+import 'package:discord_replicate/app_config.dart';
 import 'package:discord_replicate/interactor/channel/channel_interactor_impl.dart';
+import 'package:discord_replicate/interactor/user/user_interactor.dart';
+import 'package:discord_replicate/interactor/user/user_interactor_impl.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/credential/credential.dart';
 import 'package:discord_replicate/repository/channel_repository/hivedb_channel_store.dart';
@@ -35,8 +38,8 @@ void main() {
   );
 
   var api = GraphQLApiImpl(client: client);
-  var channelRepo = ChannelRepositoryImpl(api: api, cache: mockCache, database: mockDb);
-  var channelInteractor = ChannelInteractorImpl(channelRepo: channelRepo, userGroupRepo: mockUserGroupRepo);
+
+  var userInteractor = UserInteractorImpl();
 
   setUpAll(() {
     when(() => mockAuthService.getCredential(forceRefresh: any(named: "forceRefresh")))
@@ -44,17 +47,5 @@ void main() {
     registerFallbackValue(MockChannel());
   });
 
-  test(
-    "Fetch channel messages from remote, should be able to parse result into PaginationResponse<RawMessage>",
-    () async {
-      when(() => mockDb.load(any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockDb.save(any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockCache.load(any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockCache.save(any())).thenAnswer((invocation) => Future.value(null));
-
-      var rawMessages = await channelInteractor.getChannelMessages(channelId: "PkM6m7lhnvIORIRuoVJv", limit: 15, lastMessageId: null);
-
-      print(rawMessages);
-    },
-  );
+  
 }
