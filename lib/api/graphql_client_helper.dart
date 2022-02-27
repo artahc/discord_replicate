@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:discord_replicate/api/graphql_operation/graphql_operation.dart';
 import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/exception/mixin_error_mapper.dart';
 import 'package:discord_replicate/external/app_log_filter.dart';
@@ -9,11 +10,6 @@ import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
-
-abstract class GraphQLOperation {
-  String get operation;
-  Map<String, dynamic> get variables;
-}
 
 class GraphQLClientHelper with ExceptionMapperMixin, Disposable {
   late GraphQLClient _client;
@@ -34,9 +30,10 @@ class GraphQLClientHelper with ExceptionMapperMixin, Disposable {
       var bearer = 'Bearer $token';
       return bearer;
     });
-    var wsLink = WebSocketLink(wsUrl);
 
+    var wsLink = WebSocketLink(wsUrl);
     var link = authLink.concat(httpLink);
+
     link = Link.split((request) => request.isSubscription, wsLink, link);
 
     _client = GraphQLClient(

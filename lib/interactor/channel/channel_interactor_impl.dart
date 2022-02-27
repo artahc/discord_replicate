@@ -63,7 +63,7 @@ class ChannelInteractorImpl implements ChannelInteractor {
       return message;
     }).toList();
 
-    var paginatedResponse = PaginationResponse(items: messages, hasMore: raw.hasMore, previousCursor: raw.previousCursor);
+    var paginatedResponse = PaginationResponse(items: messages, hasMore: raw.hasMore, cursor: raw.cursor);
 
     return paginatedResponse;
   }

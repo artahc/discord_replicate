@@ -48,10 +48,33 @@ Future main() async {
     final cipherMessageByRemoteUser = await remoteCipher.encrypt("Hello nice to meet you!".toUint8List());
     print("Remote user cipherText sent to me : ${cipherMessageByRemoteUser.serialize()}");
 
-    final plainMessageByRemoteUser = await localCipher.decryptFromSignal(cipherMessageByRemoteUser as signal.SignalMessage).then((value) => value.toPlainString());
+    final plainMessageByRemoteUser =
+        await localCipher.decryptFromSignal(cipherMessageByRemoteUser as signal.SignalMessage).then((value) => value.toPlainString());
     print("Remote user cipherText decrypted by me: $plainMessageByRemoteUser");
 
     assert(plainMessageByRemoteUser == "Hello nice to meet you!");
+  });
+
+  test("Test group message", () async {
+    const alice = signal.SignalProtocolAddress('+00000000001', 1);
+    const groupSender = signal.SenderKeyName('Private group', alice);
+    final aliceStore = signal.InMemorySenderKeyStore();
+    final bobStore = signal.InMemorySenderKeyStore();
+
+    final aliceSessionBuilder = signal.GroupSessionBuilder(aliceStore);
+    final bobSessionBuilder = signal.GroupSessionBuilder(bobStore);
+
+    final aliceGroupCipher = signal.GroupCipher(aliceStore, groupSender);
+    final bobGroupCipher = signal.GroupCipher(bobStore, groupSender);
+
+    final sentAliceDistributionMessage = await aliceSessionBuilder.create(groupSender);
+    final receivedAliceDistributionMessage = signal.SenderKeyDistributionMessageWrapper.fromSerialized(sentAliceDistributionMessage.serialize());
+    await bobSessionBuilder.process(groupSender, receivedAliceDistributionMessage);
+
+    final ciphertextFromAlice = await aliceGroupCipher.encrypt(Uint8List.fromList(utf8.encode('Hello Mixin')));
+    final plaintextFromAlice = await bobGroupCipher.decrypt(ciphertextFromAlice);
+
+    print(utf8.decode(plaintextFromAlice));
   });
 }
 

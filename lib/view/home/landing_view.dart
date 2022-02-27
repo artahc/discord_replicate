@@ -59,6 +59,9 @@ class _LandingViewState extends State<LandingView> {
                 );
               },
               loaded: (user) {
+                // return EmptyLandingPanel(
+
+                // );
                 if (user.privateChannels.isEmpty && user.servers.isEmpty) {
                   return EmptyLandingPanel();
                 } else {

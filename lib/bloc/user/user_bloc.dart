@@ -11,23 +11,30 @@ export 'user_event.dart';
 export 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
+  final Logger log = Logger();
+  final UserInteractor _userInteractor;
+  final AuthBloc _authBloc;
+
   StreamController<UserEvent> _eventStream = StreamController.broadcast();
   Stream<UserEvent> get eventStream => _eventStream.stream;
 
-  final UserInteractor _userService;
-
-  final AuthBloc _authBloc;
-
-  late Logger log = Logger();
   late StreamSubscription _authStateSubscription;
 
   UserBloc({
     required AuthBloc authBloc,
-    UserInteractor? userService,
-  })  : _userService = userService ?? sl.get<UserInteractor>(),
+    UserInteractor? userInteractor,
+  })  : _userInteractor = userInteractor ?? sl.get<UserInteractor>(),
         _authBloc = authBloc,
         super(UserState.empty()) {
-    on<UserEvent>((event, emit) => _handleEvent(event, emit));
+    on<UserEvent>((event, emit) {
+      return event.when(
+        // loadPrivateChannels: () => _loadPrivateChannels(emit),
+        loadUser: () => _loadUser(emit),
+        deleteUser: () => _deleteUser(emit),
+        joinServer: (String serverId) => _joinServer(serverId, emit),
+        leaveServer: (String serverId) => _leaveServer(serverId, emit),
+      );
+    });
 
     _authStateSubscription = _authBloc.stream.listen((state) {
       state.whenOrNull(
@@ -56,7 +63,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   _loadUser(emit) async {
     emit(UserState.loading());
-    await _userService.getCurrentUser().then((user) {
+    await _userInteractor.getCurrentUser().then((user) {
       emit(UserState.loaded(user));
     }).catchError((error, stackTrace) {
       log.e("Error when loading user after sign-in.", error, stackTrace);
@@ -68,11 +75,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(UserState.empty());
   }
 
-  _handleEvent(UserEvent event, emit) async {
-    return await event.when(
-      // loadPrivateChannels: () => _loadPrivateChannels(emit),
-      loadUser: () => _loadUser(emit),
-      deleteUser: () => _deleteUser(emit),
-    );
-  }
+  _joinServer(String serverId, emit) async {}
+
+  _leaveServer(String serverId, emit) async {}
 }

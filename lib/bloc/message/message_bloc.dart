@@ -49,13 +49,13 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   _fetchInitialMessage(emit) async {
     await _channelInteractor.getChannelMessages(channelId: _channel.id).then((response) {
-      emit(MessageState.messageFetched(response.items, response.hasMore, response.previousCursor));
+      emit(MessageState.messageFetched(response.items, response.hasMore, response.cursor));
     });
   }
 
   _fetchPreviousMessage(String lastMessageId, int limit, emit) async {
     await _channelInteractor.getChannelMessages(channelId: _channel.id, limit: limit, lastMessageId: lastMessageId).then((response) {
-      emit(MessageState.messageFetched(response.items, response.hasMore, response.previousCursor));
+      emit(MessageState.messageFetched(response.items, response.hasMore, response.cursor));
     });
   }
 
@@ -73,10 +73,10 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     await _channelInteractor
         .sendChannelMessage(channelId: _channel.id, messageText: messageText, timestamp: date.millisecondsSinceEpoch)
         .then((message) {
-          log.i("Message sent. $message");
-        }).onError((Exception error, stackTrace) {
-          log.e("Error when send message.", error, stackTrace);
-        });
+      log.i("Message sent. $message");
+    }).onError((Exception error, stackTrace) {
+      log.e("Error when send message.", error, stackTrace);
+    });
   }
 
   _onReceivedNewMessage(Message message, emit) async {

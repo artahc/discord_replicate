@@ -1,23 +1,45 @@
+import 'package:discord_replicate/model/server/server.dart';
+import 'package:discord_replicate/view/home/channel_list_panel.dart';
+import 'package:discord_replicate/view/home/direct_message_panel.dart';
 import 'package:discord_replicate/view/home/navigation_bar.dart';
+import 'package:discord_replicate/view/home/server_list_panel.dart';
+import 'package:discord_replicate/widgets/app_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class EmptyLandingPanel extends StatelessWidget {
+class EmptyLandingPanel extends StatefulWidget {
   const EmptyLandingPanel({Key? key}) : super(key: key);
 
   @override
+  State<EmptyLandingPanel> createState() => _EmptyLandingPanelState();
+}
+
+class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
+  @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Center(
-          child: Text("There is nothing in your page."),
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
+        child: Expanded(
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Text("Nothing to do in your account."),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: AppButton(
+                  child: Text("Join Testing Server"),
+                  onPressed: () {
+                    
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: AppNavigationBar(),
-        )
-      ],
+      ),
     );
   }
 }

@@ -17,7 +17,7 @@ class LandingPanel extends StatefulWidget {
   final User user;
 
   const LandingPanel({Key? key, required this.user}) : super(key: key);
-
+  
   @override
   State<LandingPanel> createState() => _LandingPanelState();
 }

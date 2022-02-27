@@ -1,6 +1,7 @@
 import 'package:discord_replicate/model/message/message.dart';
 import 'package:discord_replicate/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MessageTile extends StatelessWidget {
   final Message message;
@@ -37,11 +38,11 @@ class MessageTile extends StatelessWidget {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Text(message.sender.name, style: Theme.of(context).textTheme.bodyText1),
-                          Text(message.date.millisecondsSinceEpoch.toString()),
-                          // Text(DateFormat.yMMMd().add_jm().format(message.date),
-                          //     style: Theme.of(context).textTheme.caption!.copyWith(
-                          //           color: Theme.of(context).colorScheme.onSecondary,
-                          //         )),
+                          // Text(message.date.millisecondsSinceEpoch.toString()),
+                          Text(DateFormat.yMMMd().add_jm().format(message.date),
+                              style: Theme.of(context).textTheme.caption!.copyWith(
+                                    color: Theme.of(context).colorScheme.onSecondary,
+                                  )),
                         ],
                       ),
                       Container(

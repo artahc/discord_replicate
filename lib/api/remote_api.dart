@@ -1,4 +1,4 @@
-import 'package:discord_replicate/api/graphql_operation.dart';
+import 'package:discord_replicate/api/graphql_operation/graphql_operation.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/member/member.dart';
 import 'package:discord_replicate/model/message/message.dart';
@@ -70,7 +70,7 @@ class GraphQLApiImpl implements RemoteApi {
       var response = PaginationResponse<RawMessage>(
         items: rawMessages,
         hasMore: hasMore,
-        previousCursor: previousCursor,
+        cursor: previousCursor,
       );
 
       return response;

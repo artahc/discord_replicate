@@ -1,7 +1,7 @@
 class PaginationResponse<T> {
   final List<T> items;
   final bool hasMore;
-  final dynamic previousCursor;
+  final dynamic cursor;
 
-  const PaginationResponse({required this.items, required this.hasMore, this.previousCursor});
+  const PaginationResponse({required this.items, required this.hasMore, this.cursor});
 }
