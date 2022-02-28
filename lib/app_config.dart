@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:discord_replicate/api/remote_api.dart';
 import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
@@ -17,7 +19,7 @@ import 'package:discord_replicate/repository/user_group_repository/inmemory_user
 import 'package:discord_replicate/repository/user_repository/hivedb_user_store.dart';
 import 'package:discord_replicate/repository/user_repository/inmemory_user_store.dart';
 import 'package:discord_replicate/repository/user_repository/user_repository_impl.dart';
-import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/repository/auth_repository/auth_service.dart';
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/api/graphql_client_helper.dart';
@@ -47,7 +49,7 @@ class AppConfiguration {
     sl.registerLazySingleton<RemoteApi>(() => GraphQLApiImpl());
 
     // Service / Interactor
-    sl.registerLazySingleton<AuthService>(() => FirebaseAuthServiceImpl());
+    sl.registerLazySingleton<AuthRepository>(() => FirebaseAuthRepositoryImpl());
     sl.registerLazySingleton<UserInteractor>(() => UserInteractorImpl());
     sl.registerLazySingleton<ServerInteractor>(() => ServerInteractorImpl());
     sl.registerLazySingleton<ChannelInteractor>(() => ChannelInteractorImpl());
@@ -69,7 +71,7 @@ class AppConfiguration {
     sl.registerFactory<InMemoryServerStore>(() => InMemoryServerStore());
     sl.registerFactory<InMemoryUserStore>(() => InMemoryUserStore());
     sl.registerFactory<InMemoryUserGroupStore>(() => InMemoryUserGroupStore());
-
+    sl.registerFactory<SomethingStore>(() => SomethingStoreImpl());
     // BLoC
     sl.registerLazySingleton<AuthBloc>(() => AuthBloc());
     sl.registerFactory<ServerBloc>(() => ServerBloc());
@@ -89,5 +91,18 @@ class AppConfiguration {
       ..registerAdapter(MessageAdapter(), override: true)
       ..registerAdapter(MemberAdapter(), override: true)
       ..registerAdapter(UserGroupAdapter(), override: true);
+  }
+}
+
+abstract class SomethingStore implements Disposable {}
+
+class SomethingStoreImpl implements SomethingStore {
+  SomethingStoreImpl() {
+    print("Construct something store");
+  }
+  @override
+  FutureOr onDispose() async {
+    print("Dispose something store");
+    return;
   }
 }

@@ -7,6 +7,7 @@ import 'package:discord_replicate/repository/user_repository/hivedb_user_store.d
 import 'package:discord_replicate/repository/user_repository/inmemory_user_store.dart';
 import 'package:discord_replicate/api/remote_api.dart';
 import 'package:discord_replicate/app_config.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -16,6 +17,7 @@ class UserRepositoryImpl implements UserRepository {
   final RemoteApi _api;
   final Store<User> _db;
   final Store<User> _cache;
+  final SomethingStore store = sl.get();
 
   UserRepositoryImpl({
     RemoteApi? api,
@@ -36,7 +38,7 @@ class UserRepositoryImpl implements UserRepository {
     var local = LazyStream(() {
       return _db.load(uid).asStream().where((user) => user != null).doOnData((user) async {
         await _cache.save(user!);
-        log.i("User found on local database.");
+        log.i("User found on local database. $user");
       });
     });
 
@@ -50,5 +52,11 @@ class UserRepositoryImpl implements UserRepository {
 
     var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
     return result!;
+  }
+
+  @override
+  FutureOr onDispose() async {
+    await _cache.onDispose();
+    await _db.onDispose();
   }
 }

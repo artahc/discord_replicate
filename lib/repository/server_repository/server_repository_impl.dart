@@ -63,4 +63,10 @@ class ServerRepositoryImpl implements ServerRepository {
     await _db.saveAll(servers);
     await _cache.saveAll(servers);
   }
+
+  @override
+  FutureOr onDispose() async {
+    await _cache.onDispose();
+    await _db.onDispose();
+  }
 }

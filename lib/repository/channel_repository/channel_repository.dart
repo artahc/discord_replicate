@@ -1,10 +1,11 @@
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/message/message.dart';
 import 'package:discord_replicate/api/paginated_response.dart';
+import 'package:get_it/get_it.dart';
 
 export 'channel_repositor_impl.dart';
 
-abstract class ChannelRepository {
+abstract class ChannelRepository implements Disposable {
   Future<Channel> getChannel(String id);
   Future<List<Channel>> getChannels();
   Future<void> saveChannel(Channel channel);

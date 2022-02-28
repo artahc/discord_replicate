@@ -75,7 +75,9 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(UserState.empty());
   }
 
-  _joinServer(String serverId, emit) async {}
+  _joinServer(String serverId, emit) async {
+    
+  }
 
   _leaveServer(String serverId, emit) async {}
 }

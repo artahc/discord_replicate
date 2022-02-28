@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:discord_replicate/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/bloc/direct_message/direct_message_bloc.dart';
@@ -21,10 +23,11 @@ class LandingView extends StatefulWidget {
 }
 
 class _LandingViewState extends State<LandingView> {
-  late var userBloc = sl.get<UserBloc>(param1: BlocProvider.of<AuthBloc>(context));
-  late var serverBloc = sl.get<ServerBloc>();
-  late var dmBloc = sl.get<DirectMessageBloc>(param1: userBloc);
-  late var channelBloc = sl.get<ChannelBloc>(param1: serverBloc, param2: dmBloc);
+  late UserBloc userBloc = sl.get(param1: BlocProvider.of<AuthBloc>(context));
+  late ServerBloc serverBloc = sl.get();
+  late DirectMessageBloc dmBloc = sl.get(param1: userBloc);
+  late ChannelBloc channelBloc = sl.get(param1: serverBloc, param2: dmBloc);
+  late AuthBloc authBloc = sl.get();
 
   @override
   void initState() {
@@ -44,7 +47,13 @@ class _LandingViewState extends State<LandingView> {
           BlocProvider<DirectMessageBloc>(create: (_) => dmBloc),
         ],
         child: BlocConsumer<UserBloc, UserState>(
-          listener: (_, state) {},
+          listener: (_, state) {
+            state.whenOrNull(
+              error: (e) async {
+                Timer(Duration(seconds: 3), () {});
+              },
+            );
+          },
           builder: (_, state) {
             return state.maybeWhen(
               orElse: () {

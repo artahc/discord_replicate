@@ -78,4 +78,10 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
   Future<List<Member>> getAllMember(String userGroupId) async {
     return [];
   }
+
+  @override
+  FutureOr onDispose() async {
+    await _cache.onDispose();
+    await _db.onDispose();
+  }
 }

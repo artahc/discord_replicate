@@ -7,7 +7,7 @@ export 'user_group_repository/user_group_repository.dart';
 export 'user_repository/user_repository.dart';
 
 /// Mixin for providing basic CRUD behaviour.
-mixin Store<T> implements Disposable {
+abstract class Store<T> implements Disposable {
   Future<T?> load(String id);
   Future<List<T>> loadAll();
   Future<void> save(T item);

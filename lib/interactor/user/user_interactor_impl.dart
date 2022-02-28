@@ -4,18 +4,18 @@ import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/repository/store.dart';
-import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/repository/auth_repository/auth_service.dart';
 import 'package:discord_replicate/app_config.dart';
 import 'package:logger/logger.dart';
 
 class UserInteractorImpl implements UserInteractor {
-  final AuthService _authService;
+  final AuthRepository _authService;
   final UserRepository _userRepo;
   final ServerRepository _serverRepo;
   final ChannelRepository _channelRepo;
   final Logger log = Logger();
 
-  UserInteractorImpl({AuthService? authService, UserRepository? userRepo, ChannelRepository? channelRepo, ServerRepository? serverRepo})
+  UserInteractorImpl({AuthRepository? authService, UserRepository? userRepo, ChannelRepository? channelRepo, ServerRepository? serverRepo})
       : _userRepo = userRepo ?? sl.get(),
         _serverRepo = serverRepo ?? sl.get(),
         _channelRepo = channelRepo ?? sl.get(),
@@ -60,4 +60,5 @@ class UserInteractorImpl implements UserInteractor {
 
     return user;
   }
+
 }

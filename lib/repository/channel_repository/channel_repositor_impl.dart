@@ -85,4 +85,10 @@ class ChannelRepositoryImpl implements ChannelRepository {
     await _db.save(channel);
     await _cache.save(channel);
   }
+
+  @override
+  FutureOr onDispose() async {
+    await _cache.onDispose();
+    await _db.onDispose();
+  }
 }

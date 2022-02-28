@@ -1,6 +1,6 @@
 import 'package:discord_replicate/bloc/authentication/auth_event.dart';
 import 'package:discord_replicate/bloc/authentication/auth_state.dart';
-import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/repository/auth_repository/auth_service.dart';
 import 'package:discord_replicate/app_config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,10 +13,10 @@ enum RegisterOptions { Phone, Email }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final Logger log = Logger();
-  final AuthService _authService;
+  final AuthRepository _authService;
 
-  AuthBloc({AuthService? authService})
-      : _authService = authService ?? sl.get<AuthService>(),
+  AuthBloc({AuthRepository? authService})
+      : _authService = authService ?? sl.get<AuthRepository>(),
         super(AuthStateInitial()) {
     on<AuthEvent>((event, emit) => _handleEvent(event, emit));
   }
@@ -68,7 +68,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _signOut(emit) async {
     await _authService.signOut();
-    await sl.reset();
+    await sl.reset().then((value) {
+      print("Service locator reset.");
+    });
     await AppConfiguration.initServiceLocator();
     emit(AuthState.unauthenticated());
   }

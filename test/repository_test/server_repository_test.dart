@@ -3,7 +3,7 @@ import 'package:discord_replicate/model/server/server.dart';
 import 'package:discord_replicate/repository/server_repository/hivedb_server_store.dart';
 import 'package:discord_replicate/repository/server_repository/inmemory_server_store.dart';
 import 'package:discord_replicate/repository/server_repository/server_repository_impl.dart';
-import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/repository/auth_repository/auth_service.dart';
 import 'package:discord_replicate/api/graphql_client_helper.dart';
 import 'package:discord_replicate/api/remote_api.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,7 +12,7 @@ import 'package:mocktail/mocktail.dart';
 
 final Logger log = Logger();
 
-class MockAuthService extends Mock implements AuthService {}
+class MockAuthService extends Mock implements AuthRepository {}
 
 class MockDb extends Mock implements HiveServerStore {}
 

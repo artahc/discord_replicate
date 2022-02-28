@@ -4,12 +4,12 @@ import 'package:discord_replicate/repository/store.dart';
 import 'package:discord_replicate/api/graphql_client_helper.dart';
 import 'package:discord_replicate/repository/user_group_repository/hivedb_usergroup_store.dart';
 import 'package:discord_replicate/repository/user_group_repository/inmemory_usergroup_store.dart';
-import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/repository/auth_repository/auth_service.dart';
 import 'package:discord_replicate/api/remote_api.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockAuthService extends Mock implements AuthService {}
+class MockAuthService extends Mock implements AuthRepository {}
 
 class MockDb extends Mock implements HiveUserGroupStore {}
 

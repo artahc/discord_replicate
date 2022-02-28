@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 
 export 'firebase_auth_service_impl.dart';
 
-abstract class AuthService implements Disposable {
+abstract class AuthRepository implements Disposable {
   Future<Credential?> getCredential({bool forceRefresh = false});
   Future<Credential> signIn(String email, String password);
   Future<Credential> signUpEmail(String email);

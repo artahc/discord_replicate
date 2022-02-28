@@ -4,8 +4,11 @@ import 'dart:collection';
 import 'package:discord_replicate/external/app_extension.dart';
 import 'package:discord_replicate/model/user/user.dart';
 import 'package:discord_replicate/repository/store.dart';
+import 'package:logger/logger.dart';
 
 class InMemoryUserStore implements Store<User> {
+  final Logger log = Logger();
+
   final SplayTreeMap<String, User> _cache = SplayTreeMap();
 
   @override
@@ -25,6 +28,7 @@ class InMemoryUserStore implements Store<User> {
 
   @override
   FutureOr onDispose() async {
+    log.d("Dispose in-memory user store");
     _cache.clear();
   }
 

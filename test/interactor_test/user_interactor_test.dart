@@ -9,7 +9,7 @@ import 'package:discord_replicate/model/credential/credential.dart';
 import 'package:discord_replicate/repository/channel_repository/hivedb_channel_store.dart';
 import 'package:discord_replicate/repository/channel_repository/inmemory_channel_store.dart';
 import 'package:discord_replicate/repository/store.dart';
-import 'package:discord_replicate/service/auth_service.dart';
+import 'package:discord_replicate/repository/auth_repository/auth_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -17,7 +17,7 @@ class MockDb extends Mock implements HiveChannelStore {}
 
 class MockCache extends Mock implements InMemoryChannelStore {}
 
-class MockAuthService extends Mock implements AuthService {}
+class MockAuthService extends Mock implements AuthRepository {}
 
 class MockUserGroupRepository extends Mock implements UserGroupRepository {}
 
