@@ -60,7 +60,7 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
   }
 
   @override
-  Future<Member> getMemberByUID(String userGroupId, String uid) async {
+  Future<Member> getMemberById(String userGroupId, String uid) async {
     var memory = LazyStream(() {
       return _cache.load(userGroupId).asStream().map((userGroup) => userGroup?.members[uid]);
     });

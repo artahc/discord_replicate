@@ -1,4 +1,3 @@
-import 'package:discord_replicate/exception/custom_exception.dart';
 import 'package:discord_replicate/interactor/user/user_interactor.dart';
 import 'package:discord_replicate/model/channel/channel.dart';
 import 'package:discord_replicate/model/server/server.dart';
@@ -60,5 +59,4 @@ class UserInteractorImpl implements UserInteractor {
 
     return user;
   }
-
 }
