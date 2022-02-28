@@ -1,11 +1,14 @@
-import 'package:discord_replicate/model/credential/credential.dart';
-import 'package:discord_replicate/model/server/server.dart';
-import 'package:discord_replicate/repository/server_repository/hivedb_server_store.dart';
-import 'package:discord_replicate/repository/server_repository/inmemory_server_store.dart';
-import 'package:discord_replicate/repository/server_repository/server_repository_impl.dart';
-import 'package:discord_replicate/repository/auth_repository/auth_service.dart';
-import 'package:discord_replicate/api/graphql_client_helper.dart';
-import 'package:discord_replicate/api/remote_api.dart';
+import 'package:discord_replicate/data/api/graphql_server_remote_api_impl.dart';
+import 'package:discord_replicate/data/store/server_store/hivedb_server_store.dart';
+import 'package:discord_replicate/data/store/server_store/inmemory_server_store.dart';
+import 'package:discord_replicate/data/repository/server_repository_impl.dart';
+
+import 'package:discord_replicate/domain/model/credential/credential.dart';
+import 'package:discord_replicate/domain/model/server/server.dart';
+import 'package:discord_replicate/domain/repository/auth_repository.dart';
+
+import 'package:discord_replicate/common/graphql/graphql_client_helper.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
@@ -27,14 +30,14 @@ main() {
     var mockAuthService = MockAuthService();
 
     var client = GraphQLClientHelper(
-      "http://localhost:4000/graphql",
-      "ws://localhost:4000/graphql",
-      authService: mockAuthService,
+      url: "http://localhost:4000/graphql",
+      wsUrl: "ws://localhost:4000/graphql",
+      bearerProvider: () async => "",
       defaultHeader: {
         "allow-me-in": "artahc123",
       },
     );
-    var serverApi = GraphQLApiImpl(client: client);
+    var serverApi = GraphQLServerRemoteApiImpl(client: client);
     var serverRepo = ServerRepositoryImpl(api: serverApi, database: mockDb, cache: mockCache);
 
     setUpAll(() {
@@ -67,6 +70,4 @@ main() {
       expect(server, isA<Server>());
     });
   });
-
-  group("Server Repository Local Database Source", () {});
 }

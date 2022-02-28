@@ -1,11 +1,14 @@
-import 'package:discord_replicate/model/channel/channel.dart';
-import 'package:discord_replicate/model/credential/credential.dart';
-import 'package:discord_replicate/repository/channel_repository/hivedb_channel_store.dart';
-import 'package:discord_replicate/repository/channel_repository/inmemory_channel_store.dart';
-import 'package:discord_replicate/repository/store.dart';
-import 'package:discord_replicate/api/graphql_client_helper.dart';
-import 'package:discord_replicate/repository/auth_repository/auth_service.dart';
-import 'package:discord_replicate/api/remote_api.dart';
+import 'package:discord_replicate/data/api/graphql_channel_remote_api_impl.dart';
+import 'package:discord_replicate/data/repository/channel_repositor_impl.dart';
+import 'package:discord_replicate/data/store/channel_store/hivedb_channel_store.dart';
+import 'package:discord_replicate/data/store/channel_store/inmemory_channel_store.dart';
+
+import 'package:discord_replicate/domain/model/channel/channel.dart';
+import 'package:discord_replicate/domain/model/credential/credential.dart';
+import 'package:discord_replicate/domain/repository/auth_repository.dart';
+
+import 'package:discord_replicate/common/graphql/graphql_client_helper.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -24,14 +27,14 @@ void main() {
     var mockAuthService = MockAuthService();
 
     var client = GraphQLClientHelper(
-      "http://localhost:4000/graphql",
-      "ws://localhost:4000/graphql",
-      authService: mockAuthService,
+      url: "http://localhost:4000/graphql",
+      wsUrl: "ws://localhost:4000/graphql",
+      bearerProvider: () async => "",
       defaultHeader: {
         "allow-me-in": "artahc123",
       },
     );
-    var remoteApi = GraphQLApiImpl(client: client);
+    var remoteApi = GraphQLChannelRemoteApiImpl(client: client);
 
     var channelRepo = ChannelRepositoryImpl(api: remoteApi, database: mockDb, cache: mockCache);
 

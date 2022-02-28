@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:discord_replicate/external/app_extension.dart';
-import 'package:discord_replicate/model/member/member.dart';
-import 'package:discord_replicate/model/message/message.dart';
+import 'package:discord_replicate/domain/model/member/member.dart';
+import 'package:discord_replicate/domain/model/message/message.dart';
+import 'package:discord_replicate/common/app_extension.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
