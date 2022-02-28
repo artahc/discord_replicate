@@ -1,5 +1,5 @@
 import 'package:discord_replicate/domain/model/member/member.dart';
-import 'package:discord_replicate/data/store/hive_constants.dart';
+import 'package:discord_replicate/common/hive_constants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
