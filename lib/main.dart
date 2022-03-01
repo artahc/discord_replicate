@@ -18,10 +18,10 @@ Future main() async {
   await AppConfiguration.initServiceLocator();
   await AppConfiguration.initHive();
 
-  runApp(Main());
+  runApp(Application());
 }
 
-class Main extends StatelessWidget {
+class Application extends StatelessWidget {
   final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey();
 
   @override

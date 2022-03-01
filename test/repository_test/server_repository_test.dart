@@ -13,8 +13,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
 
-final Logger log = Logger();
-
 class MockAuthService extends Mock implements AuthRepository {}
 
 class MockDb extends Mock implements HiveServerStore {}

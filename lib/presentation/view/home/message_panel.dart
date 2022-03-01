@@ -14,8 +14,6 @@ import 'package:logger/logger.dart';
 
 import 'message_tile.dart';
 
-final Logger log = Logger();
-
 class MessagePanel extends StatefulWidget {
   final Channel channel;
   final OverlapSwipeableStackController pageController;

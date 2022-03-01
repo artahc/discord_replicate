@@ -1,14 +1,10 @@
 import 'dart:async';
 
+import 'package:discord_replicate/common/app_logger.dart';
 import 'package:discord_replicate/common/exception/not_found_exception.dart';
-import 'package:discord_replicate/domain/model/credential/credential.dart';
-import 'package:discord_replicate/domain/repository/auth_repository.dart';
-
-import 'package:discord_replicate/common/app_config.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'graphql_operation/graphql_operation.dart';
@@ -18,8 +14,6 @@ import 'graphql_operation/graphql_operation.dart';
 typedef Future<String> BearerProvider();
 
 class GraphQLClientHelper with Disposable {
-  final Logger log = Logger();
-
   late GraphQLClient _client;
 
   GraphQLClientHelper({

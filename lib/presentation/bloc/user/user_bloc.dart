@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/common/app_logger.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 import 'user_event.dart';
 import 'user_state.dart';
@@ -14,7 +14,6 @@ export 'user_event.dart';
 export 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final Logger log = Logger();
   final AuthBloc _authBloc;
 
   StreamController<UserEvent> _eventStream = StreamController.broadcast();

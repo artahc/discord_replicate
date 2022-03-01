@@ -1,20 +1,18 @@
 import 'dart:async';
 
+import 'package:discord_replicate/common/app_logger.dart';
+import 'package:discord_replicate/common/app_config.dart';
+
 import 'package:discord_replicate/data/store/store.dart';
 
 import 'package:discord_replicate/domain/api/user_remote_api.dart';
 import 'package:discord_replicate/domain/model/user/user.dart';
 import 'package:discord_replicate/domain/repository/user_repository.dart';
 
-import 'package:discord_replicate/common/app_config.dart';
-
 import 'package:async/async.dart';
-import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  late Logger log = Logger();
-
   final UserRemoteApi _api;
   final Store<User> _db;
   final Store<User> _cache;

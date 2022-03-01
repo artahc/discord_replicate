@@ -18,7 +18,6 @@ class UserSettingPanel extends StatefulWidget {
 class _UserSettingPanelState extends State<UserSettingPanel> {
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
-  late Logger log = Logger();
 
   @override
   Widget build(BuildContext context) {

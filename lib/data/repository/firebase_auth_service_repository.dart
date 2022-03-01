@@ -1,11 +1,10 @@
 import 'dart:async';
+import 'package:discord_replicate/common/app_logger.dart';
 import 'package:discord_replicate/domain/model/credential/credential.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:logger/logger.dart';
 
 class FirebaseAuthRepositoryImpl implements AuthRepository {
-  final Logger log = Logger();
   final _auth = FirebaseAuth.instance;
 
   FirebaseAuthRepositoryImpl();

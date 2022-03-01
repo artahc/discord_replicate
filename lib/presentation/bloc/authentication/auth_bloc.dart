@@ -1,8 +1,8 @@
-import 'package:discord_replicate/domain/repository/auth_repository.dart';
 import 'package:discord_replicate/common/app_config.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:discord_replicate/common/app_logger.dart';
+import 'package:discord_replicate/domain/repository/auth_repository.dart';
 
-import 'package:logger/logger.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -13,7 +13,6 @@ export 'auth_state.dart';
 enum RegisterOptions { Phone, Email }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final Logger log = Logger();
   final AuthRepository _authRepository;
 
   AuthBloc({AuthRepository? authService})

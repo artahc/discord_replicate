@@ -8,7 +8,6 @@ import 'package:discord_replicate/presentation/bloc/direct_message/direct_messag
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 import 'channel_event.dart';
 import 'channel_state.dart';
@@ -17,8 +16,6 @@ export 'channel_event.dart';
 export 'channel_state.dart';
 
 class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
-  final Logger log = Logger();
-
   final ServerBloc _serverBloc;
   final DirectMessageBloc _dmBloc;
 

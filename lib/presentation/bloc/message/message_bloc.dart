@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:discord_replicate/common/app_logger.dart';
 import 'package:discord_replicate/domain/model/channel/channel.dart';
 import 'package:discord_replicate/domain/model/message/message.dart';
 
@@ -12,7 +13,6 @@ import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.d
 import 'package:discord_replicate/common/app_config.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 import 'message_event.dart';
 import 'message_state.dart';
@@ -23,7 +23,6 @@ export 'message_state.dart';
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final Channel _channel;
 
-  late Logger log = Logger();
   late StreamSubscription _messageSubscription;
 
   // Use Cases

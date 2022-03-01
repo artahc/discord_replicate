@@ -21,8 +21,6 @@ class _LoginViewState extends State<LoginView> {
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
-  late Logger log = Logger();
-
   @override
   void initState() {
     super.initState();

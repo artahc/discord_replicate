@@ -1,18 +1,21 @@
 import 'dart:async';
 
-import 'package:async/async.dart';
+import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/common/app_logger.dart';
+
+import 'package:discord_replicate/data/store/store.dart';
+
 import 'package:discord_replicate/domain/api/channel_remote_api.dart';
 import 'package:discord_replicate/domain/model/channel/channel.dart';
 import 'package:discord_replicate/domain/model/message/message.dart';
-import 'package:discord_replicate/domain/repository/channel_repository.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
-import 'package:discord_replicate/data/store/store.dart';
-import 'package:discord_replicate/common/app_config.dart';
-import 'package:logger/logger.dart';
+import 'package:discord_replicate/domain/repository/channel_repository.dart';
+
+
+import 'package:async/async.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChannelRepositoryImpl implements ChannelRepository {
-  late Logger log = Logger();
 
   final ChannelRemoteApi _api;
   final Store<Channel> _db;

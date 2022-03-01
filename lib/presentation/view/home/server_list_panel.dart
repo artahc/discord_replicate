@@ -22,7 +22,6 @@ class ServerListPanel extends StatefulWidget {
 }
 
 class _ServerListPanelState extends State<ServerListPanel> {
-  final Logger log = Logger();
   late ServerBloc _serverBloc;
   late DirectMessageBloc _directMessageBloc;
 

@@ -14,8 +14,6 @@ import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
 import 'empty_landing_panel.dart';
 import 'landing_panel.dart';
 
-final Logger log = Logger();
-
 class LandingView extends StatefulWidget {
   const LandingView({Key? key}) : super(key: key);
 
@@ -58,7 +56,6 @@ class _LandingViewState extends State<LandingView> {
           builder: (_, state) {
             return state.maybeWhen(
               orElse: () {
-                log.w(state);
                 return Center(
                   child: Text("There is something wrong with user internal state."),
                 );

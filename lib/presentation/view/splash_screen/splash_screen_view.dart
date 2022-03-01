@@ -1,4 +1,5 @@
 import 'package:discord_replicate/common/app_icon.dart';
+import 'package:discord_replicate/common/app_logger.dart';
 
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
@@ -18,7 +19,6 @@ class SplashScreenView extends StatefulWidget {
 class _SplashScreenViewState extends State<SplashScreenView> {
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
   late AuthBloc _authBloc = BlocProvider.of(context);
-  final Logger log = Logger();
 
   @override
   void initState() {
