@@ -1,5 +1,5 @@
 import 'package:discord_replicate/data/api/graphql_channel_remote_api_impl.dart';
-import 'package:discord_replicate/data/repository/channel_repositor_impl.dart';
+import 'package:discord_replicate/data/repository/channel_repository_impl.dart';
 import 'package:discord_replicate/data/store/channel_store/hivedb_channel_store.dart';
 import 'package:discord_replicate/data/store/channel_store/inmemory_channel_store.dart';
 

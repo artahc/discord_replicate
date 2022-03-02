@@ -5,7 +5,7 @@ import 'package:get_it/get_it.dart';
 
 abstract class UserGroupRepository implements Disposable {
   Future<void> saveMember(String userGroupId, Member member);
-  Future<void> saveMembers(String userGroupId, List<Member> members);
+  Future<void> saveAllMembers(String userGroupId, List<Member> members);
   Future<Member> getMemberById(String userGroupId, String uid);
   Future<List<Member>> getAllMember(String userGroupId);
 }

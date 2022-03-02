@@ -100,7 +100,7 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
   }
 
   @override
-  Future<void> saveMembers(String userGroupId, List<Member> members) {
+  Future<void> saveAllMembers(String userGroupId, List<Member> members) {
     // TODO: implement saveMembers
     throw UnimplementedError();
   }

@@ -1,4 +1,5 @@
 import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/common/app_logger.dart';
 import 'package:discord_replicate/domain/model/server/server.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
 import 'package:discord_replicate/domain/repository/server_repository.dart';
@@ -33,11 +34,17 @@ class JoinServerUseCaseImpl implements JoinServerUseCase {
   @override
   Future<Server> invoke({required String serverId}) async {
     var currentUser = await _getCurrentUserUseCase.invoke();
-    var server = await _serverRepo.joinServer(userId: currentUser.uid, serverId: serverId);
-    await _serverRepo.saveServer(server);
-    await _channelRepo.saveChannels(server.channels);
+    return _serverRepo.joinServer(userId: currentUser.uid, serverId: serverId).then((server) async {
+      await _serverRepo.saveServer(server);
+      await _channelRepo.saveAllChannels(server.channels);
 
-    var userGroup = await _userGroupRepo.getAllMember(server.userGroupRef);
-    throw UnimplementedError();
+      var members = await _userGroupRepo.getAllMember(server.userGroupRef);
+      await _userGroupRepo.saveAllMembers(server.userGroupRef, members);
+
+      return server;
+    }).catchError((e, st) {
+      log.e("Failed joining server", e, st);
+      throw Exception("Failed joining server");
+    });
   }
 }

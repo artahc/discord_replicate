@@ -11,7 +11,6 @@ import 'package:discord_replicate/domain/model/message/message.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
 
-
 import 'package:async/async.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -72,13 +71,13 @@ class ChannelRepositoryImpl implements ChannelRepository {
   }
 
   @override
-  Future<void> saveChannels(List<Channel> items) async {
+  Future<void> saveAllChannels(List<Channel> items) async {
     await _db.saveAll(items);
     await _cache.saveAll(items);
   }
 
   @override
-  Future<List<Channel>> getChannels() {
+  Future<List<Channel>> getAllChannels() {
     return _db.loadAll();
   }
 
