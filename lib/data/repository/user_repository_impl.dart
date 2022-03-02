@@ -57,4 +57,13 @@ class UserRepositoryImpl implements UserRepository {
     await _cache.onDispose();
     await _db.onDispose();
   }
+
+  @override
+  Future<void> updateUser(User user) async {
+    var exist = await _db.exist(user.uid);
+    if (!exist) throw Exception("User does not exist.");
+
+    await _db.save(user);
+    await _cache.save(user);
+  }
 }

@@ -21,7 +21,7 @@ class GetAllChannelMemberUseCaseImpl implements GetAllChannelMemberUseCase {
   @override
   Future<List<Member>> invoke({required String channelId}) async {
     var channel = await _getChannelByIdUseCase.invoke(channelId: channelId);
-    var userGroup = await _userGroupRepo.getUserGroup(channel.userGroupRef);
-    return userGroup.members.values.toList();
+    var members = await _userGroupRepo.getAllMember(channel.userGroupRef);
+    return members;
   }
 }

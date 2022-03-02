@@ -16,7 +16,6 @@ class Server with _$Server {
     @HiveField(2) required String imageUrl,
     @HiveField(3) required String userGroupRef,
     @HiveField(4) @Default(const <Channel>[]) List<Channel> channels,
-    @HiveField(5) @Default(const <Member>[]) List<Member> members,
   }) = _Server;
 
   factory Server.fromJson(Map<String, dynamic> map) => _$ServerFromJson(map);

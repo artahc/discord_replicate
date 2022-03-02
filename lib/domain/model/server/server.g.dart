@@ -22,14 +22,13 @@ class ServerAdapter extends TypeAdapter<_$_Server> {
       imageUrl: fields[2] as String,
       userGroupRef: fields[3] as String,
       channels: (fields[4] as List).cast<Channel>(),
-      members: (fields[5] as List).cast<Member>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, _$_Server obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -39,9 +38,7 @@ class ServerAdapter extends TypeAdapter<_$_Server> {
       ..writeByte(3)
       ..write(obj.userGroupRef)
       ..writeByte(4)
-      ..write(obj.channels)
-      ..writeByte(5)
-      ..write(obj.members);
+      ..write(obj.channels);
   }
 
   @override
@@ -68,10 +65,6 @@ _$_Server _$$_ServerFromJson(Map<String, dynamic> json) => _$_Server(
               ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <Channel>[],
-      members: (json['members'] as List<dynamic>?)
-              ?.map((e) => Member.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <Member>[],
     );
 
 Map<String, dynamic> _$$_ServerToJson(_$_Server instance) => <String, dynamic>{
@@ -80,5 +73,4 @@ Map<String, dynamic> _$$_ServerToJson(_$_Server instance) => <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'userGroupRef': instance.userGroupRef,
       'channels': instance.channels,
-      'members': instance.members,
     };

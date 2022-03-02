@@ -11,7 +11,6 @@ import 'package:discord_replicate/domain/model/member/member.dart';
 import 'package:discord_replicate/domain/model/user_group/user_group.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';
 
-
 import 'package:async/async.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -87,6 +86,23 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
   @override
   Future<List<Member>> getAllMember(String userGroupId) async {
     return [];
+  }
+
+  @override
+  Future<void> saveMember(String userGroupId, Member member) async {
+    var exist = await _db.exist(userGroupId);
+    if (exist) {
+      var userGroup = await _db.load(userGroupId);
+      // await _db.save(userGroup.copyWith(members: userGroup!.members.))
+    }
+
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> saveMembers(String userGroupId, List<Member> members) {
+    // TODO: implement saveMembers
+    throw UnimplementedError();
   }
 
   @override

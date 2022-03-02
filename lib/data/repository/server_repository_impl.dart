@@ -69,4 +69,16 @@ class ServerRepositoryImpl implements ServerRepository {
     await _cache.onDispose();
     await _db.onDispose();
   }
+
+  @override
+  Future<Server> joinServer({required String userId, required String serverId}) {
+    // TODO: implement joinServer
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Server> leaveServer({required String userId, required String serverId}) {
+    // TODO: implement leaveServer
+    throw UnimplementedError();
+  }
 }

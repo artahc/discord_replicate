@@ -26,15 +26,13 @@ class _$ServerTearOff {
       @HiveField(1) required String name,
       @HiveField(2) required String imageUrl,
       @HiveField(3) required String userGroupRef,
-      @HiveField(4) List<Channel> channels = const <Channel>[],
-      @HiveField(5) List<Member> members = const <Member>[]}) {
+      @HiveField(4) List<Channel> channels = const <Channel>[]}) {
     return _Server(
       id: id,
       name: name,
       imageUrl: imageUrl,
       userGroupRef: userGroupRef,
       channels: channels,
-      members: members,
     );
   }
 
@@ -58,8 +56,6 @@ mixin _$Server {
   String get userGroupRef => throw _privateConstructorUsedError;
   @HiveField(4)
   List<Channel> get channels => throw _privateConstructorUsedError;
-  @HiveField(5)
-  List<Member> get members => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -75,8 +71,7 @@ abstract class $ServerCopyWith<$Res> {
       @HiveField(1) String name,
       @HiveField(2) String imageUrl,
       @HiveField(3) String userGroupRef,
-      @HiveField(4) List<Channel> channels,
-      @HiveField(5) List<Member> members});
+      @HiveField(4) List<Channel> channels});
 }
 
 /// @nodoc
@@ -94,7 +89,6 @@ class _$ServerCopyWithImpl<$Res> implements $ServerCopyWith<$Res> {
     Object? imageUrl = freezed,
     Object? userGroupRef = freezed,
     Object? channels = freezed,
-    Object? members = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -117,10 +111,6 @@ class _$ServerCopyWithImpl<$Res> implements $ServerCopyWith<$Res> {
           ? _value.channels
           : channels // ignore: cast_nullable_to_non_nullable
               as List<Channel>,
-      members: members == freezed
-          ? _value.members
-          : members // ignore: cast_nullable_to_non_nullable
-              as List<Member>,
     ));
   }
 }
@@ -135,8 +125,7 @@ abstract class _$ServerCopyWith<$Res> implements $ServerCopyWith<$Res> {
       @HiveField(1) String name,
       @HiveField(2) String imageUrl,
       @HiveField(3) String userGroupRef,
-      @HiveField(4) List<Channel> channels,
-      @HiveField(5) List<Member> members});
+      @HiveField(4) List<Channel> channels});
 }
 
 /// @nodoc
@@ -155,7 +144,6 @@ class __$ServerCopyWithImpl<$Res> extends _$ServerCopyWithImpl<$Res>
     Object? imageUrl = freezed,
     Object? userGroupRef = freezed,
     Object? channels = freezed,
-    Object? members = freezed,
   }) {
     return _then(_Server(
       id: id == freezed
@@ -178,10 +166,6 @@ class __$ServerCopyWithImpl<$Res> extends _$ServerCopyWithImpl<$Res>
           ? _value.channels
           : channels // ignore: cast_nullable_to_non_nullable
               as List<Channel>,
-      members: members == freezed
-          ? _value.members
-          : members // ignore: cast_nullable_to_non_nullable
-              as List<Member>,
     ));
   }
 }
@@ -195,8 +179,7 @@ class _$_Server implements _Server {
       @HiveField(1) required this.name,
       @HiveField(2) required this.imageUrl,
       @HiveField(3) required this.userGroupRef,
-      @HiveField(4) this.channels = const <Channel>[],
-      @HiveField(5) this.members = const <Member>[]});
+      @HiveField(4) this.channels = const <Channel>[]});
 
   factory _$_Server.fromJson(Map<String, dynamic> json) =>
       _$$_ServerFromJson(json);
@@ -217,14 +200,10 @@ class _$_Server implements _Server {
   @override
   @HiveField(4)
   final List<Channel> channels;
-  @JsonKey()
-  @override
-  @HiveField(5)
-  final List<Member> members;
 
   @override
   String toString() {
-    return 'Server(id: $id, name: $name, imageUrl: $imageUrl, userGroupRef: $userGroupRef, channels: $channels, members: $members)';
+    return 'Server(id: $id, name: $name, imageUrl: $imageUrl, userGroupRef: $userGroupRef, channels: $channels)';
   }
 
   @override
@@ -237,8 +216,7 @@ class _$_Server implements _Server {
             const DeepCollectionEquality().equals(other.imageUrl, imageUrl) &&
             const DeepCollectionEquality()
                 .equals(other.userGroupRef, userGroupRef) &&
-            const DeepCollectionEquality().equals(other.channels, channels) &&
-            const DeepCollectionEquality().equals(other.members, members));
+            const DeepCollectionEquality().equals(other.channels, channels));
   }
 
   @override
@@ -248,8 +226,7 @@ class _$_Server implements _Server {
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(imageUrl),
       const DeepCollectionEquality().hash(userGroupRef),
-      const DeepCollectionEquality().hash(channels),
-      const DeepCollectionEquality().hash(members));
+      const DeepCollectionEquality().hash(channels));
 
   @JsonKey(ignore: true)
   @override
@@ -268,8 +245,7 @@ abstract class _Server implements Server {
       @HiveField(1) required String name,
       @HiveField(2) required String imageUrl,
       @HiveField(3) required String userGroupRef,
-      @HiveField(4) List<Channel> channels,
-      @HiveField(5) List<Member> members}) = _$_Server;
+      @HiveField(4) List<Channel> channels}) = _$_Server;
 
   factory _Server.fromJson(Map<String, dynamic> json) = _$_Server.fromJson;
 
@@ -288,9 +264,6 @@ abstract class _Server implements Server {
   @override
   @HiveField(4)
   List<Channel> get channels;
-  @override
-  @HiveField(5)
-  List<Member> get members;
   @override
   @JsonKey(ignore: true)
   _$ServerCopyWith<_Server> get copyWith => throw _privateConstructorUsedError;
