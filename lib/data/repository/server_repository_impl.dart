@@ -26,7 +26,7 @@ class ServerRepositoryImpl implements ServerRepository {
         _cache = cache ?? sl.get();
 
   @override
-  Future<Server> getServer(String id) async {
+  Future<Server> getServerById(String id) async {
     var memory = LazyStream(() {
       return _cache.load(id).asStream().where((server) => server != null).doOnData((server) {
         log.i("Server found on memory cache. $server");
@@ -71,14 +71,20 @@ class ServerRepositoryImpl implements ServerRepository {
   }
 
   @override
-  Future<Server> joinServer({required String userId, required String serverId}) {
-    // TODO: implement joinServer
-    throw UnimplementedError();
+  Future<Server> joinServer(String serverId) {
+    return _api.joinServer(serverId).then((server) async {
+      await _cache.save(server);
+      await _db.save(server);
+
+      return server;
+    });
   }
 
   @override
-  Future<Server> leaveServer({required String userId, required String serverId}) {
-    // TODO: implement leaveServer
-    throw UnimplementedError();
+  Future<void> leaveServer(String serverId) {
+    return _api.leaveServer(serverId).whenComplete(() async {
+      await _cache.delete(serverId);
+      await _db.delete(serverId);
+    });
   }
 }

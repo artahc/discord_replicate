@@ -1,4 +1,4 @@
-import '../graphql_operation.dart';
+import '../../graphql_operation.dart';
 
 class GetUserQuery extends GraphQLOperation {
   final String uid;

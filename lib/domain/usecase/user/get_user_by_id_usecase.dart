@@ -12,5 +12,5 @@ class GetUserByIdUseCaseImpl implements GetUserByIdUseCase {
   GetUserByIdUseCaseImpl({UserRepository? userRepo}) : _userRepo = userRepo ?? sl.get();
 
   @override
-  Future<User> invoke({required String userId}) => _userRepo.getUser(userId);
+  Future<User> invoke({required String userId}) => _userRepo.getUserById(userId);
 }

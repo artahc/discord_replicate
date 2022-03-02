@@ -11,5 +11,6 @@ abstract class Store<T> implements Disposable {
   Future<void> save(T item);
   Future<void> saveAll(List<T> items);
   Future<void> delete(String id);
+  Future<void> deleteAll(List<String> ids);
   Future<bool> exist(String id);
 }

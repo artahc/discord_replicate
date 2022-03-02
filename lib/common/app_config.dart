@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:discord_replicate/common/graphql/graphql_client_helper.dart';
+import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 
 import 'package:discord_replicate/data/api/graphql_channel_remote_api_impl.dart';
 import 'package:discord_replicate/data/api/graphql_server_remote_api_impl.dart';
@@ -47,8 +47,8 @@ import 'package:discord_replicate/domain/usecase/channel/get_channel_messages_us
 import 'package:discord_replicate/domain/usecase/channel/send_channel_message_usecase.dart';
 import 'package:discord_replicate/domain/usecase/channel/subscribe_channel_message_usecase.dart';
 import 'package:discord_replicate/domain/usecase/server/get_server_by_id_usecase.dart';
-import 'package:discord_replicate/domain/usecase/user/join_server_usecase.dart';
-import 'package:discord_replicate/domain/usecase/user/leave_server_usecase.dart';
+import 'package:discord_replicate/domain/usecase/server/join_server_usecase.dart';
+import 'package:discord_replicate/domain/usecase/server/leave_server_usecase.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 import 'package:discord_replicate/domain/usecase/user/get_user_by_id_usecase.dart';
 
@@ -147,18 +147,5 @@ class AppConfiguration {
       ..registerAdapter(MessageAdapter(), override: true)
       ..registerAdapter(MemberAdapter(), override: true)
       ..registerAdapter(UserGroupAdapter(), override: true);
-  }
-}
-
-abstract class SomethingStore implements Disposable {}
-
-class SomethingStoreImpl implements SomethingStore {
-  SomethingStoreImpl() {
-    print("Construct something store");
-  }
-  @override
-  FutureOr onDispose() async {
-    print("Dispose something store");
-    return;
   }
 }

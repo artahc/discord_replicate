@@ -101,7 +101,6 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
 
   @override
   Future<void> saveAllMembers(String userGroupId, List<Member> members) {
-    // TODO: implement saveMembers
     throw UnimplementedError();
   }
 
@@ -109,5 +108,23 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
   FutureOr onDispose() async {
     await _cache.onDispose();
     await _db.onDispose();
+  }
+
+  @override
+  Future<void> deleteAllMembers(String userGroupId, List<String> uids) {
+    // TODO: implement deleteAllMembers
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteMember(String userGroupId, String uid) {
+    // TODO: implement deleteMember
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteUserGroupById(String userGroupId) async {
+    await _cache.delete(userGroupId);
+    await _db.delete(userGroupId);
   }
 }

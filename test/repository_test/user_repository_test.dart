@@ -7,7 +7,7 @@ import 'package:discord_replicate/domain/model/credential/credential.dart';
 import 'package:discord_replicate/domain/model/user/user.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 
-import 'package:discord_replicate/common/graphql/graphql_client_helper.dart';
+import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -52,7 +52,7 @@ void main() {
       when(() => mockCache.load(any())).thenAnswer((invocation) => Future.value(null));
       when(() => mockCache.save(any())).thenAnswer((invocation) => Future.value(null));
 
-      var user = await userRepo.getUser(userId);
+      var user = await userRepo.getUserById(userId);
 
       verify(() => mockDb.load(any())).called(1);
       verify(() => mockDb.save(any())).called(1);

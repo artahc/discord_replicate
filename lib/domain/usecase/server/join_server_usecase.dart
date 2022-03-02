@@ -34,12 +34,17 @@ class JoinServerUseCaseImpl implements JoinServerUseCase {
   @override
   Future<Server> invoke({required String serverId}) async {
     var currentUser = await _getCurrentUserUseCase.invoke();
-    return _serverRepo.joinServer(userId: currentUser.uid, serverId: serverId).then((server) async {
+    return _serverRepo.joinServer(serverId).then((server) async {
       await _serverRepo.saveServer(server);
       await _channelRepo.saveAllChannels(server.channels);
 
       var members = await _userGroupRepo.getAllMember(server.userGroupRef);
       await _userGroupRepo.saveAllMembers(server.userGroupRef, members);
+
+      var updatedUser = currentUser.copyWith(
+        servers: currentUser.servers.toList(growable: true)..add(server),
+      );
+      await _userRepo.saveUser(updatedUser);
 
       return server;
     }).catchError((e, st) {

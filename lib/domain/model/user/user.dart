@@ -16,8 +16,8 @@ class User with _$User {
     @HiveField(1) required String name,
     @HiveField(2) required String? avatarUrl,
     @HiveField(3) required String? about,
-    @HiveField(4) @Default(const <Server>[]) List<Server> servers,
-    @HiveField(5) @Default(const <Channel>[]) List<Channel> privateChannels,
+    @HiveField(4) @Default(<Server>[]) List<Server> servers,
+    @HiveField(5) @Default(<Channel>[]) List<Channel> privateChannels,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> map) => _$UserFromJson(map);

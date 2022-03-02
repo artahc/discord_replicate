@@ -1,4 +1,4 @@
-import '../graphql_operation.dart';
+import '../../graphql_operation.dart';
 
 class GetChannelQuery extends GraphQLOperation {
   final String id;

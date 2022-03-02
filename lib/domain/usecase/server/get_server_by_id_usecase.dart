@@ -12,5 +12,5 @@ class GetServerByIdUseCaseImpl implements GetServerByIdUseCase {
   GetServerByIdUseCaseImpl({ServerRepository? serverRepo}) : _serverRepo = serverRepo ?? sl.get();
 
   @override
-  Future<Server> invoke({required String serverId}) => _serverRepo.getServer(serverId);
+  Future<Server> invoke({required String serverId}) => _serverRepo.getServerById(serverId);
 }

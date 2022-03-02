@@ -19,6 +19,6 @@ class GetCurrentUserUseCaseImpl implements GetCurrentUserUseCase {
   Future<User> invoke() async {
     var credential = await _authRepo.getCredential(forceRefresh: true);
     if (credential == null) return Future.error("User is unauthenticated.");
-    return _userRepo.getUser(credential.uid);
+    return _userRepo.getUserById(credential.uid);
   }
 }

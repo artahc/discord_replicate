@@ -26,7 +26,7 @@ class UserRepositoryImpl implements UserRepository {
         _cache = cache ?? sl.get();
 
   @override
-  Future<User> getUser(String uid) async {
+  Future<User> getUserById(String uid) async {
     var memory = LazyStream(() {
       return _cache.load(uid).asStream().where((user) => user != null).doOnData((user) {
         log.i("User found on memory cache. $user");
@@ -59,7 +59,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<void> updateUser(User user) async {
+  Future<void> saveUser(User user) async {
     var exist = await _db.exist(user.uid);
     if (!exist) throw Exception("User does not exist.");
 

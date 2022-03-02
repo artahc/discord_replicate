@@ -7,7 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'graphql_operation/graphql_operation.dart';
+import 'graphql_operation.dart';
 
 // Function that returns jwt access token in string.
 // Do not include Bearer prefix.

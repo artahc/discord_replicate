@@ -58,4 +58,10 @@ class HiveServerStore implements Store<Server> {
     var box = await getBox();
     await box.delete(id);
   }
+
+  @override
+  Future<void> deleteAll(List<String> ids) async {
+    var box = await getBox();
+    await box.deleteAll(ids);
+  }
 }

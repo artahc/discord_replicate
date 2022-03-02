@@ -92,4 +92,15 @@ class ChannelRepositoryImpl implements ChannelRepository {
     await _cache.onDispose();
     await _db.onDispose();
   }
+
+  @override
+  Future<void> deleteAllChannel(List<String> channelIds) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteChannel(String channelId) {
+    // TODO: implement deleteChannel
+    throw UnimplementedError();
+  }
 }

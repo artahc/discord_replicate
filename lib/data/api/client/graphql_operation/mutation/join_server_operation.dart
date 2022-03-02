@@ -1,14 +1,14 @@
-import '../graphql_operation.dart';
+import '../../graphql_operation.dart';
 
-class GetServerQuery extends GraphQLOperation {
-  final String id;
+class JoinServerOperation implements GraphQLOperation {
+  final String serverId;
 
-  GetServerQuery({required this.id});
+  JoinServerOperation({required this.serverId});
 
   @override
   String get operation => r"""
-    query Server($id: String!) {
-      server(id: $id) {
+    mutation JoinServer($serverRef: String!) {
+      joinServer(serverRef: $serverRef) {
         id
         name
         imageUrl
@@ -25,7 +25,7 @@ class GetServerQuery extends GraphQLOperation {
   @override
   Map<String, dynamic> get variables {
     return {
-      "id": id,
+      "serverRef": serverId,
     };
   }
 }

@@ -7,7 +7,7 @@ import 'package:discord_replicate/domain/model/credential/credential.dart';
 import 'package:discord_replicate/domain/model/user_group/user_group.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 
-import 'package:discord_replicate/common/graphql/graphql_client_helper.dart';
+import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

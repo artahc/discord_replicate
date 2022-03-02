@@ -42,4 +42,9 @@ class InMemoryServerStore implements Store<Server> {
   Future<void> delete(String id) async {
     if (_cache.containsKey(id)) _cache.remove(_cache[id]);
   }
+
+  @override
+  Future<void> deleteAll(List<String> ids) async {
+    _cache.removeWhere((key, value) => ids.contains(key));
+  }
 }

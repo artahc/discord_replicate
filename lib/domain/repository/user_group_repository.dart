@@ -8,4 +8,8 @@ abstract class UserGroupRepository implements Disposable {
   Future<void> saveAllMembers(String userGroupId, List<Member> members);
   Future<Member> getMemberById(String userGroupId, String uid);
   Future<List<Member>> getAllMember(String userGroupId);
+
+  Future<void> deleteUserGroupById(String userGroupId);
+  Future<void> deleteMember(String userGroupId, String uid);
+  Future<void> deleteAllMembers(String userGroupId, List<String> uids);
 }

@@ -9,6 +9,9 @@ abstract class ChannelRepository implements Disposable {
   Future<List<Channel>> getAllChannels();
   Future<void> saveChannel(Channel channel);
   Future<void> saveAllChannels(List<Channel> channels);
+  Future<void> deleteChannel(String channelId);
+  Future<void> deleteAllChannel(List<String> channelIds);
+
   Future<RawMessage> createMessage(String channelId, String message, int timestamp);
   Future<PaginationResponse<RawMessage>> getChannelMessages(String channelId, int limit, String? lastMessageId);
   Stream<RawMessage> subscribeChannelMessages(String channelId);
