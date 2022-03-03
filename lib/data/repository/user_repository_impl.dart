@@ -6,6 +6,7 @@ import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/data/store/store.dart';
 
 import 'package:discord_replicate/domain/api/user_remote_api.dart';
+import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user/user.dart';
 import 'package:discord_replicate/domain/repository/user_repository.dart';
 
@@ -65,5 +66,15 @@ class UserRepositoryImpl implements UserRepository {
 
     await _db.save(user);
     await _cache.save(user);
+  }
+
+  @override
+  Stream<ObservableEntityEvent<User>> observeChanges({String? userId}) async* {
+    yield* _db.observe(id: userId).doOnData((event) async {
+      if (event.event == EntityEvent.DELETED)
+        await _cache.delete(event.key);
+      else
+        await _cache.save(event.value!);
+    });
   }
 }

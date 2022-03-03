@@ -115,7 +115,7 @@ class AppConfiguration {
     sl.registerLazySingleton<AuthBloc>(() => AuthBloc());
     sl.registerFactory<ServerBloc>(() => ServerBloc());
     sl.registerFactoryParam<ChannelBloc, ServerBloc, DirectMessageBloc>((serverBloc, dmBloc) => ChannelBloc(serverBloc: serverBloc, dmBloc: dmBloc));
-    sl.registerFactoryParam<UserBloc, AuthBloc, void>((authBloc, _) => UserBloc(authBloc: authBloc));
+    sl.registerFactoryParam<UserBloc, Stream<AuthState>, void>((authStateStream, _) => UserBloc(authStateStream: authStateStream));
     sl.registerFactoryParam<NavigationCubit, GlobalKey<NavigatorState>, void>((key, _) => NavigationCubit(navigator: key));
     sl.registerFactoryParam<DirectMessageBloc, UserBloc, void>((userBloc, _) => DirectMessageBloc(userBloc: userBloc));
 

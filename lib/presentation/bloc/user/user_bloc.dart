@@ -6,6 +6,7 @@ import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.d
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'user_event.dart';
 import 'user_state.dart';
@@ -14,33 +15,29 @@ export 'user_event.dart';
 export 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final AuthBloc _authBloc;
-
   StreamController<UserEvent> _eventStream = StreamController.broadcast();
   Stream<UserEvent> get eventStream => _eventStream.stream;
 
-  late StreamSubscription _authStateSubscription;
+  CompositeSubscription _subscriptions = CompositeSubscription();
+
+  // late StreamSubscription _authStateSubscription;
 
   // Use Cases
   final GetCurrentUserUseCase _getCurrentUserUseCase;
 
   UserBloc({
-    required AuthBloc authBloc,
+    required Stream<AuthState> authStateStream,
     GetCurrentUserUseCase? getCurrentUserUseCase,
-  })  : _authBloc = authBloc,
-        _getCurrentUserUseCase = getCurrentUserUseCase ?? sl.get(),
+  })  : _getCurrentUserUseCase = getCurrentUserUseCase ?? sl.get(),
         super(UserState.empty()) {
     on<UserEvent>((event, emit) {
       return event.when(
-        // loadPrivateChannels: () => _loadPrivateChannels(emit),
         loadUser: () => _loadUser(emit),
         deleteUser: () => _deleteUser(emit),
-        joinServer: (String serverId) => _joinServer(serverId, emit),
-        leaveServer: (String serverId) => _leaveServer(serverId, emit),
       );
     });
 
-    _authStateSubscription = _authBloc.stream.listen((state) {
+    authStateStream.listen((state) {
       state.whenOrNull(
         authenticated: (credential) {
           add(UserEvent.loadUser());
@@ -49,7 +46,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           add(UserEvent.deleteUser());
         },
       );
-    });
+    }).addTo(_subscriptions);
   }
 
   @override
@@ -60,7 +57,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   @override
   Future<void> close() {
-    _authStateSubscription.cancel();
+    _subscriptions.cancel();
     _eventStream.close();
     return super.close();
   }

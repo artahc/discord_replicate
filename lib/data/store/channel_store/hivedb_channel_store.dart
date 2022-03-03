@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:discord_replicate/data/store/store.dart';
-import 'package:discord_replicate/domain/model/channel/channel.dart';
-
 import 'package:discord_replicate/common/app_extension.dart';
 import 'package:discord_replicate/common/hive_constants.dart';
+import 'package:discord_replicate/data/store/store.dart';
+import 'package:discord_replicate/domain/model/channel/channel.dart';
+import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 
 import 'package:hive/hive.dart';
 
@@ -65,5 +65,11 @@ class HiveChannelStore implements Store<Channel> {
   Future<void> deleteAll(List<String> ids) async {
     var box = await getBox();
     await box.deleteAll(ids);
+  }
+
+  @override
+  Stream<ObservableEntityEvent<Channel>> observe({String? id}) {
+    // TODO: implement observe
+    throw UnimplementedError();
   }
 }

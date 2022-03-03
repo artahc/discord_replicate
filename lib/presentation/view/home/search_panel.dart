@@ -1,5 +1,4 @@
 import 'package:discord_replicate/domain/model/channel/channel.dart';
-
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 

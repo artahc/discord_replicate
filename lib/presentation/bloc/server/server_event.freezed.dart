@@ -17,9 +17,21 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ServerEventTearOff {
   const _$ServerEventTearOff();
 
-  ServerEventLoadServer loadServer(String id) {
+  ServerEventLoadServer loadServer(String serverId) {
     return ServerEventLoadServer(
-      id,
+      serverId,
+    );
+  }
+
+  ServerEventJoinServer joinServer(String serverId) {
+    return ServerEventJoinServer(
+      serverId,
+    );
+  }
+
+  ServerEventLeaveServer leaveServer(String serverId) {
+    return ServerEventLeaveServer(
+      serverId,
     );
   }
 }
@@ -29,37 +41,49 @@ const $ServerEvent = _$ServerEventTearOff();
 
 /// @nodoc
 mixin _$ServerEvent {
-  String get id => throw _privateConstructorUsedError;
+  String get serverId => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id) loadServer,
+    required TResult Function(String serverId) loadServer,
+    required TResult Function(String serverId) joinServer,
+    required TResult Function(String serverId) leaveServer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String id)? loadServer,
+    TResult Function(String serverId)? loadServer,
+    TResult Function(String serverId)? joinServer,
+    TResult Function(String serverId)? leaveServer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id)? loadServer,
+    TResult Function(String serverId)? loadServer,
+    TResult Function(String serverId)? joinServer,
+    TResult Function(String serverId)? leaveServer,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ServerEventLoadServer value) loadServer,
+    required TResult Function(ServerEventJoinServer value) joinServer,
+    required TResult Function(ServerEventLeaveServer value) leaveServer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ServerEventLoadServer value)? loadServer,
+    TResult Function(ServerEventJoinServer value)? joinServer,
+    TResult Function(ServerEventLeaveServer value)? leaveServer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ServerEventLoadServer value)? loadServer,
+    TResult Function(ServerEventJoinServer value)? joinServer,
+    TResult Function(ServerEventLeaveServer value)? leaveServer,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -74,7 +98,7 @@ abstract class $ServerEventCopyWith<$Res> {
   factory $ServerEventCopyWith(
           ServerEvent value, $Res Function(ServerEvent) then) =
       _$ServerEventCopyWithImpl<$Res>;
-  $Res call({String id});
+  $Res call({String serverId});
 }
 
 /// @nodoc
@@ -87,12 +111,12 @@ class _$ServerEventCopyWithImpl<$Res> implements $ServerEventCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? id = freezed,
+    Object? serverId = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      serverId: serverId == freezed
+          ? _value.serverId
+          : serverId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -105,7 +129,7 @@ abstract class $ServerEventLoadServerCopyWith<$Res>
           $Res Function(ServerEventLoadServer) then) =
       _$ServerEventLoadServerCopyWithImpl<$Res>;
   @override
-  $Res call({String id});
+  $Res call({String serverId});
 }
 
 /// @nodoc
@@ -121,12 +145,12 @@ class _$ServerEventLoadServerCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? id = freezed,
+    Object? serverId = freezed,
   }) {
     return _then(ServerEventLoadServer(
-      id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      serverId == freezed
+          ? _value.serverId
+          : serverId // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -135,14 +159,14 @@ class _$ServerEventLoadServerCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ServerEventLoadServer implements ServerEventLoadServer {
-  const _$ServerEventLoadServer(this.id);
+  const _$ServerEventLoadServer(this.serverId);
 
   @override
-  final String id;
+  final String serverId;
 
   @override
   String toString() {
-    return 'ServerEvent.loadServer(id: $id)';
+    return 'ServerEvent.loadServer(serverId: $serverId)';
   }
 
   @override
@@ -150,12 +174,12 @@ class _$ServerEventLoadServer implements ServerEventLoadServer {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is ServerEventLoadServer &&
-            const DeepCollectionEquality().equals(other.id, id));
+            const DeepCollectionEquality().equals(other.serverId, serverId));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(id));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(serverId));
 
   @JsonKey(ignore: true)
   @override
@@ -166,27 +190,33 @@ class _$ServerEventLoadServer implements ServerEventLoadServer {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id) loadServer,
+    required TResult Function(String serverId) loadServer,
+    required TResult Function(String serverId) joinServer,
+    required TResult Function(String serverId) leaveServer,
   }) {
-    return loadServer(id);
+    return loadServer(serverId);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String id)? loadServer,
+    TResult Function(String serverId)? loadServer,
+    TResult Function(String serverId)? joinServer,
+    TResult Function(String serverId)? leaveServer,
   }) {
-    return loadServer?.call(id);
+    return loadServer?.call(serverId);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id)? loadServer,
+    TResult Function(String serverId)? loadServer,
+    TResult Function(String serverId)? joinServer,
+    TResult Function(String serverId)? leaveServer,
     required TResult orElse(),
   }) {
     if (loadServer != null) {
-      return loadServer(id);
+      return loadServer(serverId);
     }
     return orElse();
   }
@@ -195,6 +225,8 @@ class _$ServerEventLoadServer implements ServerEventLoadServer {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(ServerEventLoadServer value) loadServer,
+    required TResult Function(ServerEventJoinServer value) joinServer,
+    required TResult Function(ServerEventLeaveServer value) leaveServer,
   }) {
     return loadServer(this);
   }
@@ -203,6 +235,8 @@ class _$ServerEventLoadServer implements ServerEventLoadServer {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult Function(ServerEventLoadServer value)? loadServer,
+    TResult Function(ServerEventJoinServer value)? joinServer,
+    TResult Function(ServerEventLeaveServer value)? leaveServer,
   }) {
     return loadServer?.call(this);
   }
@@ -211,6 +245,8 @@ class _$ServerEventLoadServer implements ServerEventLoadServer {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(ServerEventLoadServer value)? loadServer,
+    TResult Function(ServerEventJoinServer value)? joinServer,
+    TResult Function(ServerEventLeaveServer value)? leaveServer,
     required TResult orElse(),
   }) {
     if (loadServer != null) {
@@ -221,12 +257,305 @@ class _$ServerEventLoadServer implements ServerEventLoadServer {
 }
 
 abstract class ServerEventLoadServer implements ServerEvent {
-  const factory ServerEventLoadServer(String id) = _$ServerEventLoadServer;
+  const factory ServerEventLoadServer(String serverId) =
+      _$ServerEventLoadServer;
 
   @override
-  String get id;
+  String get serverId;
   @override
   @JsonKey(ignore: true)
   $ServerEventLoadServerCopyWith<ServerEventLoadServer> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ServerEventJoinServerCopyWith<$Res>
+    implements $ServerEventCopyWith<$Res> {
+  factory $ServerEventJoinServerCopyWith(ServerEventJoinServer value,
+          $Res Function(ServerEventJoinServer) then) =
+      _$ServerEventJoinServerCopyWithImpl<$Res>;
+  @override
+  $Res call({String serverId});
+}
+
+/// @nodoc
+class _$ServerEventJoinServerCopyWithImpl<$Res>
+    extends _$ServerEventCopyWithImpl<$Res>
+    implements $ServerEventJoinServerCopyWith<$Res> {
+  _$ServerEventJoinServerCopyWithImpl(
+      ServerEventJoinServer _value, $Res Function(ServerEventJoinServer) _then)
+      : super(_value, (v) => _then(v as ServerEventJoinServer));
+
+  @override
+  ServerEventJoinServer get _value => super._value as ServerEventJoinServer;
+
+  @override
+  $Res call({
+    Object? serverId = freezed,
+  }) {
+    return _then(ServerEventJoinServer(
+      serverId == freezed
+          ? _value.serverId
+          : serverId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ServerEventJoinServer implements ServerEventJoinServer {
+  const _$ServerEventJoinServer(this.serverId);
+
+  @override
+  final String serverId;
+
+  @override
+  String toString() {
+    return 'ServerEvent.joinServer(serverId: $serverId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ServerEventJoinServer &&
+            const DeepCollectionEquality().equals(other.serverId, serverId));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(serverId));
+
+  @JsonKey(ignore: true)
+  @override
+  $ServerEventJoinServerCopyWith<ServerEventJoinServer> get copyWith =>
+      _$ServerEventJoinServerCopyWithImpl<ServerEventJoinServer>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String serverId) loadServer,
+    required TResult Function(String serverId) joinServer,
+    required TResult Function(String serverId) leaveServer,
+  }) {
+    return joinServer(serverId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String serverId)? loadServer,
+    TResult Function(String serverId)? joinServer,
+    TResult Function(String serverId)? leaveServer,
+  }) {
+    return joinServer?.call(serverId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String serverId)? loadServer,
+    TResult Function(String serverId)? joinServer,
+    TResult Function(String serverId)? leaveServer,
+    required TResult orElse(),
+  }) {
+    if (joinServer != null) {
+      return joinServer(serverId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerEventLoadServer value) loadServer,
+    required TResult Function(ServerEventJoinServer value) joinServer,
+    required TResult Function(ServerEventLeaveServer value) leaveServer,
+  }) {
+    return joinServer(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ServerEventLoadServer value)? loadServer,
+    TResult Function(ServerEventJoinServer value)? joinServer,
+    TResult Function(ServerEventLeaveServer value)? leaveServer,
+  }) {
+    return joinServer?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerEventLoadServer value)? loadServer,
+    TResult Function(ServerEventJoinServer value)? joinServer,
+    TResult Function(ServerEventLeaveServer value)? leaveServer,
+    required TResult orElse(),
+  }) {
+    if (joinServer != null) {
+      return joinServer(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ServerEventJoinServer implements ServerEvent {
+  const factory ServerEventJoinServer(String serverId) =
+      _$ServerEventJoinServer;
+
+  @override
+  String get serverId;
+  @override
+  @JsonKey(ignore: true)
+  $ServerEventJoinServerCopyWith<ServerEventJoinServer> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ServerEventLeaveServerCopyWith<$Res>
+    implements $ServerEventCopyWith<$Res> {
+  factory $ServerEventLeaveServerCopyWith(ServerEventLeaveServer value,
+          $Res Function(ServerEventLeaveServer) then) =
+      _$ServerEventLeaveServerCopyWithImpl<$Res>;
+  @override
+  $Res call({String serverId});
+}
+
+/// @nodoc
+class _$ServerEventLeaveServerCopyWithImpl<$Res>
+    extends _$ServerEventCopyWithImpl<$Res>
+    implements $ServerEventLeaveServerCopyWith<$Res> {
+  _$ServerEventLeaveServerCopyWithImpl(ServerEventLeaveServer _value,
+      $Res Function(ServerEventLeaveServer) _then)
+      : super(_value, (v) => _then(v as ServerEventLeaveServer));
+
+  @override
+  ServerEventLeaveServer get _value => super._value as ServerEventLeaveServer;
+
+  @override
+  $Res call({
+    Object? serverId = freezed,
+  }) {
+    return _then(ServerEventLeaveServer(
+      serverId == freezed
+          ? _value.serverId
+          : serverId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ServerEventLeaveServer implements ServerEventLeaveServer {
+  const _$ServerEventLeaveServer(this.serverId);
+
+  @override
+  final String serverId;
+
+  @override
+  String toString() {
+    return 'ServerEvent.leaveServer(serverId: $serverId)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is ServerEventLeaveServer &&
+            const DeepCollectionEquality().equals(other.serverId, serverId));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(serverId));
+
+  @JsonKey(ignore: true)
+  @override
+  $ServerEventLeaveServerCopyWith<ServerEventLeaveServer> get copyWith =>
+      _$ServerEventLeaveServerCopyWithImpl<ServerEventLeaveServer>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String serverId) loadServer,
+    required TResult Function(String serverId) joinServer,
+    required TResult Function(String serverId) leaveServer,
+  }) {
+    return leaveServer(serverId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(String serverId)? loadServer,
+    TResult Function(String serverId)? joinServer,
+    TResult Function(String serverId)? leaveServer,
+  }) {
+    return leaveServer?.call(serverId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String serverId)? loadServer,
+    TResult Function(String serverId)? joinServer,
+    TResult Function(String serverId)? leaveServer,
+    required TResult orElse(),
+  }) {
+    if (leaveServer != null) {
+      return leaveServer(serverId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(ServerEventLoadServer value) loadServer,
+    required TResult Function(ServerEventJoinServer value) joinServer,
+    required TResult Function(ServerEventLeaveServer value) leaveServer,
+  }) {
+    return leaveServer(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(ServerEventLoadServer value)? loadServer,
+    TResult Function(ServerEventJoinServer value)? joinServer,
+    TResult Function(ServerEventLeaveServer value)? leaveServer,
+  }) {
+    return leaveServer?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(ServerEventLoadServer value)? loadServer,
+    TResult Function(ServerEventJoinServer value)? joinServer,
+    TResult Function(ServerEventLeaveServer value)? leaveServer,
+    required TResult orElse(),
+  }) {
+    if (leaveServer != null) {
+      return leaveServer(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ServerEventLeaveServer implements ServerEvent {
+  const factory ServerEventLeaveServer(String serverId) =
+      _$ServerEventLeaveServer;
+
+  @override
+  String get serverId;
+  @override
+  @JsonKey(ignore: true)
+  $ServerEventLeaveServerCopyWith<ServerEventLeaveServer> get copyWith =>
       throw _privateConstructorUsedError;
 }

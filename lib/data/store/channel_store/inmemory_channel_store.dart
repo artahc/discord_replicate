@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:discord_replicate/domain/model/channel/channel.dart';
 import 'package:discord_replicate/common/app_extension.dart';
 import 'package:discord_replicate/data/store/store.dart';
+import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 
 class InMemoryChannelStore implements Store<Channel> {
   final SplayTreeMap<String, Channel> _cache = new SplayTreeMap();
@@ -46,5 +47,11 @@ class InMemoryChannelStore implements Store<Channel> {
   @override
   Future<void> deleteAll(List<String> ids) async {
     _cache.removeWhere((key, value) => ids.contains(key));
+  }
+
+  @override
+  Stream<ObservableEntityEvent<Channel>> observe({String? id}) {
+    // TODO: implement observe
+    throw UnimplementedError();
   }
 }

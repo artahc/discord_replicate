@@ -1,13 +1,11 @@
+import 'package:discord_replicate/common/app_icon.dart';
 import 'package:discord_replicate/domain/model/channel/channel.dart';
-
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/presentation/view/home/direct_message_tile.dart';
 import 'package:discord_replicate/presentation/view/home/search_panel.dart';
 import 'package:discord_replicate/presentation/route_transition/app_transition.dart';
-
-import 'package:discord_replicate/common/app_icon.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

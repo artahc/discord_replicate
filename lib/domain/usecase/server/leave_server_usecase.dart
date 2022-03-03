@@ -32,7 +32,7 @@ class LeaveServerUseCaseImpl implements LeaveServerUseCase {
   Future<void> invoke({required String serverId}) async {
     var server = await _serverRepo.getServerById(serverId);
 
-    await _serverRepo.leaveServer(serverId).then((_) async {
+    return _serverRepo.leaveServer(serverId).then((_) async {
       var channelIds = server.channels.map((e) => e.id).toList();
       var userGroupId = server.userGroupRef;
 

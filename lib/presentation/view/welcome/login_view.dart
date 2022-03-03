@@ -1,11 +1,11 @@
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/presentation/view/routes/route_generator.dart';
+import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);

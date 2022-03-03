@@ -1,12 +1,12 @@
-import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
-import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/presentation/view/routes/route_generator.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'dart:math' as math;
 
+import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
+import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
+import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
 
 class UserSettingPanel extends StatefulWidget {
   UserSettingPanel({Key? key}) : super(key: key);

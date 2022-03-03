@@ -1,7 +1,7 @@
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
+import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
 import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/presentation/view/routes/route_generator.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 
 import 'package:flutter/material.dart';

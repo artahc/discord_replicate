@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:discord_replicate/domain/usecase/server/get_server_by_id_usecase.dart';
 
 import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/domain/usecase/server/join_server_usecase.dart';
+import 'package:discord_replicate/domain/usecase/server/leave_server_usecase.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,13 +20,19 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
 
   // Use Cases
   final GetServerByIdUseCase _getServerByIdUseCase;
+  final JoinServerUseCase _joinServerUseCase;
+  final LeaveServerUseCase _leaveServerUseCase;
 
-  ServerBloc({GetServerByIdUseCase? getServerByIdUseCase})
+  ServerBloc({GetServerByIdUseCase? getServerByIdUseCase, JoinServerUseCase? joinServerUseCase, LeaveServerUseCase? leaveServerUseCase})
       : _getServerByIdUseCase = getServerByIdUseCase ?? sl.get(),
+        _joinServerUseCase = joinServerUseCase ?? sl.get(),
+        _leaveServerUseCase = leaveServerUseCase ?? sl.get(),
         super(ServerState.loading()) {
     on<ServerEvent>((event, emit) {
       return event.when(
         loadServer: (String id) => _loadServer(id, emit),
+        leaveServer: (String serverId) => _leaveServer(serverId, emit),
+        joinServer: (String serverId) => _joinServer(serverId, emit),
       );
     });
   }
@@ -48,4 +56,12 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
       emit(ServerState.loaded(server, server.channels.first));
     });
   }
+
+  Future<void> _joinServer(String serverId, emit) async {
+    await _joinServerUseCase.invoke(serverId: serverId).then((value) {
+      emit();
+    });
+  }
+
+  Future<void> _leaveServer(String serverId, emit) async {}
 }

@@ -2,7 +2,8 @@ import 'package:discord_replicate/common/app_theme.dart';
 import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/presentation/view/routes/route_generator.dart';
+import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

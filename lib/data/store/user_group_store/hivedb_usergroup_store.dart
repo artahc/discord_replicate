@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user_group/user_group.dart';
 import 'package:discord_replicate/common/app_extension.dart';
 import 'package:discord_replicate/data/store/store.dart';
@@ -63,5 +64,11 @@ class HiveUserGroupStore implements Store<UserGroup> {
   Future<void> deleteAll(List<String> ids) async {
     var box = await getBox();
     await box.deleteAll(ids);
+  }
+
+  @override
+  Stream<ObservableEntityEvent<UserGroup>> observe({String? id}) {
+    // TODO: implement observe
+    throw UnimplementedError();
   }
 }

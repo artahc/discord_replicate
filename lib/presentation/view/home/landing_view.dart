@@ -1,15 +1,14 @@
 import 'dart:async';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
-import 'package:flutter/material.dart';
-
 import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 
 import 'empty_landing_panel.dart';
 import 'landing_panel.dart';
@@ -22,7 +21,7 @@ class LandingView extends StatefulWidget {
 }
 
 class _LandingViewState extends State<LandingView> {
-  late UserBloc userBloc = sl.get(param1: BlocProvider.of<AuthBloc>(context));
+  late UserBloc userBloc = sl.get(param1: BlocProvider.of<AuthBloc>(context).stream);
   late ServerBloc serverBloc = sl.get();
   late DirectMessageBloc dmBloc = sl.get(param1: userBloc);
   late ChannelBloc channelBloc = sl.get(param1: serverBloc, param2: dmBloc);
@@ -66,14 +65,12 @@ class _LandingViewState extends State<LandingView> {
                 );
               },
               loaded: (user) {
-                // return EmptyLandingPanel(
-
-                // );
-                if (user.privateChannels.isEmpty && user.servers.isEmpty) {
-                  return EmptyLandingPanel();
-                } else {
-                  return LandingPanel(user: user);
-                }
+                return EmptyLandingPanel();
+                // if (user.privateChannels.isEmpty && user.servers.isEmpty) {
+                //   return EmptyLandingPanel();
+                // } else {
+                //   return LandingPanel(user: user);
+                // }
               },
             );
           },

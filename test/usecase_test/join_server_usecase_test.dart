@@ -68,13 +68,8 @@ void main() {
       var fakeServer = Server(id: "id", name: "name", imageUrl: "imageUrl", userGroupRef: "userGroupRef");
       var fakeMember = Member(uid: "uid", name: "name");
 
-      when(() => mockUser.uid).thenReturn("");
-      when(() => mockUser.servers).thenReturn([]);
-      when(() => mockServer.channels).thenReturn([]);
-      when(() => mockServer.userGroupRef).thenReturn("");
-
       when(() => mockGetCurrentUserUseCase.invoke()).thenAnswer((_) async => fakeUser);
-      when(() => mockServerRepo.joinServer("")).thenAnswer((_) async => fakeServer);
+      when(() => mockServerRepo.joinServer(any())).thenAnswer((_) async => fakeServer);
       when(() => mockServerRepo.saveServer(any())).thenAnswer((_) async => null);
       when(() => mockChannelRepo.saveAllChannels(any())).thenAnswer((_) async => null);
       when(() => mockUserGroupRepo.getAllMember(any())).thenAnswer((_) async => [fakeMember]);

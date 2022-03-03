@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user/user.dart';
 import 'package:discord_replicate/common/app_extension.dart';
 import 'package:discord_replicate/data/store/store.dart';
@@ -63,5 +64,14 @@ class HiveUserStore implements Store<User> {
   Future<void> deleteAll(List<String> ids) async {
     var box = await getBox();
     await box.deleteAll(ids);
+  }
+
+  @override
+  Stream<ObservableEntityEvent<User>> observe({String? id}) async* {
+    var box = await getBox();
+    yield* box.watch(key: id).map((event) {
+      var e = event.deleted ? EntityEvent.DELETED : EntityEvent.SAVED;
+      return ObservableEntityEvent<User>(e, event.key, event.value);
+    });
   }
 }

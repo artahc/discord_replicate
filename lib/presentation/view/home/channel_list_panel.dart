@@ -1,6 +1,5 @@
 import 'package:discord_replicate/domain/model/channel/channel.dart';
 import 'package:discord_replicate/domain/model/server/server.dart';
-
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:discord_replicate/presentation/widgets/custom_list_view.dart';
 

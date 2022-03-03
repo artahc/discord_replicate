@@ -1,5 +1,4 @@
 import 'package:discord_replicate/common/app_icon.dart';
-
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/route_transition/app_transition.dart';

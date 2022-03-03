@@ -1,7 +1,6 @@
+import 'package:discord_replicate/common/app_icon.dart';
 import 'package:discord_replicate/domain/model/user/user.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
-import 'package:discord_replicate/common/app_icon.dart';
 
 import 'package:flutter/material.dart';
 
