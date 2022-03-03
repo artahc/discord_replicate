@@ -35,7 +35,7 @@ class InMemoryUserStore implements Store<User> {
   @override
   Future<void> save(User user) async {
     _cache[user.uid] = user;
-    _notifier.add(ObservableEntityEvent<User>(EntityEvent.SAVED, user.uid, user));
+    _notifier.add(ObservableEntityEvent<User>(EntityEvent.CREATED_OR_UPDATED, user.uid, user));
   }
 
   @override
@@ -43,7 +43,7 @@ class InMemoryUserStore implements Store<User> {
     var entries = users.toSplayTreeMap<String, User>(keyConverter: (e) => e.uid, valueConverter: (e) => e);
     _cache.addAll(entries);
     entries.forEach((key, value) {
-      _notifier.add(ObservableEntityEvent<User>(EntityEvent.SAVED, key, value));
+      _notifier.add(ObservableEntityEvent<User>(EntityEvent.CREATED_OR_UPDATED, key, value));
     });
   }
 

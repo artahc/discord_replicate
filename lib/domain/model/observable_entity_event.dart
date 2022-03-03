@@ -1,5 +1,5 @@
 enum EntityEvent {
-  SAVED,
+  CREATED_OR_UPDATED,
   DELETED,
 }
 

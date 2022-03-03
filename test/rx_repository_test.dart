@@ -36,7 +36,7 @@ class DbStore {
     var box = await _getBox();
 
     yield* box.watch(key: id).map((event) {
-      var e = event.deleted ? EntityEvent.DELETED : EntityEvent.SAVED;
+      var e = event.deleted ? EntityEvent.DELETED : EntityEvent.CREATED_OR_UPDATED;
       return ObservableEntityEvent<User>(e, event.key, event.value);
     });
   }

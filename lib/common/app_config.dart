@@ -51,6 +51,7 @@ import 'package:discord_replicate/domain/usecase/server/join_server_usecase.dart
 import 'package:discord_replicate/domain/usecase/server/leave_server_usecase.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 import 'package:discord_replicate/domain/usecase/user/get_user_by_id_usecase.dart';
+import 'package:discord_replicate/domain/usecase/user/observe_user_changes_usecase.dart';
 
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
@@ -135,6 +136,7 @@ class AppConfiguration {
     // User Use Case
     sl.registerFactory<GetCurrentUserUseCase>(() => GetCurrentUserUseCaseImpl());
     sl.registerFactory<GetUserByIdUseCase>(() => GetUserByIdUseCaseImpl());
+    sl.registerFactory<ObserveUserChangesUseCase>(() => ObserveUserChangesUseCaseImpl());
   }
 
   static Future initHive() async {

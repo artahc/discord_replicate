@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/common/app_logger.dart';
+import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
+import 'package:discord_replicate/domain/usecase/user/observe_user_changes_usecase.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,17 +20,19 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   StreamController<UserEvent> _eventStream = StreamController.broadcast();
   Stream<UserEvent> get eventStream => _eventStream.stream;
 
-  CompositeSubscription _subscriptions = CompositeSubscription();
-
-  // late StreamSubscription _authStateSubscription;
+  CompositeSubscription _blocStateSubscription = CompositeSubscription();
+  StreamSubscription? _userChangesSubscription;
 
   // Use Cases
   final GetCurrentUserUseCase _getCurrentUserUseCase;
+  final ObserveUserChangesUseCase _observeUserChangesUseCase;
 
   UserBloc({
     required Stream<AuthState> authStateStream,
     GetCurrentUserUseCase? getCurrentUserUseCase,
+    ObserveUserChangesUseCase? observeUserChangesUseCase,
   })  : _getCurrentUserUseCase = getCurrentUserUseCase ?? sl.get(),
+        _observeUserChangesUseCase = observeUserChangesUseCase ?? sl.get(),
         super(UserState.empty()) {
     on<UserEvent>((event, emit) {
       return event.when(
@@ -46,7 +50,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           add(UserEvent.deleteUser());
         },
       );
-    }).addTo(_subscriptions);
+    }).addTo(_blocStateSubscription);
   }
 
   @override
@@ -57,15 +61,24 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   @override
   Future<void> close() {
-    _subscriptions.cancel();
+    _blocStateSubscription.cancel();
+    _userChangesSubscription?.cancel();
     _eventStream.close();
     return super.close();
   }
 
   _loadUser(emit) async {
     emit(UserState.loading());
+
     await _getCurrentUserUseCase.invoke().then((user) {
       emit(UserState.loaded(user));
+
+      _userChangesSubscription?.cancel();
+      _userChangesSubscription = _observeUserChangesUseCase.invoke(userId: user.uid).listen((event) {
+        if (event.event == EntityEvent.CREATED_OR_UPDATED) {
+          emit(UserState.loaded(event.value!));
+        }
+      });
     }).catchError((error, stackTrace) {
       log.e("Error when loading user after sign-in.", error, stackTrace);
       emit(UserState.error(error));
@@ -73,10 +86,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   _deleteUser(emit) async {
+    _userChangesSubscription?.cancel();
     emit(UserState.empty());
   }
-
-  _joinServer(String serverId, emit) async {}
-
-  _leaveServer(String serverId, emit) async {}
 }
