@@ -27,37 +27,37 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
         _db = database ?? sl.get(),
         _cache = cache ?? sl.get();
 
-  @override
-  Future<UserGroup> getUserGroup(String id, {int limitMember = 50, String? cursor}) async {
-    var memory = LazyStream(() {
-      return _cache.load(id).asStream().where((userGroup) => userGroup != null).doOnData((userGroup) {
-        log.i("User group found on memory cache. $userGroup");
-      });
-    });
+  // @override
+  // Future<UserGroup> getUserGroup(String id, {int limitMember = 50, String? cursor}) async {
+  //   var memory = LazyStream(() {
+  //     return _cache.load(id).asStream().where((userGroup) => userGroup != null).doOnData((userGroup) {
+  //       log.i("User group found on memory cache. $userGroup");
+  //     });
+  //   });
 
-    var local = LazyStream(() {
-      return _db.load(id).asStream().where((userGroup) => userGroup != null).doOnData((userGroup) async {
-        await _cache.save(userGroup!);
-        log.i("User group found on local database.");
-      });
-    });
+  //   var local = LazyStream(() {
+  //     return _db.load(id).asStream().where((userGroup) => userGroup != null).doOnData((userGroup) async {
+  //       await _cache.save(userGroup!);
+  //       log.i("User group found on local database.");
+  //     });
+  //   });
 
-    var remote = LazyStream(() {
-      return _api.getUserGroupById(id, limitMember, cursor).asStream().asyncMap((paginatedResponse) async {
-        var userGroup = UserGroup(id: id, members: paginatedResponse.items.toSplayTreeMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
+  //   var remote = LazyStream(() {
+  //     return _api.getUserGroupById(id, limitMember, cursor).asStream().asyncMap((paginatedResponse) async {
+  //       var userGroup = UserGroup(id: id, members: paginatedResponse.items.toSplayTreeMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
 
-        await _cache.save(userGroup);
-        await _db.save(userGroup);
+  //       await _cache.save(userGroup);
+  //       await _db.save(userGroup);
 
-        log.i("User group retrieved from remote API. $userGroup");
+  //       log.i("User group retrieved from remote API. $userGroup");
 
-        return userGroup;
-      });
-    });
+  //       return userGroup;
+  //     });
+  //   });
 
-    var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
-    return result!;
-  }
+  //   var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
+  //   return result!;
+  // }
 
   @override
   Future<Member> getMemberById(String userGroupId, String uid) async {
@@ -90,18 +90,14 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
 
   @override
   Future<void> saveMember(String userGroupId, Member member) async {
-    var exist = await _db.exist(userGroupId);
-    if (exist) {
-      var userGroup = await _db.load(userGroupId);
-      // await _db.save(userGroup.copyWith(members: userGroup!.members.))
-    }
-
     throw UnimplementedError();
   }
 
   @override
-  Future<void> saveAllMembers(String userGroupId, List<Member> members) {
-    throw UnimplementedError();
+  Future<void> saveAllMembers(String userGroupId, List<Member> members) async {
+    var userGroup = UserGroup(id: userGroupId, members: members.toMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
+    await _db.save(userGroup);
+    await _cache.save(userGroup);
   }
 
   @override
@@ -112,7 +108,6 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
 
   @override
   Future<void> deleteAllMembers(String userGroupId, List<String> uids) {
-    // TODO: implement deleteAllMembers
     throw UnimplementedError();
   }
 

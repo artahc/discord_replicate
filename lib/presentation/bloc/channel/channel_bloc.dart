@@ -35,7 +35,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   })  : _serverBloc = serverBloc,
         _dmBloc = dmBloc,
         _getChannelByIdUseCase = getChannelByIdUseCase ?? sl.get(),
-        super(ChannelState.loading()) {
+        super(ChannelState.empty()) {
     on<ChannelEvent>((event, emit) => _handleEvent(event, emit));
 
     _dmStateSubscription = _dmBloc.stream.listen((event) {

@@ -8,8 +8,12 @@ import 'package:discord_replicate/domain/model/user/user.dart';
 
 class InMemoryUserStore implements Store<User> {
   final SplayTreeMap<String, User> _cache = SplayTreeMap();
-  StreamController<ObservableEntityEvent<User>> _stream = StreamController.broadcast();
+  late StreamController<ObservableEntityEvent<User>> _stream;
   Sink<ObservableEntityEvent<User>> get _notifier => _stream.sink;
+
+  InMemoryUserStore() {
+    _stream = StreamController.broadcast();
+  }
 
   @override
   Future<bool> exist(String id) async {
@@ -29,7 +33,7 @@ class InMemoryUserStore implements Store<User> {
   @override
   FutureOr onDispose() async {
     _cache.clear();
-    _stream.close();
+    // _stream.close();
   }
 
   @override

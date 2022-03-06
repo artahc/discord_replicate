@@ -5,7 +5,7 @@ import 'package:discord_replicate/domain/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseAuthRepositoryImpl implements AuthRepository {
-  final _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   FirebaseAuthRepositoryImpl();
 
@@ -33,7 +33,10 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Credential> signUpEmail(String email) async {
-    var credential = await _auth.createUserWithEmailAndPassword(email: email, password: "password").then((firebaseCredential) async {
+    var credential = await _auth.createUserWithEmailAndPassword(email: email, password: "password").then((value) async {
+      await Future.delayed(Duration(seconds: 5));
+      return value;
+    }).then((firebaseCredential) async {
       var user = firebaseCredential.user!;
       var token = await user.getIdToken(false);
       log.i("Register successful with email $email");

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/common/app_logger.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
+import 'package:discord_replicate/domain/model/user/user.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 import 'package:discord_replicate/domain/usecase/user/observe_user_changes_usecase.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
@@ -36,8 +37,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         super(UserState.empty()) {
     on<UserEvent>((event, emit) {
       return event.when(
-        loadUser: () => _loadUser(emit),
-        deleteUser: () => _deleteUser(emit),
+        loadUser: () async => await _loadUser(emit),
+        deleteUser: () async => await _deleteUser(emit),
       );
     });
 
@@ -67,25 +68,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     return super.close();
   }
 
-  _loadUser(emit) async {
+  Future<void> _loadUser(Emitter<UserState> emit) async {
     emit(UserState.loading());
 
-    await _getCurrentUserUseCase.invoke().then((user) {
+    await _getCurrentUserUseCase.invoke().then((user) async {
+      print("Listening to user changes");
       emit(UserState.loaded(user));
 
-      _userChangesSubscription?.cancel();
-      _userChangesSubscription = _observeUserChangesUseCase.invoke(userId: user.uid).listen((event) {
+      await for (final event in _observeUserChangesUseCase.invoke().where((event) => event.key == user.uid)) {
         if (event.event == EntityEvent.CREATED_OR_UPDATED) {
           emit(UserState.loaded(event.value!));
+        } else {
+          emit(UserState.empty());
         }
-      });
+      }
     }).catchError((error, stackTrace) {
       log.e("Error when loading user after sign-in.", error, stackTrace);
       emit(UserState.error(error));
     });
   }
 
-  _deleteUser(emit) async {
+  Future<void> _deleteUser(emit) async {
     _userChangesSubscription?.cancel();
     emit(UserState.empty());
   }

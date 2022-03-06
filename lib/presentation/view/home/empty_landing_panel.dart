@@ -1,3 +1,4 @@
+import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 
@@ -14,6 +15,7 @@ class EmptyLandingPanel extends StatefulWidget {
 
 class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
   late ServerBloc _serverBloc = BlocProvider.of(context);
+  late AuthBloc _authBloc = BlocProvider.of(context);
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +30,27 @@ class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: AppButton(
-                child: Text("Join Testing Server"),
-                onPressed: () {
-                  _serverBloc.add(ServerEvent.joinServer(""));
-                },
+              child: IntrinsicHeight(
+                child: Column(
+                  children: [
+                    AppButton(
+                      child: Text("Join Testing Server"),
+                      onPressed: () {
+                        _serverBloc.add(ServerEvent.joinServer("XE4yhAIsvuZvxwOFrSyq"));
+                      },
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    AppButton(
+                      child: Text("Log Out"),
+                      color: Colors.red,
+                      onPressed: () {
+                        _authBloc.add(AuthEvent.signOutEvent());
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

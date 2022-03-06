@@ -31,12 +31,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _handleInitial(emit) async {
-    var credential = await _authRepository.getCredential();
-    if (credential == null)
+    await _authRepository.getCredential().then((credential) {
+      if (credential == null)
+        emit(AuthState.unauthenticated());
+      else {
+        emit(AuthState.authenticated(credential: credential));
+      }
+    }).onError((error, stackTrace) {
+      log.e("Error when getting credential from firebase.", error, stackTrace);
       emit(AuthState.unauthenticated());
-    else {
-      emit(AuthState.authenticated(credential: credential));
-    }
+    });
   }
 
   _signIn(String id, String password, emit) async {

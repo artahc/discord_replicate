@@ -1,7 +1,6 @@
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
-import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 
 import 'package:flutter/material.dart';
@@ -20,7 +19,6 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> with TickerProviderStateMixin {
   late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
-  late UserBloc _userBloc = BlocProvider.of<UserBloc>(context);
   late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
   late TabController _tabCtrl;
@@ -65,13 +63,18 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
             _onUserAuthenticated();
           },
           error: (e) {
-            _userBloc.add(UserEvent.deleteUser());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                content: Text("$e"),
+              ),
+            );
           },
         );
       },
       builder: (_, state) {
         return state.maybeWhen(
-          orElse: () {
+          authenticating: () {
             return Material(
               child: Center(
                 child: CircularProgressIndicator(
@@ -80,7 +83,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
               ),
             );
           },
-          unauthenticated: () {
+          orElse: () {
             return Material(
               child: SlidingUpPanel(
                 collapsed: Container(),

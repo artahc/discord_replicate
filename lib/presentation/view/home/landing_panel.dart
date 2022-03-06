@@ -88,10 +88,12 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
             // Message Panel
             frontPage: BlocBuilder<ChannelBloc, ChannelState>(
               builder: (_, state) {
-                return state.when(
-                  loading: () {
+                return state.maybeWhen(
+                  orElse: () {
                     return Center(
-                      child: Text("Loading message panel."),
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
                     );
                   },
                   loaded: (channel) {
@@ -101,7 +103,7 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
                       pageController: _pageController,
                     );
                   },
-                  error: (e) {
+                  error: (e, st) {
                     return Container(
                       child: Center(
                         child: Text("Something's wrong when retrieving channel data."),
@@ -126,10 +128,17 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
                   loaded: (channel) {
                     return ChannelInfoPanel(channel: channel);
                   },
-                  error: (e) {
+                  error: (e, st) {
                     return Container(
                       child: Center(
                         child: Text("Something's wrong when retrieving channel data."),
+                      ),
+                    );
+                  },
+                  empty: () {
+                    return Container(
+                      child: Center(
+                        child: Text("Channel empty."),
                       ),
                     );
                   },

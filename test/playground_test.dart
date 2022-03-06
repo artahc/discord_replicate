@@ -11,7 +11,23 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test("Reactive Repository", () async {});
+  Stream<int> getStream() async* {
+    yield* Stream.fromIterable([1, 2, 3, 4, 5, 6, 7, 8]).asyncExpand(
+      (event) => Stream.fromFuture(
+        Future.delayed(Duration(seconds: 1)),
+      ).map((_) => event),
+    );
+  }
+
+  test("disposing await for", () async {
+    await for (final value in getStream()) {
+      print(value);
+    }
+
+    await for (final value in getStream()) {
+      print(value);
+    }
+  });
 
   test("Copy with freezed", () {
     var user = User(uid: "", about: "", avatarUrl: "", name: "", privateChannels: [], servers: []);

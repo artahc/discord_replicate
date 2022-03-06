@@ -8,7 +8,7 @@ import 'package:discord_replicate/data/api/graphql_user_group_remote_api_impl.da
 import 'package:discord_replicate/data/api/graphql_user_remote_api_impl.dart';
 
 import 'package:discord_replicate/data/repository/channel_repository_impl.dart';
-import 'package:discord_replicate/data/repository/firebase_auth_service_repository.dart';
+import 'package:discord_replicate/data/repository/firebase_auth_repository_impl.dart';
 import 'package:discord_replicate/data/repository/server_repository_impl.dart';
 import 'package:discord_replicate/data/repository/user_repository_impl.dart';
 import 'package:discord_replicate/data/repository/user_group_repository_impl.dart';

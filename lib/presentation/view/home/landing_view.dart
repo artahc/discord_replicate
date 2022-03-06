@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/common/app_logger.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
@@ -46,13 +47,17 @@ class _LandingViewState extends State<LandingView> {
         ],
         child: BlocConsumer<UserBloc, UserState>(
           listener: (_, state) {
+            log.w(state);
             state.whenOrNull(
               error: (e) async {
-                Timer(Duration(seconds: 3), () {});
+                log.e("Error state received from UserBloc", e);
+                authBloc.add(AuthEvent.signOutEvent());
               },
             );
           },
           builder: (_, state) {
+            print("Received user state $state");
+
             return state.maybeWhen(
               orElse: () {
                 return Center(

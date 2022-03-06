@@ -1,5 +1,3 @@
-
-
 class ParsingException implements Exception {
   final String message;
   final dynamic payload;

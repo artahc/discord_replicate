@@ -6,6 +6,7 @@ import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tuple/tuple.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -168,6 +169,34 @@ class _LoginViewState extends State<LoginView> {
                       margin: const EdgeInsets.only(top: 15),
                       onPressed: _signIn,
                       child: Text("Login"),
+                    ),
+                    DropdownButton(
+                      dropdownColor: Colors.deepOrange,
+                      underline: Container(),
+                      isExpanded: true,
+                      value: _identityCtrl.text,
+                      hint: Text("Select account"),
+                      items: <Tuple2<String, String>>[
+                        Tuple2("artahc@gmail.com", "artahc123"),
+                        Tuple2("artahace@gmail.com", "artahc123123"),
+                        Tuple2("test@test.t", "test123"),
+                        Tuple2("test2@gmail.com", "password"),
+                        Tuple2("test17@gmail.com", "password"),
+                      ].map<DropdownMenuItem<String>>((e) {
+                        return DropdownMenuItem(
+                          child: Text(e.item1),
+                          value: e.item1,
+                          onTap: () {
+                            setState(() {
+                              _identityCtrl.text = e.item1;
+                              _passwordCtrl.text = e.item2;
+                            });
+                          },
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        print("$value");
+                      },
                     ),
                   ],
                 ),

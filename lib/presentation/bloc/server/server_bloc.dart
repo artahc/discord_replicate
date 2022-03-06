@@ -5,6 +5,7 @@ import 'package:discord_replicate/domain/usecase/server/get_server_by_id_usecase
 import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/domain/usecase/server/join_server_usecase.dart';
 import 'package:discord_replicate/domain/usecase/server/leave_server_usecase.dart';
+import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,9 +59,7 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   }
 
   Future<void> _joinServer(String serverId, emit) async {
-    await _joinServerUseCase.invoke(serverId: serverId).then((value) {
-      emit();
-    });
+    await _joinServerUseCase.invoke(serverId: serverId);
   }
 
   Future<void> _leaveServer(String serverId, emit) async {}

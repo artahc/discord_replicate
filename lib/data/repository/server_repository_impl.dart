@@ -59,7 +59,7 @@ class ServerRepositoryImpl implements ServerRepository {
   }
 
   @override
-  Future saveServers(List<Server> servers) async {
+  Future saveAllServers(List<Server> servers) async {
     await _db.saveAll(servers);
     await _cache.saveAll(servers);
   }

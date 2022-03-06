@@ -1,5 +1,7 @@
 import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
+import 'package:discord_replicate/data/api/client/graphql_operation/mutation/join_server_operation.dart';
+import 'package:discord_replicate/data/api/client/graphql_operation/mutation/leave_server_operation.dart';
 import 'package:discord_replicate/domain/api/server_remote_api.dart';
 import 'package:discord_replicate/domain/model/server/server.dart';
 
@@ -18,12 +20,13 @@ class GraphQLServerRemoteApiImpl implements ServerRemoteApi {
 
   @override
   Future<Server> joinServer(String serverId) {
-    throw UnimplementedError();
+    var operation = JoinServerMutation(serverId: serverId);
+    return _client.query(operation).then((value) => Server.fromJson(value['joinServer']));
   }
 
   @override
-  Future<Server> leaveServer(String serverId) {
-    // TODO: implement leaveServer
-    throw UnimplementedError();
+  Future<void> leaveServer(String serverId) async {
+    var operation = LeaverServerMutation(serverId: serverId);
+    return _client.query(operation).then((value) => null);
   }
 }

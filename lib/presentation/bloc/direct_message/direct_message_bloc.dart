@@ -32,13 +32,7 @@ class DirectMessageBloc extends Bloc<DirectMessageEvent, DirectMessageState> {
         loadRecent: () => _loadRecent(emit),
       );
     });
-
-    _userBloc.state.whenOrNull(
-      loaded: (user) {
-        if (user.privateChannels.isNotEmpty) add(DirectMessageEvent.loadRecent());
-      },
-    );
-
+ 
     _userStateSubscription = userBloc.stream.listen((event) {
       event.whenOrNull(
         loaded: (user) {

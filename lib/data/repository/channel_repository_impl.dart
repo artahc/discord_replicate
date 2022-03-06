@@ -15,7 +15,6 @@ import 'package:async/async.dart';
 import 'package:rxdart/rxdart.dart';
 
 class ChannelRepositoryImpl implements ChannelRepository {
-
   final ChannelRemoteApi _api;
   final Store<Channel> _db;
   final Store<Channel> _cache;
@@ -94,13 +93,14 @@ class ChannelRepositoryImpl implements ChannelRepository {
   }
 
   @override
-  Future<void> deleteAllChannel(List<String> channelIds) {
-    throw UnimplementedError();
+  Future<void> deleteAllChannel(List<String> channelIds) async {
+    await _cache.deleteAll(channelIds);
+    await _db.deleteAll(channelIds);
   }
 
   @override
-  Future<void> deleteChannel(String channelId) {
-    // TODO: implement deleteChannel
-    throw UnimplementedError();
+  Future<void> deleteChannel(String channelId) async {
+    await _cache.delete(channelId);
+    await _db.delete(channelId);
   }
 }

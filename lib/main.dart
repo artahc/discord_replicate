@@ -3,6 +3,7 @@ import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,9 @@ Future main() async {
     systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent,
   ));
+
   await Firebase.initializeApp();
+  await FirebaseAuth.instance.useAuthEmulator("localhost", 5000);
   await AppConfiguration.initServiceLocator();
   await AppConfiguration.initHive();
 

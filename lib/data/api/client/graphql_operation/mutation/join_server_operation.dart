@@ -1,9 +1,9 @@
 import '../../graphql_operation.dart';
 
-class JoinServerOperation implements GraphQLOperation {
+class JoinServerMutation implements GraphQLOperation {
   final String serverId;
 
-  JoinServerOperation({required this.serverId});
+  JoinServerMutation({required this.serverId});
 
   @override
   String get operation => r"""
