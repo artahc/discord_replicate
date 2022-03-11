@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/common/config/app_config.dart';
 
 import 'package:discord_replicate/domain/usecase/channel/get_channel_by_id_usecase.dart';
 

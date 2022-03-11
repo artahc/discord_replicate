@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:discord_replicate/common/app_extension.dart';
+import 'package:discord_replicate/common/extensions/app_extension.dart';
 import 'package:discord_replicate/domain/model/member.dart';
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/model/server.dart';

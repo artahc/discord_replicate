@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:discord_replicate/common/app_logger.dart';
+import 'package:discord_replicate/common/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/domain/model/message.dart';
 
@@ -10,7 +10,7 @@ import 'package:discord_replicate/domain/usecase/channel/send_channel_message_us
 import 'package:discord_replicate/domain/usecase/channel/subscribe_channel_message_usecase.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 
-import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/common/config/app_config.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 

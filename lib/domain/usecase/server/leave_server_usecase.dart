@@ -1,4 +1,4 @@
-import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/common/config/app_config.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
 import 'package:discord_replicate/domain/repository/server_repository.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';

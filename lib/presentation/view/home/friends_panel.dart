@@ -1,4 +1,4 @@
-import 'package:discord_replicate/common/app_icon.dart';
+import 'package:discord_replicate/common/config/icon_constants.dart';
 import 'package:discord_replicate/domain/model/user.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 

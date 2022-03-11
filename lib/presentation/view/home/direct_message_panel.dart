@@ -1,4 +1,4 @@
-import 'package:discord_replicate/common/app_icon.dart';
+import 'package:discord_replicate/common/config/icon_constants.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';

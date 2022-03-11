@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:discord_replicate/common/app_logger.dart';
+import 'package:discord_replicate/common/logger/app_logger.dart';
 import 'package:discord_replicate/common/exception/not_found_exception.dart';
 
 import 'package:get_it/get_it.dart';

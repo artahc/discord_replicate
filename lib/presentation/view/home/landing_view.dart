@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:discord_replicate/common/app_config.dart';
-import 'package:discord_replicate/common/app_logger.dart';
+import 'package:discord_replicate/common/config/app_config.dart';
+import 'package:discord_replicate/common/logger/app_logger.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';

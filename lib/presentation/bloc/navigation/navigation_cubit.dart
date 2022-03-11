@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
-import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/common/config/app_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

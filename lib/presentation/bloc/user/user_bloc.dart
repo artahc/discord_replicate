@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:discord_replicate/common/app_config.dart';
-import 'package:discord_replicate/common/app_logger.dart';
+import 'package:discord_replicate/common/config/app_config.dart';
+import 'package:discord_replicate/common/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';

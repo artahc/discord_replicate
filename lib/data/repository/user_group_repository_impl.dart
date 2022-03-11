@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:discord_replicate/common/app_extension.dart';
-import 'package:discord_replicate/common/app_config.dart';
+import 'package:discord_replicate/common/extensions/app_extension.dart';
+import 'package:discord_replicate/common/config/app_config.dart';
 
 import 'package:discord_replicate/data/store/store.dart';
 
-import 'package:discord_replicate/common/app_logger.dart';
+import 'package:discord_replicate/common/logger/app_logger.dart';
 import 'package:discord_replicate/domain/api/user_group_remote_api.dart';
 import 'package:discord_replicate/domain/model/member.dart';
 import 'package:discord_replicate/domain/model/user_group.dart';
