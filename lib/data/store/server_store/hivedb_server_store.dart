@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
-import 'package:discord_replicate/domain/model/server/server.dart';
+import 'package:discord_replicate/domain/model/server.dart';
 import 'package:discord_replicate/common/app_extension.dart';
 import 'package:discord_replicate/common/hive_constants.dart';
 import 'package:discord_replicate/data/store/store.dart';

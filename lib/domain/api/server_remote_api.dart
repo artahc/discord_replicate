@@ -1,4 +1,4 @@
-import 'package:discord_replicate/domain/model/server/server.dart';
+import 'package:discord_replicate/domain/model/server.dart';
 
 abstract class ServerRemoteApi {
   Future<Server> getServerById(String id);

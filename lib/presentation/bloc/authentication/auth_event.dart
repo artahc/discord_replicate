@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'auth_bloc.dart';
 
-part 'auth_event.freezed.dart';
+part '__generated/auth_event.freezed.dart';
 
 @freezed
 class AuthEvent with _$AuthEvent {

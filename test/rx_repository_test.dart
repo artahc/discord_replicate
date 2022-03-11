@@ -3,7 +3,7 @@ import 'dart:collection';
 
 import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
-import 'package:discord_replicate/domain/model/user/user.dart';
+import 'package:discord_replicate/domain/model/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:rxdart/rxdart.dart';

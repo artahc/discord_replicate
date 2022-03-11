@@ -7,8 +7,8 @@ import 'package:discord_replicate/data/store/store.dart';
 
 import 'package:discord_replicate/common/app_logger.dart';
 import 'package:discord_replicate/domain/api/user_group_remote_api.dart';
-import 'package:discord_replicate/domain/model/member/member.dart';
-import 'package:discord_replicate/domain/model/user_group/user_group.dart';
+import 'package:discord_replicate/domain/model/member.dart';
+import 'package:discord_replicate/domain/model/user_group.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';
 
 import 'package:async/async.dart';

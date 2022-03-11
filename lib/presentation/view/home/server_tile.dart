@@ -1,4 +1,4 @@
-import 'package:discord_replicate/domain/model/server/server.dart';
+import 'package:discord_replicate/domain/model/server.dart';
 import 'package:flutter/material.dart';
 
 class ServerTile extends StatelessWidget {

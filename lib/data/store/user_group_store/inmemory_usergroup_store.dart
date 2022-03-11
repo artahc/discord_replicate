@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
-import 'package:discord_replicate/domain/model/user_group/user_group.dart';
+import 'package:discord_replicate/domain/model/user_group.dart';
 import 'package:discord_replicate/common/app_extension.dart';
 import 'package:discord_replicate/data/store/store.dart';
 

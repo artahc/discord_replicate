@@ -1,5 +1,5 @@
 import 'package:discord_replicate/common/app_icon.dart';
-import 'package:discord_replicate/domain/model/server/server.dart';
+import 'package:discord_replicate/domain/model/server.dart';
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/presentation/widgets/custom_list_view.dart';

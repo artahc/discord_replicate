@@ -1,4 +1,4 @@
-import 'package:discord_replicate/domain/model/member/member.dart';
+import 'package:discord_replicate/domain/model/member.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
 
 abstract class UserGroupRemoteApi {

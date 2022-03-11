@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:discord_replicate/domain/model/credential/credential.dart';
+import 'package:discord_replicate/domain/model/credential.dart';
 
 import 'package:get_it/get_it.dart';
 

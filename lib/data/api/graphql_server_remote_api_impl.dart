@@ -3,7 +3,7 @@ import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 import 'package:discord_replicate/data/api/client/graphql_operation/mutation/join_server_operation.dart';
 import 'package:discord_replicate/data/api/client/graphql_operation/mutation/leave_server_operation.dart';
 import 'package:discord_replicate/domain/api/server_remote_api.dart';
-import 'package:discord_replicate/domain/model/server/server.dart';
+import 'package:discord_replicate/domain/model/server.dart';
 
 import 'client/graphql_operation/query/get_server_operation.dart';
 

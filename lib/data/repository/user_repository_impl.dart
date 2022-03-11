@@ -7,7 +7,7 @@ import 'package:discord_replicate/data/store/store.dart';
 
 import 'package:discord_replicate/domain/api/user_remote_api.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
-import 'package:discord_replicate/domain/model/user/user.dart';
+import 'package:discord_replicate/domain/model/user.dart';
 import 'package:discord_replicate/domain/repository/user_repository.dart';
 
 import 'package:async/async.dart';

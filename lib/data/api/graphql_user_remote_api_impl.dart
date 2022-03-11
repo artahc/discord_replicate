@@ -1,7 +1,7 @@
 import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 import 'package:discord_replicate/domain/api/user_remote_api.dart';
-import 'package:discord_replicate/domain/model/user/user.dart';
+import 'package:discord_replicate/domain/model/user.dart';
 
 import 'client/graphql_operation/query/get_user_operation.dart';
 

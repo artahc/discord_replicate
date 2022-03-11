@@ -3,8 +3,8 @@ import 'package:discord_replicate/data/store/server_store/hivedb_server_store.da
 import 'package:discord_replicate/data/store/server_store/inmemory_server_store.dart';
 import 'package:discord_replicate/data/repository/server_repository_impl.dart';
 
-import 'package:discord_replicate/domain/model/credential/credential.dart';
-import 'package:discord_replicate/domain/model/server/server.dart';
+import 'package:discord_replicate/domain/model/credential.dart';
+import 'package:discord_replicate/domain/model/server.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';

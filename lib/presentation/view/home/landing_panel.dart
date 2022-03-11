@@ -1,4 +1,4 @@
-import 'package:discord_replicate/domain/model/user/user.dart';
+import 'package:discord_replicate/domain/model/user.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';

@@ -1,7 +1,7 @@
-import 'package:discord_replicate/domain/model/credential/credential.dart';
+import 'package:discord_replicate/domain/model/credential.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'auth_state.freezed.dart';
+part '__generated/auth_state.freezed.dart';
 
 @freezed
 class AuthState with _$AuthState {

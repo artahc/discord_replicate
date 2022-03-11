@@ -6,7 +6,7 @@ import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/data/store/store.dart';
 
 import 'package:discord_replicate/domain/api/server_remote_api.dart';
-import 'package:discord_replicate/domain/model/server/server.dart';
+import 'package:discord_replicate/domain/model/server.dart';
 import 'package:discord_replicate/domain/repository/server_repository.dart';
 
 import 'package:async/async.dart';

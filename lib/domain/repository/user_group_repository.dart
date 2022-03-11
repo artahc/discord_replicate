@@ -1,5 +1,5 @@
-import 'package:discord_replicate/domain/model/member/member.dart';
-import 'package:discord_replicate/domain/model/user_group/user_group.dart';
+import 'package:discord_replicate/domain/model/member.dart';
+import 'package:discord_replicate/domain/model/user_group.dart';
 
 import 'package:get_it/get_it.dart';
 

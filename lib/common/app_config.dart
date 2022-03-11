@@ -27,12 +27,12 @@ import 'package:discord_replicate/domain/api/server_remote_api.dart';
 import 'package:discord_replicate/domain/api/user_group_remote_api.dart';
 import 'package:discord_replicate/domain/api/user_remote_api.dart';
 
-import 'package:discord_replicate/domain/model/channel/channel.dart';
-import 'package:discord_replicate/domain/model/member/member.dart';
-import 'package:discord_replicate/domain/model/message/message.dart';
-import 'package:discord_replicate/domain/model/server/server.dart';
-import 'package:discord_replicate/domain/model/user/user.dart';
-import 'package:discord_replicate/domain/model/user_group/user_group.dart';
+import 'package:discord_replicate/domain/model/channel.dart';
+import 'package:discord_replicate/domain/model/member.dart';
+import 'package:discord_replicate/domain/model/message.dart';
+import 'package:discord_replicate/domain/model/server.dart';
+import 'package:discord_replicate/domain/model/user.dart';
+import 'package:discord_replicate/domain/model/user_group.dart';
 
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
 import 'package:discord_replicate/domain/repository/server_repository.dart';

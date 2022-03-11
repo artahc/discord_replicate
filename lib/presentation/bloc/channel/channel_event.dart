@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'channel_event.freezed.dart';
+part '__generated/channel_event.freezed.dart';
 
 @freezed
 abstract class ChannelEvent with _$ChannelEvent {

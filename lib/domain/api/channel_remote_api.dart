@@ -1,5 +1,5 @@
-import 'package:discord_replicate/domain/model/channel/channel.dart';
-import 'package:discord_replicate/domain/model/message/message.dart';
+import 'package:discord_replicate/domain/model/channel.dart';
+import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
 
 abstract class ChannelRemoteApi {

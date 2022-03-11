@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:discord_replicate/domain/model/channel/channel.dart';
+import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/common/app_extension.dart';
 import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';

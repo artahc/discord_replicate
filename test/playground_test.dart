@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:discord_replicate/common/app_extension.dart';
-import 'package:discord_replicate/domain/model/member/member.dart';
-import 'package:discord_replicate/domain/model/message/message.dart';
-import 'package:discord_replicate/domain/model/server/server.dart';
-import 'package:discord_replicate/domain/model/user/user.dart';
+import 'package:discord_replicate/domain/model/member.dart';
+import 'package:discord_replicate/domain/model/message.dart';
+import 'package:discord_replicate/domain/model/server.dart';
+import 'package:discord_replicate/domain/model/user.dart';
 
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -2,8 +2,8 @@ import 'package:discord_replicate/common/app_config.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 import 'package:discord_replicate/domain/api/channel_remote_api.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
-import 'package:discord_replicate/domain/model/message/message.dart';
-import 'package:discord_replicate/domain/model/channel/channel.dart';
+import 'package:discord_replicate/domain/model/message.dart';
+import 'package:discord_replicate/domain/model/channel.dart';
 
 import 'client/graphql_operation/mutation/create_channel_message_operation.dart';
 import 'client/graphql_operation/query/get_channel_messages_operation.dart';

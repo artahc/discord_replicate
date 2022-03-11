@@ -2,9 +2,9 @@ import 'package:discord_replicate/data/api/graphql_user_remote_api_impl.dart';
 import 'package:discord_replicate/data/store/user_store/hivedb_user_store.dart';
 import 'package:discord_replicate/data/store/user_store/inmemory_user_store.dart';
 import 'package:discord_replicate/data/repository/user_repository_impl.dart';
-import 'package:discord_replicate/domain/model/credential/credential.dart';
+import 'package:discord_replicate/domain/model/credential.dart';
 
-import 'package:discord_replicate/domain/model/user/user.dart';
+import 'package:discord_replicate/domain/model/user.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';

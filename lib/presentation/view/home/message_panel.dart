@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:discord_replicate/common/app_icon.dart';
 import 'package:discord_replicate/common/app_logger.dart';
-import 'package:discord_replicate/domain/model/channel/channel.dart';
-import 'package:discord_replicate/domain/model/message/message.dart';
+import 'package:discord_replicate/domain/model/channel.dart';
+import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/presentation/bloc/message/message_bloc.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:discord_replicate/common/app_logger.dart';
-import 'package:discord_replicate/domain/model/channel/channel.dart';
-import 'package:discord_replicate/domain/model/message/message.dart';
+import 'package:discord_replicate/domain/model/channel.dart';
+import 'package:discord_replicate/domain/model/message.dart';
 
 import 'package:discord_replicate/domain/usecase/channel/get_channel_member_by_id_usecase.dart';
 import 'package:discord_replicate/domain/usecase/channel/get_channel_messages_usecase.dart';

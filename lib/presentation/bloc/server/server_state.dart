@@ -1,8 +1,8 @@
-import 'package:discord_replicate/domain/model/channel/channel.dart';
-import 'package:discord_replicate/domain/model/server/server.dart';
+import 'package:discord_replicate/domain/model/channel.dart';
+import 'package:discord_replicate/domain/model/server.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'server_state.freezed.dart';
+part '__generated/server_state.freezed.dart';
 
 @freezed
 abstract class ServerState with _$ServerState {
