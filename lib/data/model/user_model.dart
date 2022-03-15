@@ -7,6 +7,9 @@ part '__generated/user_model.g.dart';
 class UserModel with _$UserModel {
   factory UserModel({
     required String uid,
+    required String name,
+    String? about,
+    String? avatarUrl,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);

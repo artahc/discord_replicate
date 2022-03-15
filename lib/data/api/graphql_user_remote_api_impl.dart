@@ -9,7 +9,7 @@ class GraphQLUserRemoteApiImpl implements UserRemoteApi {
   final GraphQLClientHelper _client;
 
   GraphQLUserRemoteApiImpl({GraphQLClientHelper? client}) : _client = client ?? sl.get();
-
+  
   @override
   Future<User> getUserById(String userId) {
     var operation = GetUserQuery(uid: userId);
