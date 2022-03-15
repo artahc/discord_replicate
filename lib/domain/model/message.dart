@@ -6,8 +6,8 @@ import 'package:discord_replicate/common/config/hive_constants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
-part '__generated/message.freezed.dart';
-part '__generated/message.g.dart';
+part 'generated/message.freezed.dart';
+part 'generated/message.g.dart';
 
 @freezed
 class Message with _$Message {

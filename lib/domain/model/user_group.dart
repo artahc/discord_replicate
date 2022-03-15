@@ -3,8 +3,8 @@ import 'package:discord_replicate/common/config/hive_constants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
-part '__generated/user_group.freezed.dart';
-part '__generated/user_group.g.dart';
+part 'generated/user_group.freezed.dart';
+part 'generated/user_group.g.dart';
 
 @freezed
 class UserGroup with _$UserGroup {

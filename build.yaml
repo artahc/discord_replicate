@@ -8,14 +8,14 @@ targets:
           buildTo: source
           build_extensions:
             {
-              "^lib/data/model/{{}}.dart": "lib/data/model/__generated/{{}}.freezed.dart",
-              "^lib/domain/model/{{}}.dart": "lib/domain/model/__generated/{{}}.freezed.dart",
-              "^lib/presentation/bloc/{{dir}}/{{file}}.dart": "lib/presentation/bloc/{{dir}}/__generated/{{file}}.freezed.dart",
+              "^lib/data/model/{{}}.dart": "lib/data/model/generated/{{}}.freezed.dart",
+              "^lib/domain/model/{{}}.dart": "lib/domain/model/generated/{{}}.freezed.dart",
+              "^lib/presentation/bloc/{{dir}}/{{file}}.dart": "lib/presentation/bloc/{{dir}}/generated/{{file}}.freezed.dart",
             }
       source_gen:combining_builder:
         options:
           build_extensions:
             {
-              "^lib/data/model/{{}}.dart": "lib/data/model/__generated/{{}}.g.dart",
-              "^lib/domain/model/{{}}.dart": "lib/domain/model/__generated/{{}}.g.dart",
+              "^lib/data/model/{{}}.dart": "lib/data/model/generated/{{}}.g.dart",
+              "^lib/domain/model/{{}}.dart": "lib/domain/model/generated/{{}}.g.dart",
             }

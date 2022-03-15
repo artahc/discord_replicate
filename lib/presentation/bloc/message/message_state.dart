@@ -1,7 +1,7 @@
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part '__generated/message_state.freezed.dart';
+part 'generated/message_state.freezed.dart';
 
 @freezed
 abstract class MessageState with _$MessageState {

@@ -1,7 +1,7 @@
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part '__generated/message_event.freezed.dart';
+part 'generated/message_event.freezed.dart';
 
 @freezed
 abstract class MessageEvent with _$MessageEvent {

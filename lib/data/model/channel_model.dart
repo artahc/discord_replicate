@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part '__generated/channel_model.g.dart';
+part 'generated/channel_model.g.dart';
 
 @JsonSerializable()
 class ChannelModel {

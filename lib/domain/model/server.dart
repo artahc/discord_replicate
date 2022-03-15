@@ -4,8 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:discord_replicate/common/config/hive_constants.dart';
 import 'package:hive/hive.dart';
 
-part '__generated/server.freezed.dart';
-part '__generated/server.g.dart';
+part 'generated/server.freezed.dart';
+part 'generated/server.g.dart';
 
 @freezed
 class Server with _$Server {

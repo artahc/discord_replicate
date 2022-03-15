@@ -3,8 +3,8 @@ import 'package:discord_replicate/common/config/hive_constants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
-part '__generated/channel.freezed.dart';
-part '__generated/channel.g.dart';
+part 'generated/channel.freezed.dart';
+part 'generated/channel.g.dart';
 
 @freezed
 class Channel with _$Channel {

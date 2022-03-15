@@ -2,8 +2,8 @@ import 'package:discord_replicate/common/config/hive_constants.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
-part '__generated/member.freezed.dart';
-part '__generated/member.g.dart';
+part 'generated/member.freezed.dart';
+part 'generated/member.g.dart';
 
 @freezed
 class Member with _$Member {

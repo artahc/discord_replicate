@@ -1,7 +1,7 @@
 import 'package:discord_replicate/domain/model/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part '__generated/user_state.freezed.dart';
+part 'generated/user_state.freezed.dart';
 
 @freezed
 class UserState with _$UserState {
