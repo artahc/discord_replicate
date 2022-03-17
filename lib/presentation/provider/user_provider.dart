@@ -1,26 +1,24 @@
 import 'package:discord_replicate/domain/model/channel.dart';
-import 'package:discord_replicate/domain/model/user.dart';
+import 'package:discord_replicate/presentation/bloc/user/user_state.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final currentUserProvider = StateNotifierProvider((ref) {
-  return CurrentUserNotifier();
+final userStateProvider = StateNotifierProvider<UserController, UserState>((ref) {
+  return UserController(ref);
 });
 
-class CurrentUserNotifier extends StateNotifier<User> {
-  CurrentUserNotifier() : super(User(uid: "uid", name: "name", avatarUrl: "avatarUrl", about: "about"));
-
-  Future updateProfile(User user) async {
-    state = user;
-  }
-}
-
-final directMessagesProvider = StateNotifierProvider((ref) {
-  return DirectMessagesController();
+final directMessageListProvider = FutureProvider((ref) {
+  final userState = ref.watch(userStateProvider);
+  return userState.maybeWhen(
+    orElse: () => <Channel>[],
+    loaded: (user) {
+      return user.privateChannels.toList();
+    },
+  );
 });
 
-class DirectMessagesController extends StateNotifier<List<Channel>> {
-  DirectMessagesController() : super([]);
+class UserController extends StateNotifier<UserState> {
+  final Ref ref;
 
-  Future<void> loadDirectMessages(String channelId) async {}
+  UserController(this.ref) : super(UserState.empty());
 }

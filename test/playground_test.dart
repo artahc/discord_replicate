@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:discord_replicate/common/extensions/app_extension.dart';
+import 'package:discord_replicate/application/extensions/extensions.dart';
 import 'package:discord_replicate/domain/model/member.dart';
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/model/server.dart';
@@ -11,6 +11,8 @@ import 'package:rxdart/rxdart.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+
+  
   Stream<int> getStream() async* {
     yield* Stream.fromIterable([1, 2, 3, 4, 5, 6, 7, 8]).asyncExpand(
       (event) => Stream.fromFuture(
@@ -18,6 +20,10 @@ void main() {
       ).map((_) => event),
     );
   }
+
+  test("test riverpod", () async {
+    
+  });
 
   test("disposing await for", () async {
     await for (final value in getStream()) {

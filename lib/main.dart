@@ -9,6 +9,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'app_test.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +25,9 @@ Future main() async {
   await Configuration.initServiceLocator();
   await Configuration.initHive();
 
-  runApp(Application());
+  runApp(
+    ProviderScope(child: TestApplication()),
+  );
 }
 
 class Application extends StatelessWidget {
