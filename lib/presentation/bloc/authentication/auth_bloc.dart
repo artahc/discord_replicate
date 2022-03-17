@@ -1,4 +1,4 @@
-import 'package:discord_replicate/application/config/app_config.dart';
+import 'package:discord_replicate/application/config/configuration.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 
@@ -75,7 +75,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await sl.reset().then((value) {
       print("Service locator reset.");
     });
-    await AppConfiguration.initServiceLocator();
+    await Configuration.initServiceLocator();
     emit(AuthState.unauthenticated());
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:discord_replicate/application/logger/app_logger.dart';
-import 'package:discord_replicate/application/config/app_config.dart';
+import 'package:discord_replicate/application/config/configuration.dart';
 
 import 'package:discord_replicate/data/store/store.dart';
 

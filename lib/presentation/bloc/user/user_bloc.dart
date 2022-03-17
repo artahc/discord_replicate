@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:discord_replicate/application/config/app_config.dart';
+import 'package:discord_replicate/application/config/configuration.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/application/usecase/user/observe_user_changes_usecase.dart';
 import 'package:discord_replicate/application/usecase/user/get_current_user_usecase.dart';

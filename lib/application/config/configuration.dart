@@ -67,7 +67,7 @@ import 'package:path_provider/path_provider.dart';
 
 final sl = GetIt.instance;
 
-class AppConfiguration {
+class Configuration {
   static const String API_URL = "http://localhost:4000/graphql";
   static const String API_WS_URL = "ws://localhost:4000/graphql";
 

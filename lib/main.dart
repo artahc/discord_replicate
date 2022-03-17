@@ -1,5 +1,5 @@
-import 'package:discord_replicate/application/config/app_config.dart';
-import 'package:discord_replicate/application/config/app_theme.dart';
+import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/presentation/theme/app_theme.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
@@ -19,8 +19,8 @@ Future main() async {
 
   await Firebase.initializeApp();
   await FirebaseAuth.instance.useAuthEmulator("localhost", 5000);
-  await AppConfiguration.initServiceLocator();
-  await AppConfiguration.initHive();
+  await Configuration.initServiceLocator();
+  await Configuration.initHive();
 
   runApp(Application());
 }

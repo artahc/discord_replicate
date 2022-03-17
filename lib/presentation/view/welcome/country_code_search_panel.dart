@@ -1,4 +1,4 @@
-import 'package:discord_replicate/application/config/icon_constants.dart';
+import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:discord_replicate/application/config/hive_constants.dart';
+import 'package:discord_replicate/data/constants/hive_constants.dart';
 import 'package:discord_replicate/domain/model/member.dart';
 
 import 'package:crypto/crypto.dart';
