@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-class Test {}
-
 class AppButton extends StatelessWidget {
   final EdgeInsets? margin;
   final EdgeInsets? padding;
