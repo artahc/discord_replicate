@@ -1,5 +1,5 @@
-import 'package:discord_replicate/common/config/app_theme.dart';
-import 'package:discord_replicate/common/config/app_config.dart';
+import 'package:discord_replicate/application/config/app_config.dart';
+import 'package:discord_replicate/application/config/app_theme.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';

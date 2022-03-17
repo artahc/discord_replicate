@@ -1,5 +1,5 @@
+import 'package:discord_replicate/application/config/app_config.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
-import 'package:discord_replicate/common/config/app_config.dart';
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
 

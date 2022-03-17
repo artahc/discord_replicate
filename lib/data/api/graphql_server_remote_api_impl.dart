@@ -1,4 +1,4 @@
-import 'package:discord_replicate/common/config/app_config.dart';
+import 'package:discord_replicate/application/config/app_config.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 import 'package:discord_replicate/data/api/client/graphql_operation/mutation/join_server_operation.dart';
 import 'package:discord_replicate/data/api/client/graphql_operation/mutation/leave_server_operation.dart';

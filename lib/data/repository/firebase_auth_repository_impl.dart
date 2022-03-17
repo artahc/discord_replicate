@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:discord_replicate/common/logger/app_logger.dart';
+import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/credential.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
+import 'package:discord_replicate/application/usecase/user/get_current_user_usecase.dart';
+import 'package:discord_replicate/application/config/app_config.dart';
 import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/common/config/app_config.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +32,7 @@ class DirectMessageBloc extends Bloc<DirectMessageEvent, DirectMessageState> {
         loadRecent: () => _loadRecent(emit),
       );
     });
- 
+
     _userStateSubscription = userBloc.stream.listen((event) {
       event.whenOrNull(
         loaded: (user) {

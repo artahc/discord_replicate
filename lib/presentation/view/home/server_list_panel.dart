@@ -1,4 +1,4 @@
-import 'package:discord_replicate/common/config/icon_constants.dart';
+import 'package:discord_replicate/application/config/icon_constants.dart';
 import 'package:discord_replicate/domain/model/server.dart';
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';

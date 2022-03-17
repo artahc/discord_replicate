@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:discord_replicate/common/logger/app_logger.dart';
-import 'package:discord_replicate/common/exception/not_found_exception.dart';
+import 'package:discord_replicate/application/logger/app_logger.dart';
+import 'package:discord_replicate/application/exception/not_found_exception.dart';
 
 import 'package:get_it/get_it.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:graphql/client.dart';
 import 'package:rxdart/rxdart.dart';
 
-import 'graphql_operation.dart';
+import 'graphql_operation/graphql_operation.dart';
 
 // Function that returns jwt access token in string.
 // Do not include Bearer prefix.

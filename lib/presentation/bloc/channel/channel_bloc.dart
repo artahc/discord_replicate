@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:discord_replicate/common/config/app_config.dart';
-
-import 'package:discord_replicate/domain/usecase/channel/get_channel_by_id_usecase.dart';
+import 'package:discord_replicate/application/config/app_config.dart';
+import 'package:discord_replicate/application/usecase/channel/get_channel_by_id_usecase.dart';
 
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';

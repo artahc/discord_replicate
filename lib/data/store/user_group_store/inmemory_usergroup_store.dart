@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:discord_replicate/application/extensions/app_extension.dart';
+import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user_group.dart';
-import 'package:discord_replicate/common/extensions/app_extension.dart';
-import 'package:discord_replicate/data/store/store.dart';
 
 class InMemoryUserGroupStore implements Store<UserGroup> {
   final SplayTreeMap<String, UserGroup> _cache = SplayTreeMap();

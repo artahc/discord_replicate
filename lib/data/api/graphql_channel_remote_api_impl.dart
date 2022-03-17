@@ -1,4 +1,4 @@
-import 'package:discord_replicate/common/config/app_config.dart';
+import 'package:discord_replicate/application/config/app_config.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 import 'package:discord_replicate/domain/api/channel_remote_api.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';

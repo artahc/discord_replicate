@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
+import 'package:discord_replicate/application/config/hive_constants.dart';
 import 'package:discord_replicate/domain/model/member.dart';
-import 'package:discord_replicate/common/config/hive_constants.dart';
+
+import 'package:crypto/crypto.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 

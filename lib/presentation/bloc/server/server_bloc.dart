@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:discord_replicate/domain/usecase/server/get_server_by_id_usecase.dart';
-
-import 'package:discord_replicate/common/config/app_config.dart';
-import 'package:discord_replicate/domain/usecase/server/join_server_usecase.dart';
-import 'package:discord_replicate/domain/usecase/server/leave_server_usecase.dart';
+import 'package:discord_replicate/application/config/app_config.dart';
+import 'package:discord_replicate/application/usecase/server/get_server_by_id_usecase.dart';
+import 'package:discord_replicate/application/usecase/server/join_server_usecase.dart';
+import 'package:discord_replicate/application/usecase/server/leave_server_usecase.dart';
 import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
