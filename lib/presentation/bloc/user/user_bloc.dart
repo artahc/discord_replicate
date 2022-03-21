@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:discord_replicate/application/config/configuration.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
-import 'package:discord_replicate/application/usecase/user/observe_user_changes_usecase.dart';
-import 'package:discord_replicate/application/usecase/user/get_current_user_usecase.dart';
 
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
+import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
+import 'package:discord_replicate/domain/usecase/user/observe_user_changes_usecase.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';

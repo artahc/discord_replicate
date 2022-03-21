@@ -11,8 +11,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'app_test.dart';
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -25,9 +23,7 @@ Future main() async {
   await Configuration.initServiceLocator();
   await Configuration.initHive();
 
-  runApp(
-    ProviderScope(child: TestApplication()),
-  );
+  runApp(Application());
 }
 
 class Application extends StatelessWidget {

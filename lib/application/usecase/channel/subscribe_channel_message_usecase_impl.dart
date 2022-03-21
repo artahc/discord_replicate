@@ -2,12 +2,8 @@ import 'package:discord_replicate/application/config/configuration.dart';
 
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
-
-import 'get_channel_member_by_id_usecase.dart';
-
-abstract class SubscribeChannelMessageUseCase {
-  Stream<Message> invoke({required String channelId});
-}
+import 'package:discord_replicate/domain/usecase/channel/get_channel_member_by_id_usecase.dart';
+import 'package:discord_replicate/domain/usecase/channel/subscribe_channel_message_usecase.dart';
 
 class SubscribeChannelMessageUseCaseImpl implements SubscribeChannelMessageUseCase {
   final ChannelRepository _channelRepo;

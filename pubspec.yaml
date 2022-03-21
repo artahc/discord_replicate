@@ -29,6 +29,7 @@ dependencies:
   flutter_bloc: ^8.0.0
   get_it: ^7.2.0
   libsignal_protocol_dart: ^0.5.5
+  injectable: ^1.5.3
 
   # utility
   rxdart: ^0.27.3
@@ -55,7 +56,6 @@ dependencies:
   # services
   firebase_core: ^1.6.0
   firebase_auth: ^3.1.1
-  # graphql_flutter: ^5.0.0
   graphql: ^5.0.1
 
   # widgets
@@ -69,10 +69,11 @@ dependencies:
   cupertino_icons: ^1.0.0
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   build_runner: ^2.1.4
   hive_generator: ^1.1.1
+  injectable_generator: ^1.5.3
+  # flutter_test:
+  #   sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

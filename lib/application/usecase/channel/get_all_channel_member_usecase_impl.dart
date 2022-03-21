@@ -1,12 +1,8 @@
 import 'package:discord_replicate/application/config/configuration.dart';
 import 'package:discord_replicate/domain/model/member.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';
-
-import 'get_channel_by_id_usecase.dart';
-
-abstract class GetAllChannelMemberUseCase {
-  Future<List<Member>> invoke({required String channelId});
-}
+import 'package:discord_replicate/domain/usecase/channel/get_all_channel_member_usecase.dart';
+import 'package:discord_replicate/domain/usecase/channel/get_channel_by_id_usecase.dart';
 
 class GetAllChannelMemberUseCaseImpl implements GetAllChannelMemberUseCase {
   final UserGroupRepository _userGroupRepo;

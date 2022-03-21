@@ -2,10 +2,7 @@ import 'package:discord_replicate/application/config/configuration.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user.dart';
 import 'package:discord_replicate/domain/repository/user_repository.dart';
-
-abstract class ObserveUserChangesUseCase {
-  Stream<ObservableEntityEvent<User>> invoke({String? userId});
-}
+import 'package:discord_replicate/domain/usecase/user/observe_user_changes_usecase.dart';
 
 class ObserveUserChangesUseCaseImpl implements ObserveUserChangesUseCase {
   final UserRepository _userRepo;
