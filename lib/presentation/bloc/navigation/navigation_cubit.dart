@@ -1,25 +1,30 @@
 import 'dart:async';
 
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 import 'navigation_state.dart';
 
+@Injectable()
 class NavigationCubit extends Cubit<NavigationState> {
-  AuthBloc _authBloc;
+  final AuthBloc _authBloc;
+  final GlobalKey<NavigatorState> _navigator;
+
   late StreamSubscription _authStateSubscription;
 
-  NavigationCubit({required GlobalKey<NavigatorState> navigator, AuthBloc? authBloc})
-      : _authBloc = authBloc ?? sl.get<AuthBloc>(),
-        super(NavigationState.initialState()) {
+  NavigationCubit(
+    @factoryParam this._authBloc,
+    @factoryParam this._navigator,
+  ) : super(NavigationState.initialState()) {
     _authStateSubscription = _authBloc.stream.listen((event) {
       event.whenOrNull(
         unauthenticated: () {
-          navigator.currentState?.pushNamed(Routes.welcome);
+          _navigator.currentState?.pushNamed(Routes.welcome);
         },
       );
     });

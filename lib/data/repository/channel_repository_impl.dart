@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 
 import 'package:discord_replicate/data/store/store.dart';
@@ -12,20 +12,20 @@ import 'package:discord_replicate/domain/model/paginated_response.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
 
 import 'package:async/async.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
+@LazySingleton(as: ChannelRepository, env: [Env.PROD, Env.DEV])
 class ChannelRepositoryImpl implements ChannelRepository {
   final ChannelRemoteApi _api;
   final Store<Channel> _db;
   final Store<Channel> _cache;
 
-  ChannelRepositoryImpl({
-    ChannelRemoteApi? api,
-    Store<Channel>? database,
-    Store<Channel>? cache,
-  })  : _api = api ?? sl.get(),
-        _db = database ?? sl.get(),
-        _cache = cache ?? sl.get();
+  ChannelRepositoryImpl(
+    this._api,
+    @Named("DB_CHANNEL") this._db,
+    @Named("CACHE_CHANNEL") this._cache,
+  );
 
   @override
   Future<Channel> getChannel(String id) async {

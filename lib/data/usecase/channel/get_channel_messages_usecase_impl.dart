@@ -1,19 +1,17 @@
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
 import 'package:discord_replicate/domain/usecase/channel/get_channel_member_by_id_usecase.dart';
 import 'package:discord_replicate/domain/usecase/channel/get_channel_messages_usecase.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: GetChannelMessagesUseCase, env: [Env.PROD, Env.DEV])
 class GetChannelMessageUseCaseImpl implements GetChannelMessagesUseCase {
   final ChannelRepository _channelRepo;
   final GetChannelMemberByIdUseCase _getChannelMemberByIdUseCase;
 
-  GetChannelMessageUseCaseImpl({
-    ChannelRepository? channelRepo,
-    GetChannelMemberByIdUseCase? getChannelMemberByIdUseCase,
-  })  : _channelRepo = channelRepo ?? sl.get(),
-        _getChannelMemberByIdUseCase = getChannelMemberByIdUseCase ?? sl.get();
+  GetChannelMessageUseCaseImpl(this._channelRepo, this._getChannelMemberByIdUseCase);
 
   @override
   Future<PaginationResponse<Message>> invoke({required String channelId, int limit = 30, String? lastMessageId}) async {

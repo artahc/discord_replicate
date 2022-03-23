@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
@@ -9,6 +9,7 @@ import 'package:discord_replicate/domain/usecase/user/observe_user_changes_useca
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'user_event.dart';
@@ -17,24 +18,22 @@ import 'user_state.dart';
 export 'user_event.dart';
 export 'user_state.dart';
 
+@Injectable()
 class UserBloc extends Bloc<UserEvent, UserState> {
+  final GetCurrentUserUseCase _getCurrentUserUseCase;
+  final ObserveUserChangesUseCase _observeUserChangesUseCase;
+
   StreamController<UserEvent> _eventStream = StreamController.broadcast();
   Stream<UserEvent> get eventStream => _eventStream.stream;
 
   CompositeSubscription _blocStateSubscription = CompositeSubscription();
   StreamSubscription? _userChangesSubscription;
 
-  // Use Cases
-  final GetCurrentUserUseCase _getCurrentUserUseCase;
-  final ObserveUserChangesUseCase _observeUserChangesUseCase;
-
-  UserBloc({
-    required Stream<AuthState> authStateStream,
-    GetCurrentUserUseCase? getCurrentUserUseCase,
-    ObserveUserChangesUseCase? observeUserChangesUseCase,
-  })  : _getCurrentUserUseCase = getCurrentUserUseCase ?? sl.get(),
-        _observeUserChangesUseCase = observeUserChangesUseCase ?? sl.get(),
-        super(UserState.empty()) {
+  UserBloc(
+    @factoryParam Stream<AuthState> authStateStream,
+    this._getCurrentUserUseCase,
+    this._observeUserChangesUseCase,
+  ) : super(UserState.empty()) {
     on<UserEvent>((event, emit) {
       return event.when(
         loadUser: () async => await _loadUser(emit),
@@ -84,7 +83,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
     }).catchError((error, stackTrace) {
       log.e("Error when loading user after sign-in.", error, stackTrace);
-      emit(UserState.error(error));
+      emit(UserState.error(error as Exception));
     });
   }
 

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/domain/model/message.dart';
@@ -11,6 +11,7 @@ import 'package:discord_replicate/domain/usecase/channel/subscribe_channel_messa
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 import 'message_event.dart';
 import 'message_state.dart';
@@ -18,32 +19,26 @@ import 'message_state.dart';
 export 'message_event.dart';
 export 'message_state.dart';
 
+@Injectable()
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final Channel _channel;
 
-  late StreamSubscription _messageSubscription;
-
-  // Use Cases
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final SubscribeChannelMessageUseCase _subscribeChannelMessageUseCase;
   final GetChannelMessagesUseCase _getChannelMessagesUseCase;
   final GetChannelMemberByIdUseCase _getChannelMemberByIdUseCase;
   final SendChannelMessageUseCase _sendChannelMessageUseCase;
 
-  MessageBloc({
-    required Channel channel,
-    GetCurrentUserUseCase? getCurrentUserUseCase,
-    SubscribeChannelMessageUseCase? subscribeChannelMessageUseCase,
-    GetChannelMessagesUseCase? getChannelMessagesUseCase,
-    GetChannelMemberByIdUseCase? getChannelMemberByIdUseCase,
-    SendChannelMessageUseCase? sendChannelMessageUseCase,
-  })  : _channel = channel,
-        _getCurrentUserUseCase = getCurrentUserUseCase ?? sl.get(),
-        _subscribeChannelMessageUseCase = subscribeChannelMessageUseCase ?? sl.get(),
-        _getChannelMessagesUseCase = getChannelMessagesUseCase ?? sl.get(),
-        _getChannelMemberByIdUseCase = getChannelMemberByIdUseCase ?? sl.get(),
-        _sendChannelMessageUseCase = sendChannelMessageUseCase ?? sl.get(),
-        super(MessageState.initial()) {
+  late StreamSubscription _messageSubscription;
+
+  MessageBloc(
+    @factoryParam this._channel,
+    this._getCurrentUserUseCase,
+    this._subscribeChannelMessageUseCase,
+    this._getChannelMessagesUseCase,
+    this._getChannelMemberByIdUseCase,
+    this._sendChannelMessageUseCase,
+  ) : super(MessageState.initial()) {
     on<MessageEvent>((event, emit) => _handleEvent(event, emit));
 
     add(MessageEvent.fetchInitialMessage());

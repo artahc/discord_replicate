@@ -1,5 +1,6 @@
 {
   "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 5000,
   "editor.formatOnSave": true,
   "dart.lineLength": 150,
   "[dart]": {

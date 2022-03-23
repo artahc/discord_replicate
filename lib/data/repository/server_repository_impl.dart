@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:discord_replicate/application/logger/app_logger.dart';
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 
 import 'package:discord_replicate/data/store/store.dart';
 
@@ -10,20 +10,20 @@ import 'package:discord_replicate/domain/model/server.dart';
 import 'package:discord_replicate/domain/repository/server_repository.dart';
 
 import 'package:async/async.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
+@LazySingleton(as: ServerRepository, env: [Env.PROD, Env.DEV])
 class ServerRepositoryImpl implements ServerRepository {
   final ServerRemoteApi _api;
   final Store<Server> _db;
   final Store<Server> _cache;
 
-  ServerRepositoryImpl({
-    ServerRemoteApi? api,
-    Store<Server>? database,
-    Store<Server>? cache,
-  })  : _api = api ?? sl.get(),
-        _db = database ?? sl.get(),
-        _cache = cache ?? sl.get();
+  ServerRepositoryImpl(
+    this._api,
+    @Named("DB_SERVER") this._db,
+    @Named("CACHE_SERVER") this._cache,
+  );
 
   @override
   Future<Server> getServerById(String id) async {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
+import 'package:discord_replicate/application/extensions/extensions.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
@@ -14,28 +15,17 @@ import 'package:flutter/material.dart';
 import 'empty_landing_panel.dart';
 import 'landing_panel.dart';
 
-class LandingView extends StatefulWidget {
+class LandingView extends StatelessWidget {
   const LandingView({Key? key}) : super(key: key);
 
   @override
-  State<LandingView> createState() => _LandingViewState();
-}
-
-class _LandingViewState extends State<LandingView> {
-  late UserBloc userBloc = sl.get(param1: BlocProvider.of<AuthBloc>(context).stream);
-  late ServerBloc serverBloc = sl.get();
-  late DirectMessageBloc dmBloc = sl.get(param1: userBloc);
-  late ChannelBloc channelBloc = sl.get(param1: serverBloc, param2: dmBloc);
-  late AuthBloc authBloc = sl.get();
-
-  @override
-  void initState() {
-    userBloc.add(UserEvent.loadUser());
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final AuthBloc authBloc = sl.get();
+    final UserBloc userBloc = sl.get(param1: authBloc.stream.withInitialValue(authBloc.state));
+    final ServerBloc serverBloc = sl.get();
+    final DirectMessageBloc dmBloc = sl.get(param1: userBloc.stream.withInitialValue(userBloc.state));
+    final ChannelBloc channelBloc = sl.get(param1: serverBloc, param2: dmBloc);
+
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: MultiBlocProvider(
@@ -56,8 +46,6 @@ class _LandingViewState extends State<LandingView> {
             );
           },
           builder: (_, state) {
-            print("Received user state $state");
-
             return state.maybeWhen(
               orElse: () {
                 return Center(
@@ -70,7 +58,6 @@ class _LandingViewState extends State<LandingView> {
                 );
               },
               loaded: (user) {
-                // return EmptyLandingPanel();
                 if (user.privateChannels.isEmpty && user.servers.isEmpty) {
                   return EmptyLandingPanel();
                 } else {

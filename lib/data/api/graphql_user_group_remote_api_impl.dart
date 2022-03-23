@@ -1,15 +1,17 @@
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 import 'package:discord_replicate/domain/api/user_group_remote_api.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
 import 'package:discord_replicate/domain/model/member.dart';
+import 'package:injectable/injectable.dart';
 
 import 'client/graphql_operation/query/get_usergroup_operation.dart';
 
+@LazySingleton(as: UserGroupRemoteApi, env: [Env.PROD, Env.DEV])
 class GraphQLUserGroupRemoteApiImpl implements UserGroupRemoteApi {
   final GraphQLClientHelper _client;
 
-  GraphQLUserGroupRemoteApiImpl({GraphQLClientHelper? client}) : _client = client ?? sl.get();
+  GraphQLUserGroupRemoteApiImpl(this._client);
 
   @override
   Future<PaginationResponse<Member>> getUserGroupById(String id, int limitMember, String? cursor) {

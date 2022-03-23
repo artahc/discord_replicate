@@ -5,47 +5,16 @@ import 'package:discord_replicate/application/exception/not_found_exception.dart
 
 import 'package:get_it/get_it.dart';
 import 'package:graphql/client.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'graphql_operation/graphql_operation.dart';
 
-// Function that returns jwt access token in string.
-// Do not include Bearer prefix.
-typedef Future<String> BearerProvider();
-
+@Singleton()
 class GraphQLClientHelper with Disposable {
-  late GraphQLClient _client;
+  final GraphQLClient _client;
 
-  GraphQLClientHelper({
-    required String url,
-    required String wsUrl,
-    required BearerProvider bearerProvider,
-    GraphQLCache? cache,
-    Map<String, String>? defaultHeader,
-  }) {
-    var httpLink = HttpLink(url, defaultHeaders: defaultHeader ?? {});
-    var authLink = AuthLink(getToken: () async {
-      var token = await bearerProvider.call();
-      var bearer = 'Bearer $token';
-      return bearer;
-    });
-
-    var wsLink = WebSocketLink(wsUrl);
-    var link = authLink.concat(httpLink);
-
-    link = Link.split((request) => request.isSubscription, wsLink, link);
-
-    _client = GraphQLClient(
-      link: link,
-      cache: cache ?? GraphQLCache(),
-      defaultPolicies: DefaultPolicies(
-        query: Policies(
-          fetch: FetchPolicy.noCache,
-          cacheReread: CacheRereadPolicy.ignoreAll,
-        ),
-      ),
-    );
-  }
+  GraphQLClientHelper(this._client);
 
   Future<Map<String, dynamic>> query(GraphQLOperation operation) async {
     var options = QueryOptions(document: gql(operation.operation), variables: operation.variables);

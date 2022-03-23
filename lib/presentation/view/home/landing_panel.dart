@@ -45,10 +45,7 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
             channelViewController: _pageController,
             leftPage: Row(
               children: [
-                // Server list
-                ServerListPanel(key: UniqueKey(), servers: widget.user.servers),
-
-                // Direct Message Panel or Channel List Panel
+                ServerListPanel(),
                 StreamBuilder(
                   stream: MergeStream([
                     serverBloc.eventStream.whereType<ServerEventLoadServer>(),
@@ -58,41 +55,31 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
                     if (snapshot.data is ServerEvent) {
                       return BlocBuilder<ServerBloc, ServerState>(
                         builder: (_, serverState) {
-                          return serverState.when(
-                            error: (e) {
-                              return Center(
-                                child: Text("Something's wrong when retrieving server data."),
-                              );
-                            },
-                            loading: () {
-                              return Center(
-                                child: Container(
-                                  child: CircularProgressIndicator(color: Colors.white),
-                                ),
-                              );
+                          return serverState.maybeWhen(
+                            orElse: () {
+                              return Container();
                             },
                             loaded: (server, recentChannel) {
-                              return ChannelListPanel(key: UniqueKey(), server: server);
+                              return ServerChannelListPanel();
                             },
                           );
                         },
                       );
                     } else {
-                      return DirectMessageListPanel(key: UniqueKey(), channels: widget.user.privateChannels);
+                      return DirectMessageListPanel();
                     }
                   },
                 ),
               ],
             ),
-
-            // Message Panel
             frontPage: BlocBuilder<ChannelBloc, ChannelState>(
               builder: (_, state) {
                 return state.maybeWhen(
                   orElse: () {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
+                    return Expanded(
+                      child: Container(
+                        color: Theme.of(context).colorScheme.primary,
+                        child: Text("Replace with skeleton panel."),
                       ),
                     );
                   },

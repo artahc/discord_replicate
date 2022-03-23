@@ -36,7 +36,7 @@ void main() {
     );
     var remoteApi = GraphQLUserGroupRemoteApiImpl(client: client);
 
-    var userRepo = UserGroupRepositoryImpl(api: remoteApi, database: mockDb, cache: mockCache);
+    var userRepo = UserGroupRepositoryImpl(_api: remoteApi, database: mockDb, _cache: mockCache);
 
     setUpAll(() {
       when(() => mockAuthService.getCredential(forceRefresh: any(named: "forceRefresh")))

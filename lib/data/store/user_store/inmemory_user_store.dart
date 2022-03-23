@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/extensions/extensions.dart';
 import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user.dart';
+import 'package:injectable/injectable.dart';
 
+@Named("CACHE_USER")
+@Injectable(as: Store<User>, env: [Env.PROD, Env.DEV])
 class InMemoryUserStore implements Store<User> {
   final SplayTreeMap<String, User> _cache = SplayTreeMap();
   late StreamController<ObservableEntityEvent<User>> _stream;

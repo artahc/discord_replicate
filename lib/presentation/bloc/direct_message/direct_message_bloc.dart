@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:discord_replicate/application/config/configuration.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'direct_message_event.dart';
 import 'direct_message_state.dart';
@@ -12,29 +12,27 @@ import 'direct_message_state.dart';
 export 'direct_message_event.dart';
 export 'direct_message_state.dart';
 
+@Injectable()
 class DirectMessageBloc extends Bloc<DirectMessageEvent, DirectMessageState> {
-  final UserBloc _userBloc;
+  final GetCurrentUserUseCase _getCurrentUserUseCase;
 
-  final StreamController<DirectMessageEvent> _eventStream = StreamController.broadcast();
+  StreamController<DirectMessageEvent> _eventStream = StreamController.broadcast();
   Stream<DirectMessageEvent> get eventStream => _eventStream.stream;
 
   late StreamSubscription _userStateSubscription;
 
-  // Use Cases
-  final GetCurrentUserUseCase _getCurrentUserUseCase;
-
-  DirectMessageBloc({required UserBloc userBloc, GetCurrentUserUseCase? getCurrentUserUseCase})
-      : _userBloc = userBloc,
-        _getCurrentUserUseCase = getCurrentUserUseCase ?? sl.get(),
-        super(DirectMessageState.empty()) {
+  DirectMessageBloc(
+    @factoryParam Stream<UserState> userStateStream,
+    this._getCurrentUserUseCase,
+  ) : super(DirectMessageState.empty()) {
     on<DirectMessageEvent>((event, emit) {
       return event.when(
         loadRecent: () => _loadRecent(emit),
       );
     });
 
-    _userStateSubscription = userBloc.stream.listen((event) {
-      event.whenOrNull(
+    _userStateSubscription = userStateStream.listen((state) {
+      state.whenOrNull(
         loaded: (user) {
           if (user.privateChannels.isNotEmpty) add(DirectMessageEvent.loadRecent());
         },

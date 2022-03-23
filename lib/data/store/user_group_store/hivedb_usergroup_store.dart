@@ -1,12 +1,16 @@
 import 'dart:async';
 
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/extensions/extensions.dart';
 import 'package:discord_replicate/data/constants/hive_constants.dart';
 import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user_group.dart';
 import 'package:hive/hive.dart';
+import 'package:injectable/injectable.dart';
 
+@Named("DB_USERGROUP")
+@Injectable(as: Store<UserGroup>, env: [Env.PROD, Env.DEV])
 class HiveUserGroupStore implements Store<UserGroup> {
   HiveUserGroupStore();
 

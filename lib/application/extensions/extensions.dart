@@ -2,6 +2,8 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:rxdart/rxdart.dart';
+
 extension ListToKeyValuePair<T> on List<T> {
   Map<K, V> toMap<K, V>({required dynamic Function(T) keyConverter, required dynamic Function(T) valueConverter}) {
     Map<K, V> map = {};
@@ -48,5 +50,15 @@ extension ConvertByteArrayToUint8 on List<int> {
 
   Uint8List toUint8List() {
     return Uint8List.fromList(this);
+  }
+}
+
+extension StreamExtension<T> on Stream<T> {
+  Stream<T> withInitialValue(T initialValue) {
+    return Stream.value(initialValue).concatWith([this]);
+  }
+
+  Stream<T> withLatestItem({int count = 1}) {
+    return this.takeLast(count).concatWith([this]);
   }
 }

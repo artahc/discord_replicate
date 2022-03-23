@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/extensions/extensions.dart';
 import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/server.dart';
+import 'package:injectable/injectable.dart';
 
+@Named("CACHE_SERVER")
+@Injectable(as: Store<Server>, env: [Env.PROD, Env.DEV])
 class InMemoryServerStore implements Store<Server> {
   final SplayTreeMap<String, Server> _cache = new SplayTreeMap();
 

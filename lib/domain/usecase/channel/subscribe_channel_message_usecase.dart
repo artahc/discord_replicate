@@ -1,4 +1,4 @@
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';

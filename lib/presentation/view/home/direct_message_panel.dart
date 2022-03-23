@@ -10,21 +10,14 @@ import 'package:discord_replicate/presentation/route_transition/app_transition.d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DirectMessageListPanel extends StatefulWidget {
-  final List<Channel> channels;
-
-  const DirectMessageListPanel({Key? key, this.channels = const <Channel>[]}) : super(key: key);
-
-  @override
-  _DirectMessageListState createState() => _DirectMessageListState();
-}
-
-class _DirectMessageListState extends State<DirectMessageListPanel> {
-  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
-  late ChannelBloc _channelBloc = BlocProvider.of<ChannelBloc>(context);
+class DirectMessageListPanel extends StatelessWidget {
+  const DirectMessageListPanel({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    NavigationCubit navBloc = BlocProvider.of<NavigationCubit>(context);
+    ChannelBloc channelBloc = BlocProvider.of<ChannelBloc>(context);
+
     return BlocBuilder<UserBloc, UserState>(builder: (_, state) {
       return state.maybeWhen(
         orElse: () {
@@ -60,7 +53,7 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                   InkWell(
                     onTap: () {
                       var route = SlideUpTransition(nextPage: SearchPanel(), fullscreenDialog: true);
-                      _navBloc.push(context, route, true);
+                      navBloc.push(context, route, true);
                     },
                     child: Container(
                       height: 30,
@@ -98,7 +91,7 @@ class _DirectMessageListState extends State<DirectMessageListPanel> {
                             return DirectMessageTile(
                               channel: user.privateChannels[index],
                               onPressed: () {
-                                _channelBloc.add(ChannelEvent.load(user.privateChannels[index].id));
+                                channelBloc.add(ChannelEvent.load(user.privateChannels[index].id));
                               },
                             );
                           },

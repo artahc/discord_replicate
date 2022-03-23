@@ -1,16 +1,18 @@
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 import 'package:discord_replicate/data/api/client/graphql_operation/mutation/join_server_operation.dart';
 import 'package:discord_replicate/data/api/client/graphql_operation/mutation/leave_server_operation.dart';
 import 'package:discord_replicate/domain/api/server_remote_api.dart';
 import 'package:discord_replicate/domain/model/server.dart';
+import 'package:injectable/injectable.dart';
 
 import 'client/graphql_operation/query/get_server_operation.dart';
 
+@LazySingleton(as: ServerRemoteApi, env: [Env.PROD, Env.DEV])
 class GraphQLServerRemoteApiImpl implements ServerRemoteApi {
   final GraphQLClientHelper _client;
 
-  GraphQLServerRemoteApiImpl({GraphQLClientHelper? client}) : _client = client ?? sl.get();
+  GraphQLServerRemoteApiImpl(this._client);
 
   @override
   Future<Server> getServerById(String id) {

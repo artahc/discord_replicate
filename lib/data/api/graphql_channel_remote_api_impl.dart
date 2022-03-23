@@ -1,19 +1,21 @@
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 import 'package:discord_replicate/domain/api/channel_remote_api.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
+import 'package:injectable/injectable.dart';
 
 import 'client/graphql_operation/mutation/create_channel_message_operation.dart';
 import 'client/graphql_operation/query/get_channel_messages_operation.dart';
 import 'client/graphql_operation/query/get_channel_query_operation.dart';
 import 'client/graphql_operation/subscription/subscribe_channel_message_subscription.dart';
 
+@LazySingleton(as: ChannelRemoteApi, env: [Env.PROD, Env.DEV])
 class GraphQLChannelRemoteApiImpl implements ChannelRemoteApi {
   final GraphQLClientHelper _client;
 
-  GraphQLChannelRemoteApiImpl({GraphQLClientHelper? client}) : _client = client ?? sl.get();
+  GraphQLChannelRemoteApiImpl(this._client);
 
   @override
   Future<RawMessage> createMessage(String channelId, String message, int timestamp) {

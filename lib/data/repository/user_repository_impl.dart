@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:discord_replicate/application/logger/app_logger.dart';
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 
 import 'package:discord_replicate/data/store/store.dart';
 
@@ -11,20 +11,20 @@ import 'package:discord_replicate/domain/model/user.dart';
 import 'package:discord_replicate/domain/repository/user_repository.dart';
 
 import 'package:async/async.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
+@LazySingleton(as: UserRepository, env: [Env.PROD, Env.DEV])
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteApi _api;
   final Store<User> _db;
   final Store<User> _cache;
 
-  UserRepositoryImpl({
-    UserRemoteApi? api,
-    Store<User>? database,
-    Store<User>? cache,
-  })  : _api = api ?? sl.get(),
-        _db = database ?? sl.get(),
-        _cache = cache ?? sl.get();
+  UserRepositoryImpl(
+    this._api,
+    @Named("DB_USER") this._db,
+    @Named("CACHE_USER") this._cache,
+  );
 
   @override
   Future<User> getUserById(String uid) async {

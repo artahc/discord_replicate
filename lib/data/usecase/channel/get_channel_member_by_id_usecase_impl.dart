@@ -1,19 +1,17 @@
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/member.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';
 import 'package:discord_replicate/domain/usecase/channel/get_channel_by_id_usecase.dart';
 import 'package:discord_replicate/domain/usecase/channel/get_channel_member_by_id_usecase.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: GetChannelMemberByIdUseCase, env: [Env.PROD, Env.DEV])
 class GetChannelMemberByIdUseCaseImpl implements GetChannelMemberByIdUseCase {
   final GetChannelByIdUseCase _getChannelByIdUseCase;
   final UserGroupRepository _userGroupRepo;
 
-  GetChannelMemberByIdUseCaseImpl({
-    GetChannelByIdUseCase? getChannelByIdUseCase,
-    UserGroupRepository? userGroupRepo,
-  })  : _getChannelByIdUseCase = getChannelByIdUseCase ?? sl.get(),
-        _userGroupRepo = userGroupRepo ?? sl.get();
+  GetChannelMemberByIdUseCaseImpl(this._getChannelByIdUseCase, this._userGroupRepo);
 
   @override
   Future<Member> invoke({required String channelId, required String userId}) async {

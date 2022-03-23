@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/credential.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:injectable/injectable.dart';
 
+@LazySingleton(as: AuthRepository, env: [Env.PROD, Env.DEV])
 class FirebaseAuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 

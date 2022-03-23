@@ -1,4 +1,5 @@
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/hive.config.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/presentation/theme/app_theme.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
@@ -9,7 +10,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,9 +19,9 @@ Future main() async {
   ));
 
   await Firebase.initializeApp();
-  await FirebaseAuth.instance.useAuthEmulator("localhost", 5000);
-  await Configuration.initServiceLocator();
-  await Configuration.initHive();
+  // await FirebaseAuth.instance.useAuthEmulator("localhost", 5000);
+  await initHive();
+  configureDependencies();
 
   runApp(Application());
 }
@@ -32,7 +32,7 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authBloc = sl.get<AuthBloc>();
-    final navBloc = sl.get<NavigationCubit>(param1: rootNavigatorKey);
+    final navBloc = sl.get<NavigationCubit>(param1: authBloc, param2: rootNavigatorKey);
 
     return MultiBlocProvider(
       providers: [

@@ -46,7 +46,7 @@ void main() {
       getCurrentUserUseCase: mockGetCurrentUserUseCase,
       channelRepo: mockChannelRepo,
       serverRepo: mockServerRepo,
-      userGroupRepo: mockUserGroupRepo,
+      _userGroupRepo: mockUserGroupRepo,
       userRepo: mockUserRepo,
     );
     setUpAll(() {

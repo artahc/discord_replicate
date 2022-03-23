@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
@@ -23,9 +24,7 @@ class MessagePanel extends StatefulWidget {
 }
 
 class _MessagePanelState extends State<MessagePanel> {
-  late MessageBloc _messageBloc = MessageBloc(
-    channel: widget.channel,
-  );
+  late MessageBloc _messageBloc = sl.get(param1: widget.channel);
 
   @override
   void initState() {

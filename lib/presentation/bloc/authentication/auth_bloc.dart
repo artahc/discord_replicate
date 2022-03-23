@@ -1,8 +1,9 @@
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -12,12 +13,11 @@ export 'auth_state.dart';
 
 enum RegisterOptions { Phone, Email }
 
+@LazySingleton()
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthRepository _authRepository;
+  final AuthRepository _authRepo;
 
-  AuthBloc({AuthRepository? authService})
-      : _authRepository = authService ?? sl.get<AuthRepository>(),
-        super(AuthStateInitial()) {
+  AuthBloc(this._authRepo) : super(AuthStateInitial()) {
     on<AuthEvent>((event, emit) => _handleEvent(event, emit));
   }
 
@@ -31,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _handleInitial(emit) async {
-    await _authRepository.getCredential().then((credential) {
+    await _authRepo.getCredential().then((credential) {
       if (credential == null)
         emit(AuthState.unauthenticated());
       else {
@@ -45,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   _signIn(String id, String password, emit) async {
     emit(AuthState.authenticating());
-    await _authRepository.signIn(id, password).then((credential) {
+    await _authRepo.signIn(id, password).then((credential) {
       emit(AuthState.authenticated(credential: credential));
     }).onError((error, stackTrace) {
       emit(AuthState.error(exception: error as Exception));
@@ -56,7 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthState.authenticating());
     switch (option) {
       case RegisterOptions.Email:
-        await _authRepository.signUpEmail(id).then((credential) {
+        await _authRepo.signUpEmail(id).then((credential) {
           log.i("Successfully signing up");
           emit(AuthState.authenticated(credential: credential));
         }).onError((error, stackTrace) {
@@ -71,11 +71,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   _signOut(emit) async {
-    await _authRepository.signOut();
+    await _authRepo.signOut();
     await sl.reset().then((value) {
       print("Service locator reset.");
     });
-    await Configuration.initServiceLocator();
+    // await Configuration.initServiceLocator();
     emit(AuthState.unauthenticated());
   }
 }

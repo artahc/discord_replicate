@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:discord_replicate/application/extensions/extensions.dart';
-import 'package:discord_replicate/application/config/configuration.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 
 import 'package:discord_replicate/data/store/store.dart';
 
@@ -11,20 +11,20 @@ import 'package:discord_replicate/domain/model/user_group.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';
 
 import 'package:async/async.dart';
+import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
+@LazySingleton(as: UserGroupRepository, env: [Env.PROD, Env.DEV])
 class UserGroupRepositoryImpl extends UserGroupRepository {
   final UserGroupRemoteApi _api;
   final Store<UserGroup> _db;
   final Store<UserGroup> _cache;
 
-  UserGroupRepositoryImpl({
-    UserGroupRemoteApi? api,
-    Store<UserGroup>? database,
-    Store<UserGroup>? cache,
-  })  : _api = api ?? sl.get(),
-        _db = database ?? sl.get(),
-        _cache = cache ?? sl.get();
+  UserGroupRepositoryImpl(
+    this._api,
+    @Named("DB_USERGROUP") this._db,
+    @Named("CACHE_USERGROUP") this._cache,
+  );
 
   // @override
   // Future<UserGroup> getUserGroup(String id, {int limitMember = 50, String? cursor}) async {

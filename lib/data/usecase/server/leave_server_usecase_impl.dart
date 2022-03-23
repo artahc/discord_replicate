@@ -1,12 +1,13 @@
-import 'package:discord_replicate/application/config/configuration.dart';
-import 'package:discord_replicate/application/usecase/user/get_current_user_usecase_impl.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
 import 'package:discord_replicate/domain/repository/server_repository.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';
 import 'package:discord_replicate/domain/repository/user_repository.dart';
 import 'package:discord_replicate/domain/usecase/server/leave_server_usecase.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
+import 'package:injectable/injectable.dart';
 
+@Injectable(as: LeaveServerUseCase, env: [Env.PROD, Env.DEV])
 class LeaveServerUseCaseImpl implements LeaveServerUseCase {
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final ServerRepository _serverRepo;
@@ -14,17 +15,7 @@ class LeaveServerUseCaseImpl implements LeaveServerUseCase {
   final UserRepository _userRepo;
   final UserGroupRepository _userGroupRepo;
 
-  LeaveServerUseCaseImpl({
-    ServerRepository? serverRepo,
-    ChannelRepository? channelRepo,
-    UserRepository? userRepo,
-    UserGroupRepository? userGroupRepo,
-    GetCurrentUserUseCase? getCurrentUserUseCase,
-  })  : _serverRepo = serverRepo ?? sl.get(),
-        _channelRepo = channelRepo ?? sl.get(),
-        _userRepo = userRepo ?? sl.get(),
-        _userGroupRepo = userGroupRepo ?? sl.get(),
-        _getCurrentUserUseCase = getCurrentUserUseCase ?? sl.get();
+  LeaveServerUseCaseImpl(this._getCurrentUserUseCase, this._serverRepo, this._channelRepo, this._userRepo, this._userGroupRepo);
 
   @override
   Future<void> invoke({required String serverId}) async {

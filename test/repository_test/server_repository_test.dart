@@ -36,7 +36,7 @@ main() {
       },
     );
     var serverApi = GraphQLServerRemoteApiImpl(client: client);
-    var serverRepo = ServerRepositoryImpl(api: serverApi, database: mockDb, cache: mockCache);
+    var serverRepo = ServerRepositoryImpl(_api: serverApi, database: mockDb, _cache: mockCache);
 
     setUpAll(() {
       when(() => mockAuthService.getCredential(forceRefresh: any(named: "forceRefresh")))

@@ -36,7 +36,7 @@ void main() {
     );
     var remoteApi = GraphQLChannelRemoteApiImpl(client: client);
 
-    var channelRepo = ChannelRepositoryImpl(api: remoteApi, database: mockDb, cache: mockCache);
+    var channelRepo = ChannelRepositoryImpl(_api: remoteApi, database: mockDb, _cache: mockCache);
 
     setUpAll(() {
       when(() => mockAuthService.getCredential(forceRefresh: any(named: "forceRefresh")))
