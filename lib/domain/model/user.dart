@@ -23,9 +23,3 @@ class User with _$User {
 
   factory User.fromJson(Map<String, dynamic> map) => _$UserFromJson(map);
 }
-
-extension UserToMember on User {
-  Member toMember() {
-    return Member(uid: this.uid, name: this.name, avatarUrl: this.avatarUrl);
-  }
-}

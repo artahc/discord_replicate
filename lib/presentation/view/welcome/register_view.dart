@@ -46,7 +46,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
   }
 
   void _signUp() {
-    _authBloc.add(AuthEvent.signUpEvent(option: _registerOption, id: _registerCtrl.text));
+    _authBloc.add(AuthEvent.signUp(option: _registerOption, id: _registerCtrl.text));
   }
 
   void _onUserAuthenticated() {

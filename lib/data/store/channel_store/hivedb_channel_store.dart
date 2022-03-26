@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/extensions/extensions.dart';
+import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/data/constants/hive_constants.dart';
 import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
@@ -43,7 +44,9 @@ class HiveChannelStore implements Store<Channel> {
   @override
   FutureOr onDispose() async {
     var box = await getBox();
-    await box.deleteFromDisk();
+    return box.deleteFromDisk().whenComplete(() {
+      log.w("Channel database cleared.");
+    });
   }
 
   @override

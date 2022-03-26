@@ -6,7 +6,7 @@ import 'package:discord_replicate/domain/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
-@LazySingleton(as: AuthRepository, env: [Env.PROD, Env.DEV])
+@Singleton(as: AuthRepository, env: [Env.PROD, Env.DEV])
 class FirebaseAuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -22,7 +22,7 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   }
 
   Future<Credential> signIn(String email, String password) {
-    log.d("Signing in with $email $password");
+    log.i("Signing in with username $email");
     return _auth.signInWithEmailAndPassword(email: email, password: password).then((credential) async {
       var user = credential.user!;
       var token = await user.getIdToken(false);

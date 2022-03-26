@@ -27,7 +27,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserEvent> get eventStream => _eventStream.stream;
 
   CompositeSubscription _blocStateSubscription = CompositeSubscription();
-  StreamSubscription? _userChangesSubscription;
 
   UserBloc(
     @factoryParam Stream<AuthState> authStateStream,
@@ -41,7 +40,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       );
     });
 
-    authStateStream.listen((state) {
+    authStateStream.doOnListen(() {
+      log.d("Listening auth state in UserBloc.");
+    }).listen((state) {
+      log.d("Received auth state in UserBloc $state");
       state.whenOrNull(
         authenticated: (credential) {
           add(UserEvent.loadUser());
@@ -62,33 +64,30 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   @override
   Future<void> close() {
     _blocStateSubscription.cancel();
-    _userChangesSubscription?.cancel();
     _eventStream.close();
     return super.close();
   }
 
   Future<void> _loadUser(Emitter<UserState> emit) async {
+    log.i("Loading user...");
     emit(UserState.loading());
 
     await _getCurrentUserUseCase.invoke().then((user) async {
-      print("Listening to user changes");
+      log.i("User loaded. $user");
       emit(UserState.loaded(user));
 
-      await for (final event in _observeUserChangesUseCase.invoke().where((event) => event.key == user.uid)) {
-        if (event.event == EntityEvent.CREATED_OR_UPDATED) {
-          emit(UserState.loaded(event.value!));
-        } else {
-          emit(UserState.empty());
-        }
-      }
-    }).catchError((error, stackTrace) {
-      log.e("Error when loading user after sign-in.", error, stackTrace);
-      emit(UserState.error(error as Exception));
+      // await for (final event in _observeUserChangesUseCase.invoke().where((event) => event.key == user.uid)) {
+      //   if (event.event == EntityEvent.CREATED_OR_UPDATED) {
+      //     emit(UserState.loaded(event.value!));
+      //   } else {
+      //     emit(UserState.empty());
+      //   }
+      // }
     });
   }
 
   Future<void> _deleteUser(emit) async {
-    _userChangesSubscription?.cancel();
+    _blocStateSubscription.cancel();
     emit(UserState.empty());
   }
 }

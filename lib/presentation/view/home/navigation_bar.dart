@@ -64,7 +64,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
           Expanded(
             child: InkWell(
               onTap: () {
-                _authBloc.add(AuthEvent.signOutEvent());
+                _authBloc.add(AuthEvent.signOut());
               },
               child: Center(
                 child: Container(

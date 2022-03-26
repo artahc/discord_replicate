@@ -15,7 +15,7 @@ import 'package:async/async.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-@LazySingleton(as: ChannelRepository, env: [Env.PROD, Env.DEV])
+@Singleton(as: ChannelRepository, env: [Env.PROD, Env.DEV])
 class ChannelRepositoryImpl implements ChannelRepository {
   final ChannelRemoteApi _api;
   final Store<Channel> _db;
@@ -55,17 +55,17 @@ class ChannelRepositoryImpl implements ChannelRepository {
   }
 
   @override
-  Future<RawMessage> createMessage(String channelId, String message, int timestamp) {
+  Future<Message> createMessage(String channelId, String message, int timestamp) {
     return _api.createMessage(channelId, message, timestamp);
   }
 
   @override
-  Stream<RawMessage> subscribeChannelMessages(String channelId) async* {
+  Stream<Message> subscribeChannelMessages(String channelId) async* {
     yield* _api.subscribeChannelMessage(channelId);
   }
 
   @override
-  Future<PaginationResponse<RawMessage>> getChannelMessages(String channelId, int limit, String? lastMessageId) {
+  Future<PaginationResponse<Message>> getChannelMessages(String channelId, int limit, String? lastMessageId) {
     return _api.getChannelMessages(channelId, limit, lastMessageId);
   }
 

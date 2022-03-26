@@ -18,14 +18,12 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$MessageEventTearOff {
   const _$MessageEventTearOff();
 
-  MessageEventFetchInitialMessages fetchInitialMessage() {
-    return const MessageEventFetchInitialMessages();
+  MessageEventRefresh refresh() {
+    return const MessageEventRefresh();
   }
 
-  MessageEventFetchPreviousMessage fetchPreviousMessage(
-      String lastMessageId, int limit) {
+  MessageEventFetchPreviousMessage fetchPreviousMessage(int limit) {
     return MessageEventFetchPreviousMessage(
-      lastMessageId,
       limit,
     );
   }
@@ -39,12 +37,6 @@ class _$MessageEventTearOff {
       message,
     );
   }
-
-  MessageEventNotifyNewMessage notifyNewMessage(Message message) {
-    return MessageEventNotifyNewMessage(
-      message,
-    );
-  }
 }
 
 /// @nodoc
@@ -54,66 +46,55 @@ const $MessageEvent = _$MessageEventTearOff();
 mixin _$MessageEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchInitialMessage,
-    required TResult Function(String lastMessageId, int limit)
-        fetchPreviousMessage,
+    required TResult Function() refresh,
+    required TResult Function(int limit) fetchPreviousMessage,
     required TResult Function() fetchLatestMessage,
     required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MessageEventFetchInitialMessages value)
-        fetchInitialMessage,
+    required TResult Function(MessageEventRefresh value) refresh,
     required TResult Function(MessageEventFetchPreviousMessage value)
         fetchPreviousMessage,
     required TResult Function(MessageEventFetchLatestMessage value)
         fetchLatestMessage,
     required TResult Function(MessageEventSendMessage value) sendMessage,
-    required TResult Function(MessageEventNotifyNewMessage value)
-        notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -136,43 +117,38 @@ class _$MessageEventCopyWithImpl<$Res> implements $MessageEventCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class $MessageEventFetchInitialMessagesCopyWith<$Res> {
-  factory $MessageEventFetchInitialMessagesCopyWith(
-          MessageEventFetchInitialMessages value,
-          $Res Function(MessageEventFetchInitialMessages) then) =
-      _$MessageEventFetchInitialMessagesCopyWithImpl<$Res>;
+abstract class $MessageEventRefreshCopyWith<$Res> {
+  factory $MessageEventRefreshCopyWith(
+          MessageEventRefresh value, $Res Function(MessageEventRefresh) then) =
+      _$MessageEventRefreshCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$MessageEventFetchInitialMessagesCopyWithImpl<$Res>
+class _$MessageEventRefreshCopyWithImpl<$Res>
     extends _$MessageEventCopyWithImpl<$Res>
-    implements $MessageEventFetchInitialMessagesCopyWith<$Res> {
-  _$MessageEventFetchInitialMessagesCopyWithImpl(
-      MessageEventFetchInitialMessages _value,
-      $Res Function(MessageEventFetchInitialMessages) _then)
-      : super(_value, (v) => _then(v as MessageEventFetchInitialMessages));
+    implements $MessageEventRefreshCopyWith<$Res> {
+  _$MessageEventRefreshCopyWithImpl(
+      MessageEventRefresh _value, $Res Function(MessageEventRefresh) _then)
+      : super(_value, (v) => _then(v as MessageEventRefresh));
 
   @override
-  MessageEventFetchInitialMessages get _value =>
-      super._value as MessageEventFetchInitialMessages;
+  MessageEventRefresh get _value => super._value as MessageEventRefresh;
 }
 
 /// @nodoc
 
-class _$MessageEventFetchInitialMessages
-    implements MessageEventFetchInitialMessages {
-  const _$MessageEventFetchInitialMessages();
+class _$MessageEventRefresh implements MessageEventRefresh {
+  const _$MessageEventRefresh();
 
   @override
   String toString() {
-    return 'MessageEvent.fetchInitialMessage()';
+    return 'MessageEvent.refresh()';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is MessageEventFetchInitialMessages);
+        (other.runtimeType == runtimeType && other is MessageEventRefresh);
   }
 
   @override
@@ -181,40 +157,36 @@ class _$MessageEventFetchInitialMessages
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchInitialMessage,
-    required TResult Function(String lastMessageId, int limit)
-        fetchPreviousMessage,
+    required TResult Function() refresh,
+    required TResult Function(int limit) fetchPreviousMessage,
     required TResult Function() fetchLatestMessage,
     required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
   }) {
-    return fetchInitialMessage();
+    return refresh();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
   }) {
-    return fetchInitialMessage?.call();
+    return refresh?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
     required TResult orElse(),
   }) {
-    if (fetchInitialMessage != null) {
-      return fetchInitialMessage();
+    if (refresh != null) {
+      return refresh();
     }
     return orElse();
   }
@@ -222,55 +194,47 @@ class _$MessageEventFetchInitialMessages
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MessageEventFetchInitialMessages value)
-        fetchInitialMessage,
+    required TResult Function(MessageEventRefresh value) refresh,
     required TResult Function(MessageEventFetchPreviousMessage value)
         fetchPreviousMessage,
     required TResult Function(MessageEventFetchLatestMessage value)
         fetchLatestMessage,
     required TResult Function(MessageEventSendMessage value) sendMessage,
-    required TResult Function(MessageEventNotifyNewMessage value)
-        notifyNewMessage,
   }) {
-    return fetchInitialMessage(this);
+    return refresh(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
   }) {
-    return fetchInitialMessage?.call(this);
+    return refresh?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
     required TResult orElse(),
   }) {
-    if (fetchInitialMessage != null) {
-      return fetchInitialMessage(this);
+    if (refresh != null) {
+      return refresh(this);
     }
     return orElse();
   }
 }
 
-abstract class MessageEventFetchInitialMessages implements MessageEvent {
-  const factory MessageEventFetchInitialMessages() =
-      _$MessageEventFetchInitialMessages;
+abstract class MessageEventRefresh implements MessageEvent {
+  const factory MessageEventRefresh() = _$MessageEventRefresh;
 }
 
 /// @nodoc
@@ -279,7 +243,7 @@ abstract class $MessageEventFetchPreviousMessageCopyWith<$Res> {
           MessageEventFetchPreviousMessage value,
           $Res Function(MessageEventFetchPreviousMessage) then) =
       _$MessageEventFetchPreviousMessageCopyWithImpl<$Res>;
-  $Res call({String lastMessageId, int limit});
+  $Res call({int limit});
 }
 
 /// @nodoc
@@ -297,14 +261,9 @@ class _$MessageEventFetchPreviousMessageCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? lastMessageId = freezed,
     Object? limit = freezed,
   }) {
     return _then(MessageEventFetchPreviousMessage(
-      lastMessageId == freezed
-          ? _value.lastMessageId
-          : lastMessageId // ignore: cast_nullable_to_non_nullable
-              as String,
       limit == freezed
           ? _value.limit
           : limit // ignore: cast_nullable_to_non_nullable
@@ -317,16 +276,14 @@ class _$MessageEventFetchPreviousMessageCopyWithImpl<$Res>
 
 class _$MessageEventFetchPreviousMessage
     implements MessageEventFetchPreviousMessage {
-  const _$MessageEventFetchPreviousMessage(this.lastMessageId, this.limit);
+  const _$MessageEventFetchPreviousMessage(this.limit);
 
-  @override
-  final String lastMessageId;
   @override
   final int limit;
 
   @override
   String toString() {
-    return 'MessageEvent.fetchPreviousMessage(lastMessageId: $lastMessageId, limit: $limit)';
+    return 'MessageEvent.fetchPreviousMessage(limit: $limit)';
   }
 
   @override
@@ -334,16 +291,12 @@ class _$MessageEventFetchPreviousMessage
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is MessageEventFetchPreviousMessage &&
-            const DeepCollectionEquality()
-                .equals(other.lastMessageId, lastMessageId) &&
             const DeepCollectionEquality().equals(other.limit, limit));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(lastMessageId),
-      const DeepCollectionEquality().hash(limit));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(limit));
 
   @JsonKey(ignore: true)
   @override
@@ -354,40 +307,36 @@ class _$MessageEventFetchPreviousMessage
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchInitialMessage,
-    required TResult Function(String lastMessageId, int limit)
-        fetchPreviousMessage,
+    required TResult Function() refresh,
+    required TResult Function(int limit) fetchPreviousMessage,
     required TResult Function() fetchLatestMessage,
     required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
   }) {
-    return fetchPreviousMessage(lastMessageId, limit);
+    return fetchPreviousMessage(limit);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
   }) {
-    return fetchPreviousMessage?.call(lastMessageId, limit);
+    return fetchPreviousMessage?.call(limit);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (fetchPreviousMessage != null) {
-      return fetchPreviousMessage(lastMessageId, limit);
+      return fetchPreviousMessage(limit);
     }
     return orElse();
   }
@@ -395,15 +344,12 @@ class _$MessageEventFetchPreviousMessage
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MessageEventFetchInitialMessages value)
-        fetchInitialMessage,
+    required TResult Function(MessageEventRefresh value) refresh,
     required TResult Function(MessageEventFetchPreviousMessage value)
         fetchPreviousMessage,
     required TResult Function(MessageEventFetchLatestMessage value)
         fetchLatestMessage,
     required TResult Function(MessageEventSendMessage value) sendMessage,
-    required TResult Function(MessageEventNotifyNewMessage value)
-        notifyNewMessage,
   }) {
     return fetchPreviousMessage(this);
   }
@@ -411,13 +357,11 @@ class _$MessageEventFetchPreviousMessage
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
   }) {
     return fetchPreviousMessage?.call(this);
   }
@@ -425,13 +369,11 @@ class _$MessageEventFetchPreviousMessage
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (fetchPreviousMessage != null) {
@@ -442,10 +384,9 @@ class _$MessageEventFetchPreviousMessage
 }
 
 abstract class MessageEventFetchPreviousMessage implements MessageEvent {
-  const factory MessageEventFetchPreviousMessage(
-      String lastMessageId, int limit) = _$MessageEventFetchPreviousMessage;
+  const factory MessageEventFetchPreviousMessage(int limit) =
+      _$MessageEventFetchPreviousMessage;
 
-  String get lastMessageId;
   int get limit;
   @JsonKey(ignore: true)
   $MessageEventFetchPreviousMessageCopyWith<MessageEventFetchPreviousMessage>
@@ -498,12 +439,10 @@ class _$MessageEventFetchLatestMessage
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchInitialMessage,
-    required TResult Function(String lastMessageId, int limit)
-        fetchPreviousMessage,
+    required TResult Function() refresh,
+    required TResult Function(int limit) fetchPreviousMessage,
     required TResult Function() fetchLatestMessage,
     required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
   }) {
     return fetchLatestMessage();
   }
@@ -511,11 +450,10 @@ class _$MessageEventFetchLatestMessage
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
   }) {
     return fetchLatestMessage?.call();
   }
@@ -523,11 +461,10 @@ class _$MessageEventFetchLatestMessage
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (fetchLatestMessage != null) {
@@ -539,15 +476,12 @@ class _$MessageEventFetchLatestMessage
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MessageEventFetchInitialMessages value)
-        fetchInitialMessage,
+    required TResult Function(MessageEventRefresh value) refresh,
     required TResult Function(MessageEventFetchPreviousMessage value)
         fetchPreviousMessage,
     required TResult Function(MessageEventFetchLatestMessage value)
         fetchLatestMessage,
     required TResult Function(MessageEventSendMessage value) sendMessage,
-    required TResult Function(MessageEventNotifyNewMessage value)
-        notifyNewMessage,
   }) {
     return fetchLatestMessage(this);
   }
@@ -555,13 +489,11 @@ class _$MessageEventFetchLatestMessage
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
   }) {
     return fetchLatestMessage?.call(this);
   }
@@ -569,13 +501,11 @@ class _$MessageEventFetchLatestMessage
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (fetchLatestMessage != null) {
@@ -656,12 +586,10 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() fetchInitialMessage,
-    required TResult Function(String lastMessageId, int limit)
-        fetchPreviousMessage,
+    required TResult Function() refresh,
+    required TResult Function(int limit) fetchPreviousMessage,
     required TResult Function() fetchLatestMessage,
     required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
   }) {
     return sendMessage(message);
   }
@@ -669,11 +597,10 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
   }) {
     return sendMessage?.call(message);
   }
@@ -681,11 +608,10 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
+    TResult Function()? refresh,
+    TResult Function(int limit)? fetchPreviousMessage,
     TResult Function()? fetchLatestMessage,
     TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -697,15 +623,12 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(MessageEventFetchInitialMessages value)
-        fetchInitialMessage,
+    required TResult Function(MessageEventRefresh value) refresh,
     required TResult Function(MessageEventFetchPreviousMessage value)
         fetchPreviousMessage,
     required TResult Function(MessageEventFetchLatestMessage value)
         fetchLatestMessage,
     required TResult Function(MessageEventSendMessage value) sendMessage,
-    required TResult Function(MessageEventNotifyNewMessage value)
-        notifyNewMessage,
   }) {
     return sendMessage(this);
   }
@@ -713,13 +636,11 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
   }) {
     return sendMessage?.call(this);
   }
@@ -727,13 +648,11 @@ class _$MessageEventSendMessage implements MessageEventSendMessage {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
+    TResult Function(MessageEventRefresh value)? refresh,
     TResult Function(MessageEventFetchPreviousMessage value)?
         fetchPreviousMessage,
     TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
     TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
     required TResult orElse(),
   }) {
     if (sendMessage != null) {
@@ -751,179 +670,4 @@ abstract class MessageEventSendMessage implements MessageEvent {
   @JsonKey(ignore: true)
   $MessageEventSendMessageCopyWith<MessageEventSendMessage> get copyWith =>
       throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $MessageEventNotifyNewMessageCopyWith<$Res> {
-  factory $MessageEventNotifyNewMessageCopyWith(
-          MessageEventNotifyNewMessage value,
-          $Res Function(MessageEventNotifyNewMessage) then) =
-      _$MessageEventNotifyNewMessageCopyWithImpl<$Res>;
-  $Res call({Message message});
-
-  $MessageCopyWith<$Res> get message;
-}
-
-/// @nodoc
-class _$MessageEventNotifyNewMessageCopyWithImpl<$Res>
-    extends _$MessageEventCopyWithImpl<$Res>
-    implements $MessageEventNotifyNewMessageCopyWith<$Res> {
-  _$MessageEventNotifyNewMessageCopyWithImpl(
-      MessageEventNotifyNewMessage _value,
-      $Res Function(MessageEventNotifyNewMessage) _then)
-      : super(_value, (v) => _then(v as MessageEventNotifyNewMessage));
-
-  @override
-  MessageEventNotifyNewMessage get _value =>
-      super._value as MessageEventNotifyNewMessage;
-
-  @override
-  $Res call({
-    Object? message = freezed,
-  }) {
-    return _then(MessageEventNotifyNewMessage(
-      message == freezed
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as Message,
-    ));
-  }
-
-  @override
-  $MessageCopyWith<$Res> get message {
-    return $MessageCopyWith<$Res>(_value.message, (value) {
-      return _then(_value.copyWith(message: value));
-    });
-  }
-}
-
-/// @nodoc
-
-class _$MessageEventNotifyNewMessage implements MessageEventNotifyNewMessage {
-  const _$MessageEventNotifyNewMessage(this.message);
-
-  @override
-  final Message message;
-
-  @override
-  String toString() {
-    return 'MessageEvent.notifyNewMessage(message: $message)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is MessageEventNotifyNewMessage &&
-            const DeepCollectionEquality().equals(other.message, message));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(message));
-
-  @JsonKey(ignore: true)
-  @override
-  $MessageEventNotifyNewMessageCopyWith<MessageEventNotifyNewMessage>
-      get copyWith => _$MessageEventNotifyNewMessageCopyWithImpl<
-          MessageEventNotifyNewMessage>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() fetchInitialMessage,
-    required TResult Function(String lastMessageId, int limit)
-        fetchPreviousMessage,
-    required TResult Function() fetchLatestMessage,
-    required TResult Function(String message) sendMessage,
-    required TResult Function(Message message) notifyNewMessage,
-  }) {
-    return notifyNewMessage(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
-    TResult Function()? fetchLatestMessage,
-    TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
-  }) {
-    return notifyNewMessage?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? fetchInitialMessage,
-    TResult Function(String lastMessageId, int limit)? fetchPreviousMessage,
-    TResult Function()? fetchLatestMessage,
-    TResult Function(String message)? sendMessage,
-    TResult Function(Message message)? notifyNewMessage,
-    required TResult orElse(),
-  }) {
-    if (notifyNewMessage != null) {
-      return notifyNewMessage(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(MessageEventFetchInitialMessages value)
-        fetchInitialMessage,
-    required TResult Function(MessageEventFetchPreviousMessage value)
-        fetchPreviousMessage,
-    required TResult Function(MessageEventFetchLatestMessage value)
-        fetchLatestMessage,
-    required TResult Function(MessageEventSendMessage value) sendMessage,
-    required TResult Function(MessageEventNotifyNewMessage value)
-        notifyNewMessage,
-  }) {
-    return notifyNewMessage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
-    TResult Function(MessageEventFetchPreviousMessage value)?
-        fetchPreviousMessage,
-    TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
-    TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
-  }) {
-    return notifyNewMessage?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(MessageEventFetchInitialMessages value)?
-        fetchInitialMessage,
-    TResult Function(MessageEventFetchPreviousMessage value)?
-        fetchPreviousMessage,
-    TResult Function(MessageEventFetchLatestMessage value)? fetchLatestMessage,
-    TResult Function(MessageEventSendMessage value)? sendMessage,
-    TResult Function(MessageEventNotifyNewMessage value)? notifyNewMessage,
-    required TResult orElse(),
-  }) {
-    if (notifyNewMessage != null) {
-      return notifyNewMessage(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class MessageEventNotifyNewMessage implements MessageEvent {
-  const factory MessageEventNotifyNewMessage(Message message) =
-      _$MessageEventNotifyNewMessage;
-
-  Message get message;
-  @JsonKey(ignore: true)
-  $MessageEventNotifyNewMessageCopyWith<MessageEventNotifyNewMessage>
-      get copyWith => throw _privateConstructorUsedError;
 }

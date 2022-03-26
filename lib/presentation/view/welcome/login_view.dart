@@ -39,7 +39,7 @@ class _LoginViewState extends State<LoginView> {
   void _signIn() {
     var id = _identityCtrl.text;
     var password = _passwordCtrl.text;
-    _authBloc.add(AuthEvent.signInEvent(id: id, password: password));
+    _authBloc.add(AuthEvent.signIn(id: id, password: password));
   }
 
   void _onAuthenticated() {
@@ -50,7 +50,7 @@ class _LoginViewState extends State<LoginView> {
 
   void _signOut() {
     _navBloc.pop(context, true);
-    _authBloc.add(AuthEvent.signOutEvent());
+    _authBloc.add(AuthEvent.signOut());
   }
 
   @override

@@ -21,13 +21,14 @@ class ChannelAdapter extends TypeAdapter<_$_Channel> {
       name: fields[1] as String,
       userGroupRef: fields[2] as String,
       messages: (fields[3] as List).cast<Message>(),
+      members: (fields[4] as List).cast<Member>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, _$_Channel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class ChannelAdapter extends TypeAdapter<_$_Channel> {
       ..writeByte(2)
       ..write(obj.userGroupRef)
       ..writeByte(3)
-      ..write(obj.messages);
+      ..write(obj.messages)
+      ..writeByte(4)
+      ..write(obj.members);
   }
 
   @override
@@ -61,6 +64,10 @@ _$_Channel _$$_ChannelFromJson(Map<String, dynamic> json) => _$_Channel(
               ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <Message>[],
+      members: (json['members'] as List<dynamic>?)
+              ?.map((e) => Member.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <Member>[],
     );
 
 Map<String, dynamic> _$$_ChannelToJson(_$_Channel instance) =>
@@ -69,4 +76,5 @@ Map<String, dynamic> _$$_ChannelToJson(_$_Channel instance) =>
       'name': instance.name,
       'userGroupRef': instance.userGroupRef,
       'messages': instance.messages,
+      'members': instance.members,
     };

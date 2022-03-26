@@ -13,7 +13,7 @@ import 'package:async/async.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-@LazySingleton(as: ServerRepository, env: [Env.PROD, Env.DEV])
+@Singleton(as: ServerRepository, env: [Env.PROD, Env.DEV])
 class ServerRepositoryImpl implements ServerRepository {
   final ServerRemoteApi _api;
   final Store<Server> _db;

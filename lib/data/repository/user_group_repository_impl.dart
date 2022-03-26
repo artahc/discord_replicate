@@ -14,7 +14,7 @@ import 'package:async/async.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-@LazySingleton(as: UserGroupRepository, env: [Env.PROD, Env.DEV])
+@Singleton(as: UserGroupRepository, env: [Env.PROD, Env.DEV])
 class UserGroupRepositoryImpl extends UserGroupRepository {
   final UserGroupRemoteApi _api;
   final Store<UserGroup> _db;
@@ -25,38 +25,6 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
     @Named("DB_USERGROUP") this._db,
     @Named("CACHE_USERGROUP") this._cache,
   );
-
-  // @override
-  // Future<UserGroup> getUserGroup(String id, {int limitMember = 50, String? cursor}) async {
-  //   var memory = LazyStream(() {
-  //     return _cache.load(id).asStream().where((userGroup) => userGroup != null).doOnData((userGroup) {
-  //       log.i("User group found on memory cache. $userGroup");
-  //     });
-  //   });
-
-  //   var local = LazyStream(() {
-  //     return _db.load(id).asStream().where((userGroup) => userGroup != null).doOnData((userGroup) async {
-  //       await _cache.save(userGroup!);
-  //       log.i("User group found on local database.");
-  //     });
-  //   });
-
-  //   var remote = LazyStream(() {
-  //     return _api.getUserGroupById(id, limitMember, cursor).asStream().asyncMap((paginatedResponse) async {
-  //       var userGroup = UserGroup(id: id, members: paginatedResponse.items.toSplayTreeMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
-
-  //       await _cache.save(userGroup);
-  //       await _db.save(userGroup);
-
-  //       log.i("User group retrieved from remote API. $userGroup");
-
-  //       return userGroup;
-  //     });
-  //   });
-
-  //   var result = await ConcatStream([memory, local, remote]).firstWhere((element) => element != null);
-  //   return result!;
-  // }
 
   @override
   Future<Member> getMemberById(String userGroupId, String uid) async {
@@ -70,7 +38,8 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
 
     var remote = LazyStream(() {
       var stream = _api.getUserGroupById(userGroupId, 30, null).asStream().doOnData((response) async {
-        var userGroup = UserGroup(id: userGroupId, members: response.items.toMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
+        var userGroup = UserGroup(
+            id: userGroupId, members: response.items.toMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
         await _db.save(userGroup);
         await _cache.save(userGroup);
       }).asyncMap((event) => event.items.where((e) => e.uid == uid).first);
@@ -94,7 +63,8 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
 
   @override
   Future<void> saveAllMembers(String userGroupId, List<Member> members) async {
-    var userGroup = UserGroup(id: userGroupId, members: members.toMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
+    var userGroup =
+        UserGroup(id: userGroupId, members: members.toMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
     await _db.save(userGroup);
     await _cache.save(userGroup);
   }

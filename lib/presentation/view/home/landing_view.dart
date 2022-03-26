@@ -20,7 +20,7 @@ class LandingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthBloc authBloc = sl.get();
+    final AuthBloc authBloc = BlocProvider.of(context);
     final UserBloc userBloc = sl.get(param1: authBloc.stream.withInitialValue(authBloc.state));
     final ServerBloc serverBloc = sl.get();
     final DirectMessageBloc dmBloc = sl.get(param1: userBloc.stream.withInitialValue(userBloc.state));
@@ -37,11 +37,10 @@ class LandingView extends StatelessWidget {
         ],
         child: BlocConsumer<UserBloc, UserState>(
           listener: (_, state) {
-            log.w(state);
             state.whenOrNull(
               error: (e) async {
                 log.e("Error state received from UserBloc", e);
-                authBloc.add(AuthEvent.signOutEvent());
+                authBloc.add(AuthEvent.signOut());
               },
             );
           },
@@ -49,12 +48,7 @@ class LandingView extends StatelessWidget {
             return state.maybeWhen(
               orElse: () {
                 return Center(
-                  child: Text("There is something wrong with user internal state."),
-                );
-              },
-              loading: () {
-                return Center(
-                  child: CircularProgressIndicator(color: Colors.white),
+                  child: Text("Loading user."),
                 );
               },
               loaded: (user) {

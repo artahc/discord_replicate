@@ -20,7 +20,7 @@ class _SplashScreenViewState extends State<SplashScreenView> {
 
   @override
   void initState() {
-    _authBloc.add(AuthEvent.initialEvent());
+    _authBloc.add(AuthEvent.initial());
     super.initState();
   }
 

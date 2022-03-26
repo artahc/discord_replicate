@@ -18,18 +18,18 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$AuthEventTearOff {
   const _$AuthEventTearOff();
 
-  AuthEventInitial initialEvent() {
+  AuthEventInitial initial() {
     return const AuthEventInitial();
   }
 
-  AuthEventSignIn signInEvent({required String id, required String password}) {
+  AuthEventSignIn signIn({required String id, required String password}) {
     return AuthEventSignIn(
       id: id,
       password: password,
     );
   }
 
-  AuthEventSignUp signUpEvent(
+  AuthEventSignUp signUp(
       {required RegisterOptions option, required String id}) {
     return AuthEventSignUp(
       option: option,
@@ -37,7 +37,7 @@ class _$AuthEventTearOff {
     );
   }
 
-  AuthEventSignOut signOutEvent() {
+  AuthEventSignOut signOut() {
     return const AuthEventSignOut();
   }
 }
@@ -49,51 +49,51 @@ const $AuthEvent = _$AuthEventTearOff();
 mixin _$AuthEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initialEvent,
-    required TResult Function(String id, String password) signInEvent,
-    required TResult Function(RegisterOptions option, String id) signUpEvent,
-    required TResult Function() signOutEvent,
+    required TResult Function() initial,
+    required TResult Function(String id, String password) signIn,
+    required TResult Function(RegisterOptions option, String id) signUp,
+    required TResult Function() signOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(AuthEventInitial value) initialEvent,
-    required TResult Function(AuthEventSignIn value) signInEvent,
-    required TResult Function(AuthEventSignUp value) signUpEvent,
-    required TResult Function(AuthEventSignOut value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initial,
+    required TResult Function(AuthEventSignIn value) signIn,
+    required TResult Function(AuthEventSignUp value) signUp,
+    required TResult Function(AuthEventSignOut value) signOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -139,7 +139,7 @@ class _$AuthEventInitial implements AuthEventInitial {
 
   @override
   String toString() {
-    return 'AuthEvent.initialEvent()';
+    return 'AuthEvent.initial()';
   }
 
   @override
@@ -154,36 +154,36 @@ class _$AuthEventInitial implements AuthEventInitial {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initialEvent,
-    required TResult Function(String id, String password) signInEvent,
-    required TResult Function(RegisterOptions option, String id) signUpEvent,
-    required TResult Function() signOutEvent,
+    required TResult Function() initial,
+    required TResult Function(String id, String password) signIn,
+    required TResult Function(RegisterOptions option, String id) signUp,
+    required TResult Function() signOut,
   }) {
-    return initialEvent();
+    return initial();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
   }) {
-    return initialEvent?.call();
+    return initial?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
     required TResult orElse(),
   }) {
-    if (initialEvent != null) {
-      return initialEvent();
+    if (initial != null) {
+      return initial();
     }
     return orElse();
   }
@@ -191,36 +191,36 @@ class _$AuthEventInitial implements AuthEventInitial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(AuthEventInitial value) initialEvent,
-    required TResult Function(AuthEventSignIn value) signInEvent,
-    required TResult Function(AuthEventSignUp value) signUpEvent,
-    required TResult Function(AuthEventSignOut value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initial,
+    required TResult Function(AuthEventSignIn value) signIn,
+    required TResult Function(AuthEventSignUp value) signUp,
+    required TResult Function(AuthEventSignOut value) signOut,
   }) {
-    return initialEvent(this);
+    return initial(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
   }) {
-    return initialEvent?.call(this);
+    return initial?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
     required TResult orElse(),
   }) {
-    if (initialEvent != null) {
-      return initialEvent(this);
+    if (initial != null) {
+      return initial(this);
     }
     return orElse();
   }
@@ -278,7 +278,7 @@ class _$AuthEventSignIn implements AuthEventSignIn {
 
   @override
   String toString() {
-    return 'AuthEvent.signInEvent(id: $id, password: $password)';
+    return 'AuthEvent.signIn(id: $id, password: $password)';
   }
 
   @override
@@ -304,36 +304,36 @@ class _$AuthEventSignIn implements AuthEventSignIn {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initialEvent,
-    required TResult Function(String id, String password) signInEvent,
-    required TResult Function(RegisterOptions option, String id) signUpEvent,
-    required TResult Function() signOutEvent,
+    required TResult Function() initial,
+    required TResult Function(String id, String password) signIn,
+    required TResult Function(RegisterOptions option, String id) signUp,
+    required TResult Function() signOut,
   }) {
-    return signInEvent(id, password);
+    return signIn(id, password);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
   }) {
-    return signInEvent?.call(id, password);
+    return signIn?.call(id, password);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
     required TResult orElse(),
   }) {
-    if (signInEvent != null) {
-      return signInEvent(id, password);
+    if (signIn != null) {
+      return signIn(id, password);
     }
     return orElse();
   }
@@ -341,36 +341,36 @@ class _$AuthEventSignIn implements AuthEventSignIn {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(AuthEventInitial value) initialEvent,
-    required TResult Function(AuthEventSignIn value) signInEvent,
-    required TResult Function(AuthEventSignUp value) signUpEvent,
-    required TResult Function(AuthEventSignOut value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initial,
+    required TResult Function(AuthEventSignIn value) signIn,
+    required TResult Function(AuthEventSignUp value) signUp,
+    required TResult Function(AuthEventSignOut value) signOut,
   }) {
-    return signInEvent(this);
+    return signIn(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
   }) {
-    return signInEvent?.call(this);
+    return signIn?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
     required TResult orElse(),
   }) {
-    if (signInEvent != null) {
-      return signInEvent(this);
+    if (signIn != null) {
+      return signIn(this);
     }
     return orElse();
   }
@@ -435,7 +435,7 @@ class _$AuthEventSignUp implements AuthEventSignUp {
 
   @override
   String toString() {
-    return 'AuthEvent.signUpEvent(option: $option, id: $id)';
+    return 'AuthEvent.signUp(option: $option, id: $id)';
   }
 
   @override
@@ -461,36 +461,36 @@ class _$AuthEventSignUp implements AuthEventSignUp {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initialEvent,
-    required TResult Function(String id, String password) signInEvent,
-    required TResult Function(RegisterOptions option, String id) signUpEvent,
-    required TResult Function() signOutEvent,
+    required TResult Function() initial,
+    required TResult Function(String id, String password) signIn,
+    required TResult Function(RegisterOptions option, String id) signUp,
+    required TResult Function() signOut,
   }) {
-    return signUpEvent(option, id);
+    return signUp(option, id);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
   }) {
-    return signUpEvent?.call(option, id);
+    return signUp?.call(option, id);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
     required TResult orElse(),
   }) {
-    if (signUpEvent != null) {
-      return signUpEvent(option, id);
+    if (signUp != null) {
+      return signUp(option, id);
     }
     return orElse();
   }
@@ -498,36 +498,36 @@ class _$AuthEventSignUp implements AuthEventSignUp {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(AuthEventInitial value) initialEvent,
-    required TResult Function(AuthEventSignIn value) signInEvent,
-    required TResult Function(AuthEventSignUp value) signUpEvent,
-    required TResult Function(AuthEventSignOut value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initial,
+    required TResult Function(AuthEventSignIn value) signIn,
+    required TResult Function(AuthEventSignUp value) signUp,
+    required TResult Function(AuthEventSignOut value) signOut,
   }) {
-    return signUpEvent(this);
+    return signUp(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
   }) {
-    return signUpEvent?.call(this);
+    return signUp?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
     required TResult orElse(),
   }) {
-    if (signUpEvent != null) {
-      return signUpEvent(this);
+    if (signUp != null) {
+      return signUp(this);
     }
     return orElse();
   }
@@ -570,7 +570,7 @@ class _$AuthEventSignOut implements AuthEventSignOut {
 
   @override
   String toString() {
-    return 'AuthEvent.signOutEvent()';
+    return 'AuthEvent.signOut()';
   }
 
   @override
@@ -585,36 +585,36 @@ class _$AuthEventSignOut implements AuthEventSignOut {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initialEvent,
-    required TResult Function(String id, String password) signInEvent,
-    required TResult Function(RegisterOptions option, String id) signUpEvent,
-    required TResult Function() signOutEvent,
+    required TResult Function() initial,
+    required TResult Function(String id, String password) signIn,
+    required TResult Function(RegisterOptions option, String id) signUp,
+    required TResult Function() signOut,
   }) {
-    return signOutEvent();
+    return signOut();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
   }) {
-    return signOutEvent?.call();
+    return signOut?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialEvent,
-    TResult Function(String id, String password)? signInEvent,
-    TResult Function(RegisterOptions option, String id)? signUpEvent,
-    TResult Function()? signOutEvent,
+    TResult Function()? initial,
+    TResult Function(String id, String password)? signIn,
+    TResult Function(RegisterOptions option, String id)? signUp,
+    TResult Function()? signOut,
     required TResult orElse(),
   }) {
-    if (signOutEvent != null) {
-      return signOutEvent();
+    if (signOut != null) {
+      return signOut();
     }
     return orElse();
   }
@@ -622,36 +622,36 @@ class _$AuthEventSignOut implements AuthEventSignOut {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(AuthEventInitial value) initialEvent,
-    required TResult Function(AuthEventSignIn value) signInEvent,
-    required TResult Function(AuthEventSignUp value) signUpEvent,
-    required TResult Function(AuthEventSignOut value) signOutEvent,
+    required TResult Function(AuthEventInitial value) initial,
+    required TResult Function(AuthEventSignIn value) signIn,
+    required TResult Function(AuthEventSignUp value) signUp,
+    required TResult Function(AuthEventSignOut value) signOut,
   }) {
-    return signOutEvent(this);
+    return signOut(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
   }) {
-    return signOutEvent?.call(this);
+    return signOut?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(AuthEventInitial value)? initialEvent,
-    TResult Function(AuthEventSignIn value)? signInEvent,
-    TResult Function(AuthEventSignUp value)? signUpEvent,
-    TResult Function(AuthEventSignOut value)? signOutEvent,
+    TResult Function(AuthEventInitial value)? initial,
+    TResult Function(AuthEventSignIn value)? signIn,
+    TResult Function(AuthEventSignUp value)? signUp,
+    TResult Function(AuthEventSignOut value)? signOut,
     required TResult orElse(),
   }) {
-    if (signOutEvent != null) {
-      return signOutEvent(this);
+    if (signOut != null) {
+      return signOut(this);
     }
     return orElse();
   }

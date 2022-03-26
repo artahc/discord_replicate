@@ -54,7 +54,7 @@ class _UserSettingPanelState extends State<UserSettingPanel> {
                             Container(
                               child: IconButton(
                                 onPressed: () {
-                                  _authBloc.add(AuthEvent.signOutEvent());
+                                  _authBloc.add(AuthEvent.signOut());
                                 },
                                 icon: Icon(Icons.exit_to_app),
                                 splashRadius: 17,

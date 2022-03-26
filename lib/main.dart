@@ -4,7 +4,6 @@ import 'package:discord_replicate/presentation/theme/app_theme.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

@@ -8,11 +8,22 @@ class GetChannelQuery extends GraphQLOperation {
 
   @override
   String get operation => r"""
-    query Channel($id: String!) {
-      channel(id: $id) {
+    query Channel($channelId: String!, $limit: Int) {
+      channel(id: $channelId) {
         id
         name
         userGroupRef
+        messages {
+          id
+          senderRef
+          timestamp
+          message
+        }
+        members(limit: $limit) {
+          uid
+          name
+          avatarUrl
+        }
       }
     }
   """;
@@ -20,7 +31,7 @@ class GetChannelQuery extends GraphQLOperation {
   @override
   Map<String, dynamic> get variables {
     return {
-      "id": id,
+      "channelId": id,
       "memberLimit": 30,
     };
   }

@@ -18,7 +18,7 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
     };
     return _$_Message(
       id: fields[0] as String,
-      sender: fields[1] as Member,
+      senderRef: fields[1] as String,
       date: fields[2] as DateTime,
       message: fields[3] as String,
       status: fields[4] as String,
@@ -32,7 +32,7 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.sender)
+      ..write(obj.senderRef)
       ..writeByte(2)
       ..write(obj.date)
       ..writeByte(3)
@@ -58,8 +58,8 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
 
 _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
       id: json['id'] as String,
-      sender: Member.fromJson(json['sender'] as Map<String, dynamic>),
-      date: const TimestampConverter().fromJson(json['timestamp'] as int),
+      senderRef: json['senderRef'] as String,
+      date: DateTime.parse(json['date'] as String),
       message: json['message'] as String,
       status: json['status'] as String? ?? "Sent",
     );
@@ -67,24 +67,8 @@ _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
 Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'sender': instance.sender,
-      'timestamp': const TimestampConverter().toJson(instance.date),
+      'senderRef': instance.senderRef,
+      'date': instance.date.toIso8601String(),
       'message': instance.message,
       'status': instance.status,
-    };
-
-_$_RawMessage _$$_RawMessageFromJson(Map<String, dynamic> json) =>
-    _$_RawMessage(
-      id: json['id'] as String,
-      senderRef: json['senderRef'] as String,
-      date: const TimestampConverter().fromJson(json['timestamp'] as int),
-      message: json['message'] as String,
-    );
-
-Map<String, dynamic> _$$_RawMessageToJson(_$_RawMessage instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'senderRef': instance.senderRef,
-      'timestamp': const TimestampConverter().toJson(instance.date),
-      'message': instance.message,
     };

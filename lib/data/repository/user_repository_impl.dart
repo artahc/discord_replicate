@@ -14,7 +14,7 @@ import 'package:async/async.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
-@LazySingleton(as: UserRepository, env: [Env.PROD, Env.DEV])
+@Singleton(as: UserRepository, env: [Env.PROD, Env.DEV])
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteApi _api;
   final Store<User> _db;

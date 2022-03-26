@@ -26,12 +26,14 @@ class _$ChannelTearOff {
       {@HiveField(0) required String id,
       @HiveField(1) required String name,
       @HiveField(2) required String userGroupRef,
-      @HiveField(3) List<Message> messages = const <Message>[]}) {
+      @HiveField(3) List<Message> messages = const <Message>[],
+      @HiveField(4) List<Member> members = const <Member>[]}) {
     return _Channel(
       id: id,
       name: name,
       userGroupRef: userGroupRef,
       messages: messages,
+      members: members,
     );
   }
 
@@ -53,6 +55,8 @@ mixin _$Channel {
   String get userGroupRef => throw _privateConstructorUsedError;
   @HiveField(3)
   List<Message> get messages => throw _privateConstructorUsedError;
+  @HiveField(4)
+  List<Member> get members => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -67,7 +71,8 @@ abstract class $ChannelCopyWith<$Res> {
       {@HiveField(0) String id,
       @HiveField(1) String name,
       @HiveField(2) String userGroupRef,
-      @HiveField(3) List<Message> messages});
+      @HiveField(3) List<Message> messages,
+      @HiveField(4) List<Member> members});
 }
 
 /// @nodoc
@@ -84,6 +89,7 @@ class _$ChannelCopyWithImpl<$Res> implements $ChannelCopyWith<$Res> {
     Object? name = freezed,
     Object? userGroupRef = freezed,
     Object? messages = freezed,
+    Object? members = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -102,6 +108,10 @@ class _$ChannelCopyWithImpl<$Res> implements $ChannelCopyWith<$Res> {
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
               as List<Message>,
+      members: members == freezed
+          ? _value.members
+          : members // ignore: cast_nullable_to_non_nullable
+              as List<Member>,
     ));
   }
 }
@@ -115,7 +125,8 @@ abstract class _$ChannelCopyWith<$Res> implements $ChannelCopyWith<$Res> {
       {@HiveField(0) String id,
       @HiveField(1) String name,
       @HiveField(2) String userGroupRef,
-      @HiveField(3) List<Message> messages});
+      @HiveField(3) List<Message> messages,
+      @HiveField(4) List<Member> members});
 }
 
 /// @nodoc
@@ -133,6 +144,7 @@ class __$ChannelCopyWithImpl<$Res> extends _$ChannelCopyWithImpl<$Res>
     Object? name = freezed,
     Object? userGroupRef = freezed,
     Object? messages = freezed,
+    Object? members = freezed,
   }) {
     return _then(_Channel(
       id: id == freezed
@@ -151,6 +163,10 @@ class __$ChannelCopyWithImpl<$Res> extends _$ChannelCopyWithImpl<$Res>
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
               as List<Message>,
+      members: members == freezed
+          ? _value.members
+          : members // ignore: cast_nullable_to_non_nullable
+              as List<Member>,
     ));
   }
 }
@@ -163,7 +179,8 @@ class _$_Channel implements _Channel {
       {@HiveField(0) required this.id,
       @HiveField(1) required this.name,
       @HiveField(2) required this.userGroupRef,
-      @HiveField(3) this.messages = const <Message>[]});
+      @HiveField(3) this.messages = const <Message>[],
+      @HiveField(4) this.members = const <Member>[]});
 
   factory _$_Channel.fromJson(Map<String, dynamic> json) =>
       _$$_ChannelFromJson(json);
@@ -181,10 +198,14 @@ class _$_Channel implements _Channel {
   @override
   @HiveField(3)
   final List<Message> messages;
+  @JsonKey()
+  @override
+  @HiveField(4)
+  final List<Member> members;
 
   @override
   String toString() {
-    return 'Channel(id: $id, name: $name, userGroupRef: $userGroupRef, messages: $messages)';
+    return 'Channel(id: $id, name: $name, userGroupRef: $userGroupRef, messages: $messages, members: $members)';
   }
 
   @override
@@ -196,7 +217,8 @@ class _$_Channel implements _Channel {
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
                 .equals(other.userGroupRef, userGroupRef) &&
-            const DeepCollectionEquality().equals(other.messages, messages));
+            const DeepCollectionEquality().equals(other.messages, messages) &&
+            const DeepCollectionEquality().equals(other.members, members));
   }
 
   @override
@@ -205,7 +227,8 @@ class _$_Channel implements _Channel {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(userGroupRef),
-      const DeepCollectionEquality().hash(messages));
+      const DeepCollectionEquality().hash(messages),
+      const DeepCollectionEquality().hash(members));
 
   @JsonKey(ignore: true)
   @override
@@ -223,7 +246,8 @@ abstract class _Channel implements Channel {
       {@HiveField(0) required String id,
       @HiveField(1) required String name,
       @HiveField(2) required String userGroupRef,
-      @HiveField(3) List<Message> messages}) = _$_Channel;
+      @HiveField(3) List<Message> messages,
+      @HiveField(4) List<Member> members}) = _$_Channel;
 
   factory _Channel.fromJson(Map<String, dynamic> json) = _$_Channel.fromJson;
 
@@ -239,6 +263,9 @@ abstract class _Channel implements Channel {
   @override
   @HiveField(3)
   List<Message> get messages;
+  @override
+  @HiveField(4)
+  List<Member> get members;
   @override
   @JsonKey(ignore: true)
   _$ChannelCopyWith<_Channel> get copyWith =>

@@ -23,6 +23,7 @@ class _ServerListPanelState extends State<ServerListPanel> {
   @override
   Widget build(BuildContext context) {
     final ServerBloc serverBloc = BlocProvider.of(context);
+    final DirectMessageBloc dmBloc = BlocProvider.of(context);
 
     return Container(
       width: 70,
@@ -53,6 +54,7 @@ class _ServerListPanelState extends State<ServerListPanel> {
                   onPressed: () {
                     setState(() {
                       this._selectedServer = null;
+                      dmBloc.add(DirectMessageEvent.loadRecent());
                     });
                   },
                   child: Container(
@@ -79,6 +81,7 @@ class _ServerListPanelState extends State<ServerListPanel> {
               onPressed: () {
                 setState(() {
                   this._selectedServer = server;
+                  serverBloc.add(ServerEvent.loadServer(server.id));
                 });
               },
               selected: this._selectedServer?.id == server.id,

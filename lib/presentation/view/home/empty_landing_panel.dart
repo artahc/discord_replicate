@@ -46,7 +46,7 @@ class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
                       child: Text("Log Out"),
                       color: Colors.red,
                       onPressed: () {
-                        _authBloc.add(AuthEvent.signOutEvent());
+                        _authBloc.add(AuthEvent.signOut());
                       },
                     ),
                   ],

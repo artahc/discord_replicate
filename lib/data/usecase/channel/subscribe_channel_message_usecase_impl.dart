@@ -15,13 +15,7 @@ class SubscribeChannelMessageUseCaseImpl implements SubscribeChannelMessageUseCa
 
   @override
   Stream<Message> invoke({required String channelId}) async* {
-    var rawMessageStream = _channelRepo.subscribeChannelMessages(channelId);
-    var messageWithUserStream = rawMessageStream.asyncMap((raw) async {
-      var member = await _getChannelMemberByIdUseCase.invoke(channelId: channelId, userId: raw.senderRef);
-      var message = Message(id: raw.id, sender: member, date: raw.date, message: raw.message);
-      return message;
-    });
-
-    yield* messageWithUserStream;
+    var messageStream = _channelRepo.subscribeChannelMessages(channelId);
+    yield* messageStream;
   }
 }

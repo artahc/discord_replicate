@@ -57,7 +57,15 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
                         builder: (_, serverState) {
                           return serverState.maybeWhen(
                             orElse: () {
-                              return Container();
+                              return Flexible(
+                                child: Container(
+                                  margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width * 0.125) + 5),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                                    color: Theme.of(context).colorScheme.primary,
+                                  ),
+                                ),
+                              );
                             },
                             loaded: (server, recentChannel) {
                               return ServerChannelListPanel();
@@ -76,11 +84,8 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
               builder: (_, state) {
                 return state.maybeWhen(
                   orElse: () {
-                    return Expanded(
-                      child: Container(
-                        color: Theme.of(context).colorScheme.primary,
-                        child: Text("Replace with skeleton panel."),
-                      ),
+                    return Center(
+                      child: CircularProgressIndicator(color: Colors.white),
                     );
                   },
                   loaded: (channel) {
@@ -141,7 +146,8 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
             bottom: 0,
             child: SlideTransition(
               child: AppNavigationBar(),
-              position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_pageController.navBarAnimController),
+              position:
+                  Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_pageController.navBarAnimController),
             ),
           ),
         ],

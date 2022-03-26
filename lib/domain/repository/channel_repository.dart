@@ -12,7 +12,7 @@ abstract class ChannelRepository implements Disposable {
   Future<void> deleteChannel(String channelId);
   Future<void> deleteAllChannel(List<String> channelIds);
 
-  Future<RawMessage> createMessage(String channelId, String message, int timestamp);
-  Future<PaginationResponse<RawMessage>> getChannelMessages(String channelId, int limit, String? lastMessageId);
-  Stream<RawMessage> subscribeChannelMessages(String channelId);
+  Future<Message> createMessage(String channelId, String message, int timestamp);
+  Future<PaginationResponse<Message>> getChannelMessages(String channelId, int limit, String? lastMessageId);
+  Stream<Message> subscribeChannelMessages(String channelId);
 }

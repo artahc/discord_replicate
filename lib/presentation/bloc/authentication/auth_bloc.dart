@@ -18,19 +18,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepo;
 
   AuthBloc(this._authRepo) : super(AuthStateInitial()) {
-    on<AuthEvent>((event, emit) => _handleEvent(event, emit));
+    on<AuthEvent>((event, emit) async {
+      await event.when(
+        initial: () => _initial(emit),
+        signIn: (id, password) => _signIn(id, password, emit),
+        signUp: (option, id) => _signUp(id, option, emit),
+        signOut: () => _signOut(emit),
+      );
+    });
   }
 
-  _handleEvent(AuthEvent event, emit) {
-    return event.when(
-      initialEvent: () => _handleInitial(emit),
-      signInEvent: (id, password) => _signIn(id, password, emit),
-      signUpEvent: (option, id) => _signUp(id, option, emit),
-      signOutEvent: () => _signOut(emit),
-    );
-  }
-
-  _handleInitial(emit) async {
+  Future<void> _initial(emit) async {
     await _authRepo.getCredential().then((credential) {
       if (credential == null)
         emit(AuthState.unauthenticated());
@@ -43,16 +41,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
   }
 
-  _signIn(String id, String password, emit) async {
+  Future<void> _signIn(String id, String password, emit) async {
     emit(AuthState.authenticating());
     await _authRepo.signIn(id, password).then((credential) {
+      
       emit(AuthState.authenticated(credential: credential));
     }).onError((error, stackTrace) {
       emit(AuthState.error(exception: error as Exception));
     });
   }
 
-  _signUp(String id, RegisterOptions option, emit) async {
+  Future<void> _signUp(String id, RegisterOptions option, emit) async {
     emit(AuthState.authenticating());
     switch (option) {
       case RegisterOptions.Email:
@@ -70,12 +69,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  _signOut(emit) async {
+  Future<void> _signOut(emit) async {
     await _authRepo.signOut();
     await sl.reset().then((value) {
       print("Service locator reset.");
+      configureDependencies();
     });
-    // await Configuration.initServiceLocator();
     emit(AuthState.unauthenticated());
   }
 }
