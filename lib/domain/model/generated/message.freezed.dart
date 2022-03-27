@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Message _$MessageFromJson(Map<String, dynamic> json) {
-  return _Message.fromJson(json);
-}
-
 /// @nodoc
 class _$MessageTearOff {
   const _$MessageTearOff();
@@ -35,10 +31,6 @@ class _$MessageTearOff {
       message: message,
       status: status,
     );
-  }
-
-  Message fromJson(Map<String, Object?> json) {
-    return Message.fromJson(json);
   }
 }
 
@@ -58,7 +50,6 @@ mixin _$Message {
   @HiveField(4)
   String get status => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $MessageCopyWith<Message> get copyWith => throw _privateConstructorUsedError;
 }
@@ -172,7 +163,7 @@ class __$MessageCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 @HiveType(typeId: HiveConstants.MESSAGE_TYPE, adapterName: "MessageAdapter")
 class _$_Message extends _Message {
   const _$_Message(
@@ -182,9 +173,6 @@ class _$_Message extends _Message {
       @HiveField(3) required this.message,
       @HiveField(4) this.status = "Sent"})
       : super._();
-
-  factory _$_Message.fromJson(Map<String, dynamic> json) =>
-      _$$_MessageFromJson(json);
 
   @override
   @HiveField(0)
@@ -233,11 +221,6 @@ class _$_Message extends _Message {
   @override
   _$MessageCopyWith<_Message> get copyWith =>
       __$MessageCopyWithImpl<_Message>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_MessageToJson(this);
-  }
 }
 
 abstract class _Message extends Message {
@@ -248,8 +231,6 @@ abstract class _Message extends Message {
       @HiveField(3) required String message,
       @HiveField(4) String status}) = _$_Message;
   const _Message._() : super._();
-
-  factory _Message.fromJson(Map<String, dynamic> json) = _$_Message.fromJson;
 
   @override
   @HiveField(0)

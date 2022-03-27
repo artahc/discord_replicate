@@ -4,22 +4,20 @@ import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/extensions/extensions.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/constants/icon_constants.dart';
-import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
-import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/presentation/bloc/message/message_bloc.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'message_tile.dart';
 
 class MessagePanel extends StatefulWidget {
-  final Channel channel;
   final OverlapSwipeableStackController pageController;
 
-  const MessagePanel({Key? key, required this.pageController, required this.channel}) : super(key: key);
+  const MessagePanel({Key? key, required this.pageController}) : super(key: key);
 
   @override
   _MessagePanelState createState() => _MessagePanelState();
@@ -27,101 +25,25 @@ class MessagePanel extends StatefulWidget {
 
 class _MessagePanelState extends State<MessagePanel> {
   late ChannelBloc channelBloc = BlocProvider.of(context);
-  late MessageBloc _messageBloc = sl.get(
-    param1: widget.channel,
-    param2: channelBloc.stream.withInitialValue(channelBloc.state),
-  );
-
+  late MessageBloc _messageBloc = sl.get(param1: channelBloc.stream.withInitialValue(channelBloc.state));
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MessageBloc>(
-      create: (context) => _messageBloc,
-      child: Container(
-        child: ClipRRect(
-          clipBehavior: Clip.antiAlias,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-          child: Container(
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  padding: EdgeInsets.only(right: 15, left: 10),
-                  height: 55,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: IconButton(
-                          onPressed: () {
-                            if (widget.pageController.currentPageState == PageState.OnCenter)
-                              widget.pageController.animateTo(PageState.OnRight);
-                            else
-                              widget.pageController.animateTo(PageState.OnCenter);
-                          },
-                          iconSize: 18,
-                          icon: ImageIcon(
-                            AssetImage(AppIcons.menu_icon),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Row(
-                            children: [
-                              Text(
-                                widget.channel.name,
-                                style: Theme.of(context).textTheme.headline6?.copyWith(overflow: TextOverflow.clip),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Wrap(
-                        alignment: WrapAlignment.spaceEvenly,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: 8,
-                        children: [
-                          IconButton(
-                            iconSize: 18,
-                            visualDensity: VisualDensity.compact,
-                            onPressed: () {},
-                            icon: ImageIcon(
-                              AssetImage(AppIcons.phone_icon),
-                            ),
-                          ),
-                          IconButton(
-                            iconSize: 18,
-                            onPressed: () {},
-                            visualDensity: VisualDensity.compact,
-                            icon: ImageIcon(
-                              AssetImage(AppIcons.video_icon),
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              if (widget.pageController.currentPageState == PageState.OnCenter)
-                                widget.pageController.animateTo(PageState.OnLeft);
-                              else
-                                widget.pageController.animateTo(PageState.OnCenter);
-                            },
-                            visualDensity: VisualDensity.compact,
-                            iconSize: 20,
-                            icon: ImageIcon(
-                              AssetImage(AppIcons.group_icon),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                MessagePanelBody(key: UniqueKey()),
-                MessagePanelInput(key: UniqueKey()),
-              ],
+    return Provider(
+      create: (context) => widget.pageController,
+      child: BlocProvider<MessageBloc>(
+        create: (context) => _messageBloc,
+        child: Container(
+          child: ClipRRect(
+            clipBehavior: Clip.antiAlias,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+            child: Container(
+              child: Column(
+                children: [
+                  const MessagePanelHeader(),
+                  const MessagePanelBody(),
+                  const MessagePanelInput(),
+                ],
+              ),
             ),
           ),
         ),
@@ -130,8 +52,108 @@ class _MessagePanelState extends State<MessagePanel> {
   }
 }
 
+class MessagePanelHeader extends StatelessWidget {
+  const MessagePanelHeader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ChannelBloc channelBloc = BlocProvider.of(context);
+    final OverlapSwipeableStackController pageController = Provider.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      padding: EdgeInsets.only(right: 15, left: 10),
+      height: 55,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: IconButton(
+              onPressed: () {
+                if (pageController.currentPageState == PageState.OnCenter)
+                  pageController.animateTo(PageState.OnRight);
+                else
+                  pageController.animateTo(PageState.OnCenter);
+              },
+              iconSize: 18,
+              icon: ImageIcon(
+                AssetImage(AppIcons.menu_icon),
+              ),
+            ),
+          ),
+          BlocBuilder<ChannelBloc, ChannelState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                orElse: () {
+                  return Expanded(
+                    child: Text("Still loading..."),
+                  );
+                },
+                loaded: (channel) {
+                  return Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Row(
+                        children: [
+                          Text(
+                            channelBloc.currentChannel.name,
+                            style: Theme.of(context).textTheme.headline6?.copyWith(overflow: TextOverflow.clip),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+          Wrap(
+            alignment: WrapAlignment.spaceEvenly,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            children: [
+              IconButton(
+                iconSize: 18,
+                visualDensity: VisualDensity.compact,
+                onPressed: () {},
+                icon: ImageIcon(
+                  AssetImage(AppIcons.phone_icon),
+                ),
+              ),
+              IconButton(
+                iconSize: 18,
+                onPressed: () {},
+                visualDensity: VisualDensity.compact,
+                icon: ImageIcon(
+                  AssetImage(AppIcons.video_icon),
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  if (pageController.currentPageState == PageState.OnCenter)
+                    pageController.animateTo(PageState.OnLeft);
+                  else
+                    pageController.animateTo(PageState.OnCenter);
+                },
+                visualDensity: VisualDensity.compact,
+                iconSize: 20,
+                icon: ImageIcon(
+                  AssetImage(AppIcons.group_icon),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class MessagePanelBody extends StatefulWidget {
-  MessagePanelBody({Key? key}) : super(key: key);
+  const MessagePanelBody({Key? key}) : super(key: key);
 
   @override
   _MessagePanelBodyState createState() => _MessagePanelBodyState();
@@ -139,7 +161,6 @@ class MessagePanelBody extends StatefulWidget {
 
 class _MessagePanelBodyState extends State<MessagePanelBody> {
   final ScrollController _scrollCtrl = ScrollController(keepScrollOffset: false, initialScrollOffset: 0);
-  late MessageBloc _messageBloc = BlocProvider.of<MessageBloc>(context);
 
   bool _pinScroll = false;
   Timer? _debouncer;
@@ -204,39 +225,21 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
 
   @override
   Widget build(BuildContext context) {
-    // var messages = _messages.reversed.toList()
-    //   ..insertAll(0, _pendingMessage.reversed)
-    //   ..insertAll(_messages.length, _loadingMessages.reversed);
-
     return Expanded(
       child: BlocBuilder<MessageBloc, MessageState>(builder: (context, state) {
-        return state.when(
-          initial: () {
-            return Center(
-              child: Text("We are trying to load the messages"),
-            );
-          },
-          loading: () {
-            return Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            );
-          },
-          loaded: (messages) {
-            var reversedMessages = messages.reversed.toList();
-            return Container(
-              color: Theme.of(context).colorScheme.secondary,
-              child: ListView.builder(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                controller: _scrollCtrl,
-                reverse: true,
-                itemCount: reversedMessages.length,
-                itemBuilder: (_, index) {
-                  return MessageTile(message: reversedMessages[index]);
-                },
-                scrollDirection: Axis.vertical,
-              ),
-            );
-          },
+        var messages = [...state.messages, ...state.pendingMessages].reversed.toList();
+        return Container(
+          color: Theme.of(context).colorScheme.secondary,
+          child: ListView.builder(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            controller: _scrollCtrl,
+            reverse: true,
+            itemCount: messages.length,
+            itemBuilder: (_, index) {
+              return MessageTile(message: messages[index]);
+            },
+            scrollDirection: Axis.vertical,
+          ),
         );
       }),
     );
@@ -244,7 +247,7 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
 }
 
 class MessagePanelInput extends StatefulWidget {
-  MessagePanelInput({Key? key}) : super(key: key);
+  const MessagePanelInput({Key? key}) : super(key: key);
 
   @override
   _MessagePanelInputState createState() => _MessagePanelInputState();
@@ -341,7 +344,7 @@ class _MessagePanelInputState extends State<MessagePanelInput> {
             ),
           ),
           Visibility(
-            visible: !_isInputEmpty,
+            visible: _inputCtrl.text.isNotEmpty,
             child: ClipOval(
               child: Container(
                 color: Theme.of(context).buttonTheme.colorScheme?.primary,

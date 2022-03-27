@@ -51,24 +51,3 @@ class MessageAdapter extends TypeAdapter<_$_Message> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-_$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
-      id: json['id'] as String,
-      senderRef: json['senderRef'] as String,
-      date: DateTime.parse(json['date'] as String),
-      message: json['message'] as String,
-      status: json['status'] as String? ?? "Sent",
-    );
-
-Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'senderRef': instance.senderRef,
-      'date': instance.date.toIso8601String(),
-      'message': instance.message,
-      'status': instance.status,
-    };

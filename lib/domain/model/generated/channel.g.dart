@@ -51,30 +51,3 @@ class ChannelAdapter extends TypeAdapter<_$_Channel> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-_$_Channel _$$_ChannelFromJson(Map<String, dynamic> json) => _$_Channel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      userGroupRef: json['userGroupRef'] as String,
-      messages: (json['messages'] as List<dynamic>?)
-              ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <Message>[],
-      members: (json['members'] as List<dynamic>?)
-              ?.map((e) => Member.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <Member>[],
-    );
-
-Map<String, dynamic> _$$_ChannelToJson(_$_Channel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'userGroupRef': instance.userGroupRef,
-      'messages': instance.messages,
-      'members': instance.members,
-    };

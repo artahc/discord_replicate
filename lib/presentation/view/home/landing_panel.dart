@@ -90,8 +90,6 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
                   },
                   loaded: (channel) {
                     return MessagePanel(
-                      key: UniqueKey(),
-                      channel: channel,
                       pageController: _pageController,
                     );
                   },

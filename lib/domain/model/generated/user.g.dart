@@ -54,31 +54,3 @@ class UserAdapter extends TypeAdapter<_$_User> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-_$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
-      uid: json['uid'] as String,
-      name: json['name'] as String,
-      avatarUrl: json['avatarUrl'] as String?,
-      about: json['about'] as String?,
-      servers: (json['servers'] as List<dynamic>?)
-              ?.map((e) => Server.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <Server>[],
-      privateChannels: (json['privateChannels'] as List<dynamic>?)
-              ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <Channel>[],
-    );
-
-Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
-      'uid': instance.uid,
-      'name': instance.name,
-      'avatarUrl': instance.avatarUrl,
-      'about': instance.about,
-      'servers': instance.servers,
-      'privateChannels': instance.privateChannels,
-    };

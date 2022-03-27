@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:discord_replicate/application/config/injection.dart';
+import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/server.dart';
 import 'package:discord_replicate/domain/usecase/server/get_server_by_id_usecase.dart';
 import 'package:discord_replicate/domain/usecase/server/join_server_usecase.dart';
@@ -25,7 +26,7 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   Stream<ServerEvent> get eventStream => _eventStream.stream;
 
   List<Server> get servers => [];
-  
+
   ServerBloc(
     this._getServerByIdUseCase,
     this._joinServerUseCase,
@@ -56,7 +57,10 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
     emit(ServerState.loading());
 
     await _getServerByIdUseCase.invoke(serverId: serverId).then((server) {
-      emit(ServerState.loaded(server, server.channels.first));
+      if (server.channels.isNotEmpty)
+        emit(ServerState.loaded(server, server.channels.first));
+      else
+        log.w("Server with id ${server.id} does not have any channel.");
     });
   }
 

@@ -6,7 +6,6 @@ import 'package:discord_replicate/domain/model/user.dart';
 import 'package:discord_replicate/domain/model/user_group.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:injectable/injectable.dart';
 
 Future<void> initHive() async {
   var dir = await getApplicationDocumentsDirectory();

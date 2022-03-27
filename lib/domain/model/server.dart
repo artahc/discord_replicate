@@ -13,10 +13,8 @@ class Server with _$Server {
   factory Server({
     @HiveField(0) required String id,
     @HiveField(1) required String name,
-    @HiveField(2) required String imageUrl,
+    @HiveField(2) String? imageUrl,
     @HiveField(3) required String userGroupRef,
     @HiveField(4) @Default(const <Channel>[]) List<Channel> channels,
   }) = _Server;
-
-  factory Server.fromJson(Map<String, dynamic> map) => _$ServerFromJson(map);
 }

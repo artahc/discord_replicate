@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Channel _$ChannelFromJson(Map<String, dynamic> json) {
-  return _Channel.fromJson(json);
-}
-
 /// @nodoc
 class _$ChannelTearOff {
   const _$ChannelTearOff();
@@ -35,10 +31,6 @@ class _$ChannelTearOff {
       messages: messages,
       members: members,
     );
-  }
-
-  Channel fromJson(Map<String, Object?> json) {
-    return Channel.fromJson(json);
   }
 }
 
@@ -58,7 +50,6 @@ mixin _$Channel {
   @HiveField(4)
   List<Member> get members => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ChannelCopyWith<Channel> get copyWith => throw _privateConstructorUsedError;
 }
@@ -172,7 +163,7 @@ class __$ChannelCopyWithImpl<$Res> extends _$ChannelCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 @HiveType(typeId: HiveConstants.CHANNEL_TYPE, adapterName: "ChannelAdapter")
 class _$_Channel implements _Channel {
   const _$_Channel(
@@ -181,9 +172,6 @@ class _$_Channel implements _Channel {
       @HiveField(2) required this.userGroupRef,
       @HiveField(3) this.messages = const <Message>[],
       @HiveField(4) this.members = const <Member>[]});
-
-  factory _$_Channel.fromJson(Map<String, dynamic> json) =>
-      _$$_ChannelFromJson(json);
 
   @override
   @HiveField(0)
@@ -234,11 +222,6 @@ class _$_Channel implements _Channel {
   @override
   _$ChannelCopyWith<_Channel> get copyWith =>
       __$ChannelCopyWithImpl<_Channel>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_ChannelToJson(this);
-  }
 }
 
 abstract class _Channel implements Channel {
@@ -248,8 +231,6 @@ abstract class _Channel implements Channel {
       @HiveField(2) required String userGroupRef,
       @HiveField(3) List<Message> messages,
       @HiveField(4) List<Member> members}) = _$_Channel;
-
-  factory _Channel.fromJson(Map<String, dynamic> json) = _$_Channel.fromJson;
 
   @override
   @HiveField(0)

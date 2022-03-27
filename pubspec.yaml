@@ -18,14 +18,14 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.15.0 <3.0.0"
+  sdk: ">=2.16.2 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   # framework
-  flutter_riverpod: ^1.0.3
+  provider: ^6.0.2
   flutter_bloc: ^8.0.0
   get_it: ^7.2.0
   libsignal_protocol_dart: ^0.5.5
@@ -41,7 +41,7 @@ dependencies:
   path_provider: ^2.0.8
   logger: ^1.1.0
   crypto: ^3.0.1
-  mocktail: ^0.2.0
+  mocktail: ^0.3.0
 
   freezed: ^1.1.0
   freezed_annotation: ^1.1.0
@@ -54,13 +54,13 @@ dependencies:
   flutter_secure_storage: ^5.0.2
 
   # services
-  firebase_core: ^1.6.0
-  firebase_auth: ^3.1.1
+  firebase_core: ^1.13.1
+  firebase_auth: ^3.3.11
   graphql: ^5.0.1
 
   # widgets
   sliding_up_panel: ^2.0.0+1
-  shimmer: ^1.1.2
+  shimmer: ^2.0.0
   flutter_sticky_header: ^0.6.0
   flutter_keyboard_visibility: ^5.1.1
 

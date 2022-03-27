@@ -4,8 +4,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'generated/message_state.freezed.dart';
 
 @freezed
-abstract class MessageState with _$MessageState {
-  const factory MessageState.initial() = MessageStateInitial;
-  const factory MessageState.loading() = MessageStateLoading;
-  const factory MessageState.loaded(List<Message> messages) = MessageStateMessageFetched;
+class MessageState with _$MessageState {
+  const factory MessageState({
+    @Default(<Message>[]) List<Message> messages,
+    @Default(<Message>[]) List<Message> pendingMessages,
+  }) = _MessageState;
 }

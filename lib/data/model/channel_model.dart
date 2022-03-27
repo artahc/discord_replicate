@@ -8,9 +8,15 @@ part 'generated/channel_model.g.dart';
 @JsonSerializable()
 class ChannelModel {
   final String id;
+
   final String name;
+
   final String userGroupRef;
+
+  @JsonKey(defaultValue: const <MessageModel>[])
   final List<MessageModel> messages;
+
+  @JsonKey(defaultValue: const <MemberModel>[])
   final List<MemberModel> members;
 
   ChannelModel(this.id, this.name, this.userGroupRef, this.messages, this.members);

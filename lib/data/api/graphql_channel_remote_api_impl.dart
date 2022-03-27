@@ -64,6 +64,7 @@ class GraphQLChannelRemoteApiImpl implements ChannelRemoteApi {
         .subscribe(operation)
         .map((result) => result["onNewMessage"])
         .where((notification) => notification['topic'] == "OnMessageCreated")
-        .map((json) => Message.fromJson(json['payload']));
+        .map((json) => MessageModel.fromJson(json['payload']))
+        .asyncMap(_messageMapper.map);
   }
 }

@@ -42,7 +42,8 @@ class _ServerListPanelState extends State<ServerListPanel> {
                 duration: Duration(milliseconds: 200),
                 decoration: BoxDecoration(
                   borderRadius: _selectedServer != null ? BorderRadius.circular(28) : BorderRadius.circular(16),
-                  color: _selectedServer != null ? Color(0xff363940) : Theme.of(context).buttonTheme.colorScheme!.primary,
+                  color:
+                      _selectedServer != null ? Color(0xff363940) : Theme.of(context).buttonTheme.colorScheme!.primary,
                 ),
                 width: 45,
                 height: 45,
@@ -81,6 +82,7 @@ class _ServerListPanelState extends State<ServerListPanel> {
               onPressed: () {
                 setState(() {
                   this._selectedServer = server;
+                  print(server);
                   serverBloc.add(ServerEvent.loadServer(server.id));
                 });
               },

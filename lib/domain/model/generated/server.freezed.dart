@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Server _$ServerFromJson(Map<String, dynamic> json) {
-  return _Server.fromJson(json);
-}
-
 /// @nodoc
 class _$ServerTearOff {
   const _$ServerTearOff();
@@ -25,7 +21,7 @@ class _$ServerTearOff {
   _Server call(
       {@HiveField(0) required String id,
       @HiveField(1) required String name,
-      @HiveField(2) required String imageUrl,
+      @HiveField(2) String? imageUrl,
       @HiveField(3) required String userGroupRef,
       @HiveField(4) List<Channel> channels = const <Channel>[]}) {
     return _Server(
@@ -35,10 +31,6 @@ class _$ServerTearOff {
       userGroupRef: userGroupRef,
       channels: channels,
     );
-  }
-
-  Server fromJson(Map<String, Object?> json) {
-    return Server.fromJson(json);
   }
 }
 
@@ -52,13 +44,12 @@ mixin _$Server {
   @HiveField(1)
   String get name => throw _privateConstructorUsedError;
   @HiveField(2)
-  String get imageUrl => throw _privateConstructorUsedError;
+  String? get imageUrl => throw _privateConstructorUsedError;
   @HiveField(3)
   String get userGroupRef => throw _privateConstructorUsedError;
   @HiveField(4)
   List<Channel> get channels => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ServerCopyWith<Server> get copyWith => throw _privateConstructorUsedError;
 }
@@ -70,7 +61,7 @@ abstract class $ServerCopyWith<$Res> {
   $Res call(
       {@HiveField(0) String id,
       @HiveField(1) String name,
-      @HiveField(2) String imageUrl,
+      @HiveField(2) String? imageUrl,
       @HiveField(3) String userGroupRef,
       @HiveField(4) List<Channel> channels});
 }
@@ -103,7 +94,7 @@ class _$ServerCopyWithImpl<$Res> implements $ServerCopyWith<$Res> {
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       userGroupRef: userGroupRef == freezed
           ? _value.userGroupRef
           : userGroupRef // ignore: cast_nullable_to_non_nullable
@@ -124,7 +115,7 @@ abstract class _$ServerCopyWith<$Res> implements $ServerCopyWith<$Res> {
   $Res call(
       {@HiveField(0) String id,
       @HiveField(1) String name,
-      @HiveField(2) String imageUrl,
+      @HiveField(2) String? imageUrl,
       @HiveField(3) String userGroupRef,
       @HiveField(4) List<Channel> channels});
 }
@@ -158,7 +149,7 @@ class __$ServerCopyWithImpl<$Res> extends _$ServerCopyWithImpl<$Res>
       imageUrl: imageUrl == freezed
           ? _value.imageUrl
           : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       userGroupRef: userGroupRef == freezed
           ? _value.userGroupRef
           : userGroupRef // ignore: cast_nullable_to_non_nullable
@@ -172,18 +163,15 @@ class __$ServerCopyWithImpl<$Res> extends _$ServerCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 @HiveType(typeId: HiveConstants.SERVER_TYPE, adapterName: "ServerAdapter")
 class _$_Server implements _Server {
   _$_Server(
       {@HiveField(0) required this.id,
       @HiveField(1) required this.name,
-      @HiveField(2) required this.imageUrl,
+      @HiveField(2) this.imageUrl,
       @HiveField(3) required this.userGroupRef,
       @HiveField(4) this.channels = const <Channel>[]});
-
-  factory _$_Server.fromJson(Map<String, dynamic> json) =>
-      _$$_ServerFromJson(json);
 
   @override
   @HiveField(0)
@@ -193,7 +181,7 @@ class _$_Server implements _Server {
   final String name;
   @override
   @HiveField(2)
-  final String imageUrl;
+  final String? imageUrl;
   @override
   @HiveField(3)
   final String userGroupRef;
@@ -233,22 +221,15 @@ class _$_Server implements _Server {
   @override
   _$ServerCopyWith<_Server> get copyWith =>
       __$ServerCopyWithImpl<_Server>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_ServerToJson(this);
-  }
 }
 
 abstract class _Server implements Server {
   factory _Server(
       {@HiveField(0) required String id,
       @HiveField(1) required String name,
-      @HiveField(2) required String imageUrl,
+      @HiveField(2) String? imageUrl,
       @HiveField(3) required String userGroupRef,
       @HiveField(4) List<Channel> channels}) = _$_Server;
-
-  factory _Server.fromJson(Map<String, dynamic> json) = _$_Server.fromJson;
 
   @override
   @HiveField(0)
@@ -258,7 +239,7 @@ abstract class _Server implements Server {
   String get name;
   @override
   @HiveField(2)
-  String get imageUrl;
+  String? get imageUrl;
   @override
   @HiveField(3)
   String get userGroupRef;

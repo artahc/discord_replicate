@@ -13,6 +13,4 @@ class Member with _$Member {
     @HiveField(1) required String name,
     @HiveField(2) String? avatarUrl,
   }) = _Member;
-
-  factory Member.fromJson(Map<String, dynamic> map) => _$MemberFromJson(map);
 }

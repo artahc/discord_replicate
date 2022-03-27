@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Member _$MemberFromJson(Map<String, dynamic> json) {
-  return _Member.fromJson(json);
-}
-
 /// @nodoc
 class _$MemberTearOff {
   const _$MemberTearOff();
@@ -31,10 +27,6 @@ class _$MemberTearOff {
       name: name,
       avatarUrl: avatarUrl,
     );
-  }
-
-  Member fromJson(Map<String, Object?> json) {
-    return Member.fromJson(json);
   }
 }
 
@@ -50,7 +42,6 @@ mixin _$Member {
   @HiveField(2)
   String? get avatarUrl => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $MemberCopyWith<Member> get copyWith => throw _privateConstructorUsedError;
 }
@@ -140,16 +131,13 @@ class __$MemberCopyWithImpl<$Res> extends _$MemberCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 @HiveType(typeId: HiveConstants.MEMBER_TYPE, adapterName: "MemberAdapter")
 class _$_Member implements _Member {
   const _$_Member(
       {@HiveField(0) required this.uid,
       @HiveField(1) required this.name,
       @HiveField(2) this.avatarUrl});
-
-  factory _$_Member.fromJson(Map<String, dynamic> json) =>
-      _$$_MemberFromJson(json);
 
   @override
   @HiveField(0)
@@ -187,11 +175,6 @@ class _$_Member implements _Member {
   @override
   _$MemberCopyWith<_Member> get copyWith =>
       __$MemberCopyWithImpl<_Member>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_MemberToJson(this);
-  }
 }
 
 abstract class _Member implements Member {
@@ -199,8 +182,6 @@ abstract class _Member implements Member {
       {@HiveField(0) required String uid,
       @HiveField(1) required String name,
       @HiveField(2) String? avatarUrl}) = _$_Member;
-
-  factory _Member.fromJson(Map<String, dynamic> json) = _$_Member.fromJson;
 
   @override
   @HiveField(0)

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:discord_replicate/application/config/injection.dart';
+import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/domain/usecase/channel/get_channel_by_id_usecase.dart';
 
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
@@ -21,6 +22,14 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
   final DirectMessageBloc _dmBloc;
   final GetChannelByIdUseCase _getChannelByIdUseCase;
 
+  Channel? _currentChannel;
+  Channel get currentChannel {
+    if (_currentChannel == null)
+      throw Exception("Current channel is null");
+    else
+      return _currentChannel!;
+  }
+
   StreamController<ChannelEvent> _eventStream = StreamController.broadcast();
   Stream<ChannelEvent> get eventStream => _eventStream.stream;
 
@@ -36,8 +45,9 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
 
     _dmStateSubscription = _dmBloc.stream.listen((event) {
       event.whenOrNull(
-        loaded: (channel) {
-          add(ChannelEvent.load(channel.id));
+        loaded: (recentChannel) {
+          this._currentChannel = recentChannel;
+          add(ChannelEvent.load(recentChannel.id));
         },
       );
     });
@@ -45,6 +55,7 @@ class ChannelBloc extends Bloc<ChannelEvent, ChannelState> {
     _serverStateSubscription = _serverBloc.stream.listen((state) {
       state.whenOrNull(
         loaded: (server, recentChannel) {
+          this._currentChannel = recentChannel;
           add(ChannelEvent.load(recentChannel.id));
         },
       );

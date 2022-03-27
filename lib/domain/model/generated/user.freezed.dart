@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return _User.fromJson(json);
-}
-
 /// @nodoc
 class _$UserTearOff {
   const _$UserTearOff();
@@ -37,10 +33,6 @@ class _$UserTearOff {
       servers: servers,
       privateChannels: privateChannels,
     );
-  }
-
-  User fromJson(Map<String, Object?> json) {
-    return User.fromJson(json);
   }
 }
 
@@ -62,7 +54,6 @@ mixin _$User {
   @HiveField(5)
   List<Channel> get privateChannels => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
 }
@@ -188,7 +179,7 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 @HiveType(typeId: HiveConstants.USER_TYPE, adapterName: "UserAdapter")
 class _$_User implements _User {
   _$_User(
@@ -198,8 +189,6 @@ class _$_User implements _User {
       @HiveField(3) required this.about,
       @HiveField(4) this.servers = const <Server>[],
       @HiveField(5) this.privateChannels = const <Channel>[]});
-
-  factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
   @override
   @HiveField(0)
@@ -255,11 +244,6 @@ class _$_User implements _User {
   @override
   _$UserCopyWith<_User> get copyWith =>
       __$UserCopyWithImpl<_User>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_UserToJson(this);
-  }
 }
 
 abstract class _User implements User {
@@ -270,8 +254,6 @@ abstract class _User implements User {
       @HiveField(3) required String? about,
       @HiveField(4) List<Server> servers,
       @HiveField(5) List<Channel> privateChannels}) = _$_User;
-
-  factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
   @override
   @HiveField(0)

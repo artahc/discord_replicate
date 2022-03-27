@@ -9,9 +9,8 @@ import 'package:injectable/injectable.dart';
 @Injectable(as: GetChannelMessagesUseCase, env: [Env.PROD, Env.DEV])
 class GetChannelMessageUseCaseImpl implements GetChannelMessagesUseCase {
   final ChannelRepository _channelRepo;
-  final GetChannelMemberByIdUseCase _getChannelMemberByIdUseCase;
 
-  GetChannelMessageUseCaseImpl(this._channelRepo, this._getChannelMemberByIdUseCase);
+  GetChannelMessageUseCaseImpl(this._channelRepo);
 
   @override
   Future<PaginationResponse<Message>> invoke({required String channelId, int limit = 30, String? lastMessageId}) async {

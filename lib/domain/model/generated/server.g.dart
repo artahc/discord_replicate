@@ -19,7 +19,7 @@ class ServerAdapter extends TypeAdapter<_$_Server> {
     return _$_Server(
       id: fields[0] as String,
       name: fields[1] as String,
-      imageUrl: fields[2] as String,
+      imageUrl: fields[2] as String?,
       userGroupRef: fields[3] as String,
       channels: (fields[4] as List).cast<Channel>(),
     );
@@ -51,26 +51,3 @@ class ServerAdapter extends TypeAdapter<_$_Server> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
-
-_$_Server _$$_ServerFromJson(Map<String, dynamic> json) => _$_Server(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      imageUrl: json['imageUrl'] as String,
-      userGroupRef: json['userGroupRef'] as String,
-      channels: (json['channels'] as List<dynamic>?)
-              ?.map((e) => Channel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <Channel>[],
-    );
-
-Map<String, dynamic> _$$_ServerToJson(_$_Server instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'imageUrl': instance.imageUrl,
-      'userGroupRef': instance.userGroupRef,
-      'channels': instance.channels,
-    };

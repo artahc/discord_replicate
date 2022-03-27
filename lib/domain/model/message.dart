@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:discord_replicate/data/constants/hive_constants.dart';
-import 'package:discord_replicate/domain/model/member.dart';
 
 import 'package:crypto/crypto.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -37,10 +36,7 @@ class Message with _$Message {
       );
 
   String get contentHash {
-    var encoded = utf8.encode("${senderRef}${date.millisecondsSinceEpoch}$message");
+    var encoded = utf8.encode("$senderRef${date.millisecondsSinceEpoch}$message");
     return md5.convert(encoded).toString();
   }
-
-  factory Message.fromJson(Map<String, dynamic> map) => _Message.fromJson(map);
 }
-

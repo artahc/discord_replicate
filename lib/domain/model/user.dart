@@ -1,6 +1,5 @@
 import 'package:discord_replicate/data/constants/hive_constants.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
-import 'package:discord_replicate/domain/model/member.dart';
 import 'package:discord_replicate/domain/model/server.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -20,6 +19,4 @@ class User with _$User {
     @HiveField(4) @Default(<Server>[]) List<Server> servers,
     @HiveField(5) @Default(<Channel>[]) List<Channel> privateChannels,
   }) = _User;
-
-  factory User.fromJson(Map<String, dynamic> map) => _$UserFromJson(map);
 }

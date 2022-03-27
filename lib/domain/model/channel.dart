@@ -18,6 +18,4 @@ class Channel with _$Channel {
     @HiveField(3) @Default(const <Message>[]) List<Message> messages,
     @HiveField(4) @Default(const <Member>[]) List<Member> members,
   }) = _Channel;
-
-  factory Channel.fromJson(Map<String, dynamic> json) => _$ChannelFromJson(json);
 }
