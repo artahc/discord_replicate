@@ -107,7 +107,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     emit(
       state.copyWith(
-        pendingMessages: [...state.pendingMessages, pendingMessage].toList(),
+        pendingMessages: [...state.pendingMessages, pendingMessage],
       ),
     );
 
