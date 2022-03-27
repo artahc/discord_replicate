@@ -167,13 +167,11 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
 
   @override
   void initState() {
-    _scrollCtrl.addListener(_onScroll);
     super.initState();
   }
 
   @override
   void dispose() {
-    _scrollCtrl.removeListener(_onScroll);
     _scrollCtrl.dispose();
     _debouncer?.cancel();
     super.dispose();
@@ -190,38 +188,6 @@ class _MessagePanelBodyState extends State<MessagePanelBody> {
       });
     }
   }
-
-  _onScroll() {
-    _pinScrollToBottom();
-    // _fetchPreviousMessage();
-  }
-
-  // _debounce(VoidCallback callback) {
-  //   if (_debouncer != null && _debouncer!.isActive) _debouncer!.cancel();
-  //   _debouncer = Timer(Duration(seconds: 1), () {
-  //     callback.call();
-  //   });
-  // }
-
-  // _fetchPreviousMessage() {
-  //   if (_scrollCtrl.offset == _scrollCtrl.position.maxScrollExtent) {
-  //     var loadingMessages = List.generate(
-  //       5,
-  //       (index) => PlaceholderMessage(),
-  //     ).toList();
-
-  //     setState(() {
-  //       _loadingMessages.addAll(loadingMessages);
-  //     });
-
-  //     _debounce(() {
-  //       if (_loadingMessages.isNotEmpty) {
-  //         log.d("Fetch previous messages ${_loadingMessages.length}");
-  //         _messageBloc.add(MessageEvent.fetchPreviousMessage(_loadingMessages.length));
-  //       }
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

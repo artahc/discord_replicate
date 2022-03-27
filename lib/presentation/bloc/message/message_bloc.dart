@@ -22,6 +22,8 @@ export 'message_state.dart';
 
 @Injectable()
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
+  late Channel _channel;
+
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final SubscribeChannelMessageUseCase _subscribeChannelMessageUseCase;
   final GetChannelMessagesUseCase _getChannelMessagesUseCase;
@@ -30,8 +32,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
   StreamSubscription<Message>? _messageSubs;
   StreamSubscription<ChannelState>? _channelStateSubs;
-
-  late Channel _channel;
 
   MessageBloc(
     @factoryParam Stream<ChannelState> channelStateStream,
@@ -52,13 +52,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     });
 
     _channelStateSubs = channelStateStream.listen((state) {
-      state.maybeWhen(
-        orElse: () {},
-        loading: () {},
-        loaded: (channel) {
-          this._channel = channel;
-          add(MessageEvent.refresh(channel.messages, []));
-        },
+      state.whenOrNull(
+        loaded: (channel) async => await _onChannelLoaded(channel),
       );
     });
   }
@@ -70,12 +65,17 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     super.close();
   }
 
+  Future<void> _onChannelLoaded(Channel channel) async {
+    this._channel = channel;
+    var pendingMessages = <Message>[];
+    add(MessageEvent.refresh(channel.messages, pendingMessages));
+  }
+
   Future<void> _notifyNewMessage(Message message, emit) async {
-    var currentUser = await _getCurrentUserUseCase.invoke();
-    if (message.senderRef != currentUser.uid) {
+    if (state.messages.where((element) => message.contentHash == element.contentHash).isEmpty) {
       emit(
         state.copyWith(
-          messages: state.messages..add(message),
+          messages: [...state.messages, message],
           pendingMessages: state.pendingMessages,
         ),
       );
@@ -118,8 +118,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       emit(
         state.copyWith(
           messages: [...state.messages, message],
-          pendingMessages: state.pendingMessages.toList()
-            ..removeWhere((element) => element.contentHash == message.contentHash),
+          pendingMessages: state.pendingMessages..removeWhere((element) => element.contentHash == message.contentHash),
         ),
       );
     });

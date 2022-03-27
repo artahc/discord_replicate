@@ -6,7 +6,7 @@
 
 import 'dart:async' as _i70;
 
-import 'package:discord_replicate/data/api/client/api_module.dart' as _i76;
+import 'package:discord_replicate/data/api/api_module.dart' as _i76;
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart'
     as _i29;
 import 'package:discord_replicate/data/api/graphql_channel_remote_api_impl.dart'
@@ -33,22 +33,22 @@ import 'package:discord_replicate/data/repository/user_group_repository_impl.dar
 import 'package:discord_replicate/data/repository/user_repository_impl.dart'
     as _i41;
 import 'package:discord_replicate/data/store/channel_store/hivedb_channel_store.dart'
-    as _i19;
-import 'package:discord_replicate/data/store/channel_store/inmemory_channel_store.dart'
-    as _i20;
-import 'package:discord_replicate/data/store/server_store/hivedb_server_store.dart'
-    as _i22;
-import 'package:discord_replicate/data/store/server_store/inmemory_server_store.dart'
     as _i23;
+import 'package:discord_replicate/data/store/channel_store/inmemory_channel_store.dart'
+    as _i24;
+import 'package:discord_replicate/data/store/server_store/hivedb_server_store.dart'
+    as _i21;
+import 'package:discord_replicate/data/store/server_store/inmemory_server_store.dart'
+    as _i20;
 import 'package:discord_replicate/data/store/store.dart' as _i12;
 import 'package:discord_replicate/data/store/user_group_store/hivedb_usergroup_store.dart'
-    as _i24;
+    as _i18;
 import 'package:discord_replicate/data/store/user_group_store/inmemory_usergroup_store.dart'
-    as _i14;
-import 'package:discord_replicate/data/store/user_store/hivedb_user_store.dart'
-    as _i16;
-import 'package:discord_replicate/data/store/user_store/inmemory_user_store.dart'
     as _i17;
+import 'package:discord_replicate/data/store/user_store/hivedb_user_store.dart'
+    as _i15;
+import 'package:discord_replicate/data/store/user_store/inmemory_user_store.dart'
+    as _i14;
 import 'package:discord_replicate/data/usecase/auth/sign_in_usecase_impl.dart'
     as _i11;
 import 'package:discord_replicate/data/usecase/channel/get_all_channel_member_usecase_impl.dart'
@@ -80,10 +80,10 @@ import 'package:discord_replicate/domain/api/server_remote_api.dart' as _i30;
 import 'package:discord_replicate/domain/api/user_group_remote_api.dart'
     as _i34;
 import 'package:discord_replicate/domain/api/user_remote_api.dart' as _i38;
-import 'package:discord_replicate/domain/model/channel.dart' as _i18;
-import 'package:discord_replicate/domain/model/server.dart' as _i21;
-import 'package:discord_replicate/domain/model/user.dart' as _i15;
-import 'package:discord_replicate/domain/model/user_group.dart' as _i13;
+import 'package:discord_replicate/domain/model/channel.dart' as _i22;
+import 'package:discord_replicate/domain/model/server.dart' as _i19;
+import 'package:discord_replicate/domain/model/user.dart' as _i13;
+import 'package:discord_replicate/domain/model/user_group.dart' as _i16;
 import 'package:discord_replicate/domain/repository/auth_repository.dart'
     as _i3;
 import 'package:discord_replicate/domain/repository/channel_repository.dart'
@@ -157,22 +157,22 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       (_authBloc, _navigator) => _i7.NavigationCubit(_authBloc, _navigator));
   gh.factory<_i10.SignInUseCase>(() => _i11.SignInUseCaseImpl(),
       registerFor: {_prod, _dev});
-  gh.factory<_i12.Store<_i13.UserGroup>>(() => _i14.InMemoryUserGroupStore(),
-      instanceName: 'CACHE_USERGROUP', registerFor: {_prod, _dev});
-  gh.factory<_i12.Store<_i15.User>>(() => _i16.HiveUserStore(),
-      instanceName: 'DB_USER', registerFor: {_prod, _dev});
-  gh.factory<_i12.Store<_i15.User>>(() => _i17.InMemoryUserStore(),
+  gh.factory<_i12.Store<_i13.User>>(() => _i14.InMemoryUserStore(),
       instanceName: 'CACHE_USER', registerFor: {_prod, _dev});
-  gh.factory<_i12.Store<_i18.Channel>>(() => _i19.HiveChannelStore(),
-      instanceName: 'DB_CHANNEL', registerFor: {_prod, _dev});
-  gh.factory<_i12.Store<_i18.Channel>>(() => _i20.InMemoryChannelStore(),
-      instanceName: 'CACHE_CHANNEL', registerFor: {_prod, _dev});
-  gh.factory<_i12.Store<_i21.Server>>(() => _i22.HiveServerStore(),
-      instanceName: 'DB_SERVER', registerFor: {_prod, _dev});
-  gh.factory<_i12.Store<_i21.Server>>(() => _i23.InMemoryServerStore(),
-      instanceName: 'CACHE_SERVER', registerFor: {_prod, _dev});
-  gh.factory<_i12.Store<_i13.UserGroup>>(() => _i24.HiveUserGroupStore(),
+  gh.factory<_i12.Store<_i13.User>>(() => _i15.HiveUserStore(),
+      instanceName: 'DB_USER', registerFor: {_prod, _dev});
+  gh.factory<_i12.Store<_i16.UserGroup>>(() => _i17.InMemoryUserGroupStore(),
+      instanceName: 'CACHE_USERGROUP', registerFor: {_prod, _dev});
+  gh.factory<_i12.Store<_i16.UserGroup>>(() => _i18.HiveUserGroupStore(),
       instanceName: 'DB_USERGROUP', registerFor: {_prod, _dev});
+  gh.factory<_i12.Store<_i19.Server>>(() => _i20.InMemoryServerStore(),
+      instanceName: 'CACHE_SERVER', registerFor: {_prod, _dev});
+  gh.factory<_i12.Store<_i19.Server>>(() => _i21.HiveServerStore(),
+      instanceName: 'DB_SERVER', registerFor: {_prod, _dev});
+  gh.factory<_i12.Store<_i22.Channel>>(() => _i23.HiveChannelStore(),
+      instanceName: 'DB_CHANNEL', registerFor: {_prod, _dev});
+  gh.factory<_i12.Store<_i22.Channel>>(() => _i24.InMemoryChannelStore(),
+      instanceName: 'CACHE_CHANNEL', registerFor: {_prod, _dev});
   gh.factory<String>(() => apiModule.baseUrl, instanceName: 'BASE_URL');
   gh.factory<String>(() => apiModule.wsUrl, instanceName: 'WS_URL');
   gh.lazySingleton<_i8.AuthBloc>(() => _i8.AuthBloc(get<_i3.AuthRepository>()));
@@ -197,8 +197,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i32.ServerRepository>(
       _i33.ServerRepositoryImpl(
           get<_i30.ServerRemoteApi>(),
-          get<_i12.Store<_i21.Server>>(instanceName: 'DB_SERVER'),
-          get<_i12.Store<_i21.Server>>(instanceName: 'CACHE_SERVER')),
+          get<_i12.Store<_i19.Server>>(instanceName: 'DB_SERVER'),
+          get<_i12.Store<_i19.Server>>(instanceName: 'CACHE_SERVER')),
       registerFor: {_prod, _dev});
   gh.lazySingleton<_i34.UserGroupRemoteApi>(
       () => _i35.GraphQLUserGroupRemoteApiImpl(
@@ -207,8 +207,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i36.UserGroupRepository>(
       _i37.UserGroupRepositoryImpl(
           get<_i34.UserGroupRemoteApi>(),
-          get<_i12.Store<_i13.UserGroup>>(instanceName: 'DB_USERGROUP'),
-          get<_i12.Store<_i13.UserGroup>>(instanceName: 'CACHE_USERGROUP')),
+          get<_i12.Store<_i16.UserGroup>>(instanceName: 'DB_USERGROUP'),
+          get<_i12.Store<_i16.UserGroup>>(instanceName: 'CACHE_USERGROUP')),
       registerFor: {_prod, _dev});
   gh.lazySingleton<_i38.UserRemoteApi>(
       () => _i39.GraphQLUserRemoteApiImpl(
@@ -217,8 +217,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i40.UserRepository>(
       _i41.UserRepositoryImpl(
           get<_i38.UserRemoteApi>(),
-          get<_i12.Store<_i15.User>>(instanceName: 'DB_USER'),
-          get<_i12.Store<_i15.User>>(instanceName: 'CACHE_USER')),
+          get<_i12.Store<_i13.User>>(instanceName: 'DB_USER'),
+          get<_i12.Store<_i13.User>>(instanceName: 'CACHE_USER')),
       registerFor: {_prod, _dev});
   gh.lazySingleton<_i42.ChannelRemoteApi>(
       () => _i43.GraphQLChannelRemoteApiImpl(get<_i29.GraphQLClientHelper>(),
@@ -227,8 +227,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i44.ChannelRepository>(
       _i45.ChannelRepositoryImpl(
           get<_i42.ChannelRemoteApi>(),
-          get<_i12.Store<_i18.Channel>>(instanceName: 'DB_CHANNEL'),
-          get<_i12.Store<_i18.Channel>>(instanceName: 'CACHE_CHANNEL')),
+          get<_i12.Store<_i22.Channel>>(instanceName: 'DB_CHANNEL'),
+          get<_i12.Store<_i22.Channel>>(instanceName: 'CACHE_CHANNEL')),
       registerFor: {_prod, _dev});
   gh.factory<_i46.GetChannelByIdUseCase>(
       () => _i47.GetChannelByIdUseCaseImpl(get<_i44.ChannelRepository>()),

@@ -21,6 +21,7 @@ class GraphQLClientHelper with Disposable {
     var result = await _client.query(options);
 
     log.i("Query => ${operation.operation.trim()} \nVariables: ${operation.variables}");
+
     if (result.hasException) {
       return Future.error(mapException(result.exception!));
     } else {
