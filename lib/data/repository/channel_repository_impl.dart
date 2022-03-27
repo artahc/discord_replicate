@@ -37,15 +37,14 @@ class ChannelRepositoryImpl implements ChannelRepository {
 
     var local = LazyStream(() {
       return _db.load(id).asStream().where((event) => event != null).doOnData((channel) async {
-        await _cache.save(channel!);
+        await saveChannel(channel!);
         log.i("Channel found on local database. $channel");
       });
     });
 
     var remote = LazyStream(() {
       return _api.getChannelById(id).asStream().doOnData((channel) async {
-        await _cache.save(channel);
-        await _db.save(channel);
+        await saveChannel(channel);
         log.i("Channel retrieved from remote API. $channel");
       });
     });
@@ -61,7 +60,19 @@ class ChannelRepositoryImpl implements ChannelRepository {
 
   @override
   Stream<Message> subscribeChannelMessages(String channelId) async* {
-    yield* _api.subscribeChannelMessage(channelId);
+    yield* _api.subscribeChannelMessage(channelId).doOnData((newMessage) async {
+      if (await _cache.exist(channelId)) {
+        await _cache.load(channelId).then((channel) async {
+          var updated = channel!.copyWith(messages: [...channel.messages, newMessage]);
+          await saveChannel(updated);
+        });
+      } else if (await _db.exist(channelId)) {
+        await _db.load(channelId).then((channel) async {
+          var updated = channel!.copyWith(messages: [...channel.messages, newMessage]);
+          await saveChannel(updated);
+        });
+      }
+    });
   }
 
   @override

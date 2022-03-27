@@ -107,7 +107,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     emit(
       state.copyWith(
-        messages: [...state.messages],
         pendingMessages: [...state.pendingMessages, pendingMessage].toList(),
       ),
     );
@@ -117,7 +116,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
         .then((message) async {
       emit(
         state.copyWith(
-          messages: [...state.messages, message],
+          messages: [...state.messages],
           pendingMessages: state.pendingMessages..removeWhere((element) => element.contentHash == message.contentHash),
         ),
       );
