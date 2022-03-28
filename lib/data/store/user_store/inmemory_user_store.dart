@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
 
+import 'package:custom_extension/custom_extensions.dart';
 import 'package:discord_replicate/application/config/injection.dart';
-import 'package:discord_replicate/application/extensions/extensions.dart';
 import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user.dart';

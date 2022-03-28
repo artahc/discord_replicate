@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:custom_extension/custom_extensions.dart';
 import 'package:discord_replicate/application/config/injection.dart';
-import 'package:discord_replicate/application/extensions/extensions.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/domain/model/channel.dart';

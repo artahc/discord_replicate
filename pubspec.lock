@@ -176,6 +176,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  custom_exception:
+    dependency: "direct main"
+    description:
+      path: "packages/custom_exception"
+      relative: true
+    source: path
+    version: "1.0.0+1"
+  custom_extension:
+    dependency: "direct main"
+    description:
+      path: "packages/custom_extension"
+      relative: true
+    source: path
+    version: "1.0.0+1"
   dart_style:
     dependency: transitive
     description:

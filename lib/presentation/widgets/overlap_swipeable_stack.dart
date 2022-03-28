@@ -1,4 +1,4 @@
-import 'package:discord_replicate/application/extensions/extensions.dart';
+import 'package:custom_extension/custom_extensions.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
