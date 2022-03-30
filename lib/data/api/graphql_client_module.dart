@@ -3,7 +3,7 @@ import 'package:graphql/client.dart';
 import 'package:injectable/injectable.dart';
 
 @module
-abstract class ApiModule {
+abstract class GraphQLClientModule {
   @Named("BASE_URL")
   String get baseUrl => "http://localhost:4000/graphql";
 

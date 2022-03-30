@@ -6,7 +6,7 @@
 
 import 'dart:async' as _i70;
 
-import 'package:discord_replicate/data/api/api_module.dart' as _i76;
+import 'package:discord_replicate/data/api/graphql_client_module.dart' as _i76;
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart'
     as _i29;
 import 'package:discord_replicate/data/api/graphql_channel_remote_api_impl.dart'
@@ -308,4 +308,4 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   return get;
 }
 
-class _$ApiModule extends _i76.ApiModule {}
+class _$ApiModule extends _i76.GraphQLClientModule {}
