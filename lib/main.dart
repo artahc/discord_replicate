@@ -18,9 +18,8 @@ Future main() async {
   ));
 
   await Firebase.initializeApp();
-  // await FirebaseAuth.instance.useAuthEmulator("localhost", 5000);
   await initHive();
-  configureDependencies();
+  configureDependencies(Env.DEV);
 
   runApp(Application());
 }

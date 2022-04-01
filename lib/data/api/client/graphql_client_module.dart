@@ -1,6 +1,10 @@
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 import 'package:graphql/client.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mocktail/mocktail.dart';
+
+class MockGraphQLClient extends Mock implements GraphQLClient {}
 
 @module
 abstract class GraphQLClientModule {
@@ -16,7 +20,9 @@ abstract class GraphQLClientModule {
     print("API_LINK: $url");
     var httpLink = HttpLink(url);
     var authLink = AuthLink(getToken: () async {
-      var token = await authRepo.getCredential(forceRefresh: true).then((credential) => credential == null ? "" : credential.token);
+      var token = await authRepo
+          .getCredential(forceRefresh: true)
+          .then((credential) => credential == null ? "" : credential.token);
       return 'Bearer $token';
     });
 
@@ -27,6 +33,9 @@ abstract class GraphQLClientModule {
     return link;
   }
 
-  @LazySingleton()
+  @LazySingleton(env: [Env.DEV, Env.PROD])
   GraphQLClient client(@Named("API_LINK") Link link) => GraphQLClient(link: link, cache: GraphQLCache());
+
+  @LazySingleton(as: GraphQLClient, env: [Env.TEST])
+  MockGraphQLClient mockClient() => MockGraphQLClient();
 }

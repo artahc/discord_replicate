@@ -10,7 +10,7 @@ import 'package:discord_replicate/domain/repository/auth_repository.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mockito/mockito.dart';
 
 class MockAuthService extends Mock implements AuthRepository {}
 

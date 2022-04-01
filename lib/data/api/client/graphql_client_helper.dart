@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:custom_exception/custom_exception.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 
 import 'package:get_it/get_it.dart';
@@ -10,7 +11,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'graphql_operation/graphql_operation.dart';
 
-@Singleton()
+@Singleton(env: [Env.DEV, Env.PROD])
 class GraphQLClientHelper with Disposable {
   final GraphQLClient _client;
 

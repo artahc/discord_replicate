@@ -44,7 +44,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _signIn(String id, String password, emit) async {
     emit(AuthState.authenticating());
     await _authRepo.signIn(id, password).then((credential) {
-      
       emit(AuthState.authenticated(credential: credential));
     }).onError((error, stackTrace) {
       emit(AuthState.error(exception: error as Exception));
@@ -73,7 +72,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await _authRepo.signOut();
     await sl.reset().then((value) {
       print("Service locator reset.");
-      configureDependencies();
+      configureDependencies(Env.DEV);
     });
     emit(AuthState.unauthenticated());
   }
