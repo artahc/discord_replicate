@@ -64,7 +64,7 @@ final sl = GetIt.instance;
   usesNullSafety: true,
   preferRelativeImports: false,
 )
-void configureDependencies(String env) => $initGetIt(sl, environment: env);
+void configureDependencies(GetIt container, String env) => $initGetIt(container, environment: env);
 
 abstract class Env {
   Env._();

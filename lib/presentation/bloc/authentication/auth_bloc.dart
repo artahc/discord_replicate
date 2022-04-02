@@ -72,7 +72,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     await _authRepo.signOut();
     await sl.reset().then((value) {
       print("Service locator reset.");
-      configureDependencies(Env.DEV);
+      configureDependencies(sl, Env.DEV);
     });
     emit(AuthState.unauthenticated());
   }

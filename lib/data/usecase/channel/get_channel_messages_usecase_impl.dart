@@ -2,7 +2,6 @@ import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
-import 'package:discord_replicate/domain/usecase/channel/get_channel_member_by_id_usecase.dart';
 import 'package:discord_replicate/domain/usecase/channel/get_channel_messages_usecase.dart';
 import 'package:injectable/injectable.dart';
 

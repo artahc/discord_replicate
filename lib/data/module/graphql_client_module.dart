@@ -4,6 +4,7 @@ import 'package:graphql/client.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mocktail/mocktail.dart';
 
+@LazySingleton(as: GraphQLClient, env: [Env.TEST])
 class MockGraphQLClient extends Mock implements GraphQLClient {}
 
 @module
@@ -35,7 +36,4 @@ abstract class GraphQLClientModule {
 
   @LazySingleton(env: [Env.DEV, Env.PROD])
   GraphQLClient client(@Named("API_LINK") Link link) => GraphQLClient(link: link, cache: GraphQLCache());
-
-  @LazySingleton(as: GraphQLClient, env: [Env.TEST])
-  MockGraphQLClient mockClient() => MockGraphQLClient();
 }

@@ -19,7 +19,7 @@ Future main() async {
 
   await Firebase.initializeApp();
   await initHive();
-  configureDependencies(Env.DEV);
+  configureDependencies(sl, Env.DEV);
 
   runApp(Application());
 }

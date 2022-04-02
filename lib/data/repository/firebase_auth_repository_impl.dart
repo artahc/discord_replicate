@@ -6,11 +6,11 @@ import 'package:discord_replicate/domain/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 
-@Singleton(as: AuthRepository, env: [Env.PROD, Env.DEV])
+@LazySingleton(as: AuthRepository, env: [Env.PROD, Env.DEV])
 class FirebaseAuthRepositoryImpl implements AuthRepository {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth;
 
-  FirebaseAuthRepositoryImpl();
+  FirebaseAuthRepositoryImpl(this._auth);
 
   @override
   Future<Credential?> getCredential({bool forceRefresh = false}) async {
