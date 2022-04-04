@@ -1,52 +1,51 @@
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/data/api/graphql_user_group_remote_api_impl.dart';
+import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/data/store/user_group_store/hivedb_usergroup_store.dart';
 import 'package:discord_replicate/data/store/user_group_store/inmemory_usergroup_store.dart';
 import 'package:discord_replicate/data/repository/user_group_repository_impl.dart';
+import 'package:discord_replicate/domain/api/user_group_remote_api.dart';
 
 import 'package:discord_replicate/domain/model/credential.dart';
 import 'package:discord_replicate/domain/model/user_group.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
 
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
+import 'package:discord_replicate/domain/repository/user_group_repository.dart';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockAuthService extends Mock implements AuthRepository {}
-
-class MockDb extends Mock implements HiveUserGroupStore {}
-
-class MockUserGroupCache extends Mock implements InMemoryUserGroupStore {}
-
-class MockUserGroup extends Mock implements UserGroup {}
-
 void main() {
+  final container = GetIt.asNewInstance();
+
+  // Dependency
+  late GraphQLClientHelper client;
+  late UserGroupRemoteApi api;
+  late Store<UserGroup> mockDb;
+  late Store<UserGroup> mockCache;
+
+  // Object under test.
+  late UserGroupRepository userGroupRepo;
+
+  setUpAll(() async {
+    configureDependencies(container, Env.TEST);
+
+    client = container.get();
+    api = container.get();
+    mockDb = container.get(instanceName: "DB_USERGROUP");
+    mockCache = container.get(instanceName: "CACHE_USERGROUP");
+
+    userGroupRepo = UserGroupRepositoryImpl(api, mockDb, mockCache);
+  });
+
   group("Remote Source", () {
-    var mockDb = MockDb();
-    var mockCache = MockUserGroupCache();
-    var mockAuthService = MockAuthService();
-
-    var client = GraphQLClientHelper(
-      url: "http://localhost:4000/graphql",
-      wsUrl: "ws://localhost:4000/graphql",
-      bearerProvider: () async => "",
-      defaultHeader: {
-        "allow-me-in": "artahc123",
-      },
-    );
-    var remoteApi = GraphQLUserGroupRemoteApiImpl(client: client);
-
-    var userRepo = UserGroupRepositoryImpl(_api: remoteApi, database: mockDb, _cache: mockCache);
-
-    setUpAll(() {
-      when(() => mockAuthService.getCredential(forceRefresh: any(named: "forceRefresh")))
-          .thenAnswer((invocation) => Future.value(Credential(email: "", token: "", uid: "")));
-      registerFallbackValue(MockUserGroup());
-    });
-
     test("Load user group from remote source, should be able to parse to UserGroup model.", () async {
       var userGroupId = "Xs6WqQiH2JuwPJrAZvB9";
+      var expectedResult = UserGroup(id: "Xs6WqQiH2JuwPJrAZvB9", members: {});
 
+      // when(() => api.getUserGroupById(userGroupId, 30, null)).thenAnswer((invocation) => Future.value(expectedResult));
       when(() => mockDb.load(any())).thenAnswer((invocation) => Future.value(null));
       when(() => mockDb.save(any())).thenAnswer((invocation) => Future.value(null));
       when(() => mockCache.load(any())).thenAnswer((invocation) => Future.value(null));

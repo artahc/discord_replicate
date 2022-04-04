@@ -1,65 +1,73 @@
-import 'package:discord_replicate/data/api/graphql_channel_remote_api_impl.dart';
+import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/data/repository/channel_repository_impl.dart';
-import 'package:discord_replicate/data/store/channel_store/hivedb_channel_store.dart';
-import 'package:discord_replicate/data/store/channel_store/inmemory_channel_store.dart';
+import 'package:discord_replicate/data/store/store.dart';
+import 'package:discord_replicate/domain/api/channel_remote_api.dart';
 
 import 'package:discord_replicate/domain/model/channel.dart';
-import 'package:discord_replicate/domain/model/credential.dart';
-import 'package:discord_replicate/domain/repository/auth_repository.dart';
 
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
+import 'package:discord_replicate/domain/repository/channel_repository.dart';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-
-class MockAuthService extends Mock implements AuthRepository {}
-
-class MockDb extends Mock implements HiveChannelStore {}
-
-class MockChannelCache extends Mock implements InMemoryChannelStore {}
-
-class MockChannel extends Mock implements Channel {}
+import 'package:get_it/get_it.dart';
+import 'package:mocktail/mocktail.dart';
 
 void main() {
-  group("Remote Source", () {
-    var mockDb = MockDb();
-    var mockCache = MockChannelCache();
-    var mockAuthService = MockAuthService();
+  final container = GetIt.asNewInstance();
 
-    var client = GraphQLClientHelper(
-      url: "http://localhost:4000/graphql",
-      wsUrl: "ws://localhost:4000/graphql",
-      bearerProvider: () async => "",
-      defaultHeader: {
-        "allow-me-in": "artahc123",
-      },
-    );
-    var remoteApi = GraphQLChannelRemoteApiImpl(client: client);
+  // Dependency
+  late GraphQLClientHelper client;
+  late ChannelRemoteApi api;
+  late Store<Channel> mockDb;
+  late Store<Channel> mockCache;
 
-    var channelRepo = ChannelRepositoryImpl(_api: remoteApi, database: mockDb, _cache: mockCache);
+  // Object under test.
+  late ChannelRepository channelRepo;
 
-    setUpAll(() {
-      when(() => mockAuthService.getCredential(forceRefresh: any(named: "forceRefresh")))
-          .thenAnswer((invocation) => Future.value(Credential(email: "", token: "", uid: "")));
-      registerFallbackValue(MockChannel());
-    });
+  setUpAll(() async {
+    configureDependencies(container, Env.TEST);
 
-    test("Load channel from remote source, should be able to parse to Channel model.", () async {
-      var channelId = "PkM6m7lhnvIORIRuoVJv";
+    client = container.get();
+    api = container.get();
+    mockDb = container.get(instanceName: "DB_CHANNEL");
+    mockCache = container.get(instanceName: "CACHE_CHANNEL");
 
-      when(() => mockDb.load(any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockDb.save(any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockCache.load(any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockCache.save(any())).thenAnswer((invocation) => Future.value(null));
-
-      var user = await channelRepo.getChannel(channelId);
-
-      verify(() => mockDb.load(any())).called(1);
-      verify(() => mockDb.save(any())).called(1);
-      verify(() => mockCache.load(any())).called(1);
-      verify(() => mockCache.save(any())).called(1);
-
-      expect(user, isA<Channel>());
-    });
+    channelRepo = ChannelRepositoryImpl(api, mockDb, mockCache);
   });
+
+
+  test(
+    """
+    Given ChannelRepository,
+    When getChannel called,
+    Then repository must perform db, and cache check before requesting to remote API, and should return instance of Channel.
+    """,
+    () async {
+      var channelId = "PkM6m7lhnvIORIRuoVJv";
+      var limit = 30;
+      var expectedResult = Channel(
+        id: "PkM6m7lhnvIORIRuoVJv",
+        name: "channel-name",
+        userGroupRef: "user-group-ref",
+        members: [],
+        messages: [],
+      );
+
+      when(() => api.getChannelById(channelId, memberLimit: limit))
+          .thenAnswer((invocation) => Future.value(expectedResult));
+      when(() => mockDb.load(channelId)).thenAnswer((invocation) => Future.value(null));
+      when(() => mockDb.save(expectedResult)).thenAnswer((invocation) => Future.value(null));
+      when(() => mockCache.load(channelId)).thenAnswer((invocation) => Future.value(null));
+      when(() => mockCache.save(expectedResult)).thenAnswer((invocation) => Future.value(null));
+
+      var channel = await channelRepo.getChannel(channelId);
+
+      verify(() => mockDb.load(channelId)).called(1);
+      verify(() => mockDb.save(expectedResult)).called(1);
+      verify(() => mockCache.load(channelId)).called(1);
+      verify(() => mockCache.save(expectedResult)).called(1);
+
+      expect(channel, isA<Channel>());
+    },
+  );
 }

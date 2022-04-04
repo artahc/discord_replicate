@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:discord_replicate/application/extensions/extensions.dart';
+import 'package:custom_extension/custom_extensions.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:libsignal_protocol_dart/libsignal_protocol_dart.dart' as signal;
 
@@ -39,7 +39,8 @@ Future main() async {
     print("My cipherText sent to remote user : ${cipherMessage.serialize()}");
 
     // Decrypt
-    var plainMessage = await remoteCipher.decrypt(cipherMessage as signal.PreKeySignalMessage).then((value) => value.toPlainString());
+    var plainMessage =
+        await remoteCipher.decrypt(cipherMessage as signal.PreKeySignalMessage).then((value) => value.toPlainString());
     print("My cipherText decrypted by remote user: $plainMessage");
 
     assert(plainMessage == "Hello!");
@@ -48,8 +49,9 @@ Future main() async {
     final cipherMessageByRemoteUser = await remoteCipher.encrypt("Hello nice to meet you!".toUint8List());
     print("Remote user cipherText sent to me : ${cipherMessageByRemoteUser.serialize()}");
 
-    final plainMessageByRemoteUser =
-        await localCipher.decryptFromSignal(cipherMessageByRemoteUser as signal.SignalMessage).then((value) => value.toPlainString());
+    final plainMessageByRemoteUser = await localCipher
+        .decryptFromSignal(cipherMessageByRemoteUser as signal.SignalMessage)
+        .then((value) => value.toPlainString());
     print("Remote user cipherText decrypted by me: $plainMessageByRemoteUser");
 
     assert(plainMessageByRemoteUser == "Hello nice to meet you!");
@@ -68,7 +70,8 @@ Future main() async {
     final bobGroupCipher = signal.GroupCipher(bobStore, groupSender);
 
     final sentAliceDistributionMessage = await aliceSessionBuilder.create(groupSender);
-    final receivedAliceDistributionMessage = signal.SenderKeyDistributionMessageWrapper.fromSerialized(sentAliceDistributionMessage.serialize());
+    final receivedAliceDistributionMessage =
+        signal.SenderKeyDistributionMessageWrapper.fromSerialized(sentAliceDistributionMessage.serialize());
     await bobSessionBuilder.process(groupSender, receivedAliceDistributionMessage);
 
     final ciphertextFromAlice = await aliceGroupCipher.encrypt(Uint8List.fromList(utf8.encode('Hello Mixin')));
