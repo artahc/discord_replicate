@@ -1,31 +1,27 @@
-import '../graphql_operation.dart';
+import 'package:discord_replicate/data/api/client/graphql_operation/graphql_operation.dart';
 
-class JoinServerMutation implements GraphQLOperation {
+class JoinServerMutation extends GraphQLOperation {
   final String serverId;
 
-  JoinServerMutation({required this.serverId});
-
-  @override
-  String get operation => r"""
-    mutation JoinServer($serverRef: String!) {
-      joinServer(serverRef: $serverRef) {
-        id
-        name
-        imageUrl
-        userGroupRef
-        channels {
-          id
-          name
-          userGroupRef
-        }
-      }
-    }
-  """;
-
-  @override
-  Map<String, dynamic> get variables {
-    return {
-      "serverRef": serverId,
-    };
-  }
+  JoinServerMutation({required this.serverId})
+      : super(
+          operation: r"""
+            mutation JoinServer($serverRef: String!) {
+              joinServer(serverRef: $serverRef) {
+                id
+                name
+                imageUrl
+                userGroupRef
+                channels {
+                  id
+                  name
+                  userGroupRef
+                }
+              }
+            }
+          """,
+          variables: {
+            "serverRef": serverId,
+          },
+        );
 }

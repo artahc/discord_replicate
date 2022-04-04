@@ -1,16 +1,13 @@
 import 'dart:convert';
 
-void main() {
-  var jsonString = """
-    {
-      "__typename":"MessageType",
-      "id":"f2bfb31e-aa3e-4195-8c5f-e29ce853d4ea",
-      "senderRef":"FMYbWPwFWgTvRemhbbz1dLL9HkC2",
-      "timestamp":1648332198596,
-      "message":"we"
-    }
-  """;
+import 'package:discord_replicate/data/api/client/graphql_operation/query/get_channel_query_operation.dart';
+import 'package:flutter_test/flutter_test.dart';
 
-  Map<String, dynamic> json = jsonDecode(jsonString);
-    
+void main() {
+  var query = GetChannelQuery(id: "id", memberLimit: 30);
+  var anotherQuery = GetChannelQuery(id: "id", memberLimit: 30);
+
+  test("Given 2 identical graphQL query, When both compared, Then should return true", () {
+    assert(query == anotherQuery);
+  });
 }

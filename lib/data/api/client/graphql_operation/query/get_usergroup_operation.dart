@@ -5,28 +5,27 @@ class GetUserGroupQuery extends GraphQLOperation {
   final int limit;
   final String? cursor;
 
-  GetUserGroupQuery({required this.userGroupId, required this.limit, required this.cursor});
-
-  @override
-  String get operation => r"""
-    query UserGroup($userGroupRef: ID!, $limit: Int!, $cursor: String) {
-      userGroup(userGroupRef: $userGroupRef, limit: $limit, cursor: $cursor) {
-        items {
-          uid
-          name
-          avatarUrl
-        }
-        hasMore
-      }
-    }
-  """;
-
-  @override
-  Map<String, dynamic> get variables {
-    return {
-      "userGroupRef": userGroupId,
-      "limit": 50,
-      "cursor": null,
-    };
-  }
+  GetUserGroupQuery({
+    required this.userGroupId,
+    required this.limit,
+    required this.cursor,
+  }) : super(
+          operation: r"""
+            query UserGroup($userGroupRef: ID!, $limit: Int!, $cursor: String) {
+              userGroup(userGroupRef: $userGroupRef, limit: $limit, cursor: $cursor) {
+                items {
+                  uid
+                  name
+                  avatarUrl
+                }
+                hasMore
+              }
+            }
+          """,
+          variables: {
+            "userGroupRef": userGroupId,
+            "limit": 50,
+            "cursor": null,
+          },
+        );
 }
