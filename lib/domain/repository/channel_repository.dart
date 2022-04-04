@@ -5,7 +5,7 @@ import 'package:discord_replicate/domain/model/message.dart';
 import 'package:get_it/get_it.dart';
 
 abstract class ChannelRepository implements Disposable {
-  Future<Channel> getChannel(String id);
+  Future<Channel> getChannel(String id, {int memberLimit: 30});
   Future<List<Channel>> getAllChannels();
   Future<void> saveChannel(Channel channel);
   Future<void> saveAllChannels(List<Channel> channels);

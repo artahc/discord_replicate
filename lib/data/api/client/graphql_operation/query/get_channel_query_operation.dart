@@ -30,7 +30,7 @@ class GetChannelQuery extends GraphQLOperation {
           """,
           variables: {
             "channelId": id,
-            "memberLimit": 30,
+            "memberLimit": memberLimit,
           },
         );
 }

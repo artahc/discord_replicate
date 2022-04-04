@@ -28,7 +28,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
   );
 
   @override
-  Future<Channel> getChannel(String id) async {
+  Future<Channel> getChannel(String id, {int memberLimit = 30}) async {
     var memory = LazyStream(() {
       return _cache.load(id).asStream().where((channel) => channel != null).doOnData((channel) {
         log.i("Channel found on memory cache. $channel");
@@ -43,7 +43,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
     });
 
     var remote = LazyStream(() {
-      return _api.getChannelById(id).asStream().doOnData((channel) async {
+      return _api.getChannelById(id, memberLimit: memberLimit).asStream().doOnData((channel) async {
         await saveChannel(channel);
         log.i("Channel retrieved from remote API. $channel");
       });

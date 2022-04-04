@@ -33,8 +33,8 @@ class GraphQLChannelRemoteApiImpl implements ChannelRemoteApi {
   }
 
   @override
-  Future<Channel> getChannelById(String id) {
-    final operation = GetChannelQuery(id: id, memberLimit: 30);
+  Future<Channel> getChannelById(String id, {int memberLimit = 30}) {
+    final operation = GetChannelQuery(id: id, memberLimit: memberLimit);
     return _client.query(operation).then((json) => ChannelModel.fromJson(json['channel'])).then(_channelMapper.map);
   }
 
