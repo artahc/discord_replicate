@@ -35,7 +35,6 @@ void main() {
     channelRepo = ChannelRepositoryImpl(api, mockDb, mockCache);
   });
 
-
   test(
     """
     Given ChannelRepository,

@@ -103,10 +103,18 @@ void main() {
       when(() => client.query(GetServerQuery(id: "someid"))).thenAnswer((invocation) async => json);
 
       // execute
-      final server = await api.getServerById("someid");
+      final future = api.getServerById("someid");
 
       // assert
-      expect(server, isA<Server>());
+      expect(
+        future,
+        completion(
+          allOf([
+            isA<Server>(),
+          ]),
+        ),
+      );
+      expect(future, completes);
     },
   );
 }
