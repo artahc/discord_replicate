@@ -132,6 +132,18 @@ void main() async {
   Given ChannelRemoteApi graphql implementation,
   When 
   """, () async {
-    // api.createMessage("channelId", "message", DateTime.now().millisecondsSinceEpoch);
+    // execute
+    var future = api.createMessage("channelId", "message", DateTime.now().millisecondsSinceEpoch);
+
+    // assert
+    expect(
+      future,
+      completion(
+        allOf([
+          isA<Message>(),
+        ]),
+      ),
+    );
+    expect(future, completes);
   });
 }
