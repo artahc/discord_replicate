@@ -22,15 +22,13 @@ void main() {
   // class under test
   final ServerRemoteApi api = GraphQLServerRemoteApiImpl(client, serverMapper);
 
-  test(
-    """
+  test("""
   Given ServerRemoteApi graphql implementation,
   When getServerById called,
   Then process should completes and return Server entity.
-  """,
-    () async {
-      // arrange
-      var json = jsonDecode("""
+  """, () async {
+    // arrange
+    var json = jsonDecode("""
       {
         "server": {
           "id": "JkBxr0EoQOYyDeXagC2h",
@@ -100,21 +98,20 @@ void main() {
       }
       """);
 
-      when(() => client.query(GetServerQuery(id: "someid"))).thenAnswer((invocation) async => json);
+    when(() => client.query(GetServerQuery(id: "someid"))).thenAnswer((invocation) async => json);
 
-      // execute
-      final future = api.getServerById("someid");
+    // execute
+    final future = api.getServerById("someid");
 
-      // assert
-      expect(
-        future,
-        completion(
-          allOf([
-            isA<Server>(),
-          ]),
-        ),
-      );
-      expect(future, completes);
-    },
-  );
+    // assert
+    expect(
+      future,
+      completion(
+        allOf([
+          isA<Server>(),
+        ]),
+      ),
+    );
+    expect(future, completes);
+  });
 }
