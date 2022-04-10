@@ -7,19 +7,22 @@ part 'generated/channel_model.g.dart';
 
 @JsonSerializable()
 class ChannelModel {
+  @JsonKey(name: "id")
   final String id;
 
+  @JsonKey(name: "name")
   final String name;
 
+  @JsonKey(name: "userGroupRef")
   final String userGroupRef;
 
-  @JsonKey(defaultValue: const <MessageModel>[])
+  @JsonKey(name: "messages", defaultValue: const <MessageModel>[])
   final List<MessageModel> messages;
 
-  @JsonKey(defaultValue: const <MemberModel>[])
+  @JsonKey(name: "members", defaultValue: const <MemberModel>[])
   final List<MemberModel> members;
 
-  ChannelModel(this.id, this.name, this.userGroupRef, this.messages, this.members);
+  const ChannelModel(this.id, this.name, this.userGroupRef, this.messages, this.members);
 
   factory ChannelModel.fromJson(Map<String, dynamic> json) => _$ChannelModelFromJson(json);
 }

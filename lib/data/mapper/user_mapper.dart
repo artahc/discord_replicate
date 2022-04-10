@@ -20,7 +20,7 @@ class UserMapper implements Mapper<UserModel, User> {
     var privateChannels = await Future.wait(from.privateChannels.map((e) async => _channelMapper.map(e)));
 
     return User(
-      uid: from.uid,
+      uid: from.id,
       name: from.name,
       avatarUrl: from.avatarUrl,
       about: from.about,

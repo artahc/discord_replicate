@@ -57,28 +57,28 @@ import 'package:discord_replicate/data/repository/user_repository_impl.dart'
 import 'package:discord_replicate/data/store/channel_store/hivedb_channel_store.dart'
     as _i30;
 import 'package:discord_replicate/data/store/channel_store/inmemory_channel_store.dart'
-    as _i31;
+    as _i42;
 import 'package:discord_replicate/data/store/channel_store/mock_channel_store.dart'
-    as _i32;
+    as _i31;
 import 'package:discord_replicate/data/store/server_store/hivedb_server_store.dart'
-    as _i34;
+    as _i33;
 import 'package:discord_replicate/data/store/server_store/inmemory_server_store.dart'
-    as _i35;
+    as _i34;
 import 'package:discord_replicate/data/store/server_store/mock_server_store.dart'
-    as _i36;
+    as _i35;
 import 'package:discord_replicate/data/store/store.dart' as _i26;
 import 'package:discord_replicate/data/store/user_group_store/hivedb_usergroup_store.dart'
-    as _i38;
+    as _i37;
 import 'package:discord_replicate/data/store/user_group_store/inmemory_usergroup_store.dart'
-    as _i39;
+    as _i38;
 import 'package:discord_replicate/data/store/user_group_store/mock_usergroup_store.dart'
-    as _i40;
+    as _i39;
 import 'package:discord_replicate/data/store/user_store/hivedb_user_store.dart'
-    as _i41;
-import 'package:discord_replicate/data/store/user_store/inmemory_user_store.dart'
     as _i28;
+import 'package:discord_replicate/data/store/user_store/inmemory_user_store.dart'
+    as _i40;
 import 'package:discord_replicate/data/store/user_store/mock_user_store.dart'
-    as _i42;
+    as _i41;
 import 'package:discord_replicate/data/usecase/auth/sign_in_usecase_impl.dart'
     as _i25;
 import 'package:discord_replicate/data/usecase/channel/get_all_channel_member_usecase_impl.dart'
@@ -111,9 +111,9 @@ import 'package:discord_replicate/domain/api/user_group_remote_api.dart'
     as _i43;
 import 'package:discord_replicate/domain/api/user_remote_api.dart' as _i47;
 import 'package:discord_replicate/domain/model/channel.dart' as _i29;
-import 'package:discord_replicate/domain/model/server.dart' as _i33;
+import 'package:discord_replicate/domain/model/server.dart' as _i32;
 import 'package:discord_replicate/domain/model/user.dart' as _i27;
-import 'package:discord_replicate/domain/model/user_group.dart' as _i37;
+import 'package:discord_replicate/domain/model/user_group.dart' as _i36;
 import 'package:discord_replicate/domain/repository/auth_repository.dart'
     as _i3;
 import 'package:discord_replicate/domain/repository/channel_repository.dart'
@@ -207,38 +207,38 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       registerFor: {_test});
   gh.factory<_i24.SignInUseCase>(() => _i25.SignInUseCaseImpl(),
       registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i27.User>>(() => _i28.InMemoryUserStore(),
-      instanceName: 'CACHE_USER', registerFor: {_prod, _dev});
+  gh.factory<_i26.Store<_i27.User>>(() => _i28.HiveUserStore(),
+      instanceName: 'DB_USER', registerFor: {_prod, _dev});
   gh.factory<_i26.Store<_i29.Channel>>(() => _i30.HiveChannelStore(),
       instanceName: 'DB_CHANNEL', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i29.Channel>>(() => _i31.InMemoryChannelStore(),
-      instanceName: 'CACHE_CHANNEL', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i29.Channel>>(() => _i32.MockCacheChannelStore(),
-      instanceName: 'CACHE_CHANNEL', registerFor: {_test});
-  gh.factory<_i26.Store<_i33.Server>>(() => _i34.HiveServerStore(),
-      instanceName: 'DB_SERVER', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i33.Server>>(() => _i35.InMemoryServerStore(),
-      instanceName: 'CACHE_SERVER', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i33.Server>>(() => _i36.MockHiveServerStore(),
-      instanceName: 'DB_SERVER', registerFor: {_test});
-  gh.factory<_i26.Store<_i33.Server>>(() => _i36.MockCacheServerStore(),
-      instanceName: 'CACHE_SERVER', registerFor: {_test});
-  gh.factory<_i26.Store<_i37.UserGroup>>(() => _i38.HiveUserGroupStore(),
-      instanceName: 'DB_USERGROUP', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i37.UserGroup>>(() => _i39.InMemoryUserGroupStore(),
-      instanceName: 'CACHE_USERGROUP', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i37.UserGroup>>(() => _i40.MockHiveUserGroupStore(),
-      instanceName: 'DB_USERGROUP', registerFor: {_test});
-  gh.factory<_i26.Store<_i37.UserGroup>>(() => _i40.MockCacheUserGroupStore(),
-      instanceName: 'CACHE_USERGROUP', registerFor: {_test});
-  gh.factory<_i26.Store<_i27.User>>(() => _i41.HiveUserStore(),
-      instanceName: 'DB_USER', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i27.User>>(() => _i42.MockHiveUserStore(),
-      instanceName: 'DB_USER', registerFor: {_test});
-  gh.factory<_i26.Store<_i27.User>>(() => _i42.MockCacheUserStore(),
-      instanceName: 'CACHE_USER', registerFor: {_test});
-  gh.factory<_i26.Store<_i29.Channel>>(() => _i32.MockHiveChannelStore(),
+  gh.factory<_i26.Store<_i29.Channel>>(() => _i31.MockHiveChannelStore(),
       instanceName: 'DB_CHANNEL', registerFor: {_test});
+  gh.factory<_i26.Store<_i29.Channel>>(() => _i31.MockCacheChannelStore(),
+      instanceName: 'CACHE_CHANNEL', registerFor: {_test});
+  gh.factory<_i26.Store<_i32.Server>>(() => _i33.HiveServerStore(),
+      instanceName: 'DB_SERVER', registerFor: {_prod, _dev});
+  gh.factory<_i26.Store<_i32.Server>>(() => _i34.InMemoryServerStore(),
+      instanceName: 'CACHE_SERVER', registerFor: {_prod, _dev});
+  gh.factory<_i26.Store<_i32.Server>>(() => _i35.MockHiveServerStore(),
+      instanceName: 'DB_SERVER', registerFor: {_test});
+  gh.factory<_i26.Store<_i32.Server>>(() => _i35.MockCacheServerStore(),
+      instanceName: 'CACHE_SERVER', registerFor: {_test});
+  gh.factory<_i26.Store<_i36.UserGroup>>(() => _i37.HiveUserGroupStore(),
+      instanceName: 'DB_USERGROUP', registerFor: {_prod, _dev});
+  gh.factory<_i26.Store<_i36.UserGroup>>(() => _i38.InMemoryUserGroupStore(),
+      instanceName: 'CACHE_USERGROUP', registerFor: {_prod, _dev});
+  gh.factory<_i26.Store<_i36.UserGroup>>(() => _i39.MockHiveUserGroupStore(),
+      instanceName: 'DB_USERGROUP', registerFor: {_test});
+  gh.factory<_i26.Store<_i36.UserGroup>>(() => _i39.MockCacheUserGroupStore(),
+      instanceName: 'CACHE_USERGROUP', registerFor: {_test});
+  gh.factory<_i26.Store<_i27.User>>(() => _i40.InMemoryUserStore(),
+      instanceName: 'CACHE_USER', registerFor: {_prod, _dev});
+  gh.factory<_i26.Store<_i27.User>>(() => _i41.MockHiveUserStore(),
+      instanceName: 'DB_USER', registerFor: {_test});
+  gh.factory<_i26.Store<_i27.User>>(() => _i41.MockCacheUserStore(),
+      instanceName: 'CACHE_USER', registerFor: {_test});
+  gh.factory<_i26.Store<_i29.Channel>>(() => _i42.InMemoryChannelStore(),
+      instanceName: 'CACHE_CHANNEL', registerFor: {_prod, _dev});
   gh.factory<String>(() => graphQLClientModule.wsUrl, instanceName: 'WS_URL');
   gh.factory<String>(() => graphQLClientModule.baseUrl,
       instanceName: 'BASE_URL');
@@ -280,8 +280,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i22.ServerRepository>(
       _i56.ServerRepositoryImpl(
           get<_i20.ServerRemoteApi>(),
-          get<_i26.Store<_i33.Server>>(instanceName: 'DB_SERVER'),
-          get<_i26.Store<_i33.Server>>(instanceName: 'CACHE_SERVER')),
+          get<_i26.Store<_i32.Server>>(instanceName: 'DB_SERVER'),
+          get<_i26.Store<_i32.Server>>(instanceName: 'CACHE_SERVER')),
       registerFor: {_prod, _dev});
   gh.lazySingleton<_i43.UserGroupRemoteApi>(
       () => _i57.GraphQLUserGroupRemoteApiImpl(
@@ -290,8 +290,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i45.UserGroupRepository>(
       _i58.UserGroupRepositoryImpl(
           get<_i43.UserGroupRemoteApi>(),
-          get<_i26.Store<_i37.UserGroup>>(instanceName: 'DB_USERGROUP'),
-          get<_i26.Store<_i37.UserGroup>>(instanceName: 'CACHE_USERGROUP')),
+          get<_i26.Store<_i36.UserGroup>>(instanceName: 'DB_USERGROUP'),
+          get<_i26.Store<_i36.UserGroup>>(instanceName: 'CACHE_USERGROUP')),
       registerFor: {_prod, _dev});
   gh.lazySingleton<_i47.UserRemoteApi>(
       () => _i59.GraphQLUserRemoteApiImpl(
