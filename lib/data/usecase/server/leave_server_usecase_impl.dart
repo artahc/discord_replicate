@@ -15,7 +15,8 @@ class LeaveServerUseCaseImpl implements LeaveServerUseCase {
   final UserRepository _userRepo;
   final UserGroupRepository _userGroupRepo;
 
-  LeaveServerUseCaseImpl(this._getCurrentUserUseCase, this._serverRepo, this._channelRepo, this._userRepo, this._userGroupRepo);
+  LeaveServerUseCaseImpl(
+      this._getCurrentUserUseCase, this._serverRepo, this._channelRepo, this._userRepo, this._userGroupRepo);
 
   @override
   Future<void> invoke({required String serverId}) async {
@@ -26,9 +27,10 @@ class LeaveServerUseCaseImpl implements LeaveServerUseCase {
       var userGroupId = server.userGroupRef;
 
       var currentUser = await _getCurrentUserUseCase.invoke();
-      var updatedUser = currentUser.copyWith(servers: currentUser.servers.toList()..removeWhere((element) => element.id == serverId));
+      var updatedUser =
+          currentUser.copyWith(servers: currentUser.servers.toList()..removeWhere((element) => element.id == serverId));
 
-      await _userGroupRepo.deleteUserGroupById(userGroupId);
+      // await _userGroupRepo.deleteUserGroupById(userGroupId);
       await _channelRepo.deleteAllChannel(channelIds);
       await _userRepo.saveUser(updatedUser);
     });

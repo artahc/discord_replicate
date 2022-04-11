@@ -1,13 +1,9 @@
 import 'dart:async';
 
-import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
-
-import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 import 'package:discord_replicate/domain/usecase/user/observe_user_changes_usecase.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -23,20 +19,20 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final GetCurrentUserUseCase _getCurrentUserUseCase;
   final ObserveUserChangesUseCase _observeUserChangesUseCase;
 
-  StreamController<UserEvent> _eventStream = StreamController.broadcast();
+  final StreamController<UserEvent> _eventStream = StreamController.broadcast();
   Stream<UserEvent> get eventStream => _eventStream.stream;
 
-  CompositeSubscription _blocStateSubscription = CompositeSubscription();
+  final CompositeSubscription _blocStateSubscription = CompositeSubscription();
 
   UserBloc(
     @factoryParam Stream<AuthState> authStateStream,
     this._getCurrentUserUseCase,
     this._observeUserChangesUseCase,
-  ) : super(UserState.empty()) {
-    on<UserEvent>((event, emit) {
-      return event.when(
-        loadUser: () async => await _loadUser(emit),
-        deleteUser: () async => await _deleteUser(emit),
+  ) : super(const UserState.empty()) {
+    on<UserEvent>((event, emit) async {
+      await event.when(
+        loadUser: () async => _loadUser(emit),
+        deleteUser: () async => _deleteUser(emit),
       );
     });
 
@@ -46,10 +42,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       log.d("Received auth state in UserBloc $state");
       state.whenOrNull(
         authenticated: (credential) {
-          add(UserEvent.loadUser());
+          add(const UserEvent.loadUser());
         },
         unauthenticated: () {
-          add(UserEvent.deleteUser());
+          add(const UserEvent.deleteUser());
         },
       );
     }).addTo(_blocStateSubscription);
@@ -70,7 +66,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Future<void> _loadUser(Emitter<UserState> emit) async {
     log.i("Loading user...");
-    emit(UserState.loading());
+    emit(const UserState.loading());
 
     await _getCurrentUserUseCase.invoke().then((user) async {
       log.i("User loaded. $user");
@@ -88,6 +84,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Future<void> _deleteUser(emit) async {
     _blocStateSubscription.cancel();
-    emit(UserState.empty());
+    emit(const UserState.empty());
   }
 }

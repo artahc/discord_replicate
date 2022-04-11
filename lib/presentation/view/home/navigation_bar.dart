@@ -1,8 +1,7 @@
-import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
+import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/route_transition/app_transition.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,8 +15,8 @@ class AppNavigationBar extends StatefulWidget {
 }
 
 class _AppNavigationBarState extends State<AppNavigationBar> {
-  late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
-  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
+  late final AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
+  late final NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +31,7 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
               onPressed: () {},
               iconSize: 24,
               visualDensity: VisualDensity.compact,
-              icon: ImageIcon(AssetImage(AppIcons.discord_icon)),
+              icon: const ImageIcon(AssetImage(AppIcons.discord_icon)),
             ),
           ),
           Expanded(
@@ -40,17 +39,17 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
               onPressed: () {},
               iconSize: 19,
               visualDensity: VisualDensity.compact,
-              icon: ImageIcon(AssetImage(AppIcons.friend_icon)),
+              icon: const ImageIcon(AssetImage(AppIcons.friend_icon)),
             ),
           ),
           Expanded(
             child: IconButton(
               onPressed: () {
-                _navBloc.push(context, SlideUpTransition(nextPage: SearchPanel()), true);
+                _navBloc.push(context, SlideUpTransition(nextPage: const SearchPanel()), true);
               },
               iconSize: 18,
               visualDensity: VisualDensity.compact,
-              icon: ImageIcon(AssetImage(AppIcons.search_icon)),
+              icon: const ImageIcon(AssetImage(AppIcons.search_icon)),
             ),
           ),
           Expanded(
@@ -58,13 +57,13 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
               onPressed: () {},
               iconSize: 21,
               visualDensity: VisualDensity.compact,
-              icon: ImageIcon(AssetImage(AppIcons.mention_icon)),
+              icon: const ImageIcon(AssetImage(AppIcons.mention_icon)),
             ),
           ),
           Expanded(
             child: InkWell(
               onTap: () {
-                _authBloc.add(AuthEvent.signOut());
+                _authBloc.add(const AuthEvent.signOut());
               },
               child: Center(
                 child: Container(

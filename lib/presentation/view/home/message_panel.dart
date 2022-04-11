@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:custom_extension/custom_extensions.dart';
 import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
-import 'package:discord_replicate/presentation/constants/icon_constants.dart';
-import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/presentation/bloc/message/message_bloc.dart';
+import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'message_tile.dart';
@@ -25,26 +23,23 @@ class MessagePanel extends StatefulWidget {
 
 class _MessagePanelState extends State<MessagePanel> {
   late ChannelBloc channelBloc = BlocProvider.of(context);
-  late MessageBloc _messageBloc = sl.get(param1: channelBloc.stream.withInitialValue(channelBloc.state));
+  late final MessageBloc _messageBloc = sl.get(param1: channelBloc.stream.withInitialValue(channelBloc.state));
+
   @override
   Widget build(BuildContext context) {
     return Provider(
       create: (context) => widget.pageController,
       child: BlocProvider<MessageBloc>(
         create: (context) => _messageBloc,
-        child: Container(
-          child: ClipRRect(
-            clipBehavior: Clip.antiAlias,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-            child: Container(
-              child: Column(
-                children: [
-                  const MessagePanelHeader(),
-                  const MessagePanelBody(),
-                  const MessagePanelInput(),
-                ],
-              ),
-            ),
+        child: ClipRRect(
+          clipBehavior: Clip.antiAlias,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
+          child: Column(
+            children: const [
+              MessagePanelHeader(),
+              MessagePanelBody(),
+              MessagePanelInput(),
+            ],
           ),
         ),
       ),
@@ -64,7 +59,7 @@ class MessagePanelHeader extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary,
       ),
-      padding: EdgeInsets.only(right: 15, left: 10),
+      padding: const EdgeInsets.only(right: 15, left: 10),
       height: 55,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -73,13 +68,14 @@ class MessagePanelHeader extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: IconButton(
               onPressed: () {
-                if (pageController.currentPageState == PageState.OnCenter)
+                if (pageController.currentPageState == PageState.OnCenter) {
                   pageController.animateTo(PageState.OnRight);
-                else
+                } else {
                   pageController.animateTo(PageState.OnCenter);
+                }
               },
               iconSize: 18,
-              icon: ImageIcon(
+              icon: const ImageIcon(
                 AssetImage(AppIcons.menu_icon),
               ),
             ),
@@ -88,7 +84,7 @@ class MessagePanelHeader extends StatelessWidget {
             builder: (context, state) {
               return state.maybeWhen(
                 orElse: () {
-                  return Expanded(
+                  return const Expanded(
                     child: Text("Still loading..."),
                   );
                 },
@@ -119,7 +115,7 @@ class MessagePanelHeader extends StatelessWidget {
                 iconSize: 18,
                 visualDensity: VisualDensity.compact,
                 onPressed: () {},
-                icon: ImageIcon(
+                icon: const ImageIcon(
                   AssetImage(AppIcons.phone_icon),
                 ),
               ),
@@ -127,20 +123,21 @@ class MessagePanelHeader extends StatelessWidget {
                 iconSize: 18,
                 onPressed: () {},
                 visualDensity: VisualDensity.compact,
-                icon: ImageIcon(
+                icon: const ImageIcon(
                   AssetImage(AppIcons.video_icon),
                 ),
               ),
               IconButton(
                 onPressed: () {
-                  if (pageController.currentPageState == PageState.OnCenter)
+                  if (pageController.currentPageState == PageState.OnCenter) {
                     pageController.animateTo(PageState.OnLeft);
-                  else
+                  } else {
                     pageController.animateTo(PageState.OnCenter);
+                  }
                 },
                 visualDensity: VisualDensity.compact,
                 iconSize: 20,
-                icon: ImageIcon(
+                icon: const ImageIcon(
                   AssetImage(AppIcons.group_icon),
                 ),
               ),
@@ -221,7 +218,7 @@ class MessagePanelInput extends StatefulWidget {
 
 class _MessagePanelInputState extends State<MessagePanelInput> {
   final TextEditingController _inputCtrl = TextEditingController();
-  late MessageBloc _messageBloc = BlocProvider.of<MessageBloc>(context);
+  late final MessageBloc _messageBloc = BlocProvider.of<MessageBloc>(context);
 
   bool _isInputEmpty = true;
 
@@ -250,7 +247,7 @@ class _MessagePanelInputState extends State<MessagePanelInput> {
     return Container(
       height: 60,
       color: Theme.of(context).colorScheme.secondary,
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           Wrap(
@@ -263,7 +260,7 @@ class _MessagePanelInputState extends State<MessagePanelInput> {
                     onPressed: () {},
                     visualDensity: VisualDensity.compact,
                     iconSize: 20,
-                    icon: ImageIcon(
+                    icon: const ImageIcon(
                       AssetImage(AppIcons.picture_icon),
                     ),
                   ),
@@ -276,7 +273,7 @@ class _MessagePanelInputState extends State<MessagePanelInput> {
                     onPressed: () {},
                     visualDensity: VisualDensity.compact,
                     iconSize: 20,
-                    icon: ImageIcon(
+                    icon: const ImageIcon(
                       AssetImage(AppIcons.gift_icon),
                     ),
                   ),
@@ -301,7 +298,7 @@ class _MessagePanelInputState extends State<MessagePanelInput> {
                 suffixIcon: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: ImageIcon(
-                    AssetImage(AppIcons.emoji_icon),
+                    const AssetImage(AppIcons.emoji_icon),
                     size: 20,
                     color: IconTheme.of(context).color,
                   ),
@@ -322,7 +319,7 @@ class _MessagePanelInputState extends State<MessagePanelInput> {
                   },
                   visualDensity: VisualDensity.compact,
                   iconSize: 20,
-                  icon: Icon(Icons.send, color: Colors.white),
+                  icon: const Icon(Icons.send, color: Colors.white),
                 ),
               ),
             ),

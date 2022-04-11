@@ -13,6 +13,6 @@ class Credential {
 
   @override
   String toString() {
-    return this.toJson().toString();
+    return toJson().toString();
   }
 }

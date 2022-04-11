@@ -1,7 +1,4 @@
 {
-  "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 5000,
-  "editor.formatOnSave": true,
   "dart.lineLength": 120,
   "[dart]": {
     "editor.rulers": [
@@ -11,15 +8,16 @@
     "editor.defaultFormatter": "Dart-Code.dart-code",
     "editor.guides.indentation": true
   },
-  "editor.smoothScrolling": true,
-  "editor.cursorSmoothCaretAnimation": true,
-  "workbench.tree.indent": 17,
-  "editor.foldingStrategy": "indentation",
-  "todohighlight.isCaseSensitive": false,
-  "debug.console.wordWrap": false,
-  "editor.foldingImportsByDefault": true,
-  "workbench.colorCustomizations": {
-    "debugConsole.infoForeground": "#2991c5"
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
   },
-  "todo-tree.regex.regexCaseSensitive": false
+  "debug.console.wordWrap": false,
+  "editor.cursorSmoothCaretAnimation": true,
+  "editor.formatOnSave": true,
+  "editor.smoothScrolling": true,
+  "editor.foldingImportsByDefault": true,
+  "editor.foldingStrategy": "indentation",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 5000,
+  "workbench.tree.indent": 17,
 }

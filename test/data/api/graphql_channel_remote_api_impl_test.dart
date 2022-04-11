@@ -5,7 +5,6 @@ import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/data/api/client/graphql_client_helper.dart';
 import 'package:discord_replicate/data/api/client/graphql_operation/mutation/create_channel_message_operation.dart';
 import 'package:discord_replicate/data/api/client/graphql_operation/query/get_channel_messages_operation.dart';
-import 'package:discord_replicate/data/api/client/graphql_operation/query/get_channel_query_operation.dart';
 import 'package:discord_replicate/data/api/client/graphql_operation/subscription/subscribe_channel_message_subscription.dart';
 import 'package:discord_replicate/data/api/graphql_channel_remote_api_impl.dart';
 import 'package:discord_replicate/data/mapper/channel_mapper.dart';
@@ -32,7 +31,6 @@ void main() async {
 
   // class under test
   final ChannelRemoteApi api = GraphQLChannelRemoteApiImpl(mockClient, mockMessageMapper, mockChannelMapper);
-
 
   test("""
   Given ChannelRemoteAPI,

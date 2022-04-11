@@ -7,5 +7,6 @@ import 'package:get_it/get_it.dart';
 abstract class UserRepository implements Disposable {
   Future<User> getUserById(String userId);
   Future<void> saveUser(User user);
-  Stream<ObservableEntityEvent<User>> observeChanges({String? userId});
+
+  Stream<ObservableEntityEvent<String, User>> observeChanges({String? userId});
 }

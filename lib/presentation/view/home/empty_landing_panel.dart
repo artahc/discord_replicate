@@ -1,9 +1,7 @@
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class EmptyLandingPanel extends StatefulWidget {
@@ -14,8 +12,8 @@ class EmptyLandingPanel extends StatefulWidget {
 }
 
 class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
-  late ServerBloc _serverBloc = BlocProvider.of(context);
-  late AuthBloc _authBloc = BlocProvider.of(context);
+  late final ServerBloc _serverBloc = BlocProvider.of(context);
+  late final AuthBloc _authBloc = BlocProvider.of(context);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +22,7 @@ class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 15),
         child: Stack(
           children: [
-            Align(
+            const Align(
               alignment: Alignment.center,
               child: Text("Nothing's interesting in your account."),
             ),
@@ -34,19 +32,19 @@ class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
                 child: Column(
                   children: [
                     AppButton(
-                      child: Text("Join Testing Server"),
+                      child: const Text("Join Testing Server"),
                       onPressed: () {
-                        _serverBloc.add(ServerEvent.joinServer("XE4yhAIsvuZvxwOFrSyq"));
+                        _serverBloc.add(const ServerEvent.joinServer("XE4yhAIsvuZvxwOFrSyq"));
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     AppButton(
-                      child: Text("Log Out"),
+                      child: const Text("Log Out"),
                       color: Colors.red,
                       onPressed: () {
-                        _authBloc.add(AuthEvent.signOut());
+                        _authBloc.add(const AuthEvent.signOut());
                       },
                     ),
                   ],

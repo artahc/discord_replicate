@@ -17,7 +17,7 @@ class User {
     registrationId = signal.generateRegistrationId(false);
     preKeys = signal.generatePreKeys(0, 100);
     signedPreKey = signal.generateSignedPreKey(identityKeyPair, 0);
-    signalProtocolAddress = signal.SignalProtocolAddress("my_id", 0);
+    signalProtocolAddress = const signal.SignalProtocolAddress("my_id", 0);
   }
 }
 

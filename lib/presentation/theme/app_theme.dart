@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static final darkThemeData = ThemeData(
     brightness: Brightness.dark,
-    backgroundColor: Color(0xff202226),
-    colorScheme: ColorScheme.dark(
+    backgroundColor: const Color(0xff202226),
+    colorScheme: const ColorScheme.dark(
       brightness: Brightness.dark,
       primary: Color(0xff303136),
       secondary: Color(0xff363940),
@@ -12,7 +12,7 @@ class AppTheme {
       onSecondary: Color(0xff73767d),
       // onSurface: Color(0xffb9bbbe),
     ),
-    textTheme: TextTheme(
+    textTheme: const TextTheme(
       headline5: TextStyle(
         color: Colors.white,
         fontSize: 24,
@@ -49,11 +49,11 @@ class AppTheme {
         letterSpacing: 0.4,
       ),
     ),
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: Color(0xffb9bbbe),
       size: 16,
     ),
-    buttonTheme: ButtonThemeData(
+    buttonTheme: const ButtonThemeData(
       colorScheme: ColorScheme.dark(
         primary: Color(0xff7289da),
         secondary: Color(0xff72767b),
@@ -62,18 +62,18 @@ class AppTheme {
         onSecondary: Color(0xff575b64),
       ),
     ),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Color(0xff17191c),
     ),
-    textSelectionTheme: TextSelectionThemeData(
+    textSelectionTheme: const TextSelectionThemeData(
       cursorColor: Color(0xff7289da),
     ),
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: const InputDecorationTheme(
       isDense: true,
       focusedBorder: InputBorder.none,
       border: InputBorder.none,
-      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       floatingLabelStyle: TextStyle(
         height: 0.7,

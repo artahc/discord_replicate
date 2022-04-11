@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -20,7 +18,7 @@ class NavigationCubit extends Cubit<NavigationState> {
   NavigationCubit(
     @factoryParam this._authBloc,
     @factoryParam this._navigator,
-  ) : super(NavigationState.initialState()) {
+  ) : super(const NavigationState.initialState()) {
     _authStateSubscription = _authBloc.stream.listen((event) {
       event.whenOrNull(
         unauthenticated: () {

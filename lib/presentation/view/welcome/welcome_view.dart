@@ -1,8 +1,7 @@
-import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
-import 'package:discord_replicate/presentation/widgets/app_widget.dart';
+import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/route_transition/app_transition.dart';
-
+import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,26 +49,26 @@ class WelcomeView extends StatelessWidget {
                 maxLines: 2,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               AppButton(
-                child: Text("Register"),
+                child: const Text("Register"),
                 onPressed: () {
                   var route = CustomSlideTransition(currentPage: this, nextPage: const RegisterView());
                   navBloc.push(context, route, true);
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               AppButton(
                 color: Theme.of(context).buttonTheme.colorScheme!.secondary,
-                child: Text("Login"),
+                child: const Text("Login"),
                 onPressed: () {
                   var route = CustomSlideTransition(currentPage: this, nextPage: const LoginView());
                   navBloc.push(context, route, true);
                 },
               ),
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
             ],
           ),
         ),

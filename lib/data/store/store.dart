@@ -2,36 +2,39 @@ import 'dart:async';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:get_it/get_it.dart';
 
-/// Store provides basic CRUD and observe behavior.
-abstract class Store<T> implements Disposable {
+/// Store provides basic CRUD and observe interface.
+abstract class Store<K, T> implements Disposable {
   /// Get item from this store matching provided id.
+  ///
   /// Return null if key does not exist.
-  Future<T?> load(String id);
+  FutureOr<T?> load(K key);
 
   /// Get all item stored in this store.
-  Future<List<T>> loadAll();
+  FutureOr<Iterable<T>> loadAll();
 
   /// Save item into this store.
+  ///
   /// Overwrite data if item with same key already exist.
-  Future<void> save(T item);
+  FutureOr<void> save(K key, T value);
 
   /// Save all provided item into this store.
+  ///
   /// Overwrite data if item with same key already exist.
-  Future<void> saveAll(List<T> items);
+  FutureOr<void> saveAll(Map<K, T> entries);
 
   /// Delete item with provided id.
-  Future<void> delete(String id);
+  FutureOr<void> delete(K key);
 
   /// Delete all item with provided id.
-  Future<void> deleteAll(List<String> ids);
+  FutureOr<void> deleteAll(Iterable<K> keys);
 
   /// Check if item with provided id already exist in this store.
-  Future<bool> exist(String id);
+  FutureOr<bool> exist(K key);
 
   /// Observe value if there's any changes (create/update & delete) on the entity in this store.
   ///
-  /// If `id` is provided, only emit `ObservableEntityEvent` on item with provided id.
+  /// If `key` is provided, only emit `ObservableEntityEvent` on item with provided id.
   ///
-  /// If `id` not provided, emit `ObservableEntityEvent` on all item changes.
-  Stream<ObservableEntityEvent<T>> observe({String? id});
+  /// If `key` not provided, emit `ObservableEntityEvent` on all item changes.
+  Stream<ObservableEntityEvent<K, T>> observe({K? key});
 }

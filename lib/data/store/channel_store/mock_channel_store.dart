@@ -5,9 +5,9 @@ import 'package:injectable/injectable.dart';
 import 'package:mocktail/mocktail.dart';
 
 @Named("DB_CHANNEL")
-@Injectable(as: Store<Channel>, env: [Env.TEST])
-class MockHiveChannelStore extends Mock implements Store<Channel> {}
+@Injectable(as: Store<String, Channel>, env: [Env.TEST])
+class MockHiveChannelStore extends Mock implements Store<String, Channel> {}
 
 @Named("CACHE_CHANNEL")
-@Injectable(as: Store<Channel>, env: [Env.TEST])
-class MockCacheChannelStore extends Mock implements Store<Channel> {}
+@Injectable(as: Store<String, Channel>, env: [Env.TEST])
+class MockCacheChannelStore extends Mock implements Store<String, Channel> {}

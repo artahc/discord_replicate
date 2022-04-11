@@ -7,6 +7,7 @@ import 'package:discord_replicate/data/store/store.dart';
 
 import 'package:discord_replicate/domain/api/user_group_remote_api.dart';
 import 'package:discord_replicate/domain/model/member.dart';
+import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user_group.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';
 
@@ -17,8 +18,8 @@ import 'package:rxdart/rxdart.dart';
 @Singleton(as: UserGroupRepository, env: [Env.PROD, Env.DEV])
 class UserGroupRepositoryImpl extends UserGroupRepository {
   final UserGroupRemoteApi _api;
-  final Store<UserGroup> _db;
-  final Store<UserGroup> _cache;
+  final Store<String, UserGroup> _db;
+  final Store<String, UserGroup> _cache;
 
   UserGroupRepositoryImpl(
     this._api,
@@ -29,21 +30,20 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
   @override
   Future<Member> getMemberById(String userGroupId, String uid) async {
     var memory = LazyStream(() {
-      return _cache.load(userGroupId).asStream().map((userGroup) => userGroup?.members[uid]);
+      return Future.sync(() => _cache.load(userGroupId)).asStream().map((userGroup) => userGroup?.members[uid]);
     });
 
     var disk = LazyStream(() {
-      return _db.load(userGroupId).asStream().map((userGroup) => userGroup?.members[uid]);
+      return Future.sync(() => _db.load(userGroupId)).asStream().map((userGroup) => userGroup?.members[uid]);
     });
 
     var remote = LazyStream(() {
-      var stream = _api.getUserGroupById(userGroupId, 30, null).asStream().doOnData((response) async {
-        var userGroup = UserGroup(
-            id: userGroupId, members: response.items.toMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
-        await _db.save(userGroup);
-        await _cache.save(userGroup);
+      return _api.getUserGroupById(userGroupId, 30, null).asStream().doOnData((response) async {
+        var userGroup = UserGroup.fromMembers(id: userGroupId, members: response.items);
+
+        await _db.save(userGroup.id, userGroup);
+        await _cache.save(userGroup.id, userGroup);
       }).asyncMap((event) => event.items.where((e) => e.uid == uid).first);
-      return stream;
     });
 
     var result = await ConcatStream([memory, disk, remote]).firstWhere((element) => element != null);
@@ -65,8 +65,8 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
   Future<void> saveAllMembers(String userGroupId, List<Member> members) async {
     var userGroup =
         UserGroup(id: userGroupId, members: members.toMap(keyConverter: (e) => e.uid, valueConverter: (e) => e));
-    await _db.save(userGroup);
-    await _cache.save(userGroup);
+    await _db.save(userGroup.id, userGroup);
+    await _cache.save(userGroup.id, userGroup);
   }
 
   @override
@@ -76,19 +76,17 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
   }
 
   @override
-  Future<void> deleteAllMembers(String userGroupId, List<String> uids) {
+  Future<void> deleteAllMembers(String userGroupId, List<String> uids) async {
     throw UnimplementedError();
   }
 
   @override
   Future<void> deleteMember(String userGroupId, String uid) {
-    // TODO: implement deleteMember
     throw UnimplementedError();
   }
 
   @override
-  Future<void> deleteUserGroupById(String userGroupId) async {
-    await _cache.delete(userGroupId);
-    await _db.delete(userGroupId);
+  Stream<ObservableEntityEvent<String, Member>> observeChanges(String userGroupId) {
+    throw UnimplementedError();
   }
 }

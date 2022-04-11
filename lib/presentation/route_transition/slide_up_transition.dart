@@ -3,12 +3,13 @@ import 'package:flutter/cupertino.dart';
 class SlideUpTransition extends PageRouteBuilder {
   final Widget nextPage;
   final bool fullscreenDialog;
+  
   SlideUpTransition({required this.nextPage, this.fullscreenDialog = false})
       : super(
           pageBuilder: (context, animation, secondaryAnimation) {
             return nextPage;
           },
-          transitionDuration: Duration(milliseconds: 300),
+          transitionDuration: const Duration(milliseconds: 300),
           fullscreenDialog: fullscreenDialog,
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             var curve = CurveTween(curve: Curves.easeInOut);

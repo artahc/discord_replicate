@@ -207,38 +207,52 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       registerFor: {_test});
   gh.factory<_i24.SignInUseCase>(() => _i25.SignInUseCaseImpl(),
       registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i27.User>>(() => _i28.HiveUserStore(),
+  gh.factory<_i26.Store<String, _i27.User>>(() => _i28.HiveUserStore(),
       instanceName: 'DB_USER', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i29.Channel>>(() => _i30.HiveChannelStore(),
+  gh.factory<_i26.Store<String, _i29.Channel>>(() => _i30.HiveChannelStore(),
       instanceName: 'DB_CHANNEL', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i29.Channel>>(() => _i31.MockHiveChannelStore(),
-      instanceName: 'DB_CHANNEL', registerFor: {_test});
-  gh.factory<_i26.Store<_i29.Channel>>(() => _i31.MockCacheChannelStore(),
-      instanceName: 'CACHE_CHANNEL', registerFor: {_test});
-  gh.factory<_i26.Store<_i32.Server>>(() => _i33.HiveServerStore(),
+  gh.factory<_i26.Store<String, _i29.Channel>>(
+      () => _i31.MockHiveChannelStore(),
+      instanceName: 'DB_CHANNEL',
+      registerFor: {_test});
+  gh.factory<_i26.Store<String, _i29.Channel>>(
+      () => _i31.MockCacheChannelStore(),
+      instanceName: 'CACHE_CHANNEL',
+      registerFor: {_test});
+  gh.factory<_i26.Store<String, _i32.Server>>(() => _i33.HiveServerStore(),
       instanceName: 'DB_SERVER', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i32.Server>>(() => _i34.InMemoryServerStore(),
+  gh.factory<_i26.Store<String, _i32.Server>>(() => _i34.InMemoryServerStore(),
       instanceName: 'CACHE_SERVER', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i32.Server>>(() => _i35.MockHiveServerStore(),
+  gh.factory<_i26.Store<String, _i32.Server>>(() => _i35.MockHiveServerStore(),
       instanceName: 'DB_SERVER', registerFor: {_test});
-  gh.factory<_i26.Store<_i32.Server>>(() => _i35.MockCacheServerStore(),
+  gh.factory<_i26.Store<String, _i32.Server>>(() => _i35.MockCacheServerStore(),
       instanceName: 'CACHE_SERVER', registerFor: {_test});
-  gh.factory<_i26.Store<_i36.UserGroup>>(() => _i37.HiveUserGroupStore(),
-      instanceName: 'DB_USERGROUP', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i36.UserGroup>>(() => _i38.InMemoryUserGroupStore(),
-      instanceName: 'CACHE_USERGROUP', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i36.UserGroup>>(() => _i39.MockHiveUserGroupStore(),
-      instanceName: 'DB_USERGROUP', registerFor: {_test});
-  gh.factory<_i26.Store<_i36.UserGroup>>(() => _i39.MockCacheUserGroupStore(),
-      instanceName: 'CACHE_USERGROUP', registerFor: {_test});
-  gh.factory<_i26.Store<_i27.User>>(() => _i40.InMemoryUserStore(),
+  gh.factory<_i26.Store<String, _i36.UserGroup>>(
+      () => _i37.HiveUserGroupStore(),
+      instanceName: 'DB_USERGROUP',
+      registerFor: {_prod, _dev});
+  gh.factory<_i26.Store<String, _i36.UserGroup>>(
+      () => _i38.InMemoryUserGroupStore(),
+      instanceName: 'CACHE_USERGROUP',
+      registerFor: {_prod, _dev});
+  gh.factory<_i26.Store<String, _i36.UserGroup>>(
+      () => _i39.MockHiveUserGroupStore(),
+      instanceName: 'DB_USERGROUP',
+      registerFor: {_test});
+  gh.factory<_i26.Store<String, _i36.UserGroup>>(
+      () => _i39.MockCacheUserGroupStore(),
+      instanceName: 'CACHE_USERGROUP',
+      registerFor: {_test});
+  gh.factory<_i26.Store<String, _i27.User>>(() => _i40.InMemoryUserStore(),
       instanceName: 'CACHE_USER', registerFor: {_prod, _dev});
-  gh.factory<_i26.Store<_i27.User>>(() => _i41.MockHiveUserStore(),
+  gh.factory<_i26.Store<String, _i27.User>>(() => _i41.MockHiveUserStore(),
       instanceName: 'DB_USER', registerFor: {_test});
-  gh.factory<_i26.Store<_i27.User>>(() => _i41.MockCacheUserStore(),
+  gh.factory<_i26.Store<String, _i27.User>>(() => _i41.MockCacheUserStore(),
       instanceName: 'CACHE_USER', registerFor: {_test});
-  gh.factory<_i26.Store<_i29.Channel>>(() => _i42.InMemoryChannelStore(),
-      instanceName: 'CACHE_CHANNEL', registerFor: {_prod, _dev});
+  gh.factory<_i26.Store<String, _i29.Channel>>(
+      () => _i42.InMemoryChannelStore(),
+      instanceName: 'CACHE_CHANNEL',
+      registerFor: {_prod, _dev});
   gh.factory<String>(() => graphQLClientModule.wsUrl, instanceName: 'WS_URL');
   gh.factory<String>(() => graphQLClientModule.baseUrl,
       instanceName: 'BASE_URL');
@@ -280,8 +294,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i22.ServerRepository>(
       _i56.ServerRepositoryImpl(
           get<_i20.ServerRemoteApi>(),
-          get<_i26.Store<_i32.Server>>(instanceName: 'DB_SERVER'),
-          get<_i26.Store<_i32.Server>>(instanceName: 'CACHE_SERVER')),
+          get<_i26.Store<String, _i32.Server>>(instanceName: 'DB_SERVER'),
+          get<_i26.Store<String, _i32.Server>>(instanceName: 'CACHE_SERVER')),
       registerFor: {_prod, _dev});
   gh.lazySingleton<_i43.UserGroupRemoteApi>(
       () => _i57.GraphQLUserGroupRemoteApiImpl(
@@ -290,8 +304,9 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i45.UserGroupRepository>(
       _i58.UserGroupRepositoryImpl(
           get<_i43.UserGroupRemoteApi>(),
-          get<_i26.Store<_i36.UserGroup>>(instanceName: 'DB_USERGROUP'),
-          get<_i26.Store<_i36.UserGroup>>(instanceName: 'CACHE_USERGROUP')),
+          get<_i26.Store<String, _i36.UserGroup>>(instanceName: 'DB_USERGROUP'),
+          get<_i26.Store<String, _i36.UserGroup>>(
+              instanceName: 'CACHE_USERGROUP')),
       registerFor: {_prod, _dev});
   gh.lazySingleton<_i47.UserRemoteApi>(
       () => _i59.GraphQLUserRemoteApiImpl(
@@ -300,8 +315,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i49.UserRepository>(
       _i60.UserRepositoryImpl(
           get<_i47.UserRemoteApi>(),
-          get<_i26.Store<_i27.User>>(instanceName: 'DB_USER'),
-          get<_i26.Store<_i27.User>>(instanceName: 'CACHE_USER')),
+          get<_i26.Store<String, _i27.User>>(instanceName: 'DB_USER'),
+          get<_i26.Store<String, _i27.User>>(instanceName: 'CACHE_USER')),
       registerFor: {_prod, _dev});
   gh.lazySingleton<_i5.ChannelRemoteApi>(
       () => _i61.GraphQLChannelRemoteApiImpl(get<_i13.GraphQLClientHelper>(),
@@ -310,8 +325,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i7.ChannelRepository>(
       _i62.ChannelRepositoryImpl(
           get<_i5.ChannelRemoteApi>(),
-          get<_i26.Store<_i29.Channel>>(instanceName: 'DB_CHANNEL'),
-          get<_i26.Store<_i29.Channel>>(instanceName: 'CACHE_CHANNEL')),
+          get<_i26.Store<String, _i29.Channel>>(instanceName: 'DB_CHANNEL'),
+          get<_i26.Store<String, _i29.Channel>>(instanceName: 'CACHE_CHANNEL')),
       registerFor: {_prod, _dev});
   gh.factory<_i63.GetChannelByIdUseCase>(
       () => _i64.GetChannelByIdUseCaseImpl(get<_i7.ChannelRepository>()),

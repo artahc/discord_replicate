@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:collection';
 
-import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/usecase/channel/get_channel_member_by_id_usecase.dart';
@@ -10,7 +8,6 @@ import 'package:discord_replicate/domain/usecase/channel/send_channel_message_us
 import 'package:discord_replicate/domain/usecase/channel/subscribe_channel_message_usecase.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -40,7 +37,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     this._getChannelMessagesUseCase,
     this._getChannelMemberByIdUseCase,
     this._sendChannelMessageUseCase,
-  ) : super(MessageState()) {
+  ) : super(const MessageState()) {
     on<MessageEvent>((event, emit) async {
       await event.when(
         refresh: (messages, pendingMessages) => _refresh(messages, pendingMessages, emit),
@@ -66,7 +63,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   }
 
   Future<void> _onChannelLoaded(Channel channel) async {
-    this._channel = channel;
+    _channel = channel;
     var pendingMessages = <Message>[];
     add(MessageEvent.refresh(channel.messages, pendingMessages));
   }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:custom_extension/custom_extensions.dart';
 import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 
@@ -18,8 +19,8 @@ import 'package:rxdart/rxdart.dart';
 @Singleton(as: ChannelRepository, env: [Env.PROD, Env.DEV])
 class ChannelRepositoryImpl implements ChannelRepository {
   final ChannelRemoteApi _api;
-  final Store<Channel> _db;
-  final Store<Channel> _cache;
+  final Store<String, Channel> _db;
+  final Store<String, Channel> _cache;
 
   ChannelRepositoryImpl(
     this._api,
@@ -30,13 +31,13 @@ class ChannelRepositoryImpl implements ChannelRepository {
   @override
   Future<Channel> getChannel(String id, {int memberLimit = 30}) async {
     var memory = LazyStream(() {
-      return _cache.load(id).asStream().where((channel) => channel != null).doOnData((channel) {
+      return Future.sync(() => _cache.load(id)).asStream().where((channel) => channel != null).doOnData((channel) {
         log.i("Channel found on memory cache. $channel");
       });
     });
 
     var local = LazyStream(() {
-      return _db.load(id).asStream().where((event) => event != null).doOnData((channel) async {
+      return Future.sync(() => _db.load(id)).asStream().where((event) => event != null).doOnData((channel) async {
         await saveChannel(channel!);
         log.i("Channel found on local database. $channel");
       });
@@ -62,15 +63,13 @@ class ChannelRepositoryImpl implements ChannelRepository {
   Stream<Message> subscribeChannelMessages(String channelId) async* {
     yield* _api.subscribeChannelMessage(channelId).doOnData((newMessage) async {
       if (await _cache.exist(channelId)) {
-        await _cache.load(channelId).then((channel) async {
-          var updated = channel!.copyWith(messages: [...channel.messages, newMessage]);
-          await saveChannel(updated);
-        });
+        var channel = await _cache.load(channelId);
+        var updated = channel!.copyWith(messages: [...channel.messages, newMessage]);
+        await saveChannel(updated);
       } else if (await _db.exist(channelId)) {
-        await _db.load(channelId).then((channel) async {
-          var updated = channel!.copyWith(messages: [...channel.messages, newMessage]);
-          await saveChannel(updated);
-        });
+        var channel = await _db.load(channelId);
+        var updated = channel!.copyWith(messages: [...channel.messages, newMessage]);
+        await saveChannel(updated);
       }
     });
   }
@@ -82,19 +81,20 @@ class ChannelRepositoryImpl implements ChannelRepository {
 
   @override
   Future<void> saveAllChannels(List<Channel> items) async {
-    await _db.saveAll(items);
-    await _cache.saveAll(items);
+    await _db.saveAll(items.toMap(keyConverter: (e) => e.id, valueConverter: (e) => e));
+    await _cache.saveAll(items.toMap(keyConverter: (e) => e.id, valueConverter: (e) => e.id));
   }
 
   @override
-  Future<List<Channel>> getAllChannels() {
-    return _db.loadAll();
+  Future<List<Channel>> getAllChannels() async {
+    var channels = await _db.loadAll();
+    return channels.toList();
   }
 
   @override
   Future<void> saveChannel(Channel channel) async {
-    await _db.save(channel);
-    await _cache.save(channel);
+    await _db.save(channel.id, channel);
+    await _cache.save(channel.id, channel);
   }
 
   @override

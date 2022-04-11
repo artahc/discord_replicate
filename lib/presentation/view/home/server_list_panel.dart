@@ -1,10 +1,9 @@
-import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
-import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/domain/model/server.dart';
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';
+import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/widgets/custom_list_view.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,36 +38,35 @@ class _ServerListPanelState extends State<ServerListPanel> {
           before: [
             Center(
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 200),
                 decoration: BoxDecoration(
                   borderRadius: _selectedServer != null ? BorderRadius.circular(28) : BorderRadius.circular(16),
-                  color:
-                      _selectedServer != null ? Color(0xff363940) : Theme.of(context).buttonTheme.colorScheme!.primary,
+                  color: _selectedServer != null
+                      ? const Color(0xff363940)
+                      : Theme.of(context).buttonTheme.colorScheme!.primary,
                 ),
                 width: 45,
                 height: 45,
                 child: MaterialButton(
-                  padding: EdgeInsets.all(0),
+                  padding: const EdgeInsets.all(0),
                   minWidth: 0,
                   splashColor: Colors.transparent,
                   visualDensity: VisualDensity.compact,
                   onPressed: () {
                     setState(() {
-                      this._selectedServer = null;
-                      dmBloc.add(DirectMessageEvent.loadRecent());
+                      _selectedServer = null;
+                      dmBloc.add(const DirectMessageEvent.loadRecent());
                     });
                   },
-                  child: Container(
-                    child: Image.asset(
-                      AppIcons.direct_message_icon,
-                      height: 20,
-                      color: Colors.white,
-                    ),
+                  child: Image.asset(
+                    AppIcons.direct_message_icon,
+                    height: 20,
+                    color: Colors.white,
                   ),
                 ),
               ),
             ),
-            Divider(
+            const Divider(
               color: Colors.white38,
               height: 22,
               indent: 22,
@@ -81,32 +79,31 @@ class _ServerListPanelState extends State<ServerListPanel> {
               data: server,
               onPressed: () {
                 setState(() {
-                  this._selectedServer = server;
-                  print(server);
+                  _selectedServer = server;
                   serverBloc.add(ServerEvent.loadServer(server.id));
                 });
               },
-              selected: this._selectedServer?.id == server.id,
+              selected: _selectedServer?.id == server.id,
             );
           },
-          separatorBuilder: (context, index) => SizedBox(
+          separatorBuilder: (context, index) => const SizedBox(
             height: 5,
           ),
           after: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Center(
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  color: Color(0xff363940),
+                  color: const Color(0xff363940),
                 ),
                 width: 45,
                 height: 45,
                 child: IconButton(
                   onPressed: () {},
-                  icon: ImageIcon(AssetImage(AppIcons.search_icon)),
+                  icon: const ImageIcon(AssetImage(AppIcons.search_icon)),
                   visualDensity: VisualDensity.compact,
                   iconSize: 20,
                 ),

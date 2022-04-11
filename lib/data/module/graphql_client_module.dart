@@ -18,7 +18,6 @@ abstract class GraphQLClientModule {
   @Injectable()
   @Named("API_LINK")
   Link link(@Named("BASE_URL") String url, @Named("WS_URL") String wsUrl, AuthRepository authRepo) {
-    print("API_LINK: $url");
     var httpLink = HttpLink(url);
     var authLink = AuthLink(getToken: () async {
       var token = await authRepo

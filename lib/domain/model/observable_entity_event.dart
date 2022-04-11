@@ -3,20 +3,20 @@ enum EntityEvent {
   DELETED,
 }
 
-class ObservableEntityEvent<T> {
+class ObservableEntityEvent<K, V> {
   /// Operation event, either created/updated or deleted.
   final EntityEvent event;
 
   /// Entity key.
-  final String key;
+  final K key;
 
   /// The entity after operation.
-  final T? value;
+  final V? value;
 
   ObservableEntityEvent(this.event, this.key, this.value);
 
   @override
   String toString() {
-    return "ObservableEntity<$T> { event: $event, key: $key, value: $value }";
+    return "ObservableEntity<$K, $V> { event: $event, key: $key, value: $value }";
   }
 }

@@ -1,6 +1,5 @@
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -18,19 +17,19 @@ class MessageTile extends StatelessWidget {
         highlightColor: Theme.of(context).colorScheme.primary,
         onLongPress: () => print(message.contentHash),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleContainer(
                 color: message.status == "Sent" ? Colors.green : Colors.yellow,
-                size: Size(40, 40),
+                size: const Size(40, 40),
                 child: null,
               ),
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(left: 12),
+                  margin: const EdgeInsets.only(left: 12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -47,7 +46,7 @@ class MessageTile extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 2),
+                        margin: const EdgeInsets.only(top: 2),
                         child: Builder(builder: (_) {
                           return Text(message.message, style: Theme.of(_).textTheme.bodyText2);
                         }),
@@ -65,6 +64,8 @@ class MessageTile extends StatelessWidget {
 }
 
 class SkeletonMessageTile extends StatelessWidget {
+  const SkeletonMessageTile({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -73,14 +74,14 @@ class SkeletonMessageTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleContainer(
+          const CircleContainer(
             color: Colors.grey,
             size: Size(40, 40),
             child: null,
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(left: 12),
+              margin: const EdgeInsets.only(left: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -89,7 +90,7 @@ class SkeletonMessageTile extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 2),
+                        margin: const EdgeInsets.only(top: 2),
                         height: 25,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(6),
@@ -99,7 +100,7 @@ class SkeletonMessageTile extends StatelessWidget {
                     ],
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 2),
+                    margin: const EdgeInsets.only(top: 2),
                     height: 60,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(6),

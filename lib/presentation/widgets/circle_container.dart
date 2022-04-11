@@ -7,7 +7,14 @@ class CircleContainer extends StatelessWidget {
   final EdgeInsets? margin;
   final EdgeInsets? padding;
 
-  CircleContainer({this.size = const Size.square(40), this.color = Colors.transparent, this.child, this.margin, this.padding});
+  const CircleContainer({
+    Key? key,
+    this.size = const Size.square(40),
+    this.color = Colors.transparent,
+    this.child,
+    this.margin,
+    this.padding,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,7 @@ class CircleContainer extends StatelessWidget {
             width: size.width,
             child: Container(
               alignment: Alignment.center,
-              child: this.child ?? Container(),
+              child: child ?? Container(),
             ),
           ),
         ),

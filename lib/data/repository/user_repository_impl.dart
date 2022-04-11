@@ -17,8 +17,8 @@ import 'package:rxdart/rxdart.dart';
 @Singleton(as: UserRepository, env: [Env.PROD, Env.DEV])
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteApi _api;
-  final Store<User> _db;
-  final Store<User> _cache;
+  final Store<String, User> _db;
+  final Store<String, User> _cache;
 
   UserRepositoryImpl(
     this._api,
@@ -29,22 +29,21 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<User> getUserById(String uid) async {
     var memory = LazyStream(() {
-      return _cache.load(uid).asStream().where((user) => user != null).doOnData((user) {
+      return Future.sync(() => _cache.load(uid)).asStream().where((user) => user != null).doOnData((user) {
         log.i("User found on memory cache. $user");
       });
     });
 
     var local = LazyStream(() {
-      return _db.load(uid).asStream().where((user) => user != null).doOnData((user) async {
-        await _cache.save(user!);
+      return Future.sync(() => _db.load(uid)).asStream().where((user) => user != null).doOnData((user) async {
+        await saveUser(user!);
         log.i("User found on local database. $user");
       });
     });
 
     var remote = LazyStream(() {
       return _api.getUserById(uid).asStream().doOnData((user) async {
-        await _db.save(user);
-        await _cache.save(user);
+        await saveUser(user);
         log.i("User retrieved from remote API. $user");
       });
     });
@@ -61,20 +60,18 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<void> saveUser(User user) async {
-    var exist = await _db.exist(user.uid);
-    if (!exist) throw Exception("User does not exist.");
-
-    await _db.save(user);
-    await _cache.save(user);
+    await _db.save(user.uid, user);
+    await _cache.save(user.uid, user);
   }
 
   @override
-  Stream<ObservableEntityEvent<User>> observeChanges({String? userId}) async* {
-    yield* _db.observe(id: userId).doOnData((event) async {
-      if (event.event == EntityEvent.DELETED)
+  Stream<ObservableEntityEvent<String, User>> observeChanges({String? userId}) async* {
+    yield* _db.observe(key: userId).doOnData((event) async {
+      if (event.event == EntityEvent.DELETED) {
         await _cache.delete(event.key);
-      else
-        await _cache.save(event.value!);
+      } else {
+        await _cache.save(event.key, event.value!);
+      }
     });
   }
 }

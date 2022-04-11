@@ -16,10 +16,10 @@ class ChannelModel {
   @JsonKey(name: "userGroupRef")
   final String userGroupRef;
 
-  @JsonKey(name: "messages", defaultValue: const <MessageModel>[])
+  @JsonKey(name: "messages", defaultValue: <MessageModel>[])
   final List<MessageModel> messages;
 
-  @JsonKey(name: "members", defaultValue: const <MemberModel>[])
+  @JsonKey(name: "members", defaultValue: <MemberModel>[])
   final List<MemberModel> members;
 
   const ChannelModel(this.id, this.name, this.userGroupRef, this.messages, this.members);

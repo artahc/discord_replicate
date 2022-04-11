@@ -21,6 +21,7 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
     return Credential(uid: user.uid, email: user.email!, token: token);
   }
 
+  @override
   Future<Credential> signIn(String email, String password) {
     log.i("Signing in with username $email");
     return _auth.signInWithEmailAndPassword(email: email, password: password).then((credential) async {
@@ -37,7 +38,7 @@ class FirebaseAuthRepositoryImpl implements AuthRepository {
   @override
   Future<Credential> signUpEmail(String email) async {
     var credential = await _auth.createUserWithEmailAndPassword(email: email, password: "password").then((value) async {
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 5));
       return value;
     }).then((firebaseCredential) async {
       var user = firebaseCredential.user!;

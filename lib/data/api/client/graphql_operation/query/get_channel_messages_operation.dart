@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-
 import '../graphql_operation.dart';
 
 class GetChannelMessagesQuery extends GraphQLOperation {

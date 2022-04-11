@@ -1,7 +1,6 @@
-import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/domain/model/user.dart';
+import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
 import 'package:flutter/material.dart';
 
 class FriendsPanel extends StatelessWidget {
@@ -32,7 +31,7 @@ class FriendsPanel extends StatelessWidget {
                     Wrap(
                       spacing: 30,
                       crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
+                      children: const [
                         ImageIcon(
                           AssetImage(AppIcons.direct_message_icon),
                           size: 16,
@@ -62,12 +61,12 @@ class FriendsPanel extends StatelessWidget {
                           child: AppButton(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             onPressed: () {},
-                            size: Size(double.infinity, 60),
+                            size: const Size(double.infinity, 60),
                             color: Theme.of(context).colorScheme.primary,
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                CircleContainer(size: Size(40, 40), color: Colors.white),
+                                const CircleContainer(size: Size(40, 40), color: Colors.white),
                                 Expanded(
                                   child: Container(
                                     padding: const EdgeInsets.only(left: 15),
@@ -81,13 +80,16 @@ class FriendsPanel extends StatelessWidget {
                                         ),
                                         Text(
                                           "Sync your contacts and start chatting",
-                                          style: Theme.of(context).textTheme.caption?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption
+                                              ?.copyWith(color: Theme.of(context).colorScheme.onPrimary),
                                         ),
                                       ],
                                     ),
                                   ),
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_forward_ios_rounded,
                                 )
                               ],
@@ -118,7 +120,7 @@ class FriendsPanel extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Row(
                             children: [
-                              CircleContainer(
+                              const CircleContainer(
                                 size: Size(40, 40),
                                 color: Colors.white,
                               ),
@@ -128,7 +130,7 @@ class FriendsPanel extends StatelessWidget {
                                   child: Wrap(
                                     direction: Axis.vertical,
                                     spacing: 5,
-                                    children: [
+                                    children: const [
                                       // Text("${element.credential.email}"),
                                       // Text(
                                       //   "${element.status.value()}",
@@ -147,10 +149,10 @@ class FriendsPanel extends StatelessWidget {
                                   spacing: 10,
                                   children: [
                                     CircleContainer(
-                                      size: Size(35, 35),
+                                      size: const Size(35, 35),
                                       child: IconButton(
                                         iconSize: 1,
-                                        icon: ImageIcon(
+                                        icon: const ImageIcon(
                                           AssetImage(AppIcons.phone_icon),
                                           size: 13,
                                         ),
@@ -159,10 +161,10 @@ class FriendsPanel extends StatelessWidget {
                                       color: Theme.of(context).colorScheme.primary,
                                     ),
                                     CircleContainer(
-                                      size: Size(35, 35),
+                                      size: const Size(35, 35),
                                       child: IconButton(
                                         iconSize: 1,
-                                        icon: ImageIcon(
+                                        icon: const ImageIcon(
                                           AssetImage(AppIcons.direct_message_icon),
                                           size: 13,
                                         ),

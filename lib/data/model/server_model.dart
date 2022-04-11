@@ -17,7 +17,7 @@ class ServerModel {
   @JsonKey(name: "imageUrl")
   final String? imageUrl;
 
-  @JsonKey(name: "channels", defaultValue: const <ChannelModel>[])
+  @JsonKey(name: "channels", defaultValue: <ChannelModel>[])
   final List<ChannelModel> channels;
 
   const ServerModel(this.id, this.name, this.imageUrl, this.userGroupRef, this.channels);

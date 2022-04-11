@@ -3,7 +3,6 @@ import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,7 +24,7 @@ class LandingPanel extends StatefulWidget {
 }
 
 class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMixin {
-  late OverlapSwipeableStackController _pageController = OverlapSwipeableStackController(vsync: this);
+  late final OverlapSwipeableStackController _pageController = OverlapSwipeableStackController(vsync: this);
 
   @override
   void dispose() {
@@ -45,7 +44,7 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
             channelViewController: _pageController,
             leftPage: Row(
               children: [
-                ServerListPanel(),
+                const ServerListPanel(),
                 StreamBuilder(
                   stream: MergeStream([
                     serverBloc.eventStream.whereType<ServerEventLoadServer>(),
@@ -61,20 +60,20 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
                                 child: Container(
                                   margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width * 0.125) + 5),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                                    borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
                                     color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               );
                             },
                             loaded: (server, recentChannel) {
-                              return ServerChannelListPanel();
+                              return const ServerChannelListPanel();
                             },
                           );
                         },
                       );
                     } else {
-                      return DirectMessageListPanel();
+                      return const DirectMessageListPanel();
                     }
                   },
                 ),
@@ -84,7 +83,7 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
               builder: (_, state) {
                 return state.maybeWhen(
                   orElse: () {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(color: Colors.white),
                     );
                   },
@@ -94,10 +93,8 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
                     );
                   },
                   error: (e, st) {
-                    return Container(
-                      child: Center(
-                        child: Text("Something's wrong when retrieving channel data."),
-                      ),
+                    return const Center(
+                      child: Text("Something's wrong when retrieving channel data."),
                     );
                   },
                 );
@@ -109,27 +106,21 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
               builder: (_, state) {
                 return state.when(
                   loading: () {
-                    return Center(
-                      child: Container(
-                        child: CircularProgressIndicator(color: Colors.white),
-                      ),
+                    return const Center(
+                      child: CircularProgressIndicator(color: Colors.white),
                     );
                   },
                   loaded: (channel) {
                     return ChannelInfoPanel(channel: channel);
                   },
                   error: (e, st) {
-                    return Container(
-                      child: Center(
-                        child: Text("Something's wrong when retrieving channel data."),
-                      ),
+                    return const Center(
+                      child: Text("Something's wrong when retrieving channel data."),
                     );
                   },
                   empty: () {
-                    return Container(
-                      child: Center(
-                        child: Text("Channel empty."),
-                      ),
+                    return const Center(
+                      child: Text("Channel empty."),
                     );
                   },
                 );
@@ -143,9 +134,9 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
             right: 0,
             bottom: 0,
             child: SlideTransition(
-              child: AppNavigationBar(),
-              position:
-                  Tween<Offset>(begin: Offset(0, 1), end: Offset.zero).animate(_pageController.navBarAnimController),
+              child: const AppNavigationBar(),
+              position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+                  .animate(_pageController.navBarAnimController),
             ),
           ),
         ],

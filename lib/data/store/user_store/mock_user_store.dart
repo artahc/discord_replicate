@@ -5,9 +5,9 @@ import 'package:injectable/injectable.dart';
 import 'package:mocktail/mocktail.dart';
 
 @Named("DB_USER")
-@Injectable(as: Store<User>, env: [Env.TEST])
-class MockHiveUserStore extends Mock implements Store<User> {}
+@Injectable(as: Store<String, User>, env: [Env.TEST])
+class MockHiveUserStore extends Mock implements Store<String, User> {}
 
 @Named("CACHE_USER")
-@Injectable(as: Store<User>, env: [Env.TEST])
-class MockCacheUserStore extends Mock implements Store<User> {}
+@Injectable(as: Store<String, User>, env: [Env.TEST])
+class MockCacheUserStore extends Mock implements Store<String, User> {}

@@ -1,6 +1,5 @@
 import 'package:discord_replicate/domain/model/member.dart';
-import 'package:discord_replicate/domain/model/user_group.dart';
-
+import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:get_it/get_it.dart';
 
 abstract class UserGroupRepository implements Disposable {
@@ -9,7 +8,8 @@ abstract class UserGroupRepository implements Disposable {
   Future<Member> getMemberById(String userGroupId, String uid);
   Future<List<Member>> getAllMember(String userGroupId);
 
-  Future<void> deleteUserGroupById(String userGroupId);
   Future<void> deleteMember(String userGroupId, String uid);
   Future<void> deleteAllMembers(String userGroupId, List<String> uids);
+
+  Stream<ObservableEntityEvent<String, Member>> observeChanges(String userGroupId);
 }

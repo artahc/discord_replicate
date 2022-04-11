@@ -1,12 +1,10 @@
-import 'package:discord_replicate/presentation/constants/icon_constants.dart';
-import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
+import 'package:discord_replicate/presentation/constants/icon_constants.dart';
+import 'package:discord_replicate/presentation/route_transition/app_transition.dart';
 import 'package:discord_replicate/presentation/view/home/direct_message_tile.dart';
 import 'package:discord_replicate/presentation/view/home/search_panel.dart';
-import 'package:discord_replicate/presentation/route_transition/app_transition.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,13 +26,13 @@ class DirectMessageListPanel extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width * 0.125) + 5),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
                 color: Theme.of(context).colorScheme.primary,
               ),
               child: Column(
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 15, bottom: 20, right: 15, left: 15),
+                    margin: const EdgeInsets.only(top: 15, bottom: 20, right: 15, left: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -43,7 +41,7 @@ class DirectMessageListPanel extends StatelessWidget {
                           "Direct Message",
                           style: Theme.of(context).textTheme.headline6,
                         ),
-                        ImageIcon(
+                        const ImageIcon(
                           AssetImage(AppIcons.direct_message_icon),
                           size: 18,
                         ),
@@ -52,7 +50,7 @@ class DirectMessageListPanel extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      var route = SlideUpTransition(nextPage: SearchPanel(), fullscreenDialog: true);
+                      var route = SlideUpTransition(nextPage: const SearchPanel(), fullscreenDialog: true);
                       navBloc.push(context, route, true);
                     },
                     child: Container(
@@ -74,7 +72,7 @@ class DirectMessageListPanel extends StatelessWidget {
                                   color: Theme.of(context).inputDecorationTheme.hintStyle?.color,
                                 ),
                           ),
-                          ImageIcon(AssetImage(AppIcons.search_icon)),
+                          const ImageIcon(AssetImage(AppIcons.search_icon)),
                         ],
                       ),
                     ),
@@ -111,7 +109,7 @@ class DirectMessageListPanel extends StatelessWidget {
 
 class ClampingScrollBehavior extends ScrollBehavior {
   @override
-  ScrollPhysics getScrollPhysics(BuildContext context) => ClampingScrollPhysics();
+  ScrollPhysics getScrollPhysics(BuildContext context) => const ClampingScrollPhysics();
 
   @override
   Widget buildOverscrollIndicator(BuildContext context, Widget child, ScrollableDetails details) {

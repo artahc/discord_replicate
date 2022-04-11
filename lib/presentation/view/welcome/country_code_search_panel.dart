@@ -1,6 +1,5 @@
 import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
 import 'package:flutter/material.dart';
 
 class CountryCodeSearchPanel extends StatefulWidget {
@@ -25,7 +24,7 @@ class _CountryCodeSearchPanelState extends State<CountryCodeSearchPanel> {
             prefixIcon: Container(
               padding: const EdgeInsets.only(right: 15, left: 15),
               child: ImageIcon(
-                AssetImage(AppIcons.search_icon),
+                const AssetImage(AppIcons.search_icon),
                 size: 15,
                 color: IconTheme.of(context).color,
               ),
@@ -42,13 +41,13 @@ class _CountryCodeSearchPanelState extends State<CountryCodeSearchPanel> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Country"),
+                      const Text("Country"),
                       Text("+0$index"),
                     ],
                   ),
                 );
               },
-              separatorBuilder: (_, index) => SizedBox(
+              separatorBuilder: (_, index) => const SizedBox(
                 height: 1,
               ),
               itemCount: 30,

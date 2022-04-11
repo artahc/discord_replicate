@@ -5,9 +5,9 @@ import 'package:injectable/injectable.dart';
 import 'package:mocktail/mocktail.dart';
 
 @Named("DB_SERVER")
-@Injectable(as: Store<Server>, env: [Env.TEST])
-class MockHiveServerStore extends Mock implements Store<Server> {}
+@Injectable(as: Store<String, Server>, env: [Env.TEST])
+class MockHiveServerStore extends Mock implements Store<String, Server> {}
 
 @Named("CACHE_SERVER")
-@Injectable(as: Store<Server>, env: [Env.TEST])
-class MockCacheServerStore extends Mock implements Store<Server> {}
+@Injectable(as: Store<String, Server>, env: [Env.TEST])
+class MockCacheServerStore extends Mock implements Store<String, Server> {}

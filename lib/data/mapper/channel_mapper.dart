@@ -5,8 +5,6 @@ import 'package:discord_replicate/data/mapper/member_mapper.dart';
 import 'package:discord_replicate/data/mapper/message_mapper.dart';
 import 'package:discord_replicate/data/model/channel_model.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
-import 'package:discord_replicate/domain/model/member.dart';
-import 'package:discord_replicate/domain/model/message.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable()

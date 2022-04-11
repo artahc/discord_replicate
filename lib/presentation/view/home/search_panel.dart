@@ -1,10 +1,9 @@
 import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SearchPanel extends StatefulWidget {
   final Widget? body;
@@ -17,7 +16,7 @@ class SearchPanel extends StatefulWidget {
 }
 
 class _SearchPanelState extends State<SearchPanel> {
-  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
+  late final NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +30,24 @@ class _SearchPanelState extends State<SearchPanel> {
                 height: 50,
                 padding: const EdgeInsets.all(0),
                 margin: const EdgeInsets.only(right: 8, left: 8, top: 8),
-                prefixIcon: Container(
+                prefixIcon: SizedBox(
                   height: 50,
                   width: 50,
                   child: IconButton(
                     color: Theme.of(context).iconTheme.color,
-                    icon: Icon(Icons.arrow_back),
+                    icon: const Icon(Icons.arrow_back),
                     onPressed: () {
                       _navBloc.pop(context, false);
                     },
                   ),
                 ),
                 hintText: "Where would you like to go?",
-                suffixIcon: Container(
+                suffixIcon: SizedBox(
                   height: 50,
                   width: 50,
                   child: IconButton(
                     color: Theme.of(context).iconTheme.color,
-                    icon: Icon(Icons.filter_list),
+                    icon: const Icon(Icons.filter_list),
                     onPressed: () {},
                   ),
                 ),
@@ -61,10 +60,10 @@ class _SearchPanelState extends State<SearchPanel> {
                   scrollDirection: Axis.horizontal,
                   itemCount: 15,
                   separatorBuilder: (_, __) {
-                    return SizedBox(width: 10);
+                    return const SizedBox(width: 10);
                   },
                   itemBuilder: (_, index) {
-                    return Center(
+                    return const Center(
                         child: CircleContainer(
                       color: Colors.white,
                       size: Size(45, 45),
@@ -89,7 +88,7 @@ class _SearchPanelState extends State<SearchPanel> {
                                 ),
                           ),
                         ),
-                        _SearchChannelTile(
+                        const _SearchChannelTile(
                             data: Channel(
                           id: "",
                           name: "",
@@ -127,13 +126,13 @@ class _SearchChannelTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 55,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
+          const Padding(
+            padding: EdgeInsets.only(left: 15),
             child: Icon(
               Icons.grid_3x3_rounded,
               size: 25,

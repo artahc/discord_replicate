@@ -12,7 +12,7 @@ class ObserveUserChangesUseCaseImpl implements ObserveUserChangesUseCase {
   ObserveUserChangesUseCaseImpl(this._userRepo);
 
   @override
-  Stream<ObservableEntityEvent<User>> invoke({String? userId}) async* {
+  Stream<ObservableEntityEvent<String, User>> invoke({String? userId}) async* {
     yield* _userRepo.observeChanges(userId: userId);
   }
 }

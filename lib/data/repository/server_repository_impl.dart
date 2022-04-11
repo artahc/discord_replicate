@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:custom_extension/custom_extensions.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/application/config/injection.dart';
 
@@ -16,8 +17,8 @@ import 'package:rxdart/rxdart.dart';
 @Singleton(as: ServerRepository, env: [Env.PROD, Env.DEV])
 class ServerRepositoryImpl implements ServerRepository {
   final ServerRemoteApi _api;
-  final Store<Server> _db;
-  final Store<Server> _cache;
+  final Store<String, Server> _db;
+  final Store<String, Server> _cache;
 
   ServerRepositoryImpl(
     this._api,
@@ -28,22 +29,21 @@ class ServerRepositoryImpl implements ServerRepository {
   @override
   Future<Server> getServerById(String id) async {
     var memory = LazyStream(() {
-      return _cache.load(id).asStream().where((server) => server != null).doOnData((server) {
+      return Future.sync(() => _cache.load(id)).asStream().where((server) => server != null).doOnData((server) {
         log.i("Server found on memory cache. $server");
       });
     });
 
     var local = LazyStream(
-      () async => _db.load(id).asStream().where((server) => server != null).doOnData((server) async {
-        await _cache.save(server!);
+      () async => Future.sync(() => _db.load(id)).asStream().where((server) => server != null).doOnData((server) async {
+        await saveServer(server!);
         log.i("Server found on local database. $server");
       }),
     );
 
     var remote = LazyStream(() async {
       return _api.getServerById(id).asStream().doOnData((server) async {
-        await _db.save(server);
-        await _cache.save(server);
+        await saveServer(server);
         log.i("Server retrieved from remote API. $server");
       });
     });
@@ -53,15 +53,16 @@ class ServerRepositoryImpl implements ServerRepository {
   }
 
   @override
-  Future saveServer(Server server) async {
-    await _db.save(server);
-    await _cache.save(server);
+  Future<void> saveServer(Server server) async {
+    await _db.save(server.id, server);
+    await _cache.save(server.id, server);
   }
 
   @override
-  Future saveAllServers(List<Server> servers) async {
-    await _db.saveAll(servers);
-    await _cache.saveAll(servers);
+  Future<void> saveAllServers(List<Server> servers) async {
+    Map<String, Server> maps = servers.toMap(keyConverter: (e) => e.id, valueConverter: (e) => e);
+    await _db.saveAll(maps);
+    await _cache.saveAll(maps);
   }
 
   @override
@@ -73,8 +74,8 @@ class ServerRepositoryImpl implements ServerRepository {
   @override
   Future<Server> joinServer(String serverId) {
     return _api.joinServer(serverId).then((server) async {
-      await _cache.save(server);
-      await _db.save(server);
+      await _cache.save(server.id, server);
+      await _db.save(server.id, server);
 
       return server;
     });

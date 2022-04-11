@@ -1,13 +1,12 @@
 import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
 import 'package:flutter/material.dart';
 
 class DirectMessageTile extends StatelessWidget {
   final Channel channel;
   final Function() onPressed;
 
-  DirectMessageTile({required this.channel, required this.onPressed});
+  const DirectMessageTile({Key? key, required this.channel, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class DirectMessageTile extends StatelessWidget {
     return AppButton(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       onPressed: onPressed,
-      size: Size(double.infinity, 55),
+      size: const Size(double.infinity, 55),
       color: Colors.transparent,
       splashColor: theme.backgroundColor,
       highlightColor: theme.backgroundColor,
@@ -24,11 +23,11 @@ class DirectMessageTile extends StatelessWidget {
         children: [
           CircleContainer(
             color: Theme.of(context).buttonTheme.colorScheme?.primary,
-            size: Size(40, 40),
-            child: SizedBox(),
+            size: const Size(40, 40),
+            child: const SizedBox(),
           ),
           Container(
-            margin: EdgeInsets.only(left: 15),
+            margin: const EdgeInsets.only(left: 15),
             child: Center(
               child: Wrap(
                 spacing: 2,

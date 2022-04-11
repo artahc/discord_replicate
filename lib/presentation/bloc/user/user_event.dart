@@ -1,4 +1,3 @@
-import 'package:discord_replicate/domain/model/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'generated/user_event.freezed.dart';

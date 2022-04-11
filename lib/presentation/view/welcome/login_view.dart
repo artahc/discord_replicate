@@ -2,7 +2,6 @@ import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dar
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,11 +15,11 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  late TextEditingController _identityCtrl = TextEditingController();
-  late TextEditingController _passwordCtrl = TextEditingController();
+  late final TextEditingController _identityCtrl = TextEditingController();
+  late final TextEditingController _passwordCtrl = TextEditingController();
 
-  late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
-  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
+  late final AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
+  late final NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
   @override
   void initState() {
@@ -50,7 +49,7 @@ class _LoginViewState extends State<LoginView> {
 
   void _signOut() {
     _navBloc.pop(context, true);
-    _authBloc.add(AuthEvent.signOut());
+    _authBloc.add(const AuthEvent.signOut());
   }
 
   @override
@@ -74,7 +73,7 @@ class _LoginViewState extends State<LoginView> {
       builder: (_, state) {
         return state.maybeWhen(
           authenticating: () {
-            return Material(
+            return const Material(
               child: Center(
                 child: CircularProgressIndicator(
                   color: Colors.white,
@@ -93,7 +92,7 @@ class _LoginViewState extends State<LoginView> {
                   height: 45,
                   child: IconButton(
                     splashRadius: 20,
-                    icon: Icon(Icons.arrow_back),
+                    icon: const Icon(Icons.arrow_back),
                     onPressed: () {
                       _signOut();
                     },
@@ -115,7 +114,7 @@ class _LoginViewState extends State<LoginView> {
                             ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       child: Text(
                         "We're so excited to see you again!",
@@ -149,7 +148,10 @@ class _LoginViewState extends State<LoginView> {
                         child: Text(
                           "Forgot your password?",
                           textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
                         ),
                         alignment: Alignment.centerLeft,
                       ),
@@ -160,7 +162,10 @@ class _LoginViewState extends State<LoginView> {
                         child: Text(
                           "Use a password manager?",
                           textAlign: TextAlign.start,
-                          style: Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption!
+                              .copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
                         ),
                         alignment: Alignment.centerLeft,
                       ),
@@ -168,20 +173,20 @@ class _LoginViewState extends State<LoginView> {
                     AppButton(
                       margin: const EdgeInsets.only(top: 15),
                       onPressed: _signIn,
-                      child: Text("Login"),
+                      child: const Text("Login"),
                     ),
                     DropdownButton(
                       dropdownColor: Colors.deepOrange,
                       underline: Container(),
                       isExpanded: true,
                       value: _identityCtrl.text,
-                      hint: Text("Select account"),
+                      hint: const Text("Select account"),
                       items: <Tuple2<String, String>>[
-                        Tuple2("artahc@gmail.com", "artahc123"),
-                        Tuple2("artahace@gmail.com", "artahc123123"),
-                        Tuple2("test@test.t", "test123"),
-                        Tuple2("test2@gmail.com", "password"),
-                        Tuple2("test17@gmail.com", "password"),
+                        const Tuple2("artahc@gmail.com", "artahc123"),
+                        const Tuple2("artahace@gmail.com", "artahc123123"),
+                        const Tuple2("test@test.t", "test123"),
+                        const Tuple2("test2@gmail.com", "password"),
+                        const Tuple2("test17@gmail.com", "password"),
                       ].map<DropdownMenuItem<String>>((e) {
                         return DropdownMenuItem(
                           child: Text(e.item1),

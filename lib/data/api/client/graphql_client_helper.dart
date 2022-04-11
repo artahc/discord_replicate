@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:custom_exception/custom_exception.dart';
 import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
-
 import 'package:get_it/get_it.dart';
 import 'package:graphql/client.dart';
 import 'package:injectable/injectable.dart';
@@ -88,6 +87,6 @@ class GraphQLClientHelper with Disposable {
 
   @override
   FutureOr onDispose() {
-    this._client.resetStore();
+    _client.resetStore();
   }
 }

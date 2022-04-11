@@ -6,9 +6,8 @@ import 'package:discord_replicate/presentation/bloc/channel/channel_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/direct_message/direct_message_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/server/server_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'empty_landing_panel.dart';
 import 'landing_panel.dart';
@@ -38,20 +37,20 @@ class LandingView extends StatelessWidget {
             state.whenOrNull(
               error: (e) async {
                 log.e("Error state received from UserBloc", e);
-                authBloc.add(AuthEvent.signOut());
+                authBloc.add(const AuthEvent.signOut());
               },
             );
           },
           builder: (_, state) {
             return state.maybeWhen(
               orElse: () {
-                return Center(
+                return const Center(
                   child: Text("Loading user."),
                 );
               },
               loaded: (user) {
                 if (user.privateChannels.isEmpty && user.servers.isEmpty) {
-                  return EmptyLandingPanel();
+                  return const EmptyLandingPanel();
                 } else {
                   return LandingPanel(user: user);
                 }

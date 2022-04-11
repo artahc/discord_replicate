@@ -1,10 +1,9 @@
 import 'package:discord_replicate/application/config/hive.config.dart';
 import 'package:discord_replicate/application/config/injection.dart';
-import 'package:discord_replicate/presentation/theme/app_theme.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
-
+import 'package:discord_replicate/presentation/theme/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.transparent,
     statusBarColor: Colors.transparent,
   ));
@@ -26,6 +25,8 @@ Future main() async {
 
 class Application extends StatelessWidget {
   final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey();
+
+  Application({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

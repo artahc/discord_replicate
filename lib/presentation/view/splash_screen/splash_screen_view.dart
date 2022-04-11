@@ -1,9 +1,8 @@
-import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
-
+import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,12 +14,12 @@ class SplashScreenView extends StatefulWidget {
 }
 
 class _SplashScreenViewState extends State<SplashScreenView> {
-  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
-  late AuthBloc _authBloc = BlocProvider.of(context);
+  late final NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
+  late final AuthBloc _authBloc = BlocProvider.of(context);
 
   @override
   void initState() {
-    _authBloc.add(AuthEvent.initial());
+    _authBloc.add(const AuthEvent.initial());
     super.initState();
   }
 
@@ -46,8 +45,8 @@ class _SplashScreenViewState extends State<SplashScreenView> {
           color: Theme.of(context).backgroundColor,
           child: Center(
             child: Container(
-              constraints: BoxConstraints(maxHeight: 200, maxWidth: 200),
-              child: ImageIcon(
+              constraints: const BoxConstraints(maxHeight: 200, maxWidth: 200),
+              child: const ImageIcon(
                 AssetImage(AppIcons.discord_icon),
                 size: 100,
               ),

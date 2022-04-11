@@ -2,7 +2,6 @@ import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dar
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,8 +17,8 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> with TickerProviderStateMixin {
-  late AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
-  late NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
+  late final AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
+  late final NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
   late TabController _tabCtrl;
   final PanelController _bottomSheetCtrl = PanelController();
@@ -29,7 +28,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
   RegisterOptions _registerOption = RegisterOptions.Phone;
 
   void _showCountryCodeBottomSheet() {
-    _bottomSheetCtrl.animatePanelToPosition(0.5, duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+    _bottomSheetCtrl.animatePanelToPosition(0.5, duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
   }
 
   @override
@@ -55,6 +54,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (_, state) {
@@ -75,7 +75,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
       builder: (_, state) {
         return state.maybeWhen(
           authenticating: () {
-            return Material(
+            return const Material(
               child: Center(
                 child: CircularProgressIndicator(
                   color: Colors.white,
@@ -97,7 +97,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                 backdropOpacity: 1,
                 borderRadius: BorderRadius.circular(5),
                 backdropTapClosesPanel: true,
-                boxShadow: [],
+                boxShadow: const [],
                 snapPoint: 0.5,
                 renderPanelSheet: true,
                 panelSnapping: true,
@@ -113,7 +113,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                       width: 45,
                       height: 45,
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back),
+                        icon: const Icon(Icons.arrow_back),
                         onPressed: () {
                           _navBloc.pop(context, true);
                         },
@@ -175,13 +175,13 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                             return Row(
                               children: [
                                 AnimatedSwitcher(
-                                  duration: Duration(milliseconds: 150),
+                                  duration: const Duration(milliseconds: 150),
                                   child: _registerOption == RegisterOptions.Email
                                       ? Container(
-                                          key: ValueKey(0),
+                                          key: const ValueKey(0),
                                         )
                                       : Container(
-                                          key: ValueKey(1),
+                                          key: const ValueKey(1),
                                           alignment: Alignment.centerLeft,
                                           width: 100,
                                           height: 55,
@@ -204,15 +204,18 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                                                 children: [
                                                   Text(
                                                     "Country Code",
-                                                    style: Theme.of(context).inputDecorationTheme.floatingLabelStyle?.copyWith(
+                                                    style: Theme.of(context)
+                                                        .inputDecorationTheme
+                                                        .floatingLabelStyle
+                                                        ?.copyWith(
                                                           fontSize: 10,
                                                           height: 1,
                                                           color: Theme.of(context).colorScheme.onPrimary,
                                                         ),
                                                     overflow: TextOverflow.ellipsis,
                                                   ),
-                                                  SizedBox(height: 5),
-                                                  Text(
+                                                  const SizedBox(height: 5),
+                                                  const Text(
                                                     "+62",
                                                     style: TextStyle(
                                                       height: 1,
@@ -238,7 +241,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                                 Flexible(
                                   flex: 1,
                                   child: AnimatedContainer(
-                                    duration: Duration(seconds: 1),
+                                    duration: const Duration(seconds: 1),
                                     child: AppInputField(
                                       controller: _registerCtrl,
                                       labelText: _registerOption.name,
@@ -255,7 +258,10 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                             child: Text(
                               "View our Privacy Policy",
                               textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.caption!.copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .caption!
+                                  .copyWith(letterSpacing: -0.2, color: Colors.lightBlue),
                             ),
                             alignment: Alignment.centerLeft,
                           ),
@@ -271,7 +277,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
                               ),
-                              child: Text("Next"),
+                              child: const Text("Next"),
                               onPressed: _signUp,
                             ),
                           ),

@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-extension ListToKeyValuePair<T> on List<T> {
+extension ListToKeyValuePair<T> on Iterable<T> {
   Map<K, V> toMap<K, V>({
     required dynamic Function(T) keyConverter,
     required dynamic Function(T) valueConverter,

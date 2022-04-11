@@ -18,10 +18,10 @@ class UserModel {
   @JsonKey(name: "avatarUrl")
   final String? avatarUrl;
 
-  @JsonKey(name: "servers", defaultValue: const <ServerModel>[])
+  @JsonKey(name: "servers", defaultValue: <ServerModel>[])
   final List<ServerModel> servers;
 
-  @JsonKey(name: "privateChannels", defaultValue: const <ChannelModel>[])
+  @JsonKey(name: "privateChannels", defaultValue: <ChannelModel>[])
   final List<ChannelModel> privateChannels;
 
   const UserModel(this.id, this.name, this.about, this.avatarUrl, this.servers, this.privateChannels);

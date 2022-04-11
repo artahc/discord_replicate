@@ -1,5 +1,4 @@
 import 'package:custom_extension/custom_extensions.dart';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
@@ -26,8 +25,9 @@ class OverlapSwipeableStackController {
   Offset _startOffset = Offset.zero;
 
   OverlapSwipeableStackController({required TickerProvider vsync}) {
-    pageAnimController = AnimationController(duration: Duration(milliseconds: _swipeDuration), vsync: vsync);
-    navBarAnimController = AnimationController(duration: Duration(milliseconds: _navbarAnimDuration), vsync: vsync);
+    pageAnimController = AnimationController(duration: const Duration(milliseconds: _swipeDuration), vsync: vsync);
+    navBarAnimController =
+        AnimationController(duration: const Duration(milliseconds: _navbarAnimDuration), vsync: vsync);
 
     pageStateSubject.stream.listen((s) {
       currentPageState = s;
@@ -37,7 +37,7 @@ class OverlapSwipeableStackController {
       currentSwipeDirection = s;
       if (currentPageState == PageState.OnCenter) {
         tween.begin = Offset.zero;
-        tween.end = currentSwipeDirection == SwipeDirection.Right ? Offset(0.875, 0) : Offset(-0.875, 0);
+        tween.end = currentSwipeDirection == SwipeDirection.Right ? const Offset(0.875, 0) : const Offset(-0.875, 0);
       }
     });
   }
@@ -70,8 +70,9 @@ class OverlapSwipeableStackController {
   void onHorizontalDragEnd(DragEndDetails d) {
     if (pageAnimController.value > _swipeThreshold) {
       pageAnimController.animateTo(1, curve: Curves.easeInSine).whenComplete(() {
-        if (currentPageState == PageState.OnCenter)
+        if (currentPageState == PageState.OnCenter) {
           pageStateSubject.add(currentSwipeDirection == SwipeDirection.Right ? PageState.OnRight : PageState.OnLeft);
+        }
       });
     } else {
       pageAnimController.animateTo(0, curve: Curves.easeInSine).whenComplete(() {

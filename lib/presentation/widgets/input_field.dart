@@ -46,10 +46,10 @@ class AppInputField extends StatelessWidget {
       child: TextField(
         controller: controller,
         cursorWidth: 3,
-        cursorRadius: Radius.circular(15),
+        cursorRadius: const Radius.circular(15),
         obscureText: obscureText,
         maxLines: 1,
-        style: TextStyle(
+        style: const TextStyle(
           height: 1,
         ),
         textAlignVertical: TextAlignVertical.center,
@@ -58,9 +58,9 @@ class AppInputField extends StatelessWidget {
           hintText: hintText,
           hintStyle: hintStyle ?? theme.inputDecorationTheme.hintStyle,
           prefixIcon: prefixIcon,
-          prefixIconConstraints: BoxConstraints(maxWidth: 50, maxHeight: 50),
+          prefixIconConstraints: const BoxConstraints(maxWidth: 50, maxHeight: 50),
           suffixIcon: suffixIcon,
-          suffixIconConstraints: BoxConstraints(maxWidth: 100, maxHeight: 100),
+          suffixIconConstraints: const BoxConstraints(maxWidth: 100, maxHeight: 100),
           contentPadding: padding ?? theme.inputDecorationTheme.contentPadding,
         ),
       ),

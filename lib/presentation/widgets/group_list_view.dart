@@ -1,6 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
 
 import 'app_widget.dart';
 
@@ -27,8 +28,8 @@ class GroupListView<T, G> extends StatefulWidget {
 }
 
 class _GroupListViewState<T, G> extends State<GroupListView<T, G>> {
-  late var _scrollController = ScrollController();
-  late List<dynamic> _flattenedElements = _flattenElements();
+  late final _scrollController = ScrollController();
+  late final List<dynamic> _flattenedElements = _flattenElements();
 
   List<dynamic> _flattenElements() {
     var grouppedElement = widget.elements.groupListsBy((e) => widget.groupBy(e));

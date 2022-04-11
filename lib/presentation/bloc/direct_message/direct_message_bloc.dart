@@ -4,7 +4,6 @@ import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.d
 import 'package:discord_replicate/presentation/bloc/user/user_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:rxdart/rxdart.dart';
 
 import 'direct_message_event.dart';
 import 'direct_message_state.dart';
@@ -16,7 +15,7 @@ export 'direct_message_state.dart';
 class DirectMessageBloc extends Bloc<DirectMessageEvent, DirectMessageState> {
   final GetCurrentUserUseCase _getCurrentUserUseCase;
 
-  StreamController<DirectMessageEvent> _eventStream = StreamController.broadcast();
+  final StreamController<DirectMessageEvent> _eventStream = StreamController.broadcast();
   Stream<DirectMessageEvent> get eventStream => _eventStream.stream;
 
   late StreamSubscription _userStateSubscription;
@@ -24,9 +23,9 @@ class DirectMessageBloc extends Bloc<DirectMessageEvent, DirectMessageState> {
   DirectMessageBloc(
     @factoryParam Stream<UserState> userStateStream,
     this._getCurrentUserUseCase,
-  ) : super(DirectMessageState.empty()) {
-    on<DirectMessageEvent>((event, emit) {
-      return event.when(
+  ) : super(const DirectMessageState.empty()) {
+    on<DirectMessageEvent>((event, emit) async {
+      await event.when(
         loadRecent: () => _loadRecent(emit),
       );
     });
@@ -34,7 +33,7 @@ class DirectMessageBloc extends Bloc<DirectMessageEvent, DirectMessageState> {
     _userStateSubscription = userStateStream.listen((state) {
       state.whenOrNull(
         loaded: (user) {
-          if (user.privateChannels.isNotEmpty) add(DirectMessageEvent.loadRecent());
+          if (user.privateChannels.isNotEmpty) add(const DirectMessageEvent.loadRecent());
         },
       );
     });
@@ -54,12 +53,13 @@ class DirectMessageBloc extends Bloc<DirectMessageEvent, DirectMessageState> {
   }
 
   _loadRecent(emit) async {
-    emit(DirectMessageState.loading());
+    emit(const DirectMessageState.loading());
     await _getCurrentUserUseCase.invoke().then((user) {
-      if (user.privateChannels.isEmpty)
-        emit(DirectMessageState.empty());
-      else
+      if (user.privateChannels.isEmpty) {
+        emit(const DirectMessageState.empty());
+      } else {
         emit(DirectMessageState.loaded(user.privateChannels.first));
+      }
     });
   }
 }

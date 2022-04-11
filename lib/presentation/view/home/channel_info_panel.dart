@@ -1,9 +1,8 @@
-import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/domain/model/member.dart';
+import 'package:discord_replicate/presentation/constants/icon_constants.dart';
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:discord_replicate/presentation/widgets/custom_list_view.dart';
-
 import 'package:flutter/material.dart';
 
 class ChannelInfoPanel extends StatefulWidget {
@@ -23,10 +22,10 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
         Expanded(
           child: Container(
             margin: EdgeInsets.only(left: (MediaQuery.of(context).size.width * 0.125) + 5),
-            padding: EdgeInsets.only(right: 5),
+            padding: const EdgeInsets.only(right: 5),
             child: ClipRRect(
               clipBehavior: Clip.antiAlias,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
               child: Container(
                 color: Theme.of(context).colorScheme.secondary,
                 child: Column(
@@ -36,7 +35,7 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                       color: Theme.of(context).colorScheme.primary,
                       alignment: Alignment.center,
                       height: 55,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Row(
                         children: [
                           Expanded(
@@ -46,7 +45,7 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                               style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
-                          ImageIcon(
+                          const ImageIcon(
                             AssetImage(AppIcons.more_icon),
                             size: 18,
                           ),
@@ -55,8 +54,8 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                     ),
                     Container(
                       color: Theme.of(context).colorScheme.primary,
-                      margin: EdgeInsets.only(top: 2),
-                      padding: EdgeInsets.only(top: 14, bottom: 10),
+                      margin: const EdgeInsets.only(top: 2),
+                      padding: const EdgeInsets.only(top: 14, bottom: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -67,13 +66,16 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                               runAlignment: WrapAlignment.center,
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                ImageIcon(
+                                const ImageIcon(
                                   AssetImage(AppIcons.phone_icon),
                                   size: 18,
                                 ),
                                 Text(
                                   "Call",
-                                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                                 ),
                               ],
                             ),
@@ -85,13 +87,16 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                               crossAxisAlignment: WrapCrossAlignment.center,
                               runAlignment: WrapAlignment.center,
                               children: [
-                                ImageIcon(
+                                const ImageIcon(
                                   AssetImage(AppIcons.video_icon),
                                   size: 20,
                                 ),
                                 Text(
                                   "Video",
-                                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                                 ),
                               ],
                             ),
@@ -103,13 +108,16 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                               crossAxisAlignment: WrapCrossAlignment.center,
                               runAlignment: WrapAlignment.center,
                               children: [
-                                ImageIcon(
+                                const ImageIcon(
                                   AssetImage(AppIcons.notification_icon),
                                   size: 20,
                                 ),
                                 Text(
                                   "Notification",
-                                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                                 ),
                               ],
                             ),
@@ -121,13 +129,16 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                               crossAxisAlignment: WrapCrossAlignment.center,
                               runAlignment: WrapAlignment.center,
                               children: [
-                                ImageIcon(
+                                const ImageIcon(
                                   AssetImage(AppIcons.search_icon),
                                   size: 20,
                                 ),
                                 Text(
                                   "Search",
-                                  style: Theme.of(context).textTheme.caption!.copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                                 ),
                               ],
                             ),
@@ -136,42 +147,40 @@ class _ChannelInfoPanelState extends State<ChannelInfoPanel> {
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        child: CustomListView<Member>(
-                          elements: [],
-                          builder: (_, user, index) {
-                            return ChannelMemberTile(member: user);
-                          },
-                          before: [
-                            AppButton(
-                              size: Size(double.infinity, 60),
-                              onPressed: () {},
-                              highlightColor: Theme.of(context).colorScheme.primary,
-                              splashColor: Theme.of(context).colorScheme.primary,
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.zero,
-                              childAlignment: Alignment.centerLeft,
-                              child: Row(
-                                children: [
-                                  CircleContainer(
-                                    size: Size(35, 35),
-                                    margin: const EdgeInsets.symmetric(horizontal: 15),
-                                    color: Theme.of(context).colorScheme.primary,
-                                    child: Icon(
-                                      Icons.person_add,
-                                      size: 17,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
+                      child: CustomListView<Member>(
+                        elements: const [],
+                        builder: (_, user, index) {
+                          return ChannelMemberTile(member: user);
+                        },
+                        before: [
+                          AppButton(
+                            size: const Size(double.infinity, 60),
+                            onPressed: () {},
+                            highlightColor: Theme.of(context).colorScheme.primary,
+                            splashColor: Theme.of(context).colorScheme.primary,
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.zero,
+                            childAlignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                CircleContainer(
+                                  size: const Size(35, 35),
+                                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                                  color: Theme.of(context).colorScheme.primary,
+                                  child: Icon(
+                                    Icons.person_add,
+                                    size: 17,
+                                    color: Theme.of(context).iconTheme.color,
                                   ),
-                                  Text(
-                                    "Invite Members  ",
-                                    style: Theme.of(context).textTheme.bodyText2,
-                                  ),
-                                ],
-                              ),
+                                ),
+                                Text(
+                                  "Invite Members  ",
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -194,15 +203,15 @@ class ChannelMemberTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppButton(
       onPressed: () {},
-      size: Size(double.infinity, 65),
+      size: const Size(double.infinity, 65),
       highlightColor: Theme.of(context).colorScheme.primary,
       splashColor: Theme.of(context).colorScheme.primary,
       color: Colors.transparent,
       borderRadius: BorderRadius.zero,
       child: Row(
         children: [
-          CircleContainer(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
+          const CircleContainer(
+            margin: EdgeInsets.symmetric(horizontal: 15),
             size: Size(35, 35),
             color: Colors.white,
           ),
