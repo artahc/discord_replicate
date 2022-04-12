@@ -4,7 +4,7 @@ import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/model/server.dart';
 import 'package:discord_replicate/domain/model/user.dart';
 import 'package:discord_replicate/domain/model/user_group.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 Future<void> initHive() async {
