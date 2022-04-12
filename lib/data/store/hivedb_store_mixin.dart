@@ -3,12 +3,15 @@ import 'dart:async';
 import 'package:discord_replicate/application/logger/app_logger.dart';
 import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
 mixin HiveStoreMixin<K, V> on Store<K, V> {
   String get boxName;
 
+  @protected
   @override
+  // ignore: override_on_non_overriding_member
   Future<Box<V>> getBox() async {
     if (!Hive.isBoxOpen(boxName)) {
       return Hive.openBox(boxName);

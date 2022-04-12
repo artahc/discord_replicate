@@ -4,6 +4,6 @@ class Foo extends Bar {
   Foo();
 
   void log() {
-    print(this.bar);
+    print(bar);
   }
 }

@@ -15,7 +15,7 @@ void main() {
     var channelStore = InMemoryChannelStore();
 
     assert(await channelStore.exist("id") == false);
-    await channelStore.save("id", Channel(id: "id", name: "name", userGroupRef: "userGroupRef"));
+    await channelStore.save("id", const Channel(id: "id", name: "name", userGroupRef: "userGroupRef"));
 
     assert(await channelStore.exist("id"));
   });
