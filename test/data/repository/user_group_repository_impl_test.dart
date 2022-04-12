@@ -29,25 +29,22 @@ void main() {
     userGroupRepo = UserGroupRepositoryImpl(api, mockDb, mockCache);
   });
 
-  group("Remote Source", () {
-    test("Load user group from remote source, should be able to parse to UserGroup model.", () async {
-      var userGroupId = "Xs6WqQiH2JuwPJrAZvB9";
-      var expectedResult = UserGroup(id: "Xs6WqQiH2JuwPJrAZvB9", members: {});
+  test("Load user group from remote source, should be able to parse to UserGroup model.", () async {
+    var expectedResult = UserGroup(id: "Xs6WqQiH2JuwPJrAZvB9", members: {});
 
-      // when(() => api.getUserGroupById(userGroupId, 30, null)).thenAnswer((invocation) => Future.value(expectedResult));
-      when(() => mockDb.load(any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockDb.save(any(), any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockCache.load(any())).thenAnswer((invocation) => Future.value(null));
-      when(() => mockCache.save(any(), any())).thenAnswer((invocation) => Future.value(null));
+    // when(() => api.getUserGroupById(userGroupId, 30, null)).thenAnswer((invocation) => Future.value(expectedResult));
+    when(() => mockDb.load(any())).thenAnswer((invocation) => Future.value(null));
+    when(() => mockDb.save(any(), any())).thenAnswer((invocation) => Future.value(null));
+    when(() => mockCache.load(any())).thenAnswer((invocation) => Future.value(null));
+    when(() => mockCache.save(any(), any())).thenAnswer((invocation) => Future.value(null));
 
-      // var user = await userRepo.getUserGroup(userGroupId);
+    // var user = await userRepo.getUserGroup(userGroupId);
 
-      verify(() => mockDb.load(any())).called(1);
-      verify(() => mockDb.save(any(), any())).called(1);
-      verify(() => mockCache.load(any())).called(1);
-      verify(() => mockCache.save(any(), any())).called(1);
+    verify(() => mockDb.load(any())).called(1);
+    verify(() => mockDb.save(any(), any())).called(1);
+    verify(() => mockCache.load(any())).called(1);
+    verify(() => mockCache.save(any(), any())).called(1);
 
-      // expect(user, isA<UserGroup>());
-    });
+    // expect(user, isA<UserGroup>());
   });
 }

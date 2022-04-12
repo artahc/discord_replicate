@@ -65,6 +65,11 @@ mixin HiveStoreMixin<K, V> on Store<K, V> {
   }
 
   @override
+  FutureOr<void> clear() {
+    return getBox().then((box) => box.clear());
+  }
+
+  @override
   FutureOr onDispose() {
     return getBox().then((box) => box.deleteFromDisk()).whenComplete(() {
       log.w("Hive database with box $boxName cleared.");

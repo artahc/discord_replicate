@@ -3,27 +3,34 @@ import 'dart:collection';
 
 import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
+import 'package:flutter/cupertino.dart';
 
 mixin InMemoryStoreMixin<K, V> on Store<K, V> {
-  final SplayTreeMap<K, V> _cache = SplayTreeMap();
+  @protected
+  final SplayTreeMap<K, V> cache = SplayTreeMap();
 
+  @protected
   final StreamController<ObservableEntityEvent<K, V>> _controller = StreamController.broadcast();
+
+  @protected
   Stream<ObservableEntityEvent<K, V>> get stream => _controller.stream;
+
+  @protected
   Sink<ObservableEntityEvent<K, V>> get notifier => _controller.sink;
 
   @override
   FutureOr<V?> load(K key) {
-    return _cache[key];
+    return cache[key];
   }
 
   @override
   FutureOr<Iterable<V>> loadAll() {
-    return _cache.values;
+    return cache.values;
   }
 
   @override
   FutureOr<void> save(K key, V value) {
-    _cache[key] = value;
+    cache[key] = value;
     notifier.add(ObservableEntityEvent<K, V>(EntityEvent.CREATED_OR_UPDATED, key, value));
   }
 
@@ -34,7 +41,7 @@ mixin InMemoryStoreMixin<K, V> on Store<K, V> {
       entries.add(MapEntry(element.key, element.value));
     }
 
-    _cache.addEntries(entries);
+    cache.addEntries(entries);
 
     values.forEach((key, value) {
       notifier.add(ObservableEntityEvent<K, V>(EntityEvent.CREATED_OR_UPDATED, key, value));
@@ -43,15 +50,15 @@ mixin InMemoryStoreMixin<K, V> on Store<K, V> {
 
   @override
   FutureOr<void> delete(K key) {
-    if (_cache.containsKey(key)) {
-      _cache.removeWhere((k, _) => k == key);
+    if (cache.containsKey(key)) {
+      cache.removeWhere((k, _) => k == key);
       notifier.add(ObservableEntityEvent<K, V>(EntityEvent.DELETED, key, null));
     }
   }
 
   @override
   FutureOr<void> deleteAll(Iterable<K> keys) {
-    _cache.removeWhere((key, value) => keys.contains(key));
+    cache.removeWhere((key, value) => keys.contains(key));
     for (var key in keys) {
       notifier.add(ObservableEntityEvent<K, V>(EntityEvent.DELETED, key, null));
     }
@@ -59,7 +66,7 @@ mixin InMemoryStoreMixin<K, V> on Store<K, V> {
 
   @override
   FutureOr<bool> exist(K key) {
-    return _cache.containsKey(key);
+    return cache.containsKey(key);
   }
 
   @override
@@ -74,8 +81,13 @@ mixin InMemoryStoreMixin<K, V> on Store<K, V> {
   }
 
   @override
+  FutureOr<void> clear() {
+    cache.clear();
+  }
+
+  @override
   FutureOr onDispose() async {
-    _cache.clear();
+    cache.clear();
     _controller.close();
   }
 }

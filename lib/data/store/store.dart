@@ -31,6 +31,8 @@ abstract class Store<K, T> implements Disposable {
   /// Check if item with provided id already exist in this store.
   FutureOr<bool> exist(K key);
 
+  FutureOr<void> clear();
+
   /// Observe value if there's any changes (create/update & delete) on the entity in this store.
   ///
   /// If `key` is provided, only emit `ObservableEntityEvent` on item with provided id.
