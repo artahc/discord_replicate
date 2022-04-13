@@ -1,17 +1,14 @@
 import 'dart:async';
 
+import 'package:async/async.dart';
 import 'package:custom_extension/custom_extensions.dart';
 import 'package:discord_replicate/application/config/injection.dart';
-
 import 'package:discord_replicate/data/store/store.dart';
-
 import 'package:discord_replicate/domain/api/user_group_remote_api.dart';
 import 'package:discord_replicate/domain/model/member.dart';
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:discord_replicate/domain/model/user_group.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';
-
-import 'package:async/async.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -29,24 +26,31 @@ class UserGroupRepositoryImpl extends UserGroupRepository {
 
   @override
   Future<Member> getMemberById(String userGroupId, String uid) async {
-    var memory = LazyStream(() {
-      return Future.sync(() => _cache.load(userGroupId)).asStream().map((userGroup) => userGroup?.members[uid]);
+    var cache = LazyStream(() {
+      return Future.sync(() => _cache.load(userGroupId))
+          .asStream()
+          .map((userGroup) => userGroup?.members[uid])
+          .where((event) => event != null);
     });
 
-    var disk = LazyStream(() {
-      return Future.sync(() => _db.load(userGroupId)).asStream().map((userGroup) => userGroup?.members[uid]);
+    var db = LazyStream(() {
+      return Future.sync(() => _db.load(userGroupId))
+          .asStream()
+          .map((userGroup) => userGroup?.members[uid])
+          .where((event) => event != null);
     });
 
     var remote = LazyStream(() {
-      return _api.getUserGroupById(userGroupId, 30, null).asStream().doOnData((response) async {
+      return _api.getUserGroupById(userGroupId, 30, null).asStream().asyncMap((response) async {
         var userGroup = UserGroup.fromMembers(id: userGroupId, members: response.items);
-
         await _db.save(userGroup.id, userGroup);
         await _cache.save(userGroup.id, userGroup);
-      }).asyncMap((event) => event.items.where((e) => e.uid == uid).first);
+
+        return response.items;
+      }).map((members) => members.firstWhere((element) => element.uid == uid));
     });
 
-    var result = await ConcatStream([memory, disk, remote]).firstWhere((element) => element != null);
+    var result = await ConcatStream([cache, db, remote]).firstWhere((element) => element != null);
 
     return result!;
   }

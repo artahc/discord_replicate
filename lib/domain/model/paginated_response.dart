@@ -1,5 +1,5 @@
 class PaginationResponse<T> {
-  final List<T> items;
+  final Iterable<T> items;
   final bool hasMore;
   final dynamic cursor;
 

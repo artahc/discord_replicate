@@ -12,11 +12,11 @@ mixin HiveStoreMixin<K, V> on Store<K, V> {
   @protected
   @override
   // ignore: override_on_non_overriding_member
-  Future<Box<V>> getBox() async {
+  Future<LazyBox<V>> getBox() async {
     if (!Hive.isBoxOpen(boxName)) {
-      return Hive.openBox(boxName);
+      return Hive.openLazyBox(boxName);
     } else {
-      return Hive.box(boxName);
+      return Hive.lazyBox(boxName);
     }
   }
 
@@ -27,7 +27,12 @@ mixin HiveStoreMixin<K, V> on Store<K, V> {
 
   @override
   FutureOr<Iterable<V>> loadAll() {
-    return getBox().then((box) => box.values);
+    return getBox().then((box) async {
+      var futures = box.keys.map((key) {
+        return box.get(key).then((value) => value!);
+      });
+      return Future.wait(futures);
+    });
   }
 
   @override
@@ -65,6 +70,11 @@ mixin HiveStoreMixin<K, V> on Store<K, V> {
         return ObservableEntityEvent<K, V>(e, event.key, event.value);
       });
     });
+  }
+
+  @override
+  FutureOr<int> length() {
+    return getBox().then((box) => box.length);
   }
 
   @override

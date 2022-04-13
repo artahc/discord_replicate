@@ -91,7 +91,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     await _getChannelMessagesUseCase
         .invoke(channelId: _channel.id, limit: 5, lastMessageId: _channel.messages.first.id)
         .then((response) {
-      emit(state.copyWith(messages: response.items));
+      emit(state.copyWith(messages: response.items.toList()));
     });
   }
 

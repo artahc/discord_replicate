@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:discord_replicate/domain/model/observable_entity_event.dart';
 import 'package:get_it/get_it.dart';
 
@@ -30,6 +31,8 @@ abstract class Store<K, T> implements Disposable {
 
   /// Check if item with provided id already exist in this store.
   FutureOr<bool> exist(K key);
+
+  FutureOr<int> length();
 
   FutureOr<void> clear();
 

@@ -86,6 +86,11 @@ mixin InMemoryStoreMixin<K, V> on Store<K, V> {
   }
 
   @override
+  FutureOr<int> length() {
+    return cache.length;
+  }
+
+  @override
   FutureOr onDispose() async {
     cache.clear();
     _controller.close();

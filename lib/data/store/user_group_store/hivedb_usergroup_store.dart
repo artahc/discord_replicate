@@ -19,8 +19,9 @@ class HiveUserGroupStore extends Store<String, UserGroup> with HiveStoreMixin {
       if (!box.containsKey(key)) {
         await box.put(key, value);
       } else {
-        var updatedMembers = Map.of(box.get(key)!.members)..addAll(value.members);
-        await box.put(key, box.get(key)!.copyWith(members: updatedMembers));
+        var existingUserGroup = await box.get(key);
+        var updatedMembers = Map.of(existingUserGroup!.members)..addAll(value.members);
+        await box.put(key, existingUserGroup.copyWith(members: updatedMembers));
       }
     });
   }
@@ -28,14 +29,15 @@ class HiveUserGroupStore extends Store<String, UserGroup> with HiveStoreMixin {
   @override
   FutureOr<void> saveAll(Map<String, UserGroup> values) async {
     return getBox().then((box) async {
-      values.forEach((key, value) async {
-        if (!box.containsKey(key)) {
-          await box.put(key, value);
+      for (var entry in values.entries) {
+        if (!box.containsKey(entry.key)) {
+          await box.put(entry.key, entry.value);
         } else {
-          var updatedMembers = Map.of(box.get(key)!.members)..addAll(value.members);
-          await box.put(key, box.get(key)!.copyWith(members: updatedMembers));
+          var existingUserGroup = await box.get(entry.key);
+          var updatedMembers = Map.of(existingUserGroup!.members)..addAll(entry.value.members);
+          await box.put(entry.key, existingUserGroup.copyWith(members: updatedMembers));
         }
-      });
+      }
     });
   }
 }

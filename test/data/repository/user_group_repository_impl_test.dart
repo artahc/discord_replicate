@@ -1,7 +1,12 @@
+import 'package:discord_replicate/application/config/hive.config.dart';
 import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/data/repository/user_group_repository_impl.dart';
 import 'package:discord_replicate/data/store/store.dart';
+import 'package:discord_replicate/data/store/user_group_store/hivedb_usergroup_store.dart';
+import 'package:discord_replicate/data/store/user_group_store/inmemory_usergroup_store.dart';
 import 'package:discord_replicate/domain/api/user_group_remote_api.dart';
+import 'package:discord_replicate/domain/model/member.dart';
+import 'package:discord_replicate/domain/model/paginated_response.dart';
 import 'package:discord_replicate/domain/model/user_group.dart';
 import 'package:discord_replicate/domain/repository/user_group_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,38 +18,81 @@ void main() {
 
   // Dependency
   late UserGroupRemoteApi api;
-  late Store<String, UserGroup> mockDb;
-  late Store<String, UserGroup> mockCache;
+  late Store<String, UserGroup> db;
+  late Store<String, UserGroup> cache;
 
   // Object under test.
-  late UserGroupRepository userGroupRepo;
+  late UserGroupRepository repo;
 
-  setUpAll(() async {
-    configureDependencies(container, Env.TEST);
+  group("getMemberById with Remote API source", () {
+    setUpAll(() async {
+      await initHive();
+      configureDependencies(container, Env.TEST);
 
-    api = container.get();
-    mockDb = container.get(instanceName: "DB_USERGROUP");
-    mockCache = container.get(instanceName: "CACHE_USERGROUP");
+      api = container.get();
+      db = HiveUserGroupStore();
+      cache = InMemoryUserGroupStore();
 
-    userGroupRepo = UserGroupRepositoryImpl(api, mockDb, mockCache);
-  });
+      repo = UserGroupRepositoryImpl(api, db, cache);
+    });
 
-  test("Load user group from remote source, should be able to parse to UserGroup model.", () async {
-    var expectedResult = UserGroup(id: "Xs6WqQiH2JuwPJrAZvB9", members: {});
+    setUp(() async {
+      await db.clear();
+      await cache.clear();
+    });
 
-    // when(() => api.getUserGroupById(userGroupId, 30, null)).thenAnswer((invocation) => Future.value(expectedResult));
-    when(() => mockDb.load(any())).thenAnswer((invocation) => Future.value(null));
-    when(() => mockDb.save(any(), any())).thenAnswer((invocation) => Future.value(null));
-    when(() => mockCache.load(any())).thenAnswer((invocation) => Future.value(null));
-    when(() => mockCache.save(any(), any())).thenAnswer((invocation) => Future.value(null));
+    test("""
+    Given a user group repository impl. Cache and DB is empty.
+    When getMemberById called,
+    Then should return instance of Member.
+    """, () async {
+      // arrange
+      var foo = const Member(uid: "foo", name: "foo");
+      var bar = const Member(uid: "bar", name: "bar");
 
-    // var user = await userRepo.getUserGroup(userGroupId);
+      when(() => api.getUserGroupById("ug-1", 30, null))
+          .thenAnswer((invocation) async => PaginationResponse(items: [foo, bar], hasMore: true));
 
-    verify(() => mockDb.load(any())).called(1);
-    verify(() => mockDb.save(any(), any())).called(1);
-    verify(() => mockCache.load(any())).called(1);
-    verify(() => mockCache.save(any(), any())).called(1);
+      // execute
+      var member = await repo.getMemberById("ug-1", "foo");
 
-    // expect(user, isA<UserGroup>());
+      // assert
+      expect(
+        member,
+        allOf([
+          isA<Member>(),
+          equals(foo),
+        ]),
+      );
+      verify(() => api.getUserGroupById("ug-1", 30, null)).called(1);
+    });
+
+    test("""
+    Given a user group repository with cached data in DB,
+    When getMemberById called,
+    Then verify remote API is not called. 
+    """, () async {
+      // arrange
+      var foo = const Member(uid: "1", name: "foo");
+      var bar = const Member(uid: "2", name: "bar");
+
+      var initialUserGroup = UserGroup.fromMembers(id: "ug-1", members: [foo, bar]);
+      await db.save(initialUserGroup.id, initialUserGroup);
+
+      when(() => api.getUserGroupById(initialUserGroup.id, any(), any()))
+          .thenAnswer((invocation) async => PaginationResponse(items: initialUserGroup.members.values, hasMore: true));
+      // execute
+      var member = await repo.getMemberById(initialUserGroup.id, foo.uid);
+
+      // assert
+      expect(
+        member,
+        allOf([
+          isA<Member>(),
+          equals(foo),
+        ]),
+      );
+      verifyNever(() => api.getUserGroupById(initialUserGroup.id, any(), any()));
+    });
   });
 }
