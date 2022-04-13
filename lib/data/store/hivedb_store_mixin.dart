@@ -7,7 +7,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 
 mixin HiveStoreMixin<K, V> on Store<K, V> {
+  @protected
   String get boxName;
+
+  @override
+  FutureOr<bool> isEmpty() {
+    return getBox().then((box) => box.isEmpty);
+  }
+
+  @override
+  FutureOr<int> length() {
+    return getBox().then((box) => box.length);
+  }
 
   @protected
   @override
@@ -70,11 +81,6 @@ mixin HiveStoreMixin<K, V> on Store<K, V> {
         return ObservableEntityEvent<K, V>(e, event.key, event.value);
       });
     });
-  }
-
-  @override
-  FutureOr<int> length() {
-    return getBox().then((box) => box.length);
   }
 
   @override

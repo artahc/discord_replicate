@@ -19,6 +19,12 @@ mixin InMemoryStoreMixin<K, V> on Store<K, V> {
   Sink<ObservableEntityEvent<K, V>> get notifier => _controller.sink;
 
   @override
+  FutureOr<bool> isEmpty() => cache.isEmpty;
+
+  @override
+  FutureOr<int> length() => cache.length;
+
+  @override
   FutureOr<V?> load(K key) {
     return cache[key];
   }
@@ -83,11 +89,6 @@ mixin InMemoryStoreMixin<K, V> on Store<K, V> {
   @override
   FutureOr<void> clear() {
     cache.clear();
-  }
-
-  @override
-  FutureOr<int> length() {
-    return cache.length;
   }
 
   @override

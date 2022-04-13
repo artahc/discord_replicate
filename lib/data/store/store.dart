@@ -5,6 +5,9 @@ import 'package:get_it/get_it.dart';
 
 /// Store provides basic CRUD and observe interface.
 abstract class Store<K, T> implements Disposable {
+  FutureOr<bool> isEmpty();
+  FutureOr<int> length();
+
   /// Get item from this store matching provided id.
   ///
   /// Return null if key does not exist.
@@ -31,8 +34,6 @@ abstract class Store<K, T> implements Disposable {
 
   /// Check if item with provided id already exist in this store.
   FutureOr<bool> exist(K key);
-
-  FutureOr<int> length();
 
   FutureOr<void> clear();
 

@@ -1,5 +1,8 @@
+import 'package:discord_replicate/application/config/hive.config.dart';
 import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/data/repository/channel_repository_impl.dart';
+import 'package:discord_replicate/data/store/channel_store/hivedb_channel_store.dart';
+import 'package:discord_replicate/data/store/channel_store/inmemory_channel_store.dart';
 import 'package:discord_replicate/data/store/store.dart';
 import 'package:discord_replicate/domain/api/channel_remote_api.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
@@ -13,54 +16,92 @@ void main() {
 
   // Dependency
   late ChannelRemoteApi api;
-  late Store<String, Channel> mockDb;
-  late Store<String, Channel> mockCache;
+  late Store<String, Channel> db;
+  late Store<String, Channel> cache;
 
   // Object under test.
-  late ChannelRepository channelRepo;
+  late ChannelRepository repo;
 
-  setUpAll(() async {
-    configureDependencies(container, Env.TEST);
+  group("getChannel from Remote API", () {
+    setUpAll(() async {
+      await initHive();
+      configureDependencies(container, Env.TEST);
 
-    api = container.get();
-    mockDb = container.get(instanceName: "DB_CHANNEL");
-    mockCache = container.get(instanceName: "CACHE_CHANNEL");
+      api = container.get();
+      db = HiveChannelStore();
+      cache = InMemoryChannelStore();
 
-    channelRepo = ChannelRepositoryImpl(api, mockDb, mockCache);
-  });
+      repo = ChannelRepositoryImpl(api, db, cache);
+    });
 
-  test(
-    """
-    Given ChannelRepository,
+    setUp(() async {
+      await db.clear();
+      await cache.clear();
+    });
+
+    test(
+      """
+    Given channel repository impl. DB and cache is empty,
     When getChannel called,
-    Then repository must perform db, and cache check before requesting to remote API, and should return instance of Channel.
+    Then should return instance of Channel.
     """,
-    () async {
-      var channelId = "PkM6m7lhnvIORIRuoVJv";
-      var limit = 30;
-      var expectedResult = const Channel(
-        id: "PkM6m7lhnvIORIRuoVJv",
-        name: "channel-name",
-        userGroupRef: "user-group-ref",
-        members: [],
-        messages: [],
+      () async {
+        // arrange
+        const channelId = "PkM6m7lhnvIORIRuoVJv";
+        const limit = 30;
+        const expected = Channel(
+          id: channelId,
+          name: "channel-name",
+          userGroupRef: "user-group-ref",
+          members: [],
+          messages: [],
+        );
+
+        when(() => api.getChannelById(channelId, memberLimit: limit)).thenAnswer((invocation) async => expected);
+
+        // execute
+        var loaded = await repo.getChannel(channelId);
+
+        // assert
+        expect(
+          loaded,
+          allOf([
+            isA<Channel>(),
+            equals(expected),
+          ]),
+        );
+        verify(() => api.getChannelById(channelId, memberLimit: limit)).called(1);
+      },
+    );
+
+    test("""
+    Given channel repository impl. DB contains requested data.
+    When getChannel called, 
+    Then verify remote API not called. Return item from db. 
+    """, () async {
+      // arrange
+      assert(await db.isEmpty());
+      assert(cache.isEmpty() == true);
+
+      const channelId = "ch";
+      const expected = Channel(id: channelId, name: "name", userGroupRef: "userGroupRef");
+
+      when(() => api.getChannelById(channelId)).thenAnswer((invocation) async => expected);
+      await db.save(expected.id, expected);
+
+      // execute
+      var loaded = await repo.getChannel(channelId);
+
+      // assert
+      verifyNever(() => api.getChannelById(channelId));
+      verifyNoMoreInteractions(api);
+      expect(
+        loaded,
+        allOf([
+          isA<Channel>(),
+          equals(expected),
+        ]),
       );
-
-      when(() => api.getChannelById(channelId, memberLimit: limit))
-          .thenAnswer((invocation) => Future.value(expectedResult));
-      when(() => mockDb.load(channelId)).thenAnswer((invocation) => Future.value(null));
-      when(() => mockDb.save(expectedResult.id, expectedResult)).thenAnswer((invocation) => Future.value(null));
-      when(() => mockCache.load(channelId)).thenAnswer((invocation) => Future.value(null));
-      when(() => mockCache.save(expectedResult.id, expectedResult)).thenAnswer((invocation) => Future.value(null));
-
-      var channel = await channelRepo.getChannel(channelId);
-
-      verify(() => mockDb.load(channelId)).called(1);
-      verify(() => mockDb.save(expectedResult.id, expectedResult)).called(1);
-      verify(() => mockCache.load(channelId)).called(1);
-      verify(() => mockCache.save(expectedResult.id, expectedResult)).called(1);
-
-      expect(channel, isA<Channel>());
-    },
-  );
+    });
+  });
 }
