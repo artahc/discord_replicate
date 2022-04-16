@@ -21,7 +21,6 @@ main() {
 
   setUpAll(() async {
     configureDependencies(container, Env.TEST);
-
     api = container.get();
     mockDb = container.get(instanceName: "DB_SERVER");
     mockCache = container.get(instanceName: "CACHE_SERVER");
@@ -46,4 +45,8 @@ main() {
     verify(() => mockCache.load(serverId)).called(1);
     verify(() => mockCache.save(expectedResult.id, expectedResult)).called(1);
   });
+}
+
+Stream<String> get() async* {
+  yield "ss";
 }

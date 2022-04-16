@@ -12,5 +12,5 @@ class GetChannelByIdUseCaseImpl implements GetChannelByIdUseCase {
   GetChannelByIdUseCaseImpl(this._channelRepo);
 
   @override
-  Future<Channel> invoke({required String channelId}) => _channelRepo.getChannel(channelId);
+  Future<Channel> invoke({required String channelId}) => _channelRepo.getChannelById(channelId);
 }

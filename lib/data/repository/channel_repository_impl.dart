@@ -1,18 +1,15 @@
 import 'dart:async';
 
+import 'package:async/async.dart';
 import 'package:custom_extension/custom_extensions.dart';
 import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/application/logger/app_logger.dart';
-
 import 'package:discord_replicate/data/store/store.dart';
-
 import 'package:discord_replicate/domain/api/channel_remote_api.dart';
 import 'package:discord_replicate/domain/model/channel.dart';
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/model/paginated_response.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
-
-import 'package:async/async.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -29,22 +26,30 @@ class ChannelRepositoryImpl implements ChannelRepository {
   );
 
   @override
-  Future<Channel> getChannel(String id, {int memberLimit = 30}) async {
+  Future<Channel> getChannelById(String id) async {
     var memory = LazyStream(() {
-      return Future.sync(() => _cache.load(id)).asStream().where((channel) => channel != null).doOnData((channel) {
+      return Future.sync(() => _cache.load(id))
+          .asStream()
+          .where((channel) => channel != null)
+          .cast<Channel?>()
+          .doOnData((channel) {
         log.i("Channel found on memory cache. $channel");
       });
     });
 
     var local = LazyStream(() {
-      return Future.sync(() => _db.load(id)).asStream().where((event) => event != null).doOnData((channel) async {
+      return Future.sync(() => _db.load(id))
+          .asStream()
+          .where((event) => event != null)
+          .cast<Channel?>()
+          .doOnData((channel) async {
         await saveChannel(channel!);
         log.i("Channel found on local database. $channel");
       });
     });
 
     var remote = LazyStream(() {
-      return _api.getChannelById(id, memberLimit: memberLimit).asStream().doOnData((channel) async {
+      return _api.getChannelById(id).asStream().doOnData((channel) async {
         await saveChannel(channel);
         log.i("Channel retrieved from remote API. $channel");
       });
@@ -80,15 +85,15 @@ class ChannelRepositoryImpl implements ChannelRepository {
   }
 
   @override
-  Future<void> saveAllChannels(List<Channel> items) async {
+  Future<void> saveAllChannels(Iterable<Channel> items) async {
     await _db.saveAll(items.toMap(keyConverter: (e) => e.id, valueConverter: (e) => e));
     await _cache.saveAll(items.toMap(keyConverter: (e) => e.id, valueConverter: (e) => e.id));
   }
 
   @override
-  Future<List<Channel>> getAllChannels() async {
+  Future<Iterable<Channel>> getAllChannels() async {
     var channels = await _db.loadAll();
-    return channels.toList();
+    return channels;
   }
 
   @override
@@ -104,7 +109,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
   }
 
   @override
-  Future<void> deleteAllChannel(List<String> channelIds) async {
+  Future<void> deleteAllChannel(Iterable<String> channelIds) async {
     await _cache.deleteAll(channelIds);
     await _db.deleteAll(channelIds);
   }

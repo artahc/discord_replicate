@@ -1,3 +1,4 @@
+import 'package:custom_extension/custom_extensions.dart';
 import 'package:discord_replicate/application/config/hive.config.dart';
 import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/data/repository/channel_repository_impl.dart';
@@ -22,11 +23,13 @@ void main() {
   // Object under test.
   late ChannelRepository repo;
 
-  group("getChannel from Remote API", () {
-    setUpAll(() async {
-      await initHive();
-      configureDependencies(container, Env.TEST);
+  setUpAll(() async {
+    await initHive();
+    configureDependencies(container, Env.TEST);
+  });
 
+  group("getChannelById", () {
+    setUpAll(() async {
       api = container.get();
       db = HiveChannelStore();
       cache = InMemoryChannelStore();
@@ -35,20 +38,50 @@ void main() {
     });
 
     setUp(() async {
+      reset(api);
       await db.clear();
       await cache.clear();
     });
 
+    test("""
+    Given mocked dependency.
+    When getChannelById called,
+    Then verify interaction in order -> load from memory -> db -> finally api --> also verify cache and db save get called.
+    """, () async {
+      // arrange
+      ChannelRemoteApi mockApi = container.get();
+      Store<String, Channel> mockDb = container.get(instanceName: "DB_CHANNEL");
+      Store<String, Channel> mockCache = container.get(instanceName: "CACHE_CHANNEL");
+
+      var mockedRepo = ChannelRepositoryImpl(mockApi, mockDb, mockCache);
+
+      var channel = const Channel(id: "foo", name: "name", userGroupRef: "userGroupRef");
+
+      when(() => mockCache.load("foo")).thenAnswer((invocation) async => null);
+      when(() => mockDb.load("foo")).thenAnswer((invocation) async => null);
+      when(() => mockApi.getChannelById("foo")).thenAnswer((invocation) async => channel);
+
+      // execute
+      await mockedRepo.getChannelById("foo");
+
+      verifyInOrder([
+        () => mockCache.load("foo"),
+        () => mockDb.load("foo"),
+        () => mockApi.getChannelById("foo"),
+      ]);
+      verify(() => mockCache.save(channel.id, channel)).called(1);
+      verify(() => mockDb.save(channel.id, channel)).called(1);
+    });
+
     test(
       """
-    Given channel repository impl. DB and cache is empty,
-    When getChannel called,
-    Then should return instance of Channel.
+    Given DB and cache is empty,
+    When getChannelById called,
+    Then verify remote API called and returns instance of Channel.
     """,
       () async {
         // arrange
         const channelId = "PkM6m7lhnvIORIRuoVJv";
-        const limit = 30;
         const expected = Channel(
           id: channelId,
           name: "channel-name",
@@ -57,10 +90,10 @@ void main() {
           messages: [],
         );
 
-        when(() => api.getChannelById(channelId, memberLimit: limit)).thenAnswer((invocation) async => expected);
+        when(() => api.getChannelById(channelId)).thenAnswer((invocation) async => expected);
 
         // execute
-        var loaded = await repo.getChannel(channelId);
+        var loaded = await repo.getChannelById(channelId);
 
         // assert
         expect(
@@ -70,12 +103,12 @@ void main() {
             equals(expected),
           ]),
         );
-        verify(() => api.getChannelById(channelId, memberLimit: limit)).called(1);
+        verify(() => api.getChannelById(channelId)).called(1);
       },
     );
 
     test("""
-    Given channel repository impl. DB contains requested data.
+    Given DB contains requested data.
     When getChannel called, 
     Then verify remote API not called. Return item from db. 
     """, () async {
@@ -90,7 +123,7 @@ void main() {
       await db.save(expected.id, expected);
 
       // execute
-      var loaded = await repo.getChannel(channelId);
+      var loaded = await repo.getChannelById(channelId);
 
       // assert
       verifyNever(() => api.getChannelById(channelId));
@@ -104,4 +137,93 @@ void main() {
       );
     });
   });
+
+  group("getAllChannels", () {
+    setUpAll(() async {
+      api = container.get();
+      db = HiveChannelStore();
+      cache = InMemoryChannelStore();
+
+      repo = ChannelRepositoryImpl(api, db, cache);
+    });
+
+    setUp(() async {
+      reset(api);
+      await db.clear();
+      await cache.clear();
+    });
+
+    test("""
+    Given a channel repo impl with empty DB and cache.
+    When getAllChannels called,
+    Then verifyNoInteraction to remote API. 
+    """, () async {});
+
+    test("""
+    Given a channel repo impl with empty DB and cache.
+    When getAllChannels called,
+    Then verifyNoInteraction to remote API. 
+    """, () async {
+      // arrange
+      expect(await db.isEmpty(), true);
+      expect(await cache.isEmpty(), true);
+
+      // execute
+      await repo.getAllChannels();
+
+      // assert
+      verifyZeroInteractions(api);
+    });
+
+    test("""
+    Given a channel repo impl with existing item in DB and cache.
+    When getAllChannels called,
+    Then should return fresh item from DB. 
+    """, () async {
+      // arrange
+      expect(await db.isEmpty(), true);
+      expect(await cache.isEmpty(), true);
+
+      var foo = const Channel(id: "foo", name: "name", userGroupRef: "userGroupRef");
+      var bar = const Channel(id: "bar", name: "name", userGroupRef: "userGroupRef");
+
+      await db.saveAll([foo, bar].toMap(keyConverter: (e) => e.id, valueConverter: (e) => e));
+
+      expect(await db.loadAll(), containsAll([foo, bar]));
+
+      // execute
+      var channels = await repo.getAllChannels();
+
+      // assert
+      expect(channels, containsAll([foo, bar]));
+      verifyZeroInteractions(api);
+    });
+  });
+
+  group("saveChannel", () {
+    setUpAll(() async {
+      api = container.get();
+      db = container.get(instanceName: "DB_CHANNEL");
+      cache = container.get(instanceName: "CACHE_CHANNEL");
+
+      repo = ChannelRepositoryImpl(api, db, cache);
+    });
+
+    setUp(() {
+      reset(api);
+      reset(db);
+      reset(cache);
+    });
+
+    test("""
+    """, () async {
+      // arrange
+
+      // execute
+
+      // assert
+    });
+  });
+
+  group("getChannelMessages", () {});
 }
