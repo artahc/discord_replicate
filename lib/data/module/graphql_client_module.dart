@@ -10,10 +10,10 @@ class MockGraphQLClient extends Mock implements GraphQLClient {}
 @module
 abstract class GraphQLClientModule {
   @Named("BASE_URL")
-  String get baseUrl => "http://localhost:4000/graphql";
+  String get baseUrl => "https://discord-replicate-backend-1029.herokuapp.com/graphql";
 
   @Named("WS_URL")
-  String get wsUrl => "ws://localhost:4000/graphql";
+  String get wsUrl => "ws://discord-replicate-backend-1029.herokuapp.com/graphql";
 
   @Injectable()
   @Named("API_LINK")

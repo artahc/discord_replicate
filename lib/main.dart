@@ -1,5 +1,6 @@
 import 'package:discord_replicate/application/config/hive.config.dart';
 import 'package:discord_replicate/application/config/injection.dart';
+import 'package:discord_replicate/firebase_options.dart';
 import 'package:discord_replicate/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:discord_replicate/presentation/bloc/navigation/navigation_cubit.dart';
 import 'package:discord_replicate/presentation/bloc/routes/route_generator.dart';
@@ -16,7 +17,7 @@ Future main() async {
     statusBarColor: Colors.transparent,
   ));
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await initHive();
   configureDependencies(sl, Env.DEV);
 
