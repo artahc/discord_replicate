@@ -45,7 +45,7 @@ class LandingView extends StatelessWidget {
             return state.maybeWhen(
               orElse: () {
                 return const Center(
-                  child: Text("Loading user."),
+                  child: Text("Loading user..."),
                 );
               },
               loaded: (user) {

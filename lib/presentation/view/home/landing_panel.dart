@@ -89,17 +89,6 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
               builder: (_, state) {
                 return state.maybeWhen(
                   orElse: () {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Center(
-                          child: CircularProgressIndicator(color: Colors.white),
-                        ),
-                        Text("Loading channel"),
-                      ],
-                    );
-                  },
-                  loaded: (channel) {
                     return MessagePanel(
                       pageController: _pageController,
                     );

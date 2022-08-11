@@ -84,8 +84,14 @@ class MessagePanelHeader extends StatelessWidget {
             builder: (context, state) {
               return state.maybeWhen(
                 orElse: () {
-                  return const Expanded(
-                    child: Text("Still loading..."),
+                  return Expanded(
+                    child: Container(
+                      height: 25,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: const Color.fromARGB(255, 84, 79, 91),
+                      ),
+                    ),
                   );
                 },
                 loaded: (channel) {
