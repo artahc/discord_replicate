@@ -4,6 +4,7 @@ import 'package:discord_replicate/presentation/route_transition/app_transition.d
 import 'package:discord_replicate/presentation/widgets/app_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'login_view.dart';
 import 'register_view.dart';
@@ -31,7 +32,10 @@ class WelcomeView extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Container(),
+                child: Padding(
+                  padding: const EdgeInsets.all(25),
+                  child: SvgPicture.asset("assets/icons/welcome-illustration.svg"),
+                ),
               ),
               Text(
                 "Welcome to Discord",
