@@ -87,7 +87,7 @@ class ChannelRepositoryImpl implements ChannelRepository {
   @override
   Future<void> saveAllChannels(Iterable<Channel> items) async {
     await _db.saveAll(items.toMap(keyConverter: (e) => e.id, valueConverter: (e) => e));
-    await _cache.saveAll(items.toMap(keyConverter: (e) => e.id, valueConverter: (e) => e.id));
+    await _cache.saveAll(items.toMap(keyConverter: (e) => e.id, valueConverter: (e) => e));
   }
 
   @override
