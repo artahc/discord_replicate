@@ -23,6 +23,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Stream<UserEvent> get eventStream => _eventStream.stream;
 
   final CompositeSubscription _blocStateSubscription = CompositeSubscription();
+  StreamSubscription? _userChangesSubscription;
 
   UserBloc(
     @factoryParam Stream<AuthState> authStateStream,
@@ -71,14 +72,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     await _getCurrentUserUseCase.invoke().then((user) async {
       log.i("User loaded. $user");
       emit(UserState.loaded(user));
-
-      // await for (final event in _observeUserChangesUseCase.invoke().where((event) => event.key == user.uid)) {
-      //   if (event.event == EntityEvent.CREATED_OR_UPDATED) {
-      //     emit(UserState.loaded(event.value!));
-      //   } else {
-      //     emit(UserState.empty());
-      //   }
-      // }
+      _userChangesSubscription?.cancel();
+      _userChangesSubscription = _observeUserChangesUseCase.invoke(userId: user.uid).listen((event) {
+        add(const UserEvent.loadUser());
+      });
     });
   }
 

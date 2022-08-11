@@ -18,7 +18,8 @@ class JoinServerUseCaseImpl implements JoinServerUseCase {
   final ChannelRepository _channelRepo;
   final UserGroupRepository _userGroupRepo;
 
-  JoinServerUseCaseImpl(this._getCurrentUserUseCase, this._userRepo, this._serverRepo, this._channelRepo, this._userGroupRepo);
+  JoinServerUseCaseImpl(
+      this._getCurrentUserUseCase, this._userRepo, this._serverRepo, this._channelRepo, this._userGroupRepo);
 
   @override
   Future<Server> invoke({required String serverId}) async {

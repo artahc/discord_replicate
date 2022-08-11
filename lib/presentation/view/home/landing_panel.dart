@@ -25,6 +25,14 @@ class LandingPanel extends StatefulWidget {
 
 class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMixin {
   late final OverlapSwipeableStackController _pageController = OverlapSwipeableStackController(vsync: this);
+  late final ServerBloc serverBloc = BlocProvider.of(context);
+  late final DirectMessageBloc dmBloc = BlocProvider.of(context);
+
+  @override
+  void initState() {
+    serverBloc.add(ServerEvent.loadServer(widget.user.servers.first.id));
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -34,9 +42,6 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    var serverBloc = BlocProvider.of<ServerBloc>(context);
-    var dmBloc = BlocProvider.of<DirectMessageBloc>(context);
-
     return SafeArea(
       child: Stack(
         children: [
@@ -83,8 +88,14 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
               builder: (_, state) {
                 return state.maybeWhen(
                   orElse: () {
-                    return const Center(
-                      child: CircularProgressIndicator(color: Colors.white),
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Center(
+                          child: CircularProgressIndicator(color: Colors.white),
+                        ),
+                        Text("Loading channel"),
+                      ],
                     );
                   },
                   loaded: (channel) {
