@@ -42,7 +42,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   void _onAuthenticated() {
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       _navBloc.pushNamedAndRemoveUntil(context, Routes.landing, (route) => false, true);
     });
   }

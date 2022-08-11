@@ -49,7 +49,7 @@ class _RegisterViewState extends State<RegisterView> with TickerProviderStateMix
   }
 
   void _onUserAuthenticated() {
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       _navBloc.pushNamedAndRemoveUntil(context, Routes.landing, (route) => false, true);
     });
   }
