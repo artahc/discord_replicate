@@ -21,11 +21,18 @@ class _LoginViewState extends State<LoginView> {
   late final AuthBloc _authBloc = BlocProvider.of<AuthBloc>(context);
   late final NavigationCubit _navBloc = BlocProvider.of<NavigationCubit>(context);
 
+  final mockAccount = const [
+    // Tuple2("artahc@gmail.com", "artahc123"),
+    // Tuple2("artahace@gmail.com", "artahc123123"),
+    Tuple2("test1@gmail.com", "password"),
+    Tuple2("test2@gmail.com", "password"),
+    // Tuple2("test17@gmail.com", "password")
+  ];
   @override
   void initState() {
     super.initState();
-    _identityCtrl.text = "artahc@gmail.com";
-    _passwordCtrl.text = "artahc123";
+    _identityCtrl.text = mockAccount[0].item1;
+    _passwordCtrl.text = mockAccount[0].item2;
   }
 
   @override
@@ -181,13 +188,7 @@ class _LoginViewState extends State<LoginView> {
                       isExpanded: true,
                       value: _identityCtrl.text,
                       hint: const Text("Select account"),
-                      items: <Tuple2<String, String>>[
-                        const Tuple2("artahc@gmail.com", "artahc123"),
-                        const Tuple2("artahace@gmail.com", "artahc123123"),
-                        const Tuple2("test@test.t", "test123"),
-                        const Tuple2("test2@gmail.com", "password"),
-                        const Tuple2("test17@gmail.com", "password"),
-                      ].map<DropdownMenuItem<String>>((e) {
+                      items: mockAccount.map<DropdownMenuItem<String>>((e) {
                         return DropdownMenuItem(
                           child: Text(e.item1),
                           value: e.item1,

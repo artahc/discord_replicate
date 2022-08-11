@@ -1,7 +1,7 @@
 import 'package:discord_replicate/application/config/injection.dart';
 import 'package:discord_replicate/domain/model/user.dart';
-import 'package:discord_replicate/domain/repository/user_repository.dart';
 import 'package:discord_replicate/domain/repository/auth_repository.dart';
+import 'package:discord_replicate/domain/repository/user_repository.dart';
 import 'package:discord_replicate/domain/usecase/user/get_current_user_usecase.dart';
 import 'package:injectable/injectable.dart';
 
@@ -14,8 +14,8 @@ class GetCurrentUserUseCaseImpl implements GetCurrentUserUseCase {
 
   @override
   Future<User> invoke() async {
-    // var credential = await _authRepo.getCredential(forceRefresh: true);
-    // if (credential == null) return Future.error("User is unauthenticated.");
-    return _userRepo.getUserById("FMYbWPwFWgTvRemhbbz1dLL9HkC2");
+    var credential = await _authRepo.getCredential(forceRefresh: false);
+    if (credential == null) return Future.error("User is unauthenticated.");
+    return _userRepo.getUserById(credential.uid);
   }
 }
