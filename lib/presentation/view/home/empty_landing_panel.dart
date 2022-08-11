@@ -24,7 +24,7 @@ class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
           children: [
             const Align(
               alignment: Alignment.center,
-              child: Text("Nothing's interesting in your account."),
+              child: Text("You are not a member of any server."),
             ),
             Align(
               alignment: Alignment.bottomCenter,
@@ -32,6 +32,7 @@ class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
                 child: Column(
                   children: [
                     AppButton(
+                      margin: const EdgeInsets.all(8),
                       child: const Text("Join Testing Server"),
                       onPressed: () {
                         _serverBloc.add(const ServerEvent.joinServer("XE4yhAIsvuZvxwOFrSyq"));
@@ -41,6 +42,7 @@ class _EmptyLandingPanelState extends State<EmptyLandingPanel> {
                       height: 5,
                     ),
                     AppButton(
+                      margin: const EdgeInsets.all(8),
                       child: const Text("Log Out"),
                       color: Colors.red,
                       onPressed: () {
