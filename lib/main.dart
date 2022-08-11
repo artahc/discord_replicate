@@ -36,7 +36,7 @@ class Application extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthBloc>(create: (c) => authBloc..add(const AuthEvent.signOut())),
+        BlocProvider<AuthBloc>(create: (c) => authBloc),
         BlocProvider<NavigationCubit>(create: (c) => navBloc),
       ],
       child: MaterialApp(
