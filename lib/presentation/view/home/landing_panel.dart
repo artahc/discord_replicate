@@ -38,6 +38,7 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
     var dmBloc = BlocProvider.of<DirectMessageBloc>(context);
 
     return SafeArea(
+      bottom: false,
       child: Stack(
         children: [
           OverlapSwipeableStack(
@@ -129,10 +130,8 @@ class _LandingPanelState extends State<LandingPanel> with TickerProviderStateMix
           ),
 
           // Navigation Bar
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
+          Align(
+            alignment: Alignment.bottomCenter,
             child: SlideTransition(
               child: const AppNavigationBar(),
               position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
