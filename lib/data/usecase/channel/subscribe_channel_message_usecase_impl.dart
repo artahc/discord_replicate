@@ -1,5 +1,4 @@
 import 'package:discord_replicate/application/config/injection.dart';
-
 import 'package:discord_replicate/domain/model/message.dart';
 import 'package:discord_replicate/domain/repository/channel_repository.dart';
 import 'package:discord_replicate/domain/usecase/channel/get_channel_member_by_id_usecase.dart';
@@ -15,7 +14,6 @@ class SubscribeChannelMessageUseCaseImpl implements SubscribeChannelMessageUseCa
 
   @override
   Stream<Message> invoke({required String channelId}) async* {
-    var messageStream = _channelRepo.subscribeChannelMessages(channelId);
-    yield* messageStream;
+    yield* _channelRepo.subscribeChannelMessages(channelId);
   }
 }

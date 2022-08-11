@@ -26,7 +26,7 @@ class JoinServerUseCaseImpl implements JoinServerUseCase {
     var currentUser = await _getCurrentUserUseCase.invoke();
     return _serverRepo.joinServer(serverId).then((server) async {
       await _serverRepo.saveServer(server);
-      await _channelRepo.saveAllChannels(server.channels);
+      // await _channelRepo.saveAllChannels(server.channels);
 
       var members = await _userGroupRepo.getAllMember(server.userGroupRef);
       await _userGroupRepo.saveAllMembers(server.userGroupRef, members);
